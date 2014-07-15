@@ -20,6 +20,10 @@
 			case 'role':
 			include("modules/role.php");
 			break;
+
+			case 'changePass':
+			include("modules/change_pass.php");
+			break;
 			
 			default:
 			include("modules/search.php");

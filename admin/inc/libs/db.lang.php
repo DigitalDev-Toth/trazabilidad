@@ -14,4 +14,12 @@ $languaje['users'] = array (
 		"users.color" => "Color"
 );
 
+$languaje['role'] = array (
+		"id" => "ID",
+		"name" => "Nombre",
+		"description" => "Descripcion",
+		"role.name" => "Nombre",
+		"role.description" => "Descripcion"
+);
+
 ?>

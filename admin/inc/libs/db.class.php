@@ -669,7 +669,7 @@ var $toMany; //matriz que almacena las relaciones uno a muchos para la insercion
 					$colspan = ' colspan="'.$colspanNum.'"';
 					echo '<tr id="row_'.str_replace('.', '_', $field).'"><td '.$colspan.' ID="td_'.str_replace('.', '_', $field).'">';
 				}
-				include_once($this->myPathShow1."tools/ckeditor/ckeditor.php");
+				include_once("../tools/ckeditor/ckeditor.php");
 				$CKEditor = new CKEditor();
 				$CKEditor->basePath = $this->myPathShow1.'tools/ckeditor/';
 				$config['toolbar'] = array(

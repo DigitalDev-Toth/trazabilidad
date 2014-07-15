@@ -29,7 +29,7 @@ function getSubMenu($content) {
 		
 		case 'users':
 			$subMenu .= '<ul>';
-			$subMenu .= getItemMenu("users","Cambiar Password");
+			$subMenu .= getItemMenu("changePass","Cambiar Password");
 			$subMenu .= getItemMenu("role","Roles");
 			$subMenu .= getItemMenu("users","Usarios");
 			$subMenu .= '<li class = "round_corner_menu_top"></li>';
@@ -58,31 +58,5 @@ function getSubMenu($content) {
 	return $subMenu;
 }
 
-function getSubMenuTrace($item,$title, $filter)  {
-	switch ($item) {
-		case 'prevision&type=agreement': $itemCss='prevision'; break;
-		case 'prevision&type=person': $itemCss='prevision'; break;
-		case 'show_calendar_scheduled': $itemCss='ex_agendado'; break;
-		case 'show_calendar_confirmed':	$itemCss='ex_confirmado'; break;
-		case 'show_calendar_payment': $itemCss='ex_pagado'; break;
-		case 'show_calendar_waiting': $itemCss='ex_en_espera'; break;
-		case 'show_calendar_admitted': $itemCss='ex_ingresado'; break;
-		case 'show_calendar_assigned': $itemCss='ex_asignado'; break;
-		case 'show_calendar_informed': $itemCss='ex_informado'; break;
-		case 'show_calendar_finalized': $itemCss='ex_finalizado'; break;
-		case 'show_calendar_released': $itemCss='ex_despachado'; break;
-		case 'room&filter=schedule': $itemCss='room'; break;
-		case 'scheduleDrInformant':	$itemCss='drInformante'; break;
-		case 'show_calendar_waiting_prescription': $itemCss='ex_en_espera'; break;
-		case 'show_calendar_admitted_prescription_trace':	$itemCss='ex_ingresado'; break;
-		case 'show_calendar_finalized_prescription': $itemCss='ex_finalizado'; break;		
-		case 'show_calendar_scheduled_prescription': $itemCss='ex_agendado'; break;
-		case 'show_calendar_confirmed_prescription':	$itemCss='ex_confirmado'; break;
-		case 'show_calendar_payment_prescription': $itemCss='ex_pagado'; break;
-		default: $itemCss = $item;
-	}
-	
-return '<li><a href="inc/main.php?module='.$item.'&filter='.$filter.'" id="menuLeft'.ucfirst($itemCss).'"  target="main" >'.$title.'</a></li>';
-}
 
 ?>
