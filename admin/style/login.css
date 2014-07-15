@@ -1,0 +1,126 @@
+html, body {
+	height: 95%;
+	margin:0;
+	background:#fff;
+}
+
+#header { 
+	height: 130px;
+	margin-top: 10px;
+}
+
+#content {
+	height: 250px;
+}
+
+#footer { 
+	height: 250px;
+}
+
+#msg {
+	width:380px;
+	padding:8px;
+	border:1px solid #6CACD4;
+	background:#9BC1E4;
+	font-size:11px;
+	font-family:Verdana;
+	text-align:center;
+	margin:0px auto;
+	color:#0000FF;
+	display: none;
+	border-radius:10px 10px 10px 10px;
+}
+
+/*nuevo form*/
+#logo_im {
+	background: url(../images/logo2.png) no-repeat center;
+	width:250px;
+	height:137px;
+	margin:0 auto 0 auto;
+	display:none;
+}
+
+#logo_dd {
+	background: url(../images/logo_dd.png) no-repeat bottom;
+	width:902px;
+	height:208px;
+	margin:0 auto 0 auto;
+	display: none;
+}
+
+.wrapper_login {
+	width:500px;
+	height:300px;
+	margin:0 auto;
+	padding-top: 0px;
+}
+
+.border-radius {
+	border-radius:20px;
+	-ms-border-radius:20px;
+	-moz-border-radius:20px;
+	-webkit-border-radius:20px;
+	-khtml-border-radius:20px;
+}
+
+.myform {
+	margin:0 auto;
+	width:400px;
+	padding:14px;
+	padding-top: 40px;
+}
+
+/* ----------- stylized ----------- */
+#stylized {
+	display:none;
+}
+#stylized h1 {
+	font-size:14px;
+	font-weight:bold;
+	margin-bottom:8px;
+}
+#stylized p {
+	font-size:11px;
+	color:#666666;
+	margin-bottom:20px;
+	border-bottom:solid 1px #b7ddf2;
+	padding-bottom:10px;
+}
+#stylized label {
+	display:block;
+	font-weight:bold;
+	text-align:right;
+	width:150px;
+	float:left;
+}
+#stylized .small {
+	color:#666666;
+	display:block;
+	font-size:10px;
+	font-weight:normal;
+	text-align:right;
+	width:140px;
+}
+#stylized input {
+	float:left;
+	font-size:12px;
+	padding:4px 2px;
+	border:solid 1px #9BC1E4;
+	width:200px;
+	margin:2px 0 20px 10px;
+	border-radius: 4px 4px 4px 4px;
+	font-family: verdana;
+}
+
+#stylized button {
+	margin-left:150px;
+	width:125px;
+	height:29px;
+	background:#666666;
+	text-align:center;
+	color:#FFFFFF;
+	font-size:12px;
+	font-weight:bold;
+	font-family:verdana;
+	border-radius: 4px 4px 4px 4px;
+}

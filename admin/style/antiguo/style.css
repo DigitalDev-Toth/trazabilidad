@@ -1,0 +1,311 @@
+/*---Estructura Principal---*/
+html, body { 
+	width:100%;
+	margin: 0 auto;
+	background: #fff;
+	}
+#iframe{
+	background:#fff;
+	width:100%;
+	height:100%;
+	}
+/*---Formulario---*/
+#form_main { 
+	background:#fff; 
+	width:98%;
+	text-align:center; 
+	padding-top:10px; 
+	margin:0px auto;
+	}
+
+#showData_wrapper{
+	width:98%;
+	padding:10px;
+	margin:20px auto;
+	background:#fff;
+	}
+
+/*--ShowData---*/
+#showData { 
+	background:#DCDCDC; 
+	float:left; 
+	margin-top:0px; 
+	font-size:10px;
+	font-size: 10px; 
+	width:100%;
+	height:auto;
+	}
+#showData td{ 
+	text-align:left; 
+	padding:3px;
+	font-family: Verdana, Arial, Helvetica, sans-serif; 
+	font-size: 10px;
+	
+	}
+#showData input { 
+	background:#FFFFFF; 
+	font-size:11px; 
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	}
+#showData .odd0{
+background:#ffdddd;
+}
+#showData .even0{
+background:#ffeeee;
+}
+#showData .odd1{
+background:#ffdddd;
+}
+#showData .even1{
+background:#ffeeee;
+}
+#showData .odd2{
+background:#fff9a9;
+}
+#showData .even2{
+background:#fff788;
+}
+#showData .odd3{
+background:#eeffee;
+}
+#showData .even3{
+background:#ddffdd;
+}
+#showData .odd4{
+background:#d8d9ff;
+}
+#showData .even4{
+background:#b3b6ff;
+}
+.sorting_asc {
+	background: #B0C4DE url('../imgs/sort_asc.gif') no-repeat center right;
+}
+.sorting_desc {
+	background: #B0C4DE url('../imgs/sort_desc.gif') no-repeat center right;
+}
+#showData_length,#showDataExams_length{ 
+	font-family:Verdana, Arial, Helvetica, sans-serif; 
+	font-size:11px;
+	text-align:left; 
+	width:250px; 
+	background:#EFEFEF; 
+	height:25px; 
+	padding-top:5px; 
+	padding-left:10px; 
+	-moz-border-radius-topright: 15px;
+	}
+#showData_filter,#showDataExams_filter{ 
+	font-family:Verdana, Arial, Helvetica, sans-serif; 
+	font-size:11px; 
+	float:right;
+	padding-top:5px; 
+	padding-right:20px;
+	margin:
+	width: 250px;
+	background:#EFEFEF; 
+	height:25px; 
+	-moz-border-radius-topleft: 15px;
+	}
+
+#showData_info,#showDataExams_info { 
+	font-family:Verdana, Arial, Helvetica, sans-serif; 
+	font-size:11px; 
+	text-align:left; 
+	margin:0px 0px 20px 0px; 
+	height:25px; 
+	vertical-align:middle; 
+	padding-top: 10px; 
+	padding-left:10px; 
+	color:#000; 
+	background:#EFEFEF; 
+	width: 500px; 
+	-moz-border-radius-bottomleft: 15px; 
+	-moz-border-radius-bottomright: 15px;
+}
+#showData_paginate,#showDataExams_paginate { 
+	float: right; 
+	margin:0px 0% 10px 0px; 
+	height:25px; 
+	padding-top:10px; 
+	margin-top:0px; 
+	-moz-border-radius-bottomright:15px;
+	background:#EFEFEF; 
+	padding-left:13px; 
+	padding-right:13px; 
+	-moz-border-radius-bottomleft: 15px;
+}
+/*---ShowForm---*/
+#showForm { background:#EBEBEB; float:none; margin-top:10px; font-size:11px; border:1px #999999 solid; -moz-border-radius:15px; padding:5px;}
+#showForm th, td{text-align:left;padding:3px;font-family: Verdana, Arial, Helvetica, sans-serif;font-size: 11px;}
+#showForm th{background:#328aa4 repeat-x;color:#fff;}
+#showForm td{background:#EBEBEB; margin:1px;}
+/*#showForm input { background:#FFFFFF; font-size:11px; font-family:Verdana, Arial, Helvetica, sans-serif;}*/
+
+/*---drawControls---*/
+#drawControls { 
+	background:#fff;
+	margin-top:10px;
+	}
+#drawControls tr td{ background:#fff; text-align:center; margin:0px;}
+
+#form1 { background:#fff;}
+
+h1 { background:#f9f9f9; margin:10px 0px -11px 0px; font-size:11px; font-weight:bold;font-family:Verdana, Arial, Helvetica, sans-serif;}
+h1 p { background:#AAD977;font-size:11px;font-weight:bold;font-family:Verdana, Arial, Helvetica, sans-serif;text-align:center;padding:5px; width:740px; margin-left:10px; -moz-border-radius: 15px;}
+
+#d_true { 
+	padding:40px 0 20px 0; 
+	vertical-align:middle;
+	width:30%;
+	background:#fff;
+	margin:0 auto;
+	border:1px dashed #90a6cd;
+	-moz-border-radius:15px;
+	padding: 3%;
+	text-align:center;
+}
+p#d_true a{	
+	background: url(../imgs/ok.png) no-repeat 0 50%;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	font-size:16px;
+	font-weight:bold;
+	color:#4F94CD;
+	padding-left:30px;
+	margin:0px;
+}
+
+/*---Titulos---*/
+#showTitle { background:#EBEBEB; float:none; margin-top:10px; font-size:13px; border:1px #999999 solid;  padding:5px; text-align:center; font-size:11px;font-weight:bold;font-family:Verdana, Arial, Helvetica}
+
+/*Barra de navegación*/
+#bar_nav {
+	width:90%;
+	height:auto;
+	background:#f5f5f5;
+	margin:0 auto;
+	border:1px dashed #90a6cd;
+	-moz-border-radius:15px;
+	padding: 4px;
+	padding-left:20px;
+}
+#bar_nav a {
+	text-decoration:none;
+	line-height:25px;
+	font-size:13px;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	color:#4F94CD;
+	height:25px;
+}
+#bar_nav a #back{
+	background: url(../imgs/back.png) no-repeat 0 50%;
+	width:auto;
+	height:25px;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	color:#4F94CD;
+	padding-left:30px;
+	margin:0px;
+}
+/* ---------->>> jtip <<<---------------------------------------------------------------*/
+#JT_arrow_left{
+	background-image: url(../images/arrow_left.gif);
+	background-repeat: no-repeat;
+	background-position: left top;
+	position: absolute;
+	z-index:101;
+	left:-12px;
+	height:23px;
+	width:10px;
+    top:-3px;
+}
+
+#JT_arrow_right{
+	background-image: url(../images/arrow_right.gif);
+	background-repeat: no-repeat;
+	background-position: left top;
+	position: absolute;
+	z-index:101;
+	height:23px;
+	width:11px;
+    top:-2px;
+}
+
+#JT {
+	position: absolute;
+	z-index:100;
+	border: 2px solid #CCCCCC;
+	background-color: #fff;
+}
+
+#JT_copy{
+	padding:10px 10px 10px 10px;
+	color:#333333;
+}
+
+.JT_loader{
+	background-image: url(../images/loader.gif);
+	background-repeat: no-repeat;
+	background-position: center center;
+	width:100%;
+	height:12px;
+}
+
+#JT_close_left{
+	background-color: #CCCCCC;
+	text-align: left;
+	padding-left: 8px;
+	padding-bottom: 5px;
+	padding-top: 2px;
+	font-weight:bold;
+}
+
+#JT_close_right{
+	background-color: #CCCCCC;
+	text-align: left;
+	padding-left: 8px;
+	padding-bottom: 5px;
+	padding-top: 2px;
+	font-weight:bold;
+}
+
+#JT_copy p{
+margin:3px 0;
+}
+
+#JT_copy img{
+	padding: 1px;
+	border: 1px solid #CCCCCC;
+}
+
+.jTip{
+cursor:help;
+}
+
+.messagebox{
+ position:absolute;
+ width:70px;
+ margin-left:5px;
+ border:1px solid #c93;
+ -moz-border-radius:5px;
+ background:#ffc;
+ padding:3px;
+}
+.messageboxok{
+ position:absolute;
+ width:auto;
+ margin-left:5px;
+ border:1px solid #349534;
+ background:#C9FFCA;
+ padding:3px;
+ font-weight:bold;
+ color:#008000;
+}
+.messageboxerror{
+ position:absolute;
+ width:auto;
+ margin-left:5px;
+ border:1px solid #CC0000;
+ background:#F7CBCA;
+ padding:3px;
+ font-weight:bold;
+ color:#CC0000;
+}

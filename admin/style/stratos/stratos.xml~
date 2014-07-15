@@ -1,0 +1,31 @@
+<patient date="20071119131627">
+   <data patId="9999999" patIdIssuer="" birthdate="AAAA-MM-DD" sex="F" fullname="XXX YYY^ZZZ">
+   </data>
+   <dicom>
+        <study studyUID="1.3.46.670589.26.502446.1.20071119.94121.6037" date="2007-11-19 08:42:52" modalities="CR" description="" numseries="2">
+             <series seriesUID="1.3.46.670589.26.502446.2.20071119.94252.7439" series_num="7439" modality="CR" numinstances="1">
+                 <instance objectUID="1.3.46.670589.26.502446.4.20071119.94315.7439.0" instance_num="0"/>
+             </series>
+             <series seriesUID="1.3.46.670589.26.502446.2.20071119.94323.7440" series_num="7440" modality="CR" numinstances="1">
+                 <instance objectUID="1.3.46.670589.26.502446.4.20071119.94343.7440.0" instance_num="0"/>
+             </series>
+        </study>
+        <study studyUID="1.3.46.670589.26.502446.1.20070904.104240.5151" date="2007-09-04 09:48:01" modalities="CR" description="" numseries="2">
+             <series seriesUID="1.3.46.670589.26.502446.2.20070904.104801.5989" series_num="5989" modality="CR" numinstances="1">
+                 <instance objectUID="1.3.46.670589.26.502446.4.20070904.104835.5989.0" instance_num="0"/>
+             </series>
+             <series seriesUID="1.3.46.670589.26.502446.2.20070904.104837.5990" series_num="5990" modality="CR" numinstances="1">
+                 <instance objectUID="1.3.46.670589.26.502446.4.20070904.104904.5990.0" instance_num="0"/>
+             </series>
+        </study>
+        <study studyUID="1.3.46.670589.26.502446.1.20070904.104240.5167" date="2007-09-04 09:45:14" modalities="CR" description="" numseries="2">
+             <series seriesUID="1.3.46.670589.26.502446.2.20070904.104514.5987" series_num="5987" modality="CR" numinstances="1">
+                 <instance objectUID="1.3.46.670589.26.502446.4.20070904.104535.5987.0" instance_num="0"/>
+             </series>
+             <series seriesUID="1.3.46.670589.26.502446.2.20070904.104617.5988" series_num="5988" modality="CR" numinstances="1">
+                 <instance objectUID="1.3.46.670589.26.502446.4.20070904.104656.5988.0" instance_num="0"/>
+             </series>
+        </study>
+   </dicom>
+</patient>
+

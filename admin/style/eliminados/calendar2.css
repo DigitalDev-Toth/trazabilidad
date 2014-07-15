@@ -1,0 +1,33 @@
+#table_calendar {
+	border:1px solid #93ADDF;
+	font-family:Verdana, Geneva, sans-serif;
+	font-size:11px;
+	width:100%;
+	margin:auto;
+}
+
+#table_calendar th {
+	color:#336699;
+	background:#215DD1;
+}
+#table_th{
+	padding:3px;
+	border-left: 1px solid #93ADDF;
+	border-bottom:1px solid #93ADDF;
+}
+#th_hour{
+	border-bottom:1px solid #93ADDF;
+}
+#td_hour{
+	border-bottom:1px solid #93ADDF;
+	color:#3B55E1;
+}
+
+td#border{
+	border-left: 1px solid #93ADDF;
+	border-bottom:1px solid #93ADDF;
+}
+div.t1{
+	background:#215DD1;
+	color:#336699;
+}

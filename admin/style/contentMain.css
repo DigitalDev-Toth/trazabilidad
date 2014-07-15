@@ -1,0 +1,149 @@
+#contentMain{
+	margin-top:4px;
+	border:0px;
+	padding:0px;
+	height: 100%;
+}
+
+td#menuContent {	
+	background:#ffffff;
+	 border-radius:0px 20px 20px 0px;
+	-ms-border-radius:0px 20px 20px 0px;
+	-moz-border-radius:0px 20px 20px 0px;
+	-webkit-border-radius:0px 20px 20px 0px;
+	-khtml-border-radius:0px 20px 20px 0px;
+	border:1px solid #254E9E;
+}
+#menuLeft a{
+	margin:1px auto;
+	color: #000000;
+	font-size:10px;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	text-decoration:none;
+}
+
+#menuLeft img{
+	border-radius:10px;
+	-ms-border-radius:10px;
+	-moz-border-radius:10px;
+	-webkit-border-radius:10px;
+	-khtml-border-radius:10px;
+	border:1px solid #CCCCCC;
+	background:#fff;
+	margin:12px auto;
+	padding:8px;
+	margin-left:5px;
+	margin-bottom:0px;
+}
+/*
+#menuLeftEx_agendado img{background:#D24825;}
+#menuLeftEx_confirmado img{background:#FAA907;}
+#menuLeftEx_pagado img{background:#F4F463;}
+#menuLeftEx_ingresado img{background:#1F9226;}
+#menuLeftEx_informado img{background:#66D4E5;}
+#menuLeftEx_despachado img{background:#2558AF;}
+*/
+a:focus{
+	background:#215DD1;
+}
+
+#title{
+	font-size:10px;
+	text-align:center;
+	color:#ffffff;
+	font-weight:bold;
+}
+
+.tablePayment #title, .tablePayment #title a{
+	font-size:14px;
+	text-align:left;
+	color:#336699;
+	font-weight:bold;
+	text-transform: uppercase;
+}
+
+.tablePayment {
+	width:200px;
+}
+.tablePayment img{
+	border-radius:10px;
+	-ms-border-radius:10px;
+	-moz-border-radius:10px;
+	-webkit-border-radius:10px;
+	-khtml-border-radius:10px;
+	border:1px solid #cccccc;
+	background:#fff;
+	margin:0px auto;
+	padding:3px;
+	width:50px;
+	height:50px;
+	margin-left:5px;
+	margin-bottom:5px;
+}
+/*ICONOS SALAS VISTA*/
+
+#tableIcon {	
+	background:#ffffff;
+	 border-radius:0px 20px 20px 0px;
+	-ms-border-radius:0px 20px 20px 0px;
+	-moz-border-radius:0px 20px 20px 0px;
+	-webkit-border-radius:0px 20px 20px 0px;
+	-khtml-border-radius:0px 20px 20px 0px;
+	border:1px solid #254E9E;
+}
+
+
+#menuIcon img{
+	border-radius:10px;
+	-ms-border-radius:10px;
+	-moz-border-radius:10px;
+	-webkit-border-radius:10px;
+	-khtml-border-radius:10px;
+	border:1px solid #cccccc;
+	background:#fff;
+	margin:0px auto;
+	padding:3px;
+}
+
+#menuIcon a{
+	margin:0px auto;
+	color: #336699;
+	font-size:11px;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	text-decoration:none;
+}
+
+a#todos, a#examenes, a#consultas{
+	margin:0px auto;
+	color: #336699;
+	font-size:11px;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	text-decoration:none;
+}
+
+#drawControls { 
+	background:#BFBFBF;
+	margin-top:10px;
+	border-radius:20px;
+	-ms-border-radius:20px;
+	-moz-border-radius:20px;
+	-webkit-border-radius:20px;
+	-khtml-border-radius:20px;
+	padding:5px;
+	color:#ffffff;
+	}
+	
+#drawControls tr td{ text-align:center; margin:0px;}
+
+p#title{
+		width:480px;
+		background:#f5f5f5;
+		border:1px solid #8BB6DE;
+		font-family:Verdana, Geneva, sans-serif;
+		font-size:13px;
+		text-align:center;
+		padding:10px;
+		margin:0px auto;
+		color: #336699;
+	}
+

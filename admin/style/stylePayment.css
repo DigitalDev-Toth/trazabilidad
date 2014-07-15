@@ -1,0 +1,210 @@
+/* --- TITULOS --- */
+/*
+#showTitle { 
+	background:#9DBBE1; 
+	float:none; 
+	margin-top:10px; 
+	font-size:13px; 
+	border:1px solid #999;  
+	padding:5px;
+	text-align:center; 
+	font-weight:bold;
+	font-family:Verdana; 
+	color:#fff;
+	align:center;
+	border-radius: 8px 8px 8px 8px ;
+}
+#showSubTitle { 
+	background:#9DBBE1; 
+	margin-top:10px; 
+	font-size:12px; 
+	border:1px solid #999;  
+	padding:5px;
+	text-align:center; 
+	font-family:Verdana; 
+	color:#000;
+	align:center;
+	border-radius: 8px 8px 8px 8px ;
+	width: 50%; 
+}
+*/
+/* --- FORM TOP --- */
+#tableForm {
+	background: #9DBBE1;
+	float: none;
+	margin-top: 10px;
+	font-weight: bold;
+	color: #fff;
+	border: 1px solid #999;
+	border-radius: 20px;
+	padding: 15px;
+	width: auto;
+	border-spacing: 0;
+	border-collapse: collapse;
+	border: 0px;
+}
+#tableForm td {
+	text-align: left;
+	padding: 5px;
+	font-family: Helvetica;
+	font-weight:bold;
+	font-size: 11px;
+	color: #fff;
+}
+/*
+#button {
+	font-size: 11px;
+	border: 1px solid #7F7F7F;
+	font-weight: bold;
+	color: fff;
+	background: #3D75BC;
+	width: 70px;
+	height: 19px;
+	font-family: "Helvetica";
+	border-radius: 3px 3px 3px 3px ;
+}
+*/
+/*date-picker*/
+.date-picker {
+	background: #fff;
+	border-left: 3px solid #3175B9;
+	border-bottom: 1px solid #3175B9;
+	border-top: 1px solid #3175B9;
+	border-right: 1px solid #3175B9;
+	border-radius: 3px 3px 3px 3px ;
+	text-align: center;
+}
+/*impresora*/
+.tdPrint {
+	float: right;
+	padding-left: 20px;
+}
+/* --- FIN FORM TOP --- */
+/*seleccion de datos*/
+select{
+	background: #fff;
+	border-left: 3px solid #3175B9;
+	border-bottom: 1px solid #3175B9;
+	border-top: 1px solid #3175B9;
+	border-right: 1px solid #3175B9;
+	border-radius: 3px 3px 3px 3px ;
+}
+select option {
+	border-left: 3px solid #3175B9;
+}
+
+
+/* -- TABALA DE DATOS -- */
+#tablePayment {
+	font-family: Helvetica;
+	font-size:13px;
+	margin:10px auto;
+	border: 1px solid #999;
+	border-radius: 3px 3px 3px 3px;
+	width: auto;
+	border-spacing: 0;
+	border-collapse: collapse;
+}
+/*titutlo tabla*/
+#titleTabla {
+	background:#9DBBE1;
+	color: #000;
+	text-align:center; 
+	font-weight:bold;
+	font-family:Verdana; 
+}
+#titleTable {
+	background:#9DBBE1;
+	color: #000;
+	text-align:center; 
+	font-weight:bold;
+	font-family:Verdana; 
+}
+/*titulo datos de la tala*/
+#head {
+	font-weight:bold;
+	color:#000;
+	text-align:center;
+	background:#D5DFEC;
+	padding:5px;
+	border-left: 1px solid #999;
+	border-bottom: 1px solid #999;
+	font-family: Helvetica;
+	font-size:12px;
+}
+/*datos de la tabla*/
+#numberHead {
+	font-weight:bold;
+	color:#000;
+	text-align: center;
+	background:#D5DFEC;
+	padding:5px;
+	border-left: 1px solid #999;
+	border-bottom: 1px solid #999;
+	font-family: Helvetica;
+	font-size:12px;
+}
+#contentHead {
+	color:#000;
+	text-align: right;
+	background:#F1F6FB;
+	padding:5px;
+	border-left: 1px solid #999;
+	border-bottom: 1px solid #999;
+	font-family: Helvetica;
+	font-size:12px;
+}
+#contentHeadNull {
+	color:#000;
+	text-align: center;
+	background:#F1F6FB;
+	border-left: 1px solid #999;
+	border-bottom: 1px solid #999;
+}
+#tableBottom {
+	font-weight:bold;
+	color:#000;
+	text-align:center;
+	background:#D5DFEC;
+	padding:5px;
+	font-family: Helvetica;
+	font-size:12px;
+}
+.botonExcel{
+	cursor:pointer;
+	text-align: center;
+}
+/*titulo azul*/
+#blueTitle {
+	width: 90%;
+	margin: 0px auto;
+	color: #336699;
+	font-size: 13px;
+	font-weight: bold;
+	font-family: Helvetica;
+}
+/*titulo rojo*/
+#redTitle {
+	width: 90%;
+	margin: 0px auto;
+	color: #B91D00;
+	font-size: 13px;
+	font-weight: bold;
+	font-family: Helvetica;
+}
+.paddingTop {
+	padding-top: 3px;
+}
+.alignLeft {
+	text-align: right;
+	color: #fff;
+	font-weight:bold;
+	font-family:Verdana; 
+	font-size:12px;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-right: 10px;
+}
+.padding {
+	padding: 10px;
+}

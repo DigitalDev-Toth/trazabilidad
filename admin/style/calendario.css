@@ -1,0 +1,584 @@
+html {
+	height:99%;
+	width:100%;
+	float:left;
+}
+body {
+	height:99%;
+	width:100%;
+}
+/*FONDO CALENDARIO DESPLEGABLE-AGENDA*/
+#sidebar {
+	width: 205px;
+	padding-bottom:10px;
+	z-index: 9999999999;
+	position:absolute;
+	margin-left: -218px;
+	border-radius:0px 0px 10px 0px;
+	background:#8BB6DE;
+	padding-left:10px;
+}
+/*FONDO ESTADOS DE AGENDA (AGENDADO-...-DESPACHADO)*/
+#wrapper {
+	width: 100%;
+	height: 100%;
+}
+/*FLECHA PARA MOSTRAR Y OCULTAR LAS SALAS Y CALENDARIO EN LA AGENDA*/
+#trigger {
+	width: 30px;
+	height: 21px;
+	margin-top:205px;
+	margin-left:-8px;
+	z-index: 9999999999;
+	position:absolute;
+	cursor: pointer;
+	background-color: #8BB6DE;
+	text-align: right;
+	color: #fff;
+	border-left: 1px solid #8BB6DE;
+	border-top: 1px solid #5C90C4;
+	border-right: 1px solid #5C90C4;
+	border-bottom: 1px solid #5C90C4;
+	border-radius:0px 5px 5px 0px;
+}
+/*Tabla del Calendario General*/
+#calendar {
+	margin:0px;
+	float:left;
+	padding:0px;
+	width:100%;
+	height:100%;
+	display:none;
+	font-family: Verdana;
+}
+/*Columna iquierda del Calendario General*/
+#leftCalendar {
+	width:218px;
+	background:#8BB6DE;
+}
+/*Tabla del Header del Calendario General*/
+/*TITULO DE LA SALA - DIA-SEMANA-MES-AÑO*/
+#headerCalendar {
+	width:100%;
+}
+/*FONDO TITULO DE LA SALA*/
+#headerCenter {
+	text-align:center;
+	font-size:13px;
+	font-weight:bold;
+	color:#8BB6DE;
+	font-family: Verdana;
+}
+/*Lado Izquierdo del Header del Calendario General*/
+#headerLeft {
+	width:131px;
+	float:left;
+	font-size:11px;
+	font-weight:bold;
+}
+/*BOTON PARA IR A LA SEMANA ANTERIOR EN LA AGENDA*/
+#headerLeft #prev {
+	color:#fff;
+	background:#8BB6DE;
+}
+/*BOTON PARA IR A LA SEMANA SIGUIENTE EN LA AGENDA*/
+#headerLeft #next {
+	color:#fff;
+	background:#8BB6DE;
+}
+/*BOTON PARA IR A "HOY" EN LA AGENDA*/
+#headerLeft #today {
+	color:#fff;
+	background:#8BB6DE;
+}
+/*Lado Derecho del Header del Calendario General*/
+#headerRight {
+	width:220px;
+	float:right;
+	font-size:11px;
+	font-weight:bold;
+	text-align:right;
+}
+/*Boton para ver el dia en el Calendario General*/
+#day, #week, #month, #year {
+	color:#fff;
+	background:#8BB6DE;
+	font-family: Verdana;
+	font-size:15px;
+	height: auto;
+	width: auto;
+}
+
+/*-----    REVISE HASTA AQUI!!!   -----*/
+
+/*Header FOCUS VISITED HOVER LINK*/
+#headerRight a#prev:focus { 
+	background:#336699;
+}
+#headerRight a#prev:visited {
+	background:#336699;
+}
+#headerRight a#prev:hover {
+	background:#336699;
+}
+#headerRight a#prev:link {
+	background:#336699;
+}
+
+
+/*Los siguientes UL corresponden al Header de la tabla del Calendario General */
+ul.tabs {
+	margin: 0; 
+	padding: 0;
+	float: right;
+	list-style: none;
+}
+ul.tabs li {
+	float: left;
+	margin: 0;
+	padding: 0;
+	border-left: none;
+	margin-bottom: -1px;
+	overflow: hidden;
+	position: relative;
+}
+ul.tabs li a {
+	text-decoration: none;
+	display: block;
+	padding:5px;
+	border: 1px solid #fff;
+	outline: none;
+}
+ul.tabs li a:hover {
+	background: #ccc;
+}
+html ul.tabs li.active, html ul.tabs li.active a:hover  {
+	background: #fff;
+}
+
+/*Contenedor del Contenido*/
+.tab_container {
+	overflow: hidden;
+	clear: both;
+	float: left; 
+	width: 100%;
+	background: #fff;
+	height:100%;
+}
+/*Contenedor del Iframe*/
+.tab_content {
+	font-size: 1.2em;
+	height:100% !important; 
+}
+/*Iframe*/
+#iframeCalendar {
+	border:0px;
+	background:#fff;
+	height:100% !important; 
+}
+
+/*Eventos en el Calendario*/
+div.t5 {
+	background:#8A8A8A;
+	color:#000;
+	padding:3px;
+	padding-right:0px;
+}
+
+div.t5 table td {
+	font-family: Verdana;
+	font-size:11px;
+}
+div.t4 {
+	background:#A4DE8B;
+	color:#000;
+	padding:3px;
+	padding-right:0px;
+}
+
+div.t4 table td {
+	font-family: Verdana;
+	font-size:11px;
+}
+div.t3 {
+	background:#8BB6DE;
+	color:#000;
+	padding:3px;
+	padding-right:0px;
+	height:100%;
+}
+
+div.t3 table td {
+	font-family: Verdana;
+	font-size:11px;
+}
+
+div.t2 {
+	background:#DFDD83;
+	color:#000;
+	padding:3px;
+	padding-right:0px;
+}
+
+div.t2 table td {
+	font-family: Verdana;
+	font-size:11px;
+}
+
+div.t1 {
+	background:#DB8268;
+	color:#000;
+	padding:3px;
+	padding-right:0px;
+}
+
+div.t1 table td {
+	font-family: Verdana;
+	font-size:11px;
+}
+/*Tabla de las Grillas del Calendario*/
+#table_calendar {
+	border:1px solid #93ADDF;
+	font-family: Verdana;
+	font-size:11px;
+	width:99%;
+	height:100%;
+	z-index: 9;
+}
+#drag {
+	width:100%;
+	height: 100%;
+	border: 1px solid #fff; /*es estupido pero sin esto por alguna razon no funciona :P*/
+	display: none;
+
+	
+}
+/*Header de la tabla de las Grillas del Calendario*/
+#table_calendar th {
+	color: #fff;
+	background:#8BB6DE;
+	
+}
+#table_head {
+	z-index:999999999;
+	position:absolute;
+	
+}
+#table_head th {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	color: #fff;
+	background:#8BB6DE;
+	font-size: 13px;
+	font-weight:normal;
+}
+/*Cada celda del header de la tabla de las grillas del Calendario*/
+#table_th {
+	padding:3px;
+	border-left: 1px solid #93ADDF;
+	border-bottom:1px solid #93ADDF;
+
+}
+#th_hour {
+	border-bottom:1px solid #93ADDF;
+	width:55px;
+	padding:2px 0px;
+	text-align:center;
+	color: #6E8CC8;
+}
+/*Cada celda que marca la hora en el Calendario*/
+.td_hour {
+	border-bottom:1px solid #93ADDF;
+	width:55px;
+	padding:2px 0px;
+	text-align:center;
+	color: #6E8CC8;
+}
+
+.td_hour_glow {
+	border-bottom:1px solid #93ADDF;
+	width:55px;
+	padding:2px 0px;
+	text-align:left;
+	color: #FFFFFF;
+	background-color: #6699FF;
+}
+
+#table_calendar td:hover {
+	background:#CBD7E3;
+} 
+/*Calendario del Mes*/
+#tableMonth {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	border:1px solid #93ADDF;
+	font-size:10px;
+}
+
+#tableMonth #nameMonth {
+	color:#fff;
+	font-size:12px;
+	font-weight:bold;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	text-align:center;
+	padding:5px 0px;
+	background:#899BAE;
+	border-bottom:1px solid #93ADDF;
+}
+#tableMonth #nameDay {
+	height:20px;
+	color:#fff;
+	font-size:11px;
+	font-weight:bold;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	text-align:center;
+	padding:5px 0px;
+	background:#336699;
+	border-left:1px solid #93ADDF;
+	border-bottom:1px solid #93ADDF;
+}
+#tableMonth #nameDay.firstDay {
+	border-left:0px;
+}
+#tableMonth #day {
+	border-left: 1px solid #93ADDF;
+	border-bottom:1px solid #93ADDF;
+}
+
+#tableMonth #initDayWeek {
+	border-left:0px;
+	border-bottom:1px solid #93ADDF;
+} 
+#tableMonth #initDayWeek.LastWeekDay {
+	border-left:0px;
+	border-bottom:0px;
+} 
+#tableMonth #day.LastWeekDay {
+	border-bottom:0px;
+}
+
+#tableMonth {
+	color:#336699;
+	text-align:right;
+}
+#numDay {
+	color:#336699;
+	text-align:left;
+}
+/*Menu del Calendario General*/
+ul.menu {
+	width:190px;
+	margin-top:0px; 
+	padding-left:0px;
+	list-style: none;
+	background:#336699;
+	color:#fff;
+	font-size:12px;
+	font-weight:normal;
+	text-transform:capitalize;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	/*border-top-right-radius: 15px;*/
+}
+
+ul.menu li {
+	width:185px;
+	float: left;
+	margin: 0;
+	padding:1px;
+	border-bottom:1px solid #8BB6DE;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	cursor: pointer;
+}
+
+ul.menu li label{
+	cursor: pointer;
+	padding-left:5px;
+}
+
+ul.menu li#nameMenu {
+	height:20px;
+	background:#5C90C4;
+	width:100%;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	float: left;
+	font-size:12px;
+	text-align:center;
+	border-radius: 5px 5px 0px 0px;
+}
+ul.menu li#itemMenu {
+	height:20px;
+	font-weight:normal;
+	background:#E6E6FA;
+	list-style: none;
+	width:100%;
+	border-margin: 0px 0px 15px 0px;
+}
+
+ul.menu li#itemMenu a {
+	text-decoration:none;
+	text-align:left;
+	color:#000;
+	/*height:25px;*/
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+
+#messageCalendarInit {
+	margin:100px auto;
+	width:400px;
+	background:#336699;
+	border:2px solid #f5f5f5;
+	text-align:center;
+	padding:30px;
+	color:#fff;
+	font-size:12px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+    border-radius:20px;
+	-ms-border-radius:20px;
+	-moz-border-radius:20px;
+	-webkit-border-radius:20px;
+	-khtml-border-radius:20px;
+}
+ul.nomclature {
+	margin: 5px; 
+	margin-bottom:0px;
+	padding:0px;
+	float: right;
+	list-style: none;
+	background:#8FC9E5;
+	background:#8FC9E5;
+	color:#fff;
+	font-size:11px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	}
+ul.nomclature li {
+	background:#336699;
+	color:#f5f5f5;
+	padding:4px;
+}
+ul.nomclature li#item {
+	/*width:185px;*/
+	height:20px;
+	float: left;
+	margin: 0;
+	padding:4px;
+	border-left:1px solid #84ACD4;
+	background:#f5f5f5;
+	color:#0060BE;
+}
+
+ul.nomclature li img {
+	margin:0px 10px 0px 6px;
+}
+
+#form_search_exam {
+	background:#ADD8E6;
+	}
+
+
+ #table_search_exam {
+	font-size:11px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	text-decoration:none;
+	background:#336699;
+	margin:3px auto;
+	width:200px;
+	height:40px;
+	padding:0px 3px 0px 3px;
+	border-top-right-radius: 20px;
+	float: left;
+}
+
+#form_search_exam input {
+	height:20px;
+	width:148px;
+	border:0px;
+	font-size:12px;
+	-ms-border-radius:5px;
+	-moz-border-radius:5px;
+	-webkit-border-radius:5px;
+	-khtml-border-radius:5px;
+}
+
+#form_search_exam #button {
+	width:25px;
+	height:25px;
+	background: #f5f5f5 url('../images/search.png') no-repeat;
+	border:1px solid #f5f5f5;
+	border-radius:4px;
+	-ms-border-radius:4px;
+	-moz-border-radius:4px;
+	-webkit-border-radius:4px;
+	-khtml-border-radius:4px;
+}
+
+p#title_search_exam {
+	height:15px;
+	margin:0;
+	padding:0px;
+	font-size:11px;
+	text-align:left;
+	color:#ffffff;
+	font-family: Verdana;
+}
+
+/*ICONOS SALAS VISTA*/
+
+#tableIcon {	
+	background:#ffffff;
+	 border-radius:0px 20px 20px 0px;
+	-ms-border-radius:0px 20px 20px 0px;
+	-moz-border-radius:0px 20px 20px 0px;
+	-webkit-border-radius:0px 20px 20px 0px;
+	-khtml-border-radius:0px 20px 20px 0px;
+	/*border:1px solid #2F7CC9;*/
+}
+
+
+#menuIcon img {
+	border-radius:10px;
+	-ms-border-radius:10px;
+	-moz-border-radius:10px;
+	-webkit-border-radius:10px;
+	-khtml-border-radius:10px;
+	border:1px solid #cccccc;
+	background:#fff;
+	margin:0px auto;
+	padding:3px;
+}
+
+#menuIcon a {
+	margin:0px auto;
+	color:#0060BE;
+	font-size:11px;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	text-decoration:none;
+}
+
+a#todos, a#examenes, a#consultas {
+	margin:0px auto;
+	color:#000000; 
+	font-size:11px;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	text-decoration:none;
+}
+
+#subTitle {
+	background:#2F7CC9;
+	color:#fff;
+	font-size:13px;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	width:90%;
+	padding:4px;
+	font-weight:bold;
+}
+
+#lastLog {
+font-size:10px;
+}
+
+/*CREACION DIANA*/
+.imgEdit-Delete{
+	width:12px;
+	height:12px;
+	border:0;
+	cursor: pointer;
+	/*align:absmiddle;*/
+}

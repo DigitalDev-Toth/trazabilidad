@@ -1,0 +1,51 @@
+#container {
+float:right;
+}
+#details{
+float:right;
+}
+#horizontal {
+	position: relative;
+	height: 100%;
+	overflow: hidden;
+	float:right;
+}
+#horizontal ul {
+	list-style: none;
+	margin: 0px;
+	display: block;
+	height: 100%;
+	width: auto;
+	float:right;
+}
+#horizontal ul li {
+	float: right;
+}
+#horizontal ul li #a #titlePanel{
+	width:10px;
+	height:100%;
+	background:#000 url(../imgs/flecha.gif) no-repeat 0px 50%;
+}
+#horizontal ul li #a #titlePanel {
+margin-left:20px;
+}
+#horizontal ul li #a #contentPanel{
+}
+#horizontal ul li link{
+	text-indent:50px;
+	cursor:pointer;
+	display:block;
+	overflow:hidden;
+	width:15px;
+	height: 100%;
+	float:right;
+	background:#ccc;
+}
+#horizontal ul li.panel{
+	text-decoration:none;
+}
+.clear {
+	clear: both;
+}
+
+

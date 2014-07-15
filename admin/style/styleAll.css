@@ -1,0 +1,480 @@
+/* --- TITULOS --- */
+#showTitle { 
+	background:#9DBBE1; 
+	float:none; 
+	margin-top:10px; 
+	font-size:13px; 
+	border:1px solid #999;  
+	padding:5px;
+	text-align:center; 
+	font-weight:bold;
+	font-family:Verdana; 
+	color:#fff;
+	align:center;
+	border-radius: 8px 8px 8px 8px ;
+}
+#showSubTitle { 
+	background:#9DBBE1; 
+	margin-top:10px; 
+	font-size:12px; 
+	border:1px solid #999;  
+	padding:5px;
+	text-align:center; 
+	font-family:Verdana; 
+	color:#000;
+	align:center;
+	border-radius: 8px 8px 8px 8px;
+	width: 50%; 
+}
+/*calendarForm*/
+#tableImput {
+	background:#9DBBE1;
+	border-radius: 20px;
+	width: 450px;
+	padding-top: 15px;
+	padding-left: 15px;
+}
+
+/* --- FORM TOP --- */
+#tableForm {
+	background: #9DBBE1;
+	float: none;
+	margin-top: 10px;
+	font-weight: bold;
+	color: #fff;
+	border: 1px solid #999;
+	border-radius: 20px;
+	padding: 15px;
+	width: auto;
+	border-spacing: 0;
+	border-collapse: collapse;
+	border: 0px;
+}
+#tableForm td {
+	text-align: left;
+	padding: 5px;
+	font-family: Helvetica;
+	font-weight:bold;
+	font-size: 11px;
+	color: #fff;
+}
+#button {
+	font-size: 11px;
+	border: 1px solid #7F7F7F;
+	color: fff;
+	background: #3D75BC;
+	width: 70px;
+	height: 19px;
+	font-family: Verdana;
+	border-radius: 3px 3px 3px 3px ;
+}
+/*date-picker*/
+.date-picker {
+	background: #fff;
+	border-left: 3px solid #3175B9;
+	border-bottom: 1px solid #3175B9;
+	border-top: 1px solid #3175B9;
+	border-right: 1px solid #3175B9;
+	border-radius: 3px 3px 3px 3px ;
+	text-align: center;
+}
+/*impresora*/
+.tdPrint {
+	float: right;
+	padding-left: 20px;
+}
+/* --- FIN FORM TOP --- */
+/*seleccion de datos*/
+select{
+	background: #fff;
+	border-left: 3px solid #3175B9;
+	border-bottom: 1px solid #3175B9;
+	border-top: 1px solid #3175B9;
+	border-right: 1px solid #3175B9;
+	border-radius: 3px 3px 3px 3px ;
+	font-family: Verdana;
+}
+select option {
+	border-left: 3px solid #3175B9;
+	font-family: Verdana;
+}
+
+
+/* -- TABALA DE DATOS -- */
+#tableData {
+	font-family: Helvetica;
+	font-size:13px;
+	margin:10px auto;
+	border: 1px solid #999;
+	border-radius: 3px 3px 3px 3px;
+	width: auto;
+	border-spacing: 0;
+	border-collapse: collapse;
+}
+#tablePayment {
+	font-family: Helvetica;
+	font-size:13px;
+	margin:10px auto;
+	border: 1px solid #999;
+	border-radius: 3px 3px 3px 3px;
+	width: auto;
+	border-spacing: 0;
+	border-collapse: collapse;
+}
+/*titutlo tabla*/
+#titleTabla {
+	background:#9DBBE1;
+	color: #000;
+	text-align:center; 
+	font-weight:bold;
+	font-family:Verdana; 
+}
+#titleTable {
+	background:#9DBBE1;
+	color: #000;
+	text-align:center; 
+	font-weight:bold;
+	font-family:Verdana; 
+}
+/*titulo datos de la tala*/
+#head {
+	font-weight:bold;
+	color:#000;
+	text-align:center;
+	background:#D5DFEC;
+	padding:5px;
+	border-left: 1px solid #999;
+	border-bottom: 1px solid #999;
+	font-family: Helvetica;
+	font-size:12px;
+}
+/*datos de la tabla*/
+#numberHead {
+	font-weight:bold;
+	color:#000;
+	text-align: center;
+	background:#D5DFEC;
+	padding:5px;
+	border-left: 1px solid #999;
+	border-bottom: 1px solid #999;
+	font-family: Helvetica;
+	font-size:12px;
+}
+#contentHead {
+	color:#000;
+	text-align: right;
+	background:#F1F6FB;
+	padding:5px;
+	border-left: 1px solid #999;
+	border-bottom: 1px solid #999;
+	font-family: Helvetica;
+	font-size:12px;
+}
+#contentHead a {
+	text-decoration: none;
+	color: #000;
+}
+#contentHead img {
+	padding-left: 5px;
+}
+#contentHeadNull {
+	color:#000;
+	text-align: center;
+	background:#F1F6FB;
+	border-left: 1px solid #999;
+	border-bottom: 1px solid #999;
+}
+#tableBottom {
+	font-weight:bold;
+	color:#000;
+	text-align:center;
+	background:#D5DFEC;
+	padding:5px;
+	font-family: Helvetica;
+	font-size:12px;
+}
+.botonExcel{
+	cursor:pointer;
+	text-align: center;
+}
+/*titulo azul*/
+#blueTitle {
+	width: 90%;
+	margin: 0px auto;
+	color: #336699;
+	font-size: 13px;
+	font-weight: bold;
+	font-family: Helvetica;
+}
+/*titulo rojo*/
+#redTitle {
+	width: 90%;
+	margin: 0px auto;
+	color: #B91D00;
+	font-size: 13px;
+	font-weight: bold;
+	font-family: Helvetica;
+}
+.paddingTop {
+	padding-top: 3px;
+}
+.alignLeft {
+	text-align: right;
+	color: #fff;
+	font-weight:bold;
+	font-family:Verdana; 
+	font-size:12px;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-right: 10px;
+}
+.padding {
+	padding: 10px;
+}
+/*fin payment*/
+/*-----------------------------------------------------------------------------------------------------------------------*/
+#td100 {
+	width: 100%;
+}
+ul {
+	margin: 0; 
+	padding: 0;
+	float:right;
+	list-style: none;
+}
+
+ul li {
+	margin: 0;
+	float:right;
+	padding: 10;
+	border-left: none;
+	margin-bottom: -1px;
+	overflow: hidden;
+	position: relative;
+	
+}
+
+ul li td{
+	text-align:center;
+	color: #336699;
+}
+
+ul li h1{
+	font-size:20px;
+	font-weight:bold;
+	padding:5px;
+}
+
+ul li img{
+	border:0px;
+}
+
+ul li a{
+	margin:0px auto;
+	color: #336699; 
+	font-size:12px;
+	font-family: Verdana;
+	text-decoration:none;
+}
+
+#link {
+	text-decoration:none;
+	color:#ffffff;
+	background:#6CA2D4;
+	border-bottom:0px;
+	float:right;
+	vertical-align:middle;	
+}
+#tableIcon {
+	border-spacing: 0;
+	border-collapse: collapse;
+	text-align: center;
+}
+#tableIcon td {
+	text-align: center;
+}
+#back {
+	width:90%;
+	height:auto;
+	background:#f5f5f5;
+	margin:0 auto;
+	border:1px dashed #90a6cd;
+	border-radius:15px;
+	padding: 4px;
+	padding-left:20px;
+	font-family: Verdana;
+	font-size: 14px;
+}
+
+#back a {
+	text-decoration:none;
+	line-height:25px;
+	font-size:13px;
+	font-family: Verdana;
+	color:#4F94CD;
+	height:25px;
+}
+#back img {
+	vertical-align: middle;
+	padding: 5px;
+}
+/* GUARDADO - MODIFICADO - ELIMINADO CON EXITO! */
+#d_true {
+	background:#F5F5F5;
+	margin:40px auto;
+	width:300px;
+	height:25px;
+	border:1px solid #999;
+	border-radius:5px;
+	text-align:center;
+	padding:10px 10px 20px 10px;
+	color: #5FABDF;
+	font-family: Verdana; 
+	font-size: 14px;
+}
+#d_true img {
+	vertical-align: middle;
+	padding: 5px;
+}
+#ok {
+	background:#F5F5F5 url("../images/ok.png") no-repeat 40px 7px;
+	margin:40px auto;
+	width:300px;
+	height:25px;
+	font-size:14px;
+	padding-top:10px;
+	color: #5FABDF;
+	border: 1px solid #999;
+	border-radius:5px;
+	text-align:center;
+	padding: 10px;
+	font-family: Verdana; 
+}
+#okNone {
+	background:#F5F5F5 url("../images/delete_s.png") no-repeat 40px 7px;
+	margin:40px auto;
+	width:300px;
+	height:25px;
+	font-size:14px;
+	padding-top:10px;
+	color: #5FABDF;
+	border: 1px solid #999;
+	border-radius:5px;
+	text-align:center;
+	padding: 10px;
+	font-family: Verdana; 
+}
+#texto {
+	color: #3D75BC;
+	font-family: Verdana; 
+	
+}
+/*Pasword*/
+#change_pass {
+	width:500px;
+	background:#9DBBE1;
+	font-family: Helvetica;
+	font-size: 12px;
+	margin:0px auto;
+	padding-top:10px;
+	border-radius: 8px 8px 8px 8px;
+	margin-top: 30px;
+	color: #fff;
+}
+.td_pass {
+	color: fff;
+	font-family: Helvetica;
+	font-size: 12px;
+}
+
+/*report_historyForm.php*/
+#showForm { width: 90%; }
+
+
+/* editFromCalendar.php - - archivo que muestra los datos del agendamiento - aparece cuano editamos a un agendamiento desde la agenda*/
+
+#drawControls { 
+	background:#BFBFBF;
+	margin-top:10px;
+	border-radius:20px;
+	-ms-border-radius:20px;
+	-moz-border-radius:20px;
+	-webkit-border-radius:20px;
+	-khtml-border-radius:20px;
+	padding:5px;
+	color:#ffffff;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	font-size:12px;
+}
+#drawControls tr td {
+	text-align:center;
+	margin:0px;
+}
+#detailCalendar {
+	font-size: 12px;
+	width: 450px;
+	color: #3175B9;
+	font-family: Verdana;
+}
+#detailCalendar td {
+	color: #3175B9;
+}
+
+/* datos del despacho de examen */
+#titleDispatch {
+	text-align:center;
+	font-size:13px;
+	font-weight:bold;
+	font-family:Verdana;
+	color:#336699;
+	padding:10px;
+	border:1px solid #5A8EC1;
+	border-radius: 10px;
+}
+#tableDispatch { width: 100%;}
+#tdDispatchTitle {background:#5A8EC1; color:#ffffff; font-size:12px;font-family:Verdana;}
+#dispatchDataA {
+	width: 150px;
+	background:#C9DAEA;
+	font-size:11px;
+	font-family:Verdana;	
+	padding:5px;
+	padding-left:10px;
+	color:#07417A;
+}
+#dispatchDataB {
+	font-weight:normal;
+	background:#DAEDFF;
+	font-size:11px;
+	font-family:Verdana;	
+	padding:5px;
+	padding-left:10px;
+	color:#07417A;
+}
+
+/* histry_calendar.php - ficha del paciente*/
+
+#dataPatient {
+/*border:1px solid #ccc;*/
+font-size:12px;	
+}
+#dataPatient #n{
+	font-weight:bold;
+	color:#1a1a1a;
+}
+#dataPatient td{
+	border:1px solid #ccc;	
+}
+a{
+	text-decoration:none;
+	color:#666;
+}
+#manual a{
+	text-decoration:none;
+	Color: #3175B9;
+	font-family: Verdana;
+	font-size: 11px;
+}
+#pdf {
+	padding-top: 10px;
+}

@@ -1,0 +1,15 @@
+html, body {
+	height: 100%;
+	margin:0;
+}
+#showstyle { 
+	width:100%;
+	height:200px;
+	background:#fff; 
+	-moz-border-radius:10px 10px 0 0;
+	font-size:30px;
+	text-align:center;
+	padding-top:30px;
+	color:#0000DD;
+}#main {}
+

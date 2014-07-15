@@ -1,0 +1,344 @@
+/*
+ * habilitado: texto azul
+ * deshabilitado: texto gris
+ */
+.txt_loading {
+	color: #FFFFFF;
+	font-weight: bold;
+}
+.txt_deshabilitado {
+	width: 115px;
+	border: 1px solid #1262B2;
+	border-left: 4px solid #1262B2;
+	font-size:11px;	
+	padding:3px;
+	color:#737373;
+	background:#E1E9FF;
+}
+.txt_habilitado {
+	color:#07386A;
+}
+
+/*Informacion del paciente*/
+div.info{
+	background: #6194FF; 
+	color: #FFF;
+	font-family: monospace;
+	}
+
+div.title_bonos { 
+	background: #6B9AFF; 
+	color: #07386A;
+	}
+
+div.fondo_bonos{
+	background: #7CA6FF; 
+	color:#AEC3FF;
+	}
+
+div.title_efectivo { 
+	background: #89AEFF; 
+	color: #07386A;
+	}
+
+div.fondo_efectivo{
+	background: #93B6FF; 
+	}
+
+div.title_cheques { 
+	background: #9FBEFF; 
+	color: #07386A;
+	}
+
+div.fondo_cheques{
+	background: #ABC6FF;
+	color:#E1E9FF;
+	}
+
+div.title_pagares { 
+	background: #ABC6FF; 
+	color: #07386A;
+	}
+
+div.fondo_pagares{
+	background: #B0CAFF; 	
+	}
+	
+#fondo_visible{
+	background: #B0CAFF;
+}
+
+div.title_numeroBoleta{
+	background: #B7D0FF; 
+	color: #07386A;
+}
+
+div.fondoBoleta{
+	background: #BFD5FF;
+}
+
+div.title_resumen{
+	background: #C6D9FF; 
+	color:#07386A;	
+	}
+
+ 
+/*cambia estilo de numeración de bonos y cheques */
+form.fondo_resumen{	
+	background: #C9DBFF;
+	color: #07386A;
+	}
+
+/*cambia estilos de texto en resumen*/
+table.texto_fondo{
+	color: #07386A;
+    font-size:12px;
+	}
+
+form.texto_fondo{
+	color:07386A;
+	font-size:12px;
+	}
+
+/*Estilos de caracteres y cajas de textos*/
+/*texto_habilitado: Cambia color de caracteres en la caja de texto input a azul*/
+/*lista de bancos*/
+ input.texto_fondo_resumen {
+    width: 185px;
+	border: 1px solid #1262B2;
+	border-left: 4px solid #1262B2;
+    font-size:11px;
+	padding:3px;
+	color:#07386A;
+	}
+
+/*----------------MONTO CHEQUE-------------------*/
+input.monto_deshabilitado {
+    width: 90px;
+	border: 1px solid #1262B2;
+	border-left: 4px solid #1262B2;
+    font-size:11px;
+	padding:3px;
+	color:#737373;
+	}
+
+input.monto_habilitado {
+    width: 90px;
+	border: 1px solid #1262B2;
+	border-left: 4px solid #1262B2;
+    font-size:11px;
+	padding:3px;
+	color:#07386A;
+	}
+/*-------------------------------------------------*/
+
+
+input.texto_habilitado {
+    width: 185px;
+	border: 1px solid #1262B2;
+	border-left: 4px solid #1262B2;
+    font-size:11px;
+	padding:3px;
+	color:#07386A;
+}
+
+/*texto_deshabilitado: Mantiene color gris cuando la caja esta vacia*/
+input.texto_deshabilitado {
+    width: 185px;
+	border: 1px solid #1262B2;
+	border-left: 4px solid #1262B2;
+    font-size:11px;
+	padding:3px;
+	color:#737373;
+}
+
+/*texto_garantia_habilitado: Cambia color de caracteres en textarea a azul*/
+textarea.texto_garantia_habilitado {
+   width: 455px;
+   height:40px;
+	border: 1px solid #1262B2;
+	border-left: 4px solid #1262B2;
+    font-size:11px;
+	padding:3px;
+	color:#07386A;
+	
+}
+	
+/*texto_garantia_deshabilitado: Mantiene color gris cuando la caja esta vacia*/
+textarea.texto_garantia_deshabilitado {
+    width: 455px;
+    height:40px;
+	border: 1px solid #1262B2;
+	border-left: 4px solid #1262B2;
+    font-size:11px;
+	padding:3px;
+	color:#737373;
+}
+/*----------------------------BANCO---------------------------------------------------------*/
+/*Menú desplegable de bancos*/
+select.bancos_deshabilitado {
+	width: 115px;
+	border: 1px solid #1262B2;
+	border-left: 4px solid #1262B2;
+	font-size:11px;	
+	padding:3px;
+	color:#737373;
+	background:#E1E9FF;
+}
+select.bancos_habilitado {
+	width: 115px;
+	border: 1px solid #1262B2;
+	border-left: 4px solid #1262B2;
+	font-size:11px;	
+	padding:3px;
+	color:#07386A;
+	background:#E1E9FF;
+}
+option.elegir_banco_deshabilitado{
+	color:#737373;
+}
+option.elegir_banco_habilitado {
+	color:#07386A;
+}
+
+/*menu desplegable mes*/
+select.mes_deshabilitado {
+	width: 115px;
+	border: 1px solid #1262B2;
+	border-left: 4px solid #1262B2;
+	font-size:11px;	
+	padding:3px;
+	color:#737373;
+	background:#E1E9FF;
+}
+select.mes_habilitado {
+	width: 115px;
+	border: 1px solid #1262B2;
+	border-left: 4px solid #1262B2;
+	font-size:11px;	
+	padding:3px;
+	color:#07386A;
+	background:#E1E9FF;
+}
+option.elegir_mes_deshabilitado{
+	color:#737373;
+}
+option.elegir_mes_habilitado {
+	color:#07386A;
+}
+
+/*menu desplegable dia*/
+select.dia_deshabilitado {
+	width: 115px;
+	border: 1px solid #1262B2;
+	border-left: 4px solid #1262B2;
+	font-size:11px;	
+	padding:3px;
+	color:#737373;
+	background:#E1E9FF;
+}
+select.dia_habilitado {
+	width: 115px;
+	border: 1px solid #1262B2;
+	border-left: 4px solid #1262B2;
+	font-size:11px;	
+	padding:3px;
+	color:#07386A;
+	background:#E1E9FF;
+}
+option.elegir_dia_deshabilitado{
+	color:#737373;
+}
+option.elegir_dia_habilitado {
+	color:#07386A;
+
+}
+
+/*menu desplegable año*/
+select.ano_deshabilitado {
+	width: 115px;
+	border: 1px solid #1262B2;
+	border-left: 4px solid #1262B2;
+	font-size:11px;	
+	padding:3px;
+	color:#737373;
+	background:#E1E9FF;
+}
+select.ano_habilitado {
+	width: 115px;
+	border: 1px solid #1262B2;
+	border-left: 4px solid #1262B2;
+	font-size:11px;	
+	padding:3px;
+	color:#07386A;
+	background:#E1E9FF;
+}
+option.elegir_ano_deshabilitado{
+	color:#737373;
+}
+option.elegir_ano_habilitado {
+	color:#07386A;
+}
+/*------------------------------------------------------------------------------------*/
+
+input.Restablecer {
+	font-size:11px;
+	border: 1px solid #004284;
+	font-weight:bold;
+	color:fff;
+	background:#1262B2;
+	width:71px;
+	height:19px;
+	font-family: "Helvetica"; 
+}
+
+input.Restablecer_bono{
+	font-size:11px;
+	border: 1px solid #004284;
+	font-weight:bold;
+	color:fff;
+	background:#1262B2;
+	width:71px;
+	height:19px;
+	font-family: "Helvetica"; 
+}
+
+/*caja de texto de calendario*/
+input.text_calendar {
+    width: 185px;
+	border: 1px solid #1262B2;
+	border-left: 4px solid #1262B2;
+    font-size:11px;
+	padding:3px;
+	color:#737373;
+}
+
+input.boton{
+	font-size:11px;
+	border: 1px solid #004284;
+	font-weight:bold;
+	color:fff;
+	background:#1262B2;
+	width:85px;
+	height:19px;
+	font-family: "Helvetica"; 
+}
+/* --- SELECT CONTRASTE --- */
+#select_extra {
+	border: 1px solid #1262B2;
+	border-left: 4px solid #1262B2;
+	font-size:11px;
+	padding:3px;
+}
+
+.select_extra_gray {
+	color: #737373;
+}
+
+.select_extra_blue {
+	color: #07386A;
+}
+
+
+
+	

@@ -1,0 +1,38 @@
+
+#menuLeftEmployee img, 
+#menuTopMonth img, 
+#menuTopEmployee img, 
+#menuTopBranch img, 
+#menuTopRoom img, 
+#menuTopModality img,
+#menuTopExam img,
+#menuTopStatistical img,
+#menuTopPayment img,
+#menuTopPatient img,
+#menuTopCalendar img,
+#menuLeftUsers img,
+#menuLeftLogs img,
+#menuLeftref_doctor img{
+	border-radius:10px;
+	-ms-border-radius:10px;
+	-moz-border-radius:10px;
+	-webkit-border-radius:10px;
+	-khtml-border-radius:10px;
+	border:1px solid #ffffff;
+	background:#fff;
+	margin:0px auto;
+	padding:3px;
+}
+
+a:focus{
+	background:#254E9E;
+}
+#title{
+	font-size:10px;
+	text-align:center;
+}
+.tablePayment #title {
+	font-size:12px;
+	text-align:Left;
+	padding:5px;
+}

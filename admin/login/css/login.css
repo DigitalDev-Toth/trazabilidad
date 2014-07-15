@@ -1,0 +1,270 @@
+@import url("bootstrap.min.css");
+
+@font-face {
+    font-family: webToth-Bold;
+    src: url("../font/OfficinaSansStd-Bold.otf") format("opentype");
+}
+@font-face {
+    font-family: webToth-BoldItalic;
+    src: url("../font/OfficinaSansStd-BoldItalic.otf") format("opentype");
+}
+@font-face {
+    font-family: webToth-Book;
+    src: url("../font/OfficinaSansStd-Book.otf") format("opentype");
+}
+@font-face {
+    font-family: webToth-BookItalic;
+    src: url("../font/OfficinaSansStd-BookItalic.otf") format("opentype");
+}
+
+body {
+	/*background-color: #478AC8;*/
+    background-color: #f6921f;
+    color: #FFF;
+    font-family: webToth-BookItalic;
+}
+hr {
+    height: 1px;
+    border: 0;
+    background-color: #FFF;
+    margin: 15px 0px;
+}
+input {
+    border: 0 none;
+    background: none repeat scroll 0 0 transparent;
+    outline: medium none;
+    font-family: webToth-Book;
+    font-size: 20px;
+}
+#shine {
+    background: url("../../images/shine.png") no-repeat center center fixed;
+    background-size: cover;
+    -moz-background-size: cover;
+    -webkit-background-size: cover;
+    -o-background-size: cover;
+    width: 110%;
+    height: 110%;
+    position: fixed;
+    top: -20px;
+    left: 0px;
+    z-index: -1;
+}
+@media (min-width: 500px) {
+    #pc {
+        display: block;
+    }
+    #mobile {
+        display: none;
+    }
+    .center-height {
+        height: 800px;
+    }
+    .centered {
+        width: 480px;
+    }
+    .v-center {
+        display: table;
+    }
+    #loginForm {
+        display: table-cell;
+        vertical-align: middle;
+        z-index: 999999;
+    }
+    #logo {
+        display: none;
+        width: 360px;
+    }
+    #systemText {
+        display: none;
+        font-size: 28px;
+    }
+    #hr {
+        width: 0px;
+    }
+    #formContent {
+        display: none;
+        margin: 20px 0px;
+    }
+    .box {
+        background: #fff;
+        border-radius: 8px;
+    }
+    .clientLogo {
+        width: 200px;
+        height: 150px;
+        float: left;
+    }
+    .clientLogo img {
+        display: none;
+        width: 120px;
+        margin: 20px 40px;
+    }
+    .username {
+        width: 270px;
+        height: 40px;
+        float: right;
+        color: #AAA;
+    }
+    .username input {
+        margin: 6px 0px 0px 10px;
+        color: #AAA;
+        font-family: webToth-BookItalic;
+    }
+    .username img {
+        vertical-align: middle;
+        margin-left: 10px;
+    }
+    .password {
+        margin: 12px 0px;
+        width: 270px;
+        height: 40px;
+        float: right;
+        color: #AAA;
+    }
+    .password input {
+        margin: 6px 0px 0px 12px;
+        color: #AAA;
+        font-family: webToth-BookItalic;
+    }
+    .password img {
+        vertical-align: middle;
+        margin-left: 12px;
+    }
+    .submit {
+        margin: 0px 10px;
+        width: 150px;
+        height: 45px;
+        float: left;
+        background-color: #CDDC37;
+        color: #FFF;
+    }
+}
+@media (max-width: 500px) {
+    #pc {
+        display: none;
+    }
+    #mobile {
+        display: block;
+    }
+    .center-height {
+        height: 800px;
+    }
+    .centered {
+        width: 270px;
+    }
+    .v-center {
+        display: table;
+    }
+    #loginForm {
+        display: table-cell;
+        vertical-align: middle;
+        z-index: 999999;
+    }
+    #logoMobile {
+        /*display: none;
+        width: 360px;*/
+        width: 50%;
+        float: left;
+    }
+    #systemTextMobile {
+        display: block;
+        width: 270px;
+        font-size: 15px;
+        float: left;
+        height: 30px;
+    }
+    .container-hr {
+        display: block;
+        width: 270px;
+        height: 30px;
+        float: left;
+    }
+    #hrMobile {
+        display: block;
+        width: 100%;
+        float: left;
+        /*height: 10px;*/
+    }
+    #formContentMobile {
+        display: block;
+        margin: 20px 0px;
+    }
+    .box {
+        background: #fff;
+        border-radius: 8px;
+    }
+    .clientLogo {
+        width: 100px;
+        height: 50px;
+        float: left;
+        margin-left: 30px;
+    }
+    .clientLogo img {
+        /*display: none;*/
+        width: 70%;
+        margin: 6px 15px;
+    }
+    .username {
+        width: 270px;
+        height: 40px;
+        float: left;
+        color: #AAA;
+    }
+    .username input {
+        margin: 6px 0px 0px 10px;
+        color: #AAA;
+        font-family: webToth-BookItalic;
+    }
+    .username img {
+        vertical-align: middle;
+        margin-left: 10px;
+    }
+    .password {
+        margin: 12px 0px;
+        width: 270px;
+        height: 40px;
+        float: left;
+        color: #AAA;
+    }
+    .password input {
+        margin: 6px 0px 0px 12px;
+        color: #AAA;
+        font-family: webToth-BookItalic;
+    }
+    .password img {
+        vertical-align: middle;
+        margin-left: 12px;
+    }
+    .submit {
+        /*margin: 0px 10px;*/
+        width: 150px;
+        height: 45px;
+        /*float: left;*/
+        background-color: #CDDC37;
+        color: #FFF;
+    }
+}
+#miniLogos {
+    position: fixed;
+    right: 10px;
+    top: 10px;
+    opacity: 1;
+}
+#miniLogos img {
+    width: 50px;
+    height: 50px;
+    margin-left: 5px;
+}
+#modules {
+    position: fixed;
+    bottom: 10px;
+    left: 10px;
+}
+.leaves {
+    position: absolute;
+    background-color: transparent;
+    background-image: url('../img/leaves.png');
+    -webkit-transform: translateZ(0);
+    -moz-transform: translateZ(0);
+    transform: translateZ(0);
+}
