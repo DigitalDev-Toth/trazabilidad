@@ -28,6 +28,14 @@
 			case 'module_type':
 			include("modules/module_type.php");
 			break;
+
+			case 'zone':
+			include("modules/zone.php");
+			break;
+
+			case 'module':
+			include("modules/module.php");
+			break;
 			
 			default:
 			include("modules/search.php");

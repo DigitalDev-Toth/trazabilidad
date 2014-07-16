@@ -29,4 +29,14 @@ $languaje['module_type'] = array (
 		"module_type.name" => "Nombre",
 		"module_type.description" => "Descripcion"
 );
+
+$languaje['zone'] = array (
+		"id" => "ID",
+		"name" => "Nombre",
+		"description" => "Descripcion",
+		"seats" => "Asientos",
+		"zone.name" => "Nombre",
+		"zone.description" => "Descripcion",
+		"zone.seats" => "Asientos"
+);
 ?>

@@ -1,33 +1,31 @@
+<?php
+session_start();
+if(!isset($_SESSION['Username'])) { header("location: ../../login.php?error=hack"); header('Content-Type: text/html; charset=latin1');  }
+?>
 <link href="../../style/style.css" rel="stylesheet" type="text/css" />
 <?
 include("../libs/db.class.php");
-$alternative = new DB("alternative", "id");
-$alternative->exceptions(array("id"));
-//$alternative->relation("question", "question", "id", "description");
-//var_dump($_SESSION);
-
-$question = $_GET['question'];
-
-$alternative->changeFormObject("alternative.question", "hidden");
-$alternative->changeFormObject("alternative.description", "basicEditor");
-$alternative->changeFormObject("alternative.verify", "menu", NULL, array("Correcta"=>"true", "Incorrecta"=>"false"));
+$zone = new DB("zone", "id");
+$zone->exceptions(array("id"));
+$zone->changeFormObject('zone.description', 'basicEditor');
+$zone->toolTipInFormObject('zone.seats', ' - Numero de asientos maximo de la sala de espera.');
 
 if (isset($_GET['update']))
 {
-	$alternative->updateData($_GET['update'], FALSE);
+	$zone->updateData($_GET['update'], FALSE);
 }
 else
 {
-	echo '<div algin="center" id="showTitle">INSERTAR ALTERNATIVAS</div>';
-	if($alternative->insertData(FALSE))
+	$zone->checkItemIfExist("zone_name", "zone", "name");
+	echo '<div algin="center" id="showTitle">INSERTAR ZONA</div>';
+	if($zone->insertData(FALSE))
 	{
-		echo '<br><div id="bar_nav">';
-		echo '<a href="../main.php?module=alternative&question='.$question.'"><div id="back"><img src="../../images/back.png" border="0" />Volver al menu de ALTERNATIVAS</div></a>';
-		echo '<a href="'.$_SERVER['HTTP_REFERER'].'"><img src="../../images/mas.png" border="0" />Agregar ALTERNATIVAS</a><br>';
+		echo '<br><div id="back">';
+		echo '<a href="../contentMain.php?module=zone"><img src="../../images/back.png"/>Volver al menu de Zonas</a>';
+		echo '<a href="'.$_SERVER['HTTP_REFERER'].'"><img src="../../images/mas.png"/>Agregar Nuevo Zona</a><br>';
 		echo '</div>';
 		exit();
 	}
-	echo '<br><div id="bar_nav"><a href="'.$_SERVER['HTTP_REFERER'].'"><div id="back"><img src="../../images/back.png" border="0" />Volver al menu de ALTERNATIVAS</div></a></div><br>';
+	echo '<br><div id="back"><a href="../contentMain.php?module=zone"><img src="../../images/back.png"/>Volver al menu de Zonas</a></div><br>';
 }
-
 ?>

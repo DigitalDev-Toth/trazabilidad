@@ -1,15 +1,1 @@
-<link href="../../style/style.css" rel="stylesheet" type="text/css" /><?
-include("../libs/db.class.php");
-$alternative = new DB("alternative", "id");
-$data = $_REQUEST;
-
-if($alternative->deleteData($data)) 
-{ 
-	echo '<br><br><p id="d_true"><a>Items borrados con exito!</a></p>'; 
-}
-else 
-{ 
-	echo 'error al borrar algunos de los items'; 
-}
-echo '<br><div id="bar_nav"><a href="'.$_SERVER['HTTP_REFERER'].'"><div id="back"><img src="../../images/back.png" border="0" />Volver al menu de ALTERNATIVAS</div></a></div><br>';
-?>
+<?phpsession_start();if(!isset($_SESSION['Username'])) { header("location: ../../login.php?error=hack"); header('Content-Type: text/html; charset=latin1');  }?><link href="../../style/style.css" rel="stylesheet" type="text/css" /><?include("../libs/db.class.php");$zone = new DB("zone", "id");$data = $_REQUEST;if($zone->deleteData($data)) { 	echo '<p id="d_true"><img src="../../images/delete.png"/>Items borrados con exito!</p>'; }else { 	echo 'error al borrar algunos de los items'; }echo '<br><div id="back"><a href="'.$_SERVER['HTTP_REFERER'].'"><img src="../../images/back.png"/>Volver al menu de zonas</a></div><br>';?>
