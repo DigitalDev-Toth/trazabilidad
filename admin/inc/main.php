@@ -24,6 +24,10 @@
 			case 'changePass':
 			include("modules/change_pass.php");
 			break;
+
+			case 'module_type':
+			include("modules/module_type.php");
+			break;
 			
 			default:
 			include("modules/search.php");

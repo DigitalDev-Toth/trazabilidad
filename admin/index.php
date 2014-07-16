@@ -1,6 +1,6 @@
 <?php
 session_start();
-if(!isset($_SESSION['Username'])) { header("location: login.php"); header('Content-Type: text/html; charset=latin1');  }
+if(!isset($_SESSION['Username'])) { header("location: login.php"); header('Content-Type: text/html; charset=utf8');  }
 ?>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"> 

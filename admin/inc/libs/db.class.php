@@ -617,7 +617,7 @@ var $toMany; //matriz que almacena las relaciones uno a muchos para la insercion
 	}
 	function makeObjectForm($field, $attrs, $value=NULL, $colspan=NULL)
 	{
-		$value = $this->latin($value);
+		$value = utf8_decode($value);
 		$others = $this->formObjectChanges[$field]['others'];
 		if($this->formObjectChanges[$field]['enc']!=NULL) { $value=''; }
 		if($this->formObjectChanges[$field]['type']!=NULL && $this->formObjectChanges[$field]['type']!="text")
@@ -864,7 +864,7 @@ var $toMany; //matriz que almacena las relaciones uno a muchos para la insercion
 					}
 				}
 			}
-			$sql = 'INSERT INTO '.$this->tableName.'('.$fields.') VALUES('.$datas.')';
+			$sql = utf8_encode('INSERT INTO '.$this->tableName.'('.$fields.') VALUES('.$datas.')');
 			if($this->itemTemp)
 			{
 				$_SESSION[$this->tableName.'_sql'][] = $sql;
@@ -1058,7 +1058,7 @@ var $toMany; //matriz que almacena las relaciones uno a muchos para la insercion
 			}
 			else
 			{
-				$sql = 'UPDATE '.$this->tableName.' SET '.$datas.' WHERE '.$this->idField.'='.$id;
+				$sql = utf8_encode('UPDATE '.$this->tableName.' SET '.$datas.' WHERE '.$this->idField.'='.$id);
 				$conn = $this->connection();
 				$state = pg_query($conn, $sql);
 				$flag = TRUE;

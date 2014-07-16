@@ -142,7 +142,7 @@ foreach ($result as $field=>$data)
 			$html.= '<div align="center" id="tip">'.$a.'</div>'.$addRigthImage.$addRigthText;
 		}
 		else {
-			$html.= $this->latin($value).$addRigthImage.$addRigthText;
+			$html.= utf8_decode($value).$addRigthImage.$addRigthText;
 		}
 		$html.= '</td>';
 	}//fin hideFields

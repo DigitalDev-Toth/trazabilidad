@@ -22,4 +22,11 @@ $languaje['role'] = array (
 		"role.description" => "Descripcion"
 );
 
+$languaje['module_type'] = array (
+		"id" => "ID",
+		"name" => "Nombre",
+		"description" => "Descripcion",
+		"module_type.name" => "Nombre",
+		"module_type.description" => "Descripcion"
+);
 ?>
