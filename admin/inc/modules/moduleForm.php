@@ -7,8 +7,14 @@ if(!isset($_SESSION['Username'])) { header("location: ../../login.php?error=hack
 include("../libs/db.class.php");
 $module = new DB("module", "id");
 $module->exceptions(array("id"));
-//$module->changeFormObject('module.description', 'basicEditor');
-//$module->toolTipInFormObject('module.seats', ' - Numero de asientos maximo de la sala de espera.');
+$module->relation("zone", "zone", "id", "name");
+$module->relation("module_type", "type", "id", "name");
+$module->changeFormObject('module.position', 'menu', null, array("superior-izquierda"=>"superior-izquierda", "superior"=>"superior", "superior-derecha"=>"superior-derecha",
+																"derecha"=>"derecha", "inferior-derecha"=>"inferior-derecha",
+																"inferior"=>"inferior", "inferior-izquierda"=>"inferior-izquierda",
+																"izquierda"=>"izquierda"));
+$module->toolTipInFormObject('module.max_wait', ' - tiempo maximo en minutos que un paciente puede esperar');
+$module->toolTipInFormObject('module.position', ' - Posicion en la pantalla de visualizacion de las zonas');
 
 if (isset($_GET['update']))
 {
@@ -16,7 +22,7 @@ if (isset($_GET['update']))
 }
 else
 {
-	$module->checkItemIfExist("module_name", "module", "name");
+	//$module->checkItemIfExist("module_name", "module", "name");
 	echo '<div algin="center" id="showTitle">INSERTAR MODULO</div>';
 	if($module->insertData(FALSE))
 	{

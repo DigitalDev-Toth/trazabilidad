@@ -8,6 +8,12 @@ include("../libs/db.class.php");
 $module_type = new DB("module_type", "id");
 $module_type->exceptions(array("id"));
 $module_type->changeFormObject('module_type.description', 'basicEditor');
+$module_type->changeFormObject('module_type.color', 'color');
+$module_type->toolTipInFormObject('module_type.shape', ' - Forma que toma el paciente cuando esta a la espera de un modulo');
+$module_type->toolTipInFormObject('module_type.color', ' - Color que toma el modulo en la visualizacion de las zonas');
+$module_type->changeFormObject('module_type.shape', 'menu', null, array("circulo"=>"circulo", "cuadrado"=>"cuadrado", "triangulo"=>"triangulo",
+																"rombo"=>"rombo", "pentagono"=>"pentagono",
+																"hexagono"=>"hexagono", "octogono"=>"octogono", "estrella"=>"estrella"));
 
 if (isset($_GET['update']))
 {

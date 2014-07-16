@@ -12,7 +12,7 @@ if (isset($_GET['update']))
 	{
 		foreach ($data['checkbox'] as $id)
 		{
-			echo '<iframe src="module_typeForm.php?update='.$id.'" width="100%" height="450" scrolling="auto" frameborder="0" transparency>
+			echo '<iframe src="module_typeForm.php?update='.$id.'" width="100%" height="520" scrolling="auto" frameborder="0" transparency>
 			      <p>Tu navegador no puede usar CMS!</p>
 			      </iframe>';
 		}

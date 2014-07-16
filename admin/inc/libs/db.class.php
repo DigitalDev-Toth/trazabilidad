@@ -371,7 +371,7 @@ var $toMany; //matriz que almacena las relaciones uno a muchos para la insercion
 	private function getLenguaje($text)
 	{
 		global $languaje;
-		$word = $this->latin(htmlentities($languaje[$this->tableName][$text]));
+		$word = utf8_decode(htmlentities($languaje[$this->tableName][$text]));
 		if ($word == "") { return $text; }
 		else { return $word; }
 	}
@@ -777,14 +777,14 @@ var $toMany; //matriz que almacena las relaciones uno a muchos para la insercion
 		{
 			foreach($otherItems as $oValue=>$oLabel)
 			{
-				$combo = $combo.'<option value="'.$oValue.'">'.$this->latin($oLabel).'</option>';
+				$combo = $combo.'<option value="'.$oValue.'">'.utf8_decode($oLabel).'</option>';
 			}
 		}
 		do //recorre el resultado y llena el combo
 		{
 			if ($selected == $data[$value]) { $isSelected = "SELECTED"; } // si el seleccionado es igual al valor entonces selecciona el item.
 			else { $isSelected = ""; }
-			$combo = $combo.'<option value="'.$data[$value].'" '.$isSelected.'>'.$this->latin($data[$label]).'</option>';
+			$combo = $combo.'<option value="'.$data[$value].'" '.$isSelected.'>'.utf8_decode($data[$label]).'</option>';
 		} while ($data = pg_fetch_assoc($result));
 		$combo = $combo.'</select>';
 		return $combo;
@@ -798,7 +798,7 @@ var $toMany; //matriz que almacena las relaciones uno a muchos para la insercion
 		{
 			if ($selected == $value) { $isSelected = "SELECTED"; } // si el seleccionado es igual al valor entonces selecciona el item.
 			else { $isSelected = ""; }
-			$combo = $combo.'<option value="'.$value.'" '.$isSelected.'>'.$this->latin($label).'</option>';
+			$combo = $combo.'<option value="'.$value.'" '.$isSelected.'>'.utf8_decode($label).'</option>';
 		}
 		$combo = $combo.'</select>';
 		return $combo;
@@ -810,7 +810,7 @@ var $toMany; //matriz que almacena las relaciones uno a muchos para la insercion
 		{
 			if ($selected == $data[$value]) { $isSelected = "SELECTED"; } // si el seleccionado es igual al valor entonces selecciona el item.
 			else { $isSelected = ""; }
-			$combo = $combo.'<option value="'.$data[$value].'" '.$isSelected.'>'.$this->latin($data[$label]).'</option>';
+			$combo = $combo.'<option value="'.$data[$value].'" '.$isSelected.'>'.utf8_decode($data[$label]).'</option>';
 		} while ($data = pg_fetch_assoc($this->actualResults));
 		$combo = $combo.'</select>';
 		return $combo;

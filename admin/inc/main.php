@@ -36,9 +36,13 @@
 			case 'module':
 			include("modules/module.php");
 			break;
+
+			case 'submodule':
+			include("modules/submodule.php");
+			break;
 			
 			default:
-			include("modules/search.php");
+			//include("modules/search.php");
 			break;
 			}
 ?>

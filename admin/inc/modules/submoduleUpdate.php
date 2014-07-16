@@ -6,17 +6,17 @@ if(!isset($_SESSION['Username'])) { header("location: ../../login.php?error=hack
 <?
 if (isset($_GET['update']))
 {
-	echo '<div algin="center" id="showTitle">ACTUALIZAR MODULOS</div>';
+	echo '<div algin="center" id="showTitle">ACTUALIZAR SUB-MODULO</div>';
 	$data = $_REQUEST;
 	if (count($data) > 0)
 	{
 		foreach ($data['checkbox'] as $id)
 		{
-			echo '<iframe src="moduleForm.php?update='.$id.'" width="100%" height="320" scrolling="auto" frameborder="0" transparency>
+			echo '<iframe src="submoduleForm.php?update='.$id.'" width="100%" height="320" scrolling="auto" frameborder="0" transparency>
 			      <p>Tu navegador no puede usar CMS!</p>
 			      </iframe>';
 		}
-		echo '<br><br><div id="back"><a href="'.$_SERVER['HTTP_REFERER'].'"><img src="../../images/back.png"/>Volver al menu Modulos</a></div>';
+		echo '<br><br><div id="back"><a href="'.$_SERVER['HTTP_REFERER'].'"><img src="../../images/back.png"/>Volver al menu Sub-Modulo</a></div>';
 	}
 }
 ?>
