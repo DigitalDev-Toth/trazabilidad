@@ -28,5 +28,4 @@ if($zoneId) {
 	} while($mRows=pg_fetch_assoc($module->actualResults));
 }
 echo json_encode($data);
-esto se agrego!.
 ?>
