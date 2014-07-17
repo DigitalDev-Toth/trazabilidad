@@ -1,0 +1,199 @@
+/* ******* ********* ********* ********* ********* ********* ********* ********* */
+
+body {
+  margin: 0;
+  height: 100%;
+  background-color: black;
+}
+
+/* ******* ********* ********* ********* ********* ********* ********* ********* */
+
+/*
+.contenedor {
+  position: absolute; 
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  border: 1px solid green;
+}
+*/
+
+/* ******* ********* ********* ********* ********* ********* ********* ********* */
+
+#table_full {
+  position: absolute; 
+  top: 0;
+  left: 0;
+  margin: 0 auto;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  /*border: 1px solid blue;*/
+}
+
+#table_menu {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  float: left;
+  z-index: 10;
+  /*border: 1px solid blue;*/
+}
+
+#col_menu {
+  width: 240px;
+}
+
+#col_pest {
+  width: 20px;
+}
+
+.visor {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+#bloque_visor {
+  border: 2px solid green;
+}
+
+/* ******* ********* ********* ********* ********* ********* ********* ********* */
+
+#left {
+  position:absolute;
+  left: 0;
+  top: 0;
+  margin: 0;
+  padding: 0;
+  width: 15%;
+  height: 100%;
+  border: 0;
+}
+
+#right {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 85%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  border: 0;
+}
+
+/* ******* ********* ********* ********* ********* ********* ********* ********* */
+
+#tablaLeft {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  vertical-align: top;
+}
+
+
+#controlOnOff {
+  width: 40px;
+  background-color: black;
+}
+
+#controlOnOff :hover {
+  cursor: pointer;
+}
+
+# int_right {
+  position: absolute;
+  top: 0;
+  right: 100px;
+  height: 100%;
+  margin: 0;
+  border: 0;
+  padding: 0;
+}
+
+#col_izq {
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  width: 200px;
+  color: #b9b9b9;
+/*  height: 500px; */
+  /* border: 2px solid red; */
+  overflow-x: hidden;
+  overflow-y: auto;
+  background-color: #000000;
+  border: 2px solid #1A1A1A;
+}
+
+.numhc {
+  font-size: 2em;
+}
+
+.miniatura {
+  cursor: pointer;
+  border: 2px solid white;
+}
+
+.miniatura:hover {
+  border-color: #F90;
+}
+
+.miniatura_hover {
+  cursor: pointer;
+  border: 2px solid #F90;
+}
+
+.bloque_estudio {
+  margin: 4px 1px;
+  text-align: left;
+  padding: 2px;
+/*  background-color: #666; */
+  background-color: #000000;
+}
+
+.bloque_serie {
+  margin: 4px 1px;
+  text-align: center;
+  padding: 2px;
+/*  background-color: #444; */
+  background-color: #000000;
+  border: 1px solid #b9b9b9; /* Esto es para evitar un pufo del IE6 */
+}
+
+.pseudoenlace {
+  cursor: pointer;
+}
+
+.pseudoenlace:hover {
+  cursor: pointer;
+  background-color: white;
+  color: blue;
+}
+
+
+.psEnlaceEst_hover {
+  background-color: #000;
+  color: #b9b9b9;
+  cursor: text;
+}
+
+.psEnlaceSer_hover {
+  background-color: white;
+  color: #203070;
+  cursor: pointer;
+}
+
+#infopaciente {
+  /* border-bottom: 2px solid yellow; */
+  /*border: 1px solid #203070;*/
+  padding: 2px;
+}
+
+.col_solapa {
+  cursor: pointer;
+}
+
+/* ******* ********* ********* ********* ********* ********* ********* ********* */

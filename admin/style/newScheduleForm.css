@@ -1,0 +1,277 @@
+html, body { 
+	width:100%;
+	margin: 0 auto;
+	background: #fff;
+	/*E5EBF1*/
+	}
+	
+#datepicker{
+	background:#DBE0E6;
+	width:85px;
+	border-width:thin;
+    border-style:solid;
+    border-color:#3175B9;
+    border-top-right-radius: 9px;
+}
+
+#datepickerHabilitado{
+	background:#fff;
+	width:85px;
+	border-width:thin;
+    border-style:solid;
+    border-color:#3175B9;
+    border-top-right-radius: 9px;
+}
+
+#datepickerFinal{
+	background:#DBE0E6;
+	width:85px;
+	border-width:thin;
+    border-style:solid;
+    border-color:#3175B9;
+    border-top-right-radius: 9px;
+}
+
+#datepickerFinalHabilitado{
+	background:#fff;
+	width:85px;
+	border-width:thin;
+    border-style:solid;
+    border-color:#3175B9;
+    border-top-right-radius: 9px;
+}
+
+#tablePrincipal	{
+	background:#fff;
+}
+
+/*TITUTLO JORNADA*/
+#tableTitleJornada{
+	width:667px;
+}
+
+#tdVacioManana{
+	background:#fff;
+	width:125px;
+}
+
+/*espacio entre jornadas*/
+#tdVacioTarde{
+	background:#fff;
+	width:10px;
+}
+
+#titleJornadaManana{
+    background:#DBE0E6;
+    border-top-right-radius: 15px;
+    color: #000;
+	font-family: Verdana,Arial,Helvetica,sans-serif;
+    font-size: 12px;
+   /* font-weight: bold;*/
+    height: 18px;
+    padding-left: 10px;
+    padding-top: 4px;
+    text-align: left;
+    width:227px;
+}
+
+#titleJornadaTarde{
+    background:#DBE0E6;
+    border-top-right-radius: 15px;
+    color: #000;
+	font-family: Verdana,Arial,Helvetica,sans-serif;
+    font-size: 12px;
+    /*font-weight: bold;*/
+    height: 18px;
+    padding-left: 10px;
+    padding-top: 4px;
+    text-align: left;
+    width:220px;
+}
+
+#tableInicioFin{
+	width: 667px;
+	font-family: Verdana,Arial,Helvetica,sans-serif;
+    font-size: 12px;
+}
+/*vacio inicio*/
+#tdMananaInicio{
+	width:85px;
+	text-align:center;
+	background:#fff;
+}
+/*espacio entre jornadas*/
+#espacioTitle{
+	width:44px;
+	background:#fff;
+	}
+
+#titleJornadaInicio{
+	width:70px;
+	text-align:center;
+}
+
+/*vacio fin mañana*/
+#tdVacioMananaFin{
+	width:1px;
+	background:#fff;
+}
+
+#titleJornadaFin{
+	width:70px;
+	text-align:center;
+	background:#fff;
+}
+
+/*vacio fin jornada tarde*/
+#tdTarde{
+	width:1px;
+	background:#fff;
+}
+
+#espacio{
+	background:#fff;
+	width:60px;
+	}
+	
+/*DIAS DE LA SEMANA*/
+/*#lbl_schedule_mon{
+	background:#fff;
+	border:#8BB6DE;
+}*/
+
+#tableHorario{
+	background:#fff;
+	border:2px #8BB6DE;
+}
+
+td.lbl{
+	color:#000;
+	background:#fff;
+	font-family: Verdana,Arial,Helvetica,sans-serif;
+    font-size: 12px;
+} 
+
+#lbl{
+	background: #fff;
+    border: 1px solid #3175B9;
+    color: #6D7175;
+    font-size: 11px;
+    padding: 3px;
+    width: 115px;
+
+}
+
+/*BOTON GUARDAR*/
+/*#seleccionHoraFinalBoton{
+	background:#DBE0E6;
+    border-radius: 15px 15px 15px 15px;
+    border-top: 1px solid #DBE0E6;
+    color: #000;
+	font-family: Verdana,Arial,Helvetica,sans-serif;
+    font-size: 12px;
+}*/
+
+#seleccionHoraCheckMon{
+	background:#fff;
+}
+
+/*cambia color al seleccionar checkbox*/
+#trHabilitarCampo{
+	background: #fff;
+    border: 1px solid #3175B9;
+    color: #6D7175;
+    font-size: 11px;
+    padding: 3px;
+    width: 115px;
+}
+
+/*input select horarios*/
+.diaSemanaHabilitado{
+	background: #DBE0E6;
+    border: 1px solid #3175B9;
+    color: #6D7175;
+    font-size: 11px;
+    padding: 3px;
+    width: 115px;
+}
+
+.diaSemanaDeshabilitado{
+	background: #fff;
+    border: 1px solid #3175B9;
+    color: #6D7175;
+    font-size: 11px;
+    padding: 3px;
+    width: 115px;
+}
+
+/*cambia color al deseleccionar checkbox*/
+#trDeshabilitarCampo{
+	background: #DBE0E6;
+    border: 1px solid #3175B9;
+    color: #6D7175;
+    font-size: 11px;
+    padding: 3px;
+    width: 115px;
+}
+
+/*caja de texto para ingresar restriccion*/
+.restrictionDeshabilitado{
+	background:#DBE0E6;
+	width:40px;
+	color: #000;
+	font-family: Verdana,Arial,Helvetica,sans-serif;
+    font-size: 12px;
+    border-width:thin;
+    border-style:solid;
+    border-color:#3175B9;
+    border-top-right-radius: 9px;
+    /*border: #000;*/
+}
+
+/*caja de texto para ingresar restriccion*/
+.restrictionHabilitado{
+	background:#fff;
+	width:40px;
+	color: #000;
+	font-family: Verdana,Arial,Helvetica,sans-serif;
+    font-size: 12px;
+    border-width:thin;
+    border-style:solid;
+    border-color:#3175B9;
+    border-top-right-radius: 9px;
+}
+
+#restrictionText{
+	color:#000;
+	font-family: Verdana,Arial,Helvetica,sans-serif;
+    font-size: 12px;
+}
+
+#calendarFin{
+	width:667px;
+}
+
+#prueba{
+	background:#000;
+}
+
+.botonHabilitado{
+	background:#DBE0E6;
+	border-radius: 15px 15px 15px 15px;
+    border-top: 1px solid #DBE0E6;
+    color: #424242;
+	font-family: Verdana,Arial,Helvetica,sans-serif;
+    font-size: 12px;
+}
+
+.botonDeshabilitado{
+	background:#DBE0E6;
+    border-radius: 15px 15px 15px 15px;
+    border-top: 1px solid #DBE0E6;
+    color: #AEAEAE;
+	font-family: Verdana,Arial,Helvetica,sans-serif;
+    font-size: 12px;
+}
+
+/*DBE0E6*/

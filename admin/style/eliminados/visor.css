@@ -1,0 +1,36 @@
+#tableVisor{
+	border:0px;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	padding:5px;
+	
+}
+
+.title{
+	font-weight:bold;
+	font-size:16px;
+	background:#336699;
+	color:#ffffff;
+	text-align:center;
+}
+
+#c1{
+	background:#f5f5f5;
+	text-align:right;
+}
+#c2{
+	background:#f5f5f5;
+}
+#c3{
+	background:#f5f5f5;
+}
+#c4{
+	background:#f5f5f5;
+}
+#c5{
+	background:#f5f5f5;
+	text-align:center;
+}
+
+h1{
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+}

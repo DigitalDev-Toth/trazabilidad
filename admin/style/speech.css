@@ -1,0 +1,106 @@
+  * {
+    font-family: Verdana, Arial, sans-serif;
+  }
+  a:link {
+    color:#000;
+    text-decoration: none;
+  }
+  a:visited {
+    color:#000;
+  }
+  a:hover {
+    color:#33F;
+  }
+  
+  .textedit {
+	  z-index: 0;
+	  position: relative
+  }
+  .right {
+  	z-index: 1;
+    float: right;
+    position: absolute;
+    top: 100px; 
+    right: 80px;
+    background-color: #FFF;
+    border-radius: 10px;
+  }
+  .results {
+  	  z-index: 1;
+	  position: relative;
+	  /*bottom: 70px;*/
+  }
+  .final {
+    color: black;
+    padding-right: 3px; 
+  }
+  .interim {
+    color: gray;
+  }
+  .info {
+ 	position: absolute;
+    font-size: 12px;
+    text-align: center;
+    color: #777;
+    display: none;
+  }
+  
+  .sett {
+    position: relative;
+  }
+  /* en un post de Blogger. oculto los saltos de línea internos para no volverme loco */
+  .sett br {display:none;}
+  /* el contenedor con lo lo que queremos mostrar */
+  .hiddenbox {
+    background-color: #FFF;
+    border-radius: 10px;
+    box-shadow: 0 0 3px #000 inset;
+    right: 0px;
+    line-height: 0;
+    margin: 0;
+    opacity: 0;
+    padding: 15px;
+    position: absolute;
+    text-align: center;
+    top: 100%;
+    z-index: 100;
+    -moz-transition: all 250ms;
+    -webkit-transition: all 250ms;
+    -o-transition: all 250ms;
+    -ms-transition: all 250ms;
+  }
+  /* se muestra el contenido oculto */
+  .popUpControl:checked ~ label > .hiddenbox {
+    opacity: 1;
+    }
+  /* el CHECKBOX lo mantenemos siempre oculto */
+  .popUpControl {display: none;}
+
+ 
+ 
+  #headline {
+    font-size: 40px;
+    font-weight: 300;
+  }
+  #info {
+    font-size: 10px;
+    text-align: center;
+    color: #777;
+    visibility: hidden;
+  }
+  #results {
+    font-size: 14px;
+    font-weight: bold;
+    border: 1px solid #ddd;
+    padding: 5px;
+    text-align: left;
+    min-height: 15px;
+  }
+  #start_button {
+    border: 0;
+    background-color:transparent;
+    padding: 0;
+  }
+  #speechtest {
+	display: none;
+  }

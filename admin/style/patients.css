@@ -1,0 +1,95 @@
+body {
+	font-family: helvetica;
+	font-size: 12px;
+	color: #386FB4;
+}
+#top {
+	background: #88B4DA;
+	color: #fff;
+	border-radius: 0px 0px 5px 5px;
+}
+#content {
+	margin: 0 auto 0 auto;
+	width: 700px;
+	height: 100%;
+	border: 1px solid #4E92CC;
+	border-radius: 5px 5px 5px 5px;
+	background: #EAEFF4;
+}
+#imgUser {
+	float:left;
+	padding-right: 3px;
+	padding-left: 3px;
+}
+/*CERRAR SESION*/
+#logout{
+	float: right;
+	padding-right: 3px;
+}
+/*bienvenido usuario*/
+#logout_left_ {
+	float: right;
+	padding-right: 3px;
+}
+/*usuario*/
+#rol {
+	float: left;
+	font-weight: bold;
+}
+
+/*fondo tabla examenes*/
+#wrapper {
+	margin: 0 auto 0 auto;
+}
+/*modalidad estudio-ver flash*/
+#main {
+	margin: 0 auto 0 auto;
+}
+
+.footer {
+	width: 700px;
+	font-size: 10px;
+	font-weight: bold;
+	font-family: 12px 'Helvetica'; 
+	text-align: center;
+	background: url(../imgs/digital_small.png) no-repeat  right 6px; /*logo DigitalDev*/
+	padding: 2px;
+	color: #818181;
+	margin: 0 auto;
+}
+.footer p {
+    height: 30px;
+}
+A:link {
+	text-decoration: none;
+    color: #818181;	
+}
+A:visited {
+	text-decoration: none;
+    color: #818181;
+}
+A:active {
+	text-decoration: none
+}
+A:hover {
+	text-decoration: underline; color: #1515B6;
+}
+
+
+/* - exams.php - */
+#tableExams {
+	background: #B6C8D9;
+	color: #386FB4;
+	text-align: center;
+	font-size: 14px;
+	border-radius: 5px 5px 5px 5px;
+}
+.titleTable {
+	background: #C9D6E2;
+}
+.see {
+	background: #DEE6EE;
+}
+.imgSee {
+	float: center;
+}

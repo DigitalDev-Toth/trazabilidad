@@ -1,0 +1,132 @@
+html, body {
+	height: 100%;
+	margin:0;
+	background: #ADD7E6;
+}
+#content{
+	width:100%;
+	margin:10px auto;
+	background:#fff;
+}
+#header { 
+width:100%;
+height:130px;
+font-size:30px;
+font-weight:bold;
+font-family:'Lucida Sans Unicode', 'Lucida Grande', sans-serif;
+text-align:center;
+color:#666;
+margin:0px auto;
+background:#ffffff url(../images/logo.png) no-repeat center;
+}
+#main {
+	width:220px;
+	height:120px;
+	margin:5px auto;
+	border: 1px solid #2F7CC9;
+	background:#fff;
+	padding:10px 30px 30px 30px;
+	font-family:'Lucida Sans Unicode', 'Lucida Grande', sans-serif;
+}
+
+#formRemember{
+	width:220px;
+	margin: 0px auto;
+	text-align:left;
+	border: 1px solid #2F7CC9;
+	color:#2F7CC9;
+	background:#fff;
+
+}
+#login { 
+	width: 220px;
+	height:120px;
+	font-size: 11px; 
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+}
+#titlelogin{
+	line-height:15px;
+	font-size:12px; 
+	color:#2F7CC9;
+	text-align:center;
+}
+#user {
+	width:120px;
+	font-size:11px;
+	color:#336699;
+	border:1px solid #2F7CC9;
+	padding:3px;
+}
+#email {
+	width:120px;
+	font-size:11px;
+	color:#336699;
+	border:1px solid #2F7CC9;
+	padding:3px;
+}
+#rut {
+	width:120px;
+	font-size:11px;
+	color:#336699;
+	border:1px solid #2F7CC9;
+	padding:3px;
+}
+#pass {
+	width:120px;
+	font-size:9px;
+	color:#2F7CC9;
+	border:1px solid #2F7CC9;
+	padding:3px;
+}
+.user,.pass{ 
+	font-size:11px;
+	padding-left:8px;
+	}
+#send{
+	color:#ffffff;
+	background:#2F7CC9;
+	font-size:12px;
+	border:0px;
+	padding:3px;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+}
+
+#footer { 
+width:380px; 
+height: 50px; 
+font-size:11px; 
+font-family:Verdana, Arial, Helvetica, sans-serif;
+color:#2F7CC9;
+text-align:center;
+padding-top:3px;
+background:#fff;
+margin:0px auto;
+}
+
+#tableLogin {
+	border:2px solid #2F7CC9;
+	width:500px;
+	margin:50px auto;
+	background:#fff;
+}
+
+.border-radius {
+border-radius:20px;
+-ms-border-radius:20px;
+-moz-border-radius:20px;
+-webkit-border-radius:20px;
+-khtml-border-radius:20px;
+}
+
+#msg {
+	width:500px;
+	height:25px;
+	padding-top:5px;
+	border:1px solid #A52A2A;
+	background:#FFC0CB;
+	font-size:11px;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	text-align:center;
+	margin:0px auto;
+	color:#666;
+}

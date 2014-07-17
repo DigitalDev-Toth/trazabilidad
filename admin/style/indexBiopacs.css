@@ -1,0 +1,212 @@
+html, body {
+	height: 100%;
+	margin:0px;
+	background:#f5f5f5;
+	}
+	
+#content{
+	height:100%;
+	margin:0px auto;
+	}
+	
+/*FONDO ADMINISTRADOR Y CERRAR SECION*/
+#top {
+	width: 100%;
+	height: 30px;
+	background: #BBCDE4;
+}
+#logout{
+	background: #66707A url(../imgs/logout.png) no-repeat 100px 0px;
+	float:right;
+	width:130px;
+	height:18px;
+	margin-right:0px;
+	padding-top:8px;
+	-moz-border-radius: 0px 0 10px 10px;
+	vertical-align:middle;
+	text-align:center;
+	}
+/*fondo letras cerrar secion*/
+#logout a {
+	background: #3175B9;
+	font-size:12px;
+	font-weight:bold;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	color:#fff;
+	text-decoration:none;
+	}
+	
+/*fondo cerrar secion*/
+#logout, #logout_left, #logout_right{ 
+	background:#3175B9;
+	}
+	
+#logout_left, #logout_left_{
+	width:250px;
+	float:right;
+	margin-right:0px;
+	}
+#logout_left #logout_left_ p{
+	font-size:12px;
+	font-weight:bold;
+	text-align:right;
+	padding-right:10px;
+	color: #666;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	}
+#logout_left_{
+	background:#BBCDE4;
+	-moz-border-radius: 0 10px 0 0;
+	}
+
+#logout_right, #logout_right_{
+	width:100px;
+	height:18px;
+	float:right;
+	margin-right:0px;
+	}
+	
+/*parte superior derecha de fondo cerrar secion*/
+#logout_right_{
+	background:#BBCDE4;
+	-moz-border-radius: 10px 0 0 0;
+	}
+	
+#rol{
+	background: #66707A;
+	float:left;
+	width:130px;
+	height:18px;
+	margin-right:0px;
+	padding-top:8px;
+	-moz-border-radius: 0px 0 10px 10px;
+	font-size:12px;
+	font-weight:bold;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	color:#fff;
+	vertical-align:middle;
+	text-align:center;
+	}
+	
+/*fondo administrador*/
+#rol, #rol_left, #rol_right{ 
+	background:#3175B9;
+	}
+#rol_left, #rol_left_{
+	width:100px;
+	height:30px;
+	float:left;
+	}
+	
+/*fondo suoerior izquierdo de administrador*/
+#rol_left_{
+	background:#BBCDE4;
+	-moz-border-radius: 0 10px 0 0;
+	}
+#rol_right, #rol_right_{
+	width:50px;
+	height:30px;
+	float:left;
+	}
+	
+/*fondo superior derecho de administrador*/
+#rol_right_{
+	background:#BBCDE4;
+	-moz-border-radius: 10px 0 0 0;
+	}
+#wrapper {
+	width:100%;
+	height:100%;
+	margin:5px auto;
+	-moz-border-radius:0px 10px 10px 0px;
+	}
+	
+/*aqui esta el fondo del menu izquierdo*/
+#el_menu {
+	float:#left;
+	width: 140px;
+	padding:4px;
+	background:#e6e6fa  url(../images/BiopacsSmall.png) no-repeat;
+	-moz-border-radius:10px 0px 0px 10px;
+	border:1px solid #66707A;
+	/*-moz-border-radius-bottomright:15px;*/
+	}
+	
+ul#menu {
+	font-family:Verdana, Arial, Helvetica, sans-serif; 
+	list-style-type:none;  
+	padding: 0;
+	margin-top: 3px; 
+	}
+ul#menu ul{ 
+	font-family:Verdana, Arial, Helvetica, sans-serif; 
+	list-style-type:none; 
+	margin:0; 
+	padding: 0;	
+	}
+ul#menu a { 
+	font-family:Verdana, Arial, Helvetica, sans-serif; 
+	display: block; 
+	text-decoration: none;
+	}
+ul#menu li { 
+	margin-top: 1px;
+	}
+	
+	/*color de fondo del menu izquierdo*/
+ul#menu li a { 
+	background: #3175B9; 
+	color: #fff; 
+	font-family:Verdana, Arial, Helvetica, sans-serif; 
+	font-size:11px; 
+	padding: 0.2em;
+	}
+	
+/*color de menu cuando pasamos el mouse cambia al color establecido aqui*/
+ul#menu li a:hover { 
+	background: #1E5083; 
+	color: #fff; 
+	font-weight: bold;
+	}
+	
+/*color de fondo al menu desplegable*/
+ul#menu li ul li a { 
+	background: #9DBBE1; 
+	color: #fff; 
+	padding-left: 5px;
+	}
+	
+/*color de menu desplegable cuando pasamos el mouse*/
+ul#menu li ul li a:hover {  
+	background: #BDCCDF; 
+	border-left: 1px #000 solid; 
+	padding-left: 0px;
+	}
+	
+/*main buscador de examenes FONDO!*/
+#main {
+	float:#right;
+	height:100%;
+	background:#e6e6fa;
+	padding: 0px 0px 0px 8px;
+	border:1px solid #66707A;
+	}
+#iframe{
+	background:#1a1a1a;
+	width:98%;
+	height:100%;
+	margin:0 auto;
+	}
+#footer { 
+	width:94%; 
+	height: 25px; 
+	font-size:10px;
+	font-weight:bold;
+	font-family:Verdana, Arial, Helvetica, sans-serif; 
+	color:#3C474D;
+	margin:0px auto; 
+	margin-bottom:0px;
+	text-align:center;
+	padding-top:5px;
+	background: url(digital_small.png) no-repeat  right 7px;
+	}

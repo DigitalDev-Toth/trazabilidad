@@ -1,0 +1,49 @@
+html, body { 
+	width:100%;
+	margin: 0 auto;
+	background: #fff;
+	}
+	
+#tdVacio{
+	background:#fff;
+	width:170;
+}
+
+#titleJornada{
+	text-align:center;
+	width:142x;
+	border:2px;
+}
+
+
+#espacio{
+	background:#fff;
+	width:60px;
+	}
+	
+/*DIAS DE LA SEMANA*/
+/*#lbl_schedule_mon{
+	background:#fff;
+	border:#8BB6DE;
+}*/
+
+#tableHorario{
+	background:#fff;
+	border:2px #8BB6DE;
+	
+}
+
+td.lbl{
+	background:#fff;
+	font-family: Verdana,Arial,Helvetica,sans-serif;
+    font-size: 12px;
+}
+
+#seleccionHora{
+	 background: none repeat scroll 0 0 #DBE0E6;
+    border: 1px solid #3175B9;
+    color: #6D7175;
+    font-size: 11px;
+    padding: 3px;
+    width: 115px;
+}

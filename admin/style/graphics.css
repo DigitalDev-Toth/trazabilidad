@@ -1,0 +1,142 @@
+body {
+	background:#E6E6FA;
+	font-family:Verdana;
+}
+ul.ul {
+	list-style:none;
+	align:left;
+}
+.aLi {
+	color:#3175B9;
+	text-decoration:none;
+}
+.liOne a:hover {
+	text-decoration:underline;
+}
+.liTwo a:hover {
+	text-decoration:underline;
+}
+.liThree a:hover {
+	text-decoration:underline;
+}
+.liTitle {
+	background:#9DBBE1;
+	border-top-right-radius: 8px;
+	border-top-left-radius: 8px;
+	color:#fff;
+	font-family: Verdana;
+	font-size: 14px;
+	width:340px;
+	text-align:center;
+	border-top: 1px solid #999;
+	border-left: 1px solid #999;
+	border-right: 1px solid #999;
+}
+.liOne {
+	background:#DEE6EE;
+	width:340px;
+	height:22px;
+	font-family: Verdana;
+	font-size: 14px;
+	border: 1px solid #999;
+}
+.liTwo {
+	background:#C9D6E2;
+	width:340px;
+	height:22px;
+	font-family: Verdana;
+	font-size: 14px;
+	border-left: 1px solid #999;
+	border-right: 1px solid #999;
+	border-bottom: 1px solid #999;
+}
+.liThree {
+	background:#AFC3D6;
+	width:340px;
+	height:22px;
+	font-family: Verdana;
+	font-size: 14px;
+	border-left: 1px solid #999;
+	border-right: 1px solid #999;
+	border-bottom: 1px solid #999;
+}
+.grafico {
+	align:center;
+}
+#divTable {
+	align:center;
+}
+#titleTable {
+	background:#9DBBE1;
+	color: #fff;
+	text-align: center; 
+	/*font-weight: bold;*/
+	font-family: Verdana; 
+	font-size: 14px;
+}
+#tableUser {
+	background:#D5DFEC;
+	border-top-right-radius: 8px;
+	border-top-left-radius: 8px;
+	font-family: Verdana;
+	text-align:center;
+	border: 1px solid #999;
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+#head {
+	background:#D5DFEC;
+	text-align:center;
+	color:#1B559E;
+	border-bottom: 1px solid #999;
+	border-left: 1px solid #999;
+	font-family: Verdana; 
+	font-size: 12px;
+}
+#tdNone {
+	background:#F1F6FB;
+	text-align:center;
+	color:#7F7F7F;
+	border-bottom: 1px solid #999;
+	border-left: 1px solid #999;
+	font-size: 12px;
+	font-family: Verdana; 
+}
+#tdData {
+	background:#F1F6FB;
+	text-align:center;
+	color:#386FB4;
+	border-bottom: 1px solid #999;
+	border-left: 1px solid #999;
+	font-family: Verdana; 
+	font-size: 12px;
+}
+
+/*Total produccion de cada usuario*/
+#aProduction {
+	color:#386FB4;
+	text-align:center;
+	font-family: Verdana; 
+}
+#aUser {
+	color:#386FB4;
+	font-family: Verdana; 
+}
+#button {
+	font-size: 11px;
+	border: 1px solid #7F7F7F;
+	font-weight: bold;
+	color: fff;
+	background: #3D75BC;
+	width: 70px;
+	height: 19px;
+	font-family: "Helvetica";
+	border-radius: 3px 3px 3px 3px ;
+}
+/*PRODUCCION SECRETARIA*/
+#tdStates label {
+	font-family: Verdana;
+	font-size: 14px;
+	color: #2D69AF;
+	padding-right: 5px;
+}
