@@ -25,7 +25,7 @@ MODULE.prototype.attrs = function (color) {
 }
 MODULE.prototype.textAttrs = function (color) {
     return {
-        'fill': this.setColor(color, -0.5),
+        'fill': this.setColor(color, -0.3),
         'font-size': '14px'
         //'stroke': this.setColor(color, -0.5)
     };
