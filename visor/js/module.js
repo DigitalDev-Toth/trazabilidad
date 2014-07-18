@@ -21,7 +21,14 @@ MODULE.prototype.attrs = function (color) {
         'stroke': this.setColor(color, -0.3),
         'stroke-width': 3,
         'stroke-linejoin': 'round'
-		};
+	};
+}
+MODULE.prototype.textAttrs = function (color) {
+    return {
+        'fill': this.setColor(color, -0.5),
+        'font-size': '14px'
+        //'stroke': this.setColor(color, -0.5)
+    };
 }
 MODULE.prototype.setColor = function (hex, lum) {
 	hex = String(hex).replace(/[^0-9a-f]/gi, '');
@@ -48,31 +55,32 @@ MODULE.prototype.setElem = function () { // element in DOM for module
     } else {
         switch (this.pos) {
             case 'top':
-//                var w = $(window).width() / 4,
                 var w = (this.totalSubmodules * this.submoduleWidth) + 20,
                     x = ($(window).width() / 2) - (w / 2) ;
                 this.el = PAPER.rect(x, 5, w, this.submoduleHeight, this.moduleRound).attr(this.attrs(this.color));
-                PAPER.text(x+this.submoduleWidth+8, this.submoduleHeight-8, this.name).attr({
-                	'font-size': '14px',
-                	'stroke': this.setColor(this.color, -0.5)
-                });
+                text = PAPER.text(x+(w/2), this.submoduleHeight-4, this.name).attr(this.textAttrs(this.color));
                 break;
             case 'left':
                 var h = (this.totalSubmodules * this.submoduleWidth) + 20,
                     y = ($(window).height() / 2) - (h / 2);
                 this.el = PAPER.rect(5, y, this.submoduleHeight, h, this.moduleRound).attr(this.attrs(this.color));
+                text = PAPER.text(this.submoduleHeight-4, y+(h/2), this.name).attr(this.textAttrs(this.color));
+                text.rotate(-90);
                 break;
             case 'bot':
                 var w = (this.totalSubmodules * this.submoduleWidth) + 20,
                     x = ($(window).width() / 2) - (w / 2),
                     y = $(window).height() - 95;
                 this.el = PAPER.rect(x, y, w, this.submoduleHeight, this.moduleRound).attr(this.attrs(this.color));
+                text = PAPER.text(x+(w/2), y+10, this.name).attr(this.textAttrs(this.color));
                 break;
             case 'right':
                 var h = (this.totalSubmodules * this.submoduleWidth) + 20,
                     x = $(window).width() - 95,
                     y = ($(window).height() / 2) - (h / 2);
                 this.el = PAPER.rect(x, y, this.submoduleHeight, h, this.moduleRound).attr(this.attrs(this.color));
+                text = PAPER.text(x+10, y+(h/2), this.name).attr(this.textAttrs(this.color));
+                text.rotate(90);
                 break;
             case 'top-left':
                 if (this.totalSubmodules >= 4) {
@@ -92,6 +100,8 @@ MODULE.prototype.setElem = function () { // element in DOM for module
                         p = 'M5,5L'+ w +',5L5,'+ h +'Z';
                 }
                 this.el = PAPER.path(p).attr(this.attrs(this.color));
+                text = PAPER.text((w/2)-4, (h/2)-4, this.name).attr(this.textAttrs(this.color));
+                text.rotate(-45);
                 break;
             case 'top-right':                
                 var w = $(window).width() / 4,
