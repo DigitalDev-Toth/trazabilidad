@@ -29,15 +29,19 @@
 
                 $.get("../services/zoneInfo.php?zone=1",function(data,status){
                     if(status=='success') {
-                        console.log(JSON.parse(data));
+                        info = JSON.parse(data);
+                        $.each(info,function(index, mod){
+                            //console.log(module);
+                            make.module(mod.name, mod.id, 'module', mod.position, '#'+mod.color);
+                        });
                     }
                 });
                 make.module('Sala de espera', 1, 'waiting-room', 'center', '#818878');
-                make.module('Informaciones', 100, 'info', 'top', '#8f8', 3);
+                /*make.module('Informaciones', 100, 'info', 'top', '#8f8', 3);
                 make.module('tothem', 101, 'payment', 'left', '#f88', 5);
                 make.module('Consultas', 102, 'info', 'bot', '#88f', 18);
                 make.module('Admision', 103, 'info', 'right', '#ff8', 7);
-                make.module('Facturacion', 104, 'info', 'top-left', '#8ff', 4);
+                make.module('Facturacion', 104, 'info', 'top-left', '#8ff', 4);*/
 //                make.module('Informaciones', 105, 'info', 'top-right');
 //                make.module('Informaciones', 106, 'info', 'bot-left');
 //                make.module('Informaciones', 107, 'info', 'bot-right');                

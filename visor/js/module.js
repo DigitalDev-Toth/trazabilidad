@@ -9,7 +9,6 @@ var MODULE = function (name, id, type, pos, color, totalSubmodules) {
     this.name = name;
     this.color = color;
     this.setElem();
-    this.attrs();
     this.submoduleWidth;
     this.submoduleHeight;
     this.moduleRound;
@@ -54,27 +53,27 @@ MODULE.prototype.setElem = function () { // element in DOM for module
         this.el = PAPER.rect(x, y, 400, 300, 10).attr(this.attrs(this.color));        
     } else {
         switch (this.pos) {
-            case 'top':
+            case 'superior':
                 var w = (this.totalSubmodules * this.submoduleWidth) + 20,
                     x = ($(window).width() / 2) - (w / 2) ;
                 this.el = PAPER.rect(x, 5, w, this.submoduleHeight, this.moduleRound).attr(this.attrs(this.color));
                 text = PAPER.text(x+(w/2), this.submoduleHeight-4, this.name).attr(this.textAttrs(this.color));
                 break;
-            case 'left':
+            case 'izquierda':
                 var h = (this.totalSubmodules * this.submoduleWidth) + 20,
                     y = ($(window).height() / 2) - (h / 2);
                 this.el = PAPER.rect(5, y, this.submoduleHeight, h, this.moduleRound).attr(this.attrs(this.color));
                 text = PAPER.text(this.submoduleHeight-4, y+(h/2), this.name).attr(this.textAttrs(this.color));
                 text.rotate(-90);
                 break;
-            case 'bot':
+            case 'inferior':
                 var w = (this.totalSubmodules * this.submoduleWidth) + 20,
                     x = ($(window).width() / 2) - (w / 2),
                     y = $(window).height() - 95;
                 this.el = PAPER.rect(x, y, w, this.submoduleHeight, this.moduleRound).attr(this.attrs(this.color));
                 text = PAPER.text(x+(w/2), y+10, this.name).attr(this.textAttrs(this.color));
                 break;
-            case 'right':
+            case 'derecha':
                 var h = (this.totalSubmodules * this.submoduleWidth) + 20,
                     x = $(window).width() - 95,
                     y = ($(window).height() / 2) - (h / 2);
@@ -82,7 +81,7 @@ MODULE.prototype.setElem = function () { // element in DOM for module
                 text = PAPER.text(x+10, y+(h/2), this.name).attr(this.textAttrs(this.color));
                 text.rotate(90);
                 break;
-            case 'top-left':
+            case 'superior-izquierda':
                 if (this.totalSubmodules >= 4) {
                     if ((this.totalSubmodules % 2) === 0) {
                         var w = 110 + (40 * (this.totalSubmodules / 2)),
@@ -103,7 +102,7 @@ MODULE.prototype.setElem = function () { // element in DOM for module
                 text = PAPER.text((w/2)-4, (h/2)-4, this.name).attr(this.textAttrs(this.color));
                 text.rotate(-45);
                 break;
-            case 'top-right':                
+            case 'superior-derecha':                
                 var w = $(window).width() / 4,
                     h = $(window).height() / 4,
                     x = $(window).width() - w,
@@ -111,7 +110,7 @@ MODULE.prototype.setElem = function () { // element in DOM for module
                     p = 'M'+ x +',5L'+ fx +',5 L'+ fx +','+ h +'L'+ (fx - 100) +','+ h +'L'+ (fx - 100) +',100L'+ x +',100Z'; // path
                 this.el = PAPER.path(p).attr(this.attrs(this.color));
                 break;
-            case 'bot-left':
+            case 'inferior-izquierda':
                 var w = $(window).width() / 4,
                     h = $(window).height() / 4,
                     y = $(window).height() - h,
@@ -119,7 +118,7 @@ MODULE.prototype.setElem = function () { // element in DOM for module
                     p = 'M5,'+ y +'L5,'+ fy +'L'+ w +','+ fy +'L'+ w +','+ (fy - 100) +'L100,'+ (fy - 100) +'L100,'+ y +'Z';
                 this.el = PAPER.path(p).attr(this.attrs(this.color));
                 break;
-            case 'bot-right':
+            case 'inferior-derecha':
                 var w = $(window).width() / 4,
                     h = $(window).height() / 4,
                     x = $(window).width() - w,
