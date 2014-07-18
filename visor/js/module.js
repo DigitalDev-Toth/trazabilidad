@@ -7,87 +7,72 @@ var MODULE = function (name, id, type, pos, color, totalSubmodules) {
     this.el = null; // element in DOM for module
     this.type = type; // tothem, info, payment, billing, admission, box, waiting room
     this.name = name;
-    this.setColor();
+    this.color = color;
     this.setElem();
+    this.attrs();
+    this.submoduleWidth
+    this.submoduleHeight;
+    this.moduleRound;
 };
-MODULE.prototype.setColor = function () {
-    switch (this.type) {
-        case 'tothem': // tothem
-            this.color = '#489248';
-            break;
-        case 'info': // informaciones
-            this.color = '#5A807E';
-            break;
-        case 'payment': // caja
-            this.color = '#83698A';
-            break;
-        case 'billing': // facturación
-            this.color = '#644C4C';
-            break;
-        case 'admission': // admisión
-            this.color = '#2C665D';
-        case 'box': // box médico
-            this.color = '#518CAD';
-            break;
-        case 'waiting-room': // sala de espera
-            this.color = '#818878';
-            break;
-    }
+// modules attributes for all moudles except waiting room
+MODULE.prototype.attrs = function (color) {
+	return {
+        'fill': color,
+        'stroke': this.setColor(color, -0.3),
+        'stroke-width': 3,
+        'stroke-linejoin': 'round'
+		};
+}
+MODULE.prototype.setColor = function (hex, lum) {
+	hex = String(hex).replace(/[^0-9a-f]/gi, '');
+	if (hex.length < 6) {
+		hex = hex[0]+hex[0]+hex[1]+hex[1]+hex[2]+hex[2];
+	}
+	lum = lum || 0;
+	var rgb = "#", c, i;
+	for (i = 0; i < 3; i++) {
+		c = parseInt(hex.substr(i*2,2), 16);
+		c = Math.round(Math.min(Math.max(0, c + (c * lum)), 255)).toString(16);
+		rgb += ("00"+c).substr(c.length);
+	}
+	return rgb;
 };
 MODULE.prototype.setElem = function () { // element in DOM for module
+	this.submoduleWidth = 40;
+	this.submoduleHeight = 90;
+	this.moduleRound = 5;
     if (this.type === 'waiting-room') {
         var x = ($(window).width() / 2) - (400 / 2),
-            y = ($(window).height() / 2) - (400 / 2);
-        this.el = PAPER.rect(x, y, 400, 400).attr({
-            'fill': this.color,
-            'stroke': this.color,
-            'stroke-width': 10,
-            'stroke-linejoin': 'round'
-        });        
+            y = ($(window).height() / 2) - (300 / 2);
+        this.el = PAPER.rect(x, y, 400, 300, 10).attr(this.attrs(this.color));        
     } else {
         switch (this.pos) {
             case 'top':
 //                var w = $(window).width() / 4,
-                var w = this.totalSubmodules * 40,
-                    x = ($(window).width() / 2) - (w / 2);
-                this.el = PAPER.rect(x, 5, w, 100).attr({
-                    'fill': this.color,
-                    'stroke': this.color,
-                    'stroke-width': 10,
-                    'stroke-linejoin': 'round'
+                var w = (this.totalSubmodules * this.submoduleWidth) + 20,
+                    x = ($(window).width() / 2) - (w / 2) ;
+                this.el = PAPER.rect(x, 5, w, this.submoduleHeight, this.moduleRound).attr(this.attrs(this.color));
+                PAPER.text(x+this.submoduleWidth+8, this.submoduleHeight-8, this.name).attr({
+                	'font-size': '14px',
+                	'stroke': this.setColor(this.color, -0.5)
                 });
                 break;
             case 'left':
-                var h = this.totalSubmodules * 40,
+                var h = (this.totalSubmodules * this.submoduleWidth) + 20,
                     y = ($(window).height() / 2) - (h / 2);
-                this.el = PAPER.rect(5, y, 100, h).attr({
-                    'fill': this.color,
-                    'stroke': this.color,
-                    'stroke-width': 10,
-                    'stroke-linejoin': 'round'
-                });
+                this.el = PAPER.rect(5, y, this.submoduleHeight, h, this.moduleRound).attr(this.attrs(this.color));
                 break;
             case 'bot':
-                var w = this.totalSubmodules * 40,
+                var w = (this.totalSubmodules * this.submoduleWidth) + 20,
                     x = ($(window).width() / 2) - (w / 2),
-                    y = $(window).height() - 105;
-                this.el = PAPER.rect(x, y, w, 100).attr({
-                    'fill': this.color,
-                    'stroke': this.color,
-                    'stroke-width': 10,
-                    'stroke-linejoin': 'round'
-                });
+                    y = $(window).height() - 95;
+                this.el = PAPER.rect(x, y, w, this.submoduleHeight, this.moduleRound).attr(this.attrs(this.color));
                 break;
             case 'right':
-                var h = this.totalSubmodules * 40,
-                    x = $(window).width() - 105,
+                var h = (this.totalSubmodules * this.submoduleWidth) + 20,
+                    x = $(window).width() - 95,
                     y = ($(window).height() / 2) - (h / 2);
-                this.el = PAPER.rect(x, y, 100, h).attr({
-                    'fill': this.color,
-                    'stroke': this.color,
-                    'stroke-width': 10,
-                    'stroke-linejoin': 'round'
-                });
+                this.el = PAPER.rect(x, y, this.submoduleHeight, h, this.moduleRound).attr(this.attrs(this.color));
                 break;
             case 'top-left':
                 if (this.totalSubmodules >= 4) {
@@ -106,12 +91,7 @@ MODULE.prototype.setElem = function () { // element in DOM for module
                         h = 200,
                         p = 'M5,5L'+ w +',5L5,'+ h +'Z';
                 }
-                this.el = PAPER.path(p).attr({
-                    'fill': this.color,
-                    'stroke': this.color,
-                    'stroke-width': 10,
-                    'stroke-linejoin': 'round'
-                });
+                this.el = PAPER.path(p).attr(this.attrs(this.color));
                 break;
             case 'top-right':                
                 var w = $(window).width() / 4,
@@ -119,12 +99,7 @@ MODULE.prototype.setElem = function () { // element in DOM for module
                     x = $(window).width() - w,
                     fx = $(window).width() - 5,
                     p = 'M'+ x +',5L'+ fx +',5 L'+ fx +','+ h +'L'+ (fx - 100) +','+ h +'L'+ (fx - 100) +',100L'+ x +',100Z'; // path
-                this.el = PAPER.path(p).attr({
-                    'fill': this.color,
-                    'stroke': this.color,
-                    'stroke-width': 10,
-                    'stroke-linejoin': 'round'
-                });
+                this.el = PAPER.path(p).attr(this.attrs(this.color));
                 break;
             case 'bot-left':
                 var w = $(window).width() / 4,
@@ -132,12 +107,7 @@ MODULE.prototype.setElem = function () { // element in DOM for module
                     y = $(window).height() - h,
                     fy = $(window).height() - 5,
                     p = 'M5,'+ y +'L5,'+ fy +'L'+ w +','+ fy +'L'+ w +','+ (fy - 100) +'L100,'+ (fy - 100) +'L100,'+ y +'Z';
-                this.el = PAPER.path(p).attr({
-                    'fill': this.color,
-                    'stroke': this.color,
-                    'stroke-width': 10,
-                    'stroke-linejoin': 'round'
-                });
+                this.el = PAPER.path(p).attr(this.attrs(this.color));
                 break;
             case 'bot-right':
                 var w = $(window).width() / 4,
@@ -147,12 +117,7 @@ MODULE.prototype.setElem = function () { // element in DOM for module
                     by = $(window).height() - h,
                     fx = $(window).width() - 5,                    
                     p = 'M'+ x +','+ y +'L'+ fx +','+ y +'L'+ fx +','+ by +'L'+ (fx - 100) +','+ by +'L'+ (fx - 100) +','+ (y - 100) +'L'+ x +','+ (y - 100) +'Z';
-                this.el = PAPER.path(p).attr({
-                    'fill': this.color,
-                    'stroke': this.color,
-                    'stroke-width': 10,
-                    'stroke-linejoin': 'round'
-                });
+                this.el = PAPER.path(p).attr(this.attrs(this.color));
                 break;
         }
     }    

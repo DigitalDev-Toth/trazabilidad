@@ -10,8 +10,8 @@ var SUBMODULE = function (name, id, idModule, posModule, countSubmodules) {
 SUBMODULE.prototype.setElem = function () {
     switch (this.posModule) {
         case 'top':
-            var x = MODULES[this.idModule].el.attrs.x + (40 * this.countSubmodules),
-                y = MODULES[this.idModule].el.attrs.y;
+            var x = MODULES[this.idModule].el.attrs.x + (MODULES[this.idModule].submoduleWidth * this.countSubmodules)+10,
+                y = MODULES[this.idModule].el.attrs.y + 4;
             this.el = PAPER.rect(x, y, 40, 60, 5).attr({
                 'fill': 'none',
                 'stroke': '#fff',
@@ -20,8 +20,8 @@ SUBMODULE.prototype.setElem = function () {
             });
             break;
         case 'left':
-            var x = MODULES[this.idModule].el.attrs.x,
-                y = MODULES[this.idModule].el.attrs.y + (40 * this.countSubmodules);
+            var x = MODULES[this.idModule].el.attrs.x + 4,
+                y = MODULES[this.idModule].el.attrs.y + (MODULES[this.idModule].submoduleWidth * this.countSubmodules)+10;
             this.el = PAPER.rect(x, y, 60, 40, 5).attr({
                 'fill': 'none',
                 'stroke': '#fff',
@@ -30,8 +30,8 @@ SUBMODULE.prototype.setElem = function () {
             });
             break;
         case 'bot':
-            var x = MODULES[this.idModule].el.attrs.x + (40 * this.countSubmodules),
-                y = MODULES[this.idModule].el.attrs.y + (100 - 60);
+            var x = MODULES[this.idModule].el.attrs.x + (MODULES[this.idModule].submoduleWidth * this.countSubmodules)+10,
+                y = MODULES[this.idModule].el.attrs.y + (MODULES[this.idModule].submoduleHeight - 60)-4;
             this.el = PAPER.rect(x, y, 40, 60, 5).attr({
                 'fill': 'none',
                 'stroke': '#fff',
@@ -40,8 +40,8 @@ SUBMODULE.prototype.setElem = function () {
             });
             break;
         case 'right':
-            var x = MODULES[this.idModule].el.attrs.x + (100 - 60),
-                y = MODULES[this.idModule].el.attrs.y + (40 * this.countSubmodules);
+            var x = MODULES[this.idModule].el.attrs.x + (MODULES[this.idModule].submoduleHeight - 60)-4,
+                y = MODULES[this.idModule].el.attrs.y + (MODULES[this.idModule].submoduleWidth * this.countSubmodules)+10;
             this.el = PAPER.rect(x, y, 60, 40, 5).attr({
                 'fill': 'none',
                 'stroke': '#fff',
