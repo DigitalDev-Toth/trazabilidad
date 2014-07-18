@@ -10,7 +10,7 @@ var MODULE = function (name, id, type, pos, color, totalSubmodules) {
     this.color = color;
     this.setElem();
     this.attrs();
-    this.submoduleWidth
+    this.submoduleWidth;
     this.submoduleHeight;
     this.moduleRound;
 };
@@ -22,14 +22,14 @@ MODULE.prototype.attrs = function (color) {
         'stroke-width': 3,
         'stroke-linejoin': 'round'
 	};
-}
+};
 MODULE.prototype.textAttrs = function (color) {
     return {
         'fill': this.setColor(color, -0.3),
         'font-size': '14px'
         //'stroke': this.setColor(color, -0.5)
     };
-}
+};
 MODULE.prototype.setColor = function (hex, lum) {
 	hex = String(hex).replace(/[^0-9a-f]/gi, '');
 	if (hex.length < 6) {
