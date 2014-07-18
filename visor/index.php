@@ -22,13 +22,13 @@
                 var w = $(window).width();
                 var h = $(window).height();
 
-                PAPER.setViewBox(0, 0, w, h, true);
+                PAPER.setViewBox(0, 0, 1920, 997, true);
                 PAPER.canvas.setAttribute("preserveAspectRatio", "xMinYMin");
                 
                 var make = new MAKER();
 
-                $.get("../services/zoneInfo.php?zone=1",function(data,status){
-                    if(status=='success') {
+                $.get("../services/zoneInfo.php?zone=1",function(data, status){
+                    if(status === 'success') {
                         console.log(JSON.parse(data));
                     }
                 });
@@ -37,10 +37,10 @@
                 make.module('tothem', 101, 'payment', 'left', '#f88', 5);
                 make.module('Consultas', 102, 'info', 'bot', '#88f', 18);
                 make.module('Admision', 103, 'info', 'right', '#ff8', 7);
-                make.module('Facturacion', 104, 'info', 'top-left', '#8ff', 4);
-//                make.module('Informaciones', 105, 'info', 'top-right');
-//                make.module('Informaciones', 106, 'info', 'bot-left');
-//                make.module('Informaciones', 107, 'info', 'bot-right');                
+                make.module('Facturacion', 104, 'info', 'top-left', '#8ff', 3);
+                make.module('Informaciones', 105, 'info', 'top-right', '#8ff', 3);
+                make.module('Informaciones', 106, 'info', 'bot-left', '#8ff', 1);
+                make.module('Informaciones', 107, 'info', 'bot-right', '#8ff', 1);                
                 
                 //console.log(MODULES);
             });
