@@ -26,14 +26,18 @@
                 PAPER.canvas.setAttribute("preserveAspectRatio", "xMinYMin");
                 
                 var make = new MAKER();
-
+                message('Conectando al servidor...');
                 $.get("../services/zoneInfo.php?zone=1",function(data,status){
+                    message('Servidor conectado!. Esperando los datos...');
                     if(status=='success') {
-                        info = JSON.parse(data);
-                        $.each(info,function(index, mod){
-                            //console.log(module);
-                            make.module(mod.name, mod.id, 'module', mod.position, '#'+mod.color);
-                        });
+                        if(data==='error') {
+                            message('Error al obtener los datos!');
+                        } else {
+                            info = JSON.parse(data);
+                            $.each(info,function(index, mod){
+                                make.module(mod.name, mod.id, 'module', mod.position, '#'+mod.color);
+                            });
+                        }
                     }
                 });
                 make.module('Sala de espera', 1, 'waiting-room', 'center', '#818878');
@@ -48,9 +52,16 @@
                 
                 //console.log(MODULES);
             });
+            var message = function(message) {
+                $('#message').html(message);
+                $('#message').fadeOut(1000, function() {
+                    $('#message').fadeIn(1000);
+                });
+            };
         </script>
     </head>
     <body>
         <div id="workspace"></div>
+        <div id="message">Mensaje de estados...</div>
     </body>
 </html>

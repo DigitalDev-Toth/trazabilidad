@@ -8,3 +8,14 @@ body {
     color: #fff;
     font: 300 100.1% "Helvetica Neue", Helvetica, "Arial Unicode MS", Arial, sans-serif;
 }
+#message {
+	width: 400px;
+	height: 10px;
+	position: fixed;
+	float: right;
+	bottom: 5px;
+	right: 5px;
+	color: #fff;
+	text-align: right;
+	display: none;
+}
