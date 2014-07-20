@@ -22,7 +22,7 @@
                 var w = $(window).width();
                 var h = $(window).height();
 
-                PAPER.setViewBox(0, 0, 1920, 997, true);
+                PAPER.setViewBox(0, 0, $(window).width(), $(window).height(), true);
                 PAPER.canvas.setAttribute("preserveAspectRatio", "xMinYMin");
                 
                 var make = new MAKER();
@@ -42,7 +42,7 @@
                 make.module('Informaciones', 106, 'info', 'bot-left', '#8ff', 1);
                 make.module('Informaciones', 107, 'info', 'bot-right', '#8ff', 1);                
                 
-                //console.log(MODULES);
+                console.log(screen.width);
             });
         </script>
     </head>
