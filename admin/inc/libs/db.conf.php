@@ -1,8 +1,8 @@
 <?
-$username = "postgres";
+$username = "juan";
 $password = "justgoon";
 $dbname = "traza";
-$hostname = "192.168.0.232";
+$hostname = "localhost";
 $port = "5432";
 
 //relative directory
