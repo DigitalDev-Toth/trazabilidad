@@ -13,8 +13,8 @@
         <script src="js/maker.js"></script>
         <script type="text/javascript">
             var MODULES = {},
-                PATIENTS = [],
-                PAPER;
+                PATIENTS = {},
+                PAPER = null;
             
             $(function () {
 
