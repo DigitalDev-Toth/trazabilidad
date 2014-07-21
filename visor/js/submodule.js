@@ -17,27 +17,27 @@ SUBMODULE.prototype.attrs = function () {
 }
 SUBMODULE.prototype.setElem = function () {
     switch (this.posModule) {
-        case 'top':
+        case 'superior':
             var x = MODULES[this.idModule].el.attrs.x + (MODULES[this.idModule].submoduleWidth * this.countSubmodules)+10,
                 y = MODULES[this.idModule].el.attrs.y + 4;
             this.el = PAPER.rect(x, y, 40, 60, 5).attr(this.attrs());
             break;
-        case 'left':
+        case 'izquierda':
             var x = MODULES[this.idModule].el.attrs.x + 4,
                 y = MODULES[this.idModule].el.attrs.y + (MODULES[this.idModule].submoduleWidth * this.countSubmodules)+10;
             this.el = PAPER.rect(x, y, 60, 40, 5).attr(this.attrs());
             break;
-        case 'bot':
+        case 'inferior':
             var x = MODULES[this.idModule].el.attrs.x + (MODULES[this.idModule].submoduleWidth * this.countSubmodules)+10,
                 y = MODULES[this.idModule].el.attrs.y + (MODULES[this.idModule].submoduleHeight - 60)-4;
             this.el = PAPER.rect(x, y, 40, 60, 5).attr(this.attrs());
             break;
-        case 'right':
+        case 'derecha':
             var x = MODULES[this.idModule].el.attrs.x + (MODULES[this.idModule].submoduleHeight - 60)-4,
                 y = MODULES[this.idModule].el.attrs.y + (MODULES[this.idModule].submoduleWidth * this.countSubmodules)+10;
             this.el = PAPER.rect(x, y, 60, 40, 5).attr(this.attrs());
             break;
-        case 'top-left':
+        case 'superior-izquierda':
             if (MODULES[this.idModule].totalSubmodules >= 4) {
                 if (this.countSubmodules < parseInt((MODULES[this.idModule].totalSubmodules / 2).toFixed(0))) {
                     var x = 5,

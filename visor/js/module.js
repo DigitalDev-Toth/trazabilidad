@@ -1,7 +1,8 @@
 var MODULE = function (name, id, type, pos, color, submodules, seats) {
     this.id = id;
+    this.submodules = {};
     if(submodules!=null) {
-        this.submodules = submodules;
+        //this.submodules = submodules;
         this.totalSubmodules = Object.keys(submodules).length;
     } else {
         this.seats = seats;
@@ -55,6 +56,7 @@ MODULE.prototype.setElem = function () { // element in DOM for module
             y = ($(window).height() / 2) - (300 / 2);
         this.el = PAPER.rect(x, y, 400, 300, 10).attr(this.attrs(this.color));
         text = PAPER.text(x+12, y+10, this.seats).attr(this.textAttrs(this.color));
+        text = PAPER.text(x+(400/2), y+(300-12), this.name).attr(this.textAttrs(this.color));
 
     } else {
         switch (this.pos) {
