@@ -1,19 +1,22 @@
-var MODULE = function (name, id, type, pos, color, totalSubmodules) {
+var MODULE = function (name, id, type, pos, color, submodules, seats) {
     this.id = id;
-    this.submodules = {};
-    this.totalSubmodules = totalSubmodules;
+    if(submodules!=null) {
+        this.submodules = submodules;
+        this.totalSubmodules = Object.keys(submodules).length;
+    } else {
+        this.seats = seats;
+    }
     this.pos = pos;
-    this.color = null;
+    this.color = color;
     this.el = null; // element in DOM for module
     this.type = type; // tothem, info, payment, billing, admission, box, waiting room
     this.name = name;
-    this.color = color;
     this.setElem();
     this.submoduleWidth;
     this.submoduleHeight;
     this.moduleRound;
 };
-// modules attributes for all moudles except waiting room
+// modules attributes for all modules
 MODULE.prototype.attrs = function (color) {
 	return {
         'fill': color,
@@ -50,7 +53,9 @@ MODULE.prototype.setElem = function () { // element in DOM for module
     if (this.type === 'waiting-room') {
         var x = ($(window).width() / 2) - (400 / 2),
             y = ($(window).height() / 2) - (300 / 2);
-        this.el = PAPER.rect(x, y, 400, 300, 10).attr(this.attrs(this.color));        
+        this.el = PAPER.rect(x, y, 400, 300, 10).attr(this.attrs(this.color));
+        text = PAPER.text(x+12, y+10, this.seats).attr(this.textAttrs(this.color));
+
     } else {
         switch (this.pos) {
             case 'superior':
