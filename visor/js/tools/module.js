@@ -2,8 +2,7 @@ var MODULE = function (name, id, type, pos, color, submodules, seats) {
     this.id = id;
     this.submodules = {};
     if(submodules !== null) {
-        //this.submodules = submodules;
-        this.totalSubmodules = Object.keys(submodules).length;
+        this.totalSubmodules = submodules.length;
     } else {
         this.seats = seats;
     }

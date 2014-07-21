@@ -91,7 +91,7 @@ SUBMODULE.prototype.setElem = function () {
                     this.text = PAPER.text(x + 50, y + 30, this.name).attr(this.textAttrs(MODULES[this.idModule].color));
                     this.text.rotate(45);
             } else if (MODULES[this.idModule].totalSubmodules === 1) {
-                var x = 0 + (40 * this.countSubmodules),
+                var x = 5 + (40 * this.countSubmodules),
                     y = 60;
                     this.el = PAPER.rect(x, y, 40, 60, 5).attr(this.attrs());
                     this.el.rotate(-45, 20, 30);
