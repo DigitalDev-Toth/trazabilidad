@@ -5,12 +5,13 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
         <title>FALP - Trazabilidad</title>
         <link rel="stylesheet" type="text/css" href="css/style.css">
-        <script src="js/jquery-2.1.1.min.js"></script>
-        <script src="js/bootstrap.min.js"></script>
-        <script src="js/raphael-min.js"></script>
-        <script src="js/module.js"></script>
-        <script src="js/submodule.js"></script>
-        <script src="js/maker.js"></script>
+        <script src="js/libs/jquery-2.1.1.min.js"></script>
+        <script src="js/libs/bootstrap.min.js"></script>
+        <script src="js/libs/raphael-min.js"></script>
+        <script src="js/tools/module.js"></script>
+        <script src="js/tools/submodule.js"></script>
+        <script src="js/tools/patient.js"></script>
+        <script src="js/tools/maker.js"></script>
         <script type="text/javascript">
             var MODULES = {},
                 PATIENTS = {},
