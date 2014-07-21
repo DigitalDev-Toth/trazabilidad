@@ -31,12 +31,12 @@
                 message('Conectando al servidor...');
                 $.get("../services/zoneInfo.php?zone=1",function(data,status){
                     message('Servidor conectado!. Esperando los datos...');
-                    if(status=='success') {
+                    if(status === 'success') {
                         if(data==='error') {
                             message('Error al obtener los datos!');
                         } else {
-                            var zone = {};
-                            info = JSON.parse(data);
+                            var zone = {},
+                                info = JSON.parse(data);
                             $.each(info, function(index, mod){
                                 if($.isPlainObject(mod)) {
                                     make.module(mod.name, mod.id, 'module', mod.position, '#'+mod.color, mod.submodules);

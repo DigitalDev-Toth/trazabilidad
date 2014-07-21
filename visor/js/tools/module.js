@@ -1,18 +1,22 @@
-var MODULE = function (name, id, type, pos, color, totalSubmodules) {
+var MODULE = function (name, id, type, pos, color, submodules, seats) {
     this.id = id;
     this.submodules = {};
-    this.totalSubmodules = totalSubmodules;
+    if(submodules !== null) {
+        //this.submodules = submodules;
+        this.totalSubmodules = Object.keys(submodules).length;
+    } else {
+        this.seats = seats;
+    }
     this.pos = pos;
-    this.color = null;
-    this.el = null; // element in DOM for module
-    this.type = type; // tothem, info, payment, billing, admission, box, waiting room
-    this.name = name;
     this.color = color;
+    this.el = null; // element in DOM for module
+    this.text = null; // element in DOM for text module
+    this.type = type;
+    this.name = name;
+    this.submoduleWidth = 40;
+    this.submoduleHeight = 90;
+    this.moduleRound = 5;
     this.setElem();
-    this.attrs();
-    this.submoduleWidth;
-    this.submoduleHeight;
-    this.moduleRound;
 };
 // modules attributes for all moudles except waiting room
 MODULE.prototype.attrs = function (color) {
@@ -45,53 +49,53 @@ MODULE.prototype.setColor = function (hex, lum) {
 	return rgb;
 };
 MODULE.prototype.setElem = function () { // element in DOM for module
-    this.submoduleWidth = 40;
-    this.submoduleHeight = 90;
-    this.moduleRound = 5;
     if (this.type === 'waiting-room') {
         var x = ($(window).width() / 2) - (400 / 2),
             y = ($(window).height() / 2) - (300 / 2);
-        this.el = PAPER.rect(x, y, 400, 300, 10).attr(this.attrs(this.color));        
+        this.el = PAPER.rect(x, y, 400, 300, 10).attr(this.attrs(this.color));
+        this.text = PAPER.text(x + 12, y + 10, this.seats).attr(this.textAttrs(this.color));
+        this.text = PAPER.text(x + (400 / 2), y + (300 - 12), this.name).attr(this.textAttrs(this.color));
+
     } else {
         switch (this.pos) {
-            case 'top':
+            case 'superior':
                 var w = (this.totalSubmodules * this.submoduleWidth) + 20,
-                    x = ($(window).width() / 2) - (w / 2);
+                    x = ($(window).width() / 2) - (w / 2) ;
                 this.el = PAPER.rect(x, 5, w, this.submoduleHeight, this.moduleRound).attr(this.attrs(this.color));
-                text = PAPER.text(x + (w / 2), this.submoduleHeight - 4, this.name).attr(this.textAttrs(this.color));
+                this.text = PAPER.text(x + (w / 2), this.submoduleHeight - 4, this.name).attr(this.textAttrs(this.color));
                 break;
-            case 'left':
+            case 'izquierda':
                 var h = (this.totalSubmodules * this.submoduleWidth) + 20,
                     y = ($(window).height() / 2) - (h / 2);
                 this.el = PAPER.rect(5, y, this.submoduleHeight, h, this.moduleRound).attr(this.attrs(this.color));
-                text = PAPER.text(this.submoduleHeight - 4, y + (h / 2), this.name).attr(this.textAttrs(this.color));
-                text.rotate(-90);
+                this.text = PAPER.text(this.submoduleHeight - 4, y + (h / 2), this.name).attr(this.textAttrs(this.color));
+                this.text.rotate(-90);
                 break;
-            case 'bot':
+            case 'inferior':
                 var w = (this.totalSubmodules * this.submoduleWidth) + 20,
                     x = ($(window).width() / 2) - (w / 2),
                     y = $(window).height() - 95;
                 this.el = PAPER.rect(x, y, w, this.submoduleHeight, this.moduleRound).attr(this.attrs(this.color));
-                text = PAPER.text(x + (w / 2), y + 10, this.name).attr(this.textAttrs(this.color));
+                this.text = PAPER.text(x + (w / 2), y + 10, this.name).attr(this.textAttrs(this.color));
                 break;
-            case 'right':
+            case 'derecha':
                 var h = (this.totalSubmodules * this.submoduleWidth) + 20,
                     x = $(window).width() - 95,
                     y = ($(window).height() / 2) - (h / 2);
                 this.el = PAPER.rect(x, y, this.submoduleHeight, h, this.moduleRound).attr(this.attrs(this.color));
-                text = PAPER.text(x + 10, y + (h / 2), this.name).attr(this.textAttrs(this.color));
-                text.rotate(90);
+                this.text = PAPER.text(x + 10, y + (h / 2), this.name).attr(this.textAttrs(this.color));
+                this.text.rotate(90);
                 break;
-            case 'top-left':
+            case 'superior-izquierda':
                 if (this.totalSubmodules >= 4) {
                     if ((this.totalSubmodules % 2) === 0) {
-                        var w = 100 + (40 * (this.totalSubmodules / 2)),
-                            h = 100 + (40 * (this.totalSubmodules / 2));
+                        var w = 110 + (40 * (this.totalSubmodules / 2)),
+                            h = 110 + (40 * (this.totalSubmodules / 2));
                     } else {
                         var totalH = parseInt((this.totalSubmodules / 2).toFixed(0)),
                             totalW = totalH - 1,
-                            w = 100 + (40 * totalW),
-                            h = 100 + (40 * totalH);
+                            w = 110 + (40 * totalW),
+                            h = 110 + (40 * totalH);
                     }                    
                     var p = 'M5,5L'+ w +',5L'+ w +',100L100,100L100,'+ h +'L5,'+ h +'Z';
                 } else {
@@ -100,10 +104,10 @@ MODULE.prototype.setElem = function () { // element in DOM for module
                         p = 'M5,5L'+ w +',5L5,'+ h +'Z';
                 }
                 this.el = PAPER.path(p).attr(this.attrs(this.color));
-                text = PAPER.text((w / 2) - 4, (h / 2) - 4, this.name).attr(this.textAttrs(this.color));
-                text.rotate(-45);
+                this.text = PAPER.text((w / 2) - 4, (h / 2) - 4, this.name).attr(this.textAttrs(this.color));
+                this.text.rotate(-45);
                 break;
-            case 'top-right':   
+            case 'superior-derecha':                
                 if (this.totalSubmodules >= 4) {
                     if ((this.totalSubmodules % 2) === 0) {
                         var w = 100 + (40 * (this.totalSubmodules / 2)) + 5,
@@ -126,7 +130,7 @@ MODULE.prototype.setElem = function () { // element in DOM for module
                 }                
                 this.el = PAPER.path(p).attr(this.attrs(this.color));
                 break;
-            case 'bot-left':
+            case 'inferior-izquierda':
                 if (this.totalSubmodules >= 4) {
                     if ((this.totalSubmodules % 2) === 0) {
                         var w = 100 + (40 * (this.totalSubmodules / 2)),
@@ -149,7 +153,7 @@ MODULE.prototype.setElem = function () { // element in DOM for module
                 }      
                 this.el = PAPER.path(p).attr(this.attrs(this.color));
                 break;
-            case 'bot-right':
+            case 'inferior-derecha':
                 if (this.totalSubmodules >= 4) {
                     if ((this.totalSubmodules % 2) === 0) {
                         var w = 100 + (40 * (this.totalSubmodules / 2)) + 5,
@@ -177,5 +181,5 @@ MODULE.prototype.setElem = function () { // element in DOM for module
                 this.el = PAPER.path(p).attr(this.attrs(this.color));
                 break;
         }
-    }    
+    }  
 };
