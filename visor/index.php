@@ -28,26 +28,42 @@
                 
                 var make = new MAKER();
 
-                $.get("../services/zoneInfo.php?zone=1",function(data, status){
-                    if(status === 'success') {
-                        console.log(JSON.parse(data));
+                message('Conectando al servidor...');
+                $.get("../services/zoneInfo.php?zone=1",function(data,status){
+                    message('Servidor conectado!. Esperando los datos...');
+                    if(status=='success') {
+                        if(data==='error') {
+                            message('Error al obtener los datos!');
+                        } else {
+                            var zone = {};
+                            info = JSON.parse(data);
+                            $.each(info, function(index, mod){
+                                if($.isPlainObject(mod)) {
+                                    make.module(mod.name, mod.id, 'module', mod.position, '#'+mod.color, mod.submodules);
+                                } else {
+                                    zone[index] = mod;
+                                }
+                            });
+                            make.module(zone.name, zone.id, 'waiting-room', 'center', '#818878', null, zone.seats);
+                            message('Objetos creados');
+                        }
                     }
                 });
-                make.module('Sala de espera', 1, 'waiting-room', 'center', '#818878');
-                make.module('Informaciones', 100, 'info', 'top', '#8f8', 3);
-                make.module('tothem', 101, 'payment', 'left', '#f88', 5);
-                make.module('Consultas', 102, 'info', 'bot', '#88f', 18);
-                make.module('Admision', 103, 'info', 'right', '#ff8', 7);
-                make.module('Facturacion', 104, 'info', 'top-left', '#8ff', 3);
-                make.module('Informaciones', 105, 'info', 'top-right', '#8ff', 3);
-                make.module('Informaciones', 106, 'info', 'bot-left', '#8ff', 1);
-                make.module('Informaciones', 107, 'info', 'bot-right', '#8ff', 1);                
-                
-                console.log(screen.width);
             });
+            
+            message = function (message) {
+                $('#message').fadeOut(500, function() {
+                    $('#message').html(message);
+                    $('#message').fadeIn(1000);
+                });
+                setTimeout(function() {
+                    $('#message').fadeOut(500);
+                }, 5000);
+            };
         </script>
     </head>
     <body>
         <div id="workspace"></div>
+        <div id="message">Mensaje de estados...</div>
     </body>
 </html>
