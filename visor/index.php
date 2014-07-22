@@ -28,7 +28,7 @@
                 
                 var make = new MAKER();
 
-                message('Conectando al servidor...');
+                message('Conectando al servidor!...');
                 $.get("../services/zoneInfo.php?zone=1",function(data,status){
                     message('Servidor conectado!. Esperando los datos...');
                     if(status === 'success') {
