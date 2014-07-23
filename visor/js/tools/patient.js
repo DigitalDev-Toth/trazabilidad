@@ -1,9 +1,10 @@
-var PATIENT = function () {
-    this.id = null;
+var PATIENT = function (id) {
+    this.id = id;
     this.zone = null;
     this.module = null;
     this.submodule = null;
     this.waitingFor = null;
+    this.seat = null;
     this.attentionNum = null;
     this.rut = null;
     this.name = null; 
@@ -20,9 +21,10 @@ PATIENT.prototype.setElem = function () {
 PATIENT.prototype.goToTothem = function () {
     this.el.animate({cx: 70, cy: 70}, 1000);   
 };
-PATIENT.prototype.goToWaitingRoom = function () {
-    var x = MODULES['wr'].el.attrs.x + 50,
-        y = MODULES['wr'].el.attrs.y + 50;
+PATIENT.prototype.goToWaitingRoom = function (idPatient) {
+    var x = MODULES['wr'].seatsPos[this.seat].x,
+        y = MODULES['wr'].seatsPos[this.seat].y;
+    MODULES['wr'].seatsPos[this.seat].patient = idPatient;
     this.el.animate({cx: x, cy: y}, 1000);   
 };
 PATIENT.prototype.goTo = function (idModule, idSubmodule) {
@@ -40,6 +42,32 @@ PATIENT.prototype.goTo = function (idModule, idSubmodule) {
             }              
             this.el.animate({cx: x, cy: y}, 1000);   
             break;
+        case 'path':
+            if (MODULES[idModule].pos === 'inferior-izquierda') {
+                if (MODULES[idModule].totalSubmodules <= 3) {
+                    var px = MODULES[idModule].submodules[idSubmodule].el.attrs.x + (MODULES[idModule].submodules[idSubmodule].el.attrs.width / 2) + 5,
+                        py = MODULES[idModule].submodules[idSubmodule].el.attrs.y + (MODULES[idModule].submodules[idSubmodule].el.attrs.height / 2) + 5,
+                        x = -((px * Math.cos(Math.PI * -(7 / 4))) - (py * Math.sin(Math.PI * -(7 / 4)))) + 15,
+                        y = -((px * Math.sin(Math.PI * -(7 / 4))) + (py * Math.cos(Math.PI * -(7 / 4)))) + 65;
+                }
+            } else if (MODULES[idModule].pos === 'inferior-derecha') {
+                if (MODULES[idModule].totalSubmodules <= 3) {
+                    var px = MODULES[idModule].submodules[idSubmodule].el.attrs.x + (MODULES[idModule].submodules[idSubmodule].el.attrs.width / 2) + 5,
+                        py = MODULES[idModule].submodules[idSubmodule].el.attrs.y + (MODULES[idModule].submodules[idSubmodule].el.attrs.height / 2) + 5,
+                        x = -((px * Math.cos(Math.PI * (7 / 4))) - (py * Math.sin(Math.PI * (7 / 4)))) + 60,
+                        y = -((px * Math.sin(Math.PI * (7 / 4))) + (py * Math.cos(Math.PI * (7 / 4)))) + 30;
+                } else {
+                    if (MODULES[idModule].submodules[idSubmodule].el.attrs.width < MODULES[idModule].submodules[idSubmodule].el.attrs.height) {
+                        var x = MODULES[idModule].submodules[idSubmodule].el.attrs.x + (MODULES[idModule].submodules[idSubmodule].el.attrs.width / 2) + 5,
+                            y = MODULES[idModule].submodules[idSubmodule].el.attrs.y + (MODULES[idModule].submodules[idSubmodule].el.attrs.height / 2) - 5;
+                    } else {
+                        var x = MODULES[idModule].submodules[idSubmodule].el.attrs.x + (MODULES[idModule].submodules[idSubmodule].el.attrs.width / 2) - 5,
+                            y = MODULES[idModule].submodules[idSubmodule].el.attrs.y + (MODULES[idModule].submodules[idSubmodule].el.attrs.height / 2) + 5;
+                    }
+                }
+            } 
+            this.el.animate({cx: x, cy: y}, 1000);   
+            break;
     }
-    
+    MODULES['wr'].seatsPos[this.seat].patient = null;
 };
