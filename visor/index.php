@@ -23,7 +23,7 @@
                 var w = $(window).width();
                 var h = $(window).height();
 
-                PAPER.setViewBox(0, 0, 1920, 997, true);
+                PAPER.setViewBox(0, 0, w, h, true);
                 PAPER.canvas.setAttribute("preserveAspectRatio", "xMinYMin");
                 
                 var make = new MAKER();
@@ -82,8 +82,6 @@
                             setTimeout(function () {
                                 make.goTo(8, null, null);
                                 make.goTo(6, 2, 4);
-                                make.goTo(1, 2, 2);
-                                make.goTo(4, 7, 16);
                             }, 16000);
                             console.log(PATIENTS);
                         }

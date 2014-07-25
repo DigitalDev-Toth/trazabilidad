@@ -51,8 +51,8 @@ MODULE.prototype.setColor = function (hex, lum) {
 };
 MODULE.prototype.setElem = function () { // element in DOM for module
     if (this.type === 'waiting-room') {
-        var x = (1920 / 2) - (400 / 2),
-            y = (997 / 2) - (300 / 2);
+        var x = ($(window).width() / 2) - (400 / 2),
+            y = ($(window).height() / 2) - (300 / 2);
         this.el = PAPER.rect(x, y, 400, 300, 10).attr(this.attrs(this.color));
         this.text = PAPER.text(x + 12, y + 10, this.seats).attr(this.textAttrs(this.color));
         this.text = PAPER.text(x + (400 / 2), y + (300 - 12), this.name).attr(this.textAttrs(this.color));        
@@ -60,30 +60,30 @@ MODULE.prototype.setElem = function () { // element in DOM for module
         switch (this.pos) {
             case 'superior':
                 var w = (this.totalSubmodules * this.submoduleWidth) + 20,
-                    x = (1920 / 2) - (w / 2) ;
+                    x = ($(window).width() / 2) - (w / 2) ;
                 this.el = PAPER.rect(x, 5, w, this.submoduleHeight, this.moduleRound).attr(this.attrs(this.color));
-                this.text = PAPER.text(x + (w / 2), this.submoduleHeight - 4, this.name).attr(this.textAttrs(this.color));
+                this.text = PAPER.text(x + (w / 2), this.submoduleHeight + 15, this.name).attr(this.textAttrs(this.color));
                 break;
             case 'izquierda':
                 var h = (this.totalSubmodules * this.submoduleWidth) + 20,
-                    y = (997 / 2) - (h / 2);
+                    y = ($(window).height() / 2) - (h / 2);
                 this.el = PAPER.rect(5, y, this.submoduleHeight, h, this.moduleRound).attr(this.attrs(this.color));
-                this.text = PAPER.text(this.submoduleHeight - 4, y + (h / 2), this.name).attr(this.textAttrs(this.color));
+                this.text = PAPER.text(this.submoduleHeight + 15, y + (h / 2), this.name).attr(this.textAttrs(this.color));
                 this.text.rotate(-90);
                 break;
             case 'inferior':
                 var w = (this.totalSubmodules * this.submoduleWidth) + 20,
-                    x = (1920 / 2) - (w / 2),
-                    y = 997 - 95;
+                    x = ($(window).width() / 2) - (w / 2),
+                    y = $(window).height() - 95;
                 this.el = PAPER.rect(x, y, w, this.submoduleHeight, this.moduleRound).attr(this.attrs(this.color));
-                this.text = PAPER.text(x + (w / 2), y + 10, this.name).attr(this.textAttrs(this.color));
+                this.text = PAPER.text(x + (w / 2), y - 15, this.name).attr(this.textAttrs(this.color));
                 break;
             case 'derecha':
                 var h = (this.totalSubmodules * this.submoduleWidth) + 20,
-                    x = 1920 - 95,
-                    y = (997 / 2) - (h / 2);
+                    x = $(window).width() - 95,
+                    y = ($(window).height() / 2) - (h / 2);
                 this.el = PAPER.rect(x, y, this.submoduleHeight, h, this.moduleRound).attr(this.attrs(this.color));
-                this.text = PAPER.text(x + 10, y + (h / 2), this.name).attr(this.textAttrs(this.color));
+                this.text = PAPER.text(x - 15, y + (h / 2), this.name).attr(this.textAttrs(this.color));
                 this.text.rotate(90);
                 break;
             case 'superior-izquierda':
@@ -104,7 +104,7 @@ MODULE.prototype.setElem = function () { // element in DOM for module
                         p = 'M5,5L'+ w +',5L5,'+ h +'Z';
                 }
                 this.el = PAPER.path(p).attr(this.attrs(this.color));
-                this.text = PAPER.text((w / 2) - 4, (h / 2) - 4, this.name).attr(this.textAttrs(this.color));
+                this.text = PAPER.text((w / 2) + 15, (h / 2) + 15, this.name).attr(this.textAttrs(this.color));
                 this.text.rotate(-45);
                 break;
             case 'superior-derecha':                
@@ -118,14 +118,14 @@ MODULE.prototype.setElem = function () { // element in DOM for module
                             w = 100 + (40 * totalW) + 5,
                             h = 100 + (40 * totalH);
                     }  
-                    var bx = 1920 - 5,
-                        fx = 1920 - w,
+                    var bx = $(window).width() - 5,
+                        fx = $(window).width() - w,
                         p = 'M'+ bx +',5L'+ fx +',5L'+ fx +',100L'+ (bx - 100) +',100L'+ (bx - 100) +','+ h +'L'+ bx +','+ h +'Z';
                 } else {
                     var w = 200,
                         h = 200,
-                        bx = 1920 - 5,
-                        fx = 1920 - w,
+                        bx = $(window).width() - 5,
+                        fx = $(window).width() - w,
                         p = 'M'+ bx +',5L'+ fx +',5L'+ bx +','+ h +'Z';
                 }                
                 this.el = PAPER.path(p).attr(this.attrs(this.color));
@@ -141,14 +141,14 @@ MODULE.prototype.setElem = function () { // element in DOM for module
                             w = 100 + (40 * totalW),
                             h = 100 + (40 * totalH) + 5;
                     }  
-                    var by = 997 - 5,
-                        fy = 997 + 5,
+                    var by = $(window).height() - 5,
+                        fy = $(window).height() + 5,
                         p = 'M5,'+ by +'L'+ w +','+ by +'L'+ w +','+ (by - 100) +'L100,'+ (by - 100) +'L100,'+ (fy - h) +'L5,'+ (fy - h) +'Z';
                 } else {
                     var w = 200,
                         h = 200,
-                        by = 997 - 5,
-                        fy = 997 - h,
+                        by = $(window).height() - 5,
+                        fy = $(window).height() - h,
                         p = 'M5,'+ by +'L'+ w +','+ by +'L5,'+ fy +'Z';
                 }      
                 this.el = PAPER.path(p).attr(this.attrs(this.color));
@@ -164,18 +164,18 @@ MODULE.prototype.setElem = function () { // element in DOM for module
                             w = 100 + (40 * totalW) + 5,
                             h = 100 + (40 * totalH);
                     }  
-                    var bx = 1920 - 5,
-                        by = 997 - 5,
-                        fx = 1920 - w,
-                        fy = 997 - h,
+                    var bx = $(window).width() - 5,
+                        by = $(window).height() - 5,
+                        fx = $(window).width() - w,
+                        fy = $(window).height() - h,
                         p = 'M'+ bx +','+ by +'L'+ fx +','+ by +'L'+ fx +','+ (by - 100) + 'L'+ (bx - 100) +','+ (by - 100) +'L'+ (bx - 100) +','+ fy +'L'+ bx +','+ fy +'Z';
                 } else {
                     var w = 200,
                         h = 200,
-                        bx = 1920 - 5,
-                        by = 997 - 5,
-                        fx = 1920 - w,
-                        fy = 997 - h,
+                        bx = $(window).width() - 5,
+                        by = $(window).height() - 5,
+                        fx = $(window).width() - w,
+                        fy = $(window).height() - h,
                         p = 'M'+ bx +','+ by +'L'+ fx +','+ by +'L'+ bx +','+ fy +'Z';
                 }                    
                 this.el = PAPER.path(p).attr(this.attrs(this.color));
