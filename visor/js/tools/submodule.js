@@ -42,29 +42,29 @@ SUBMODULE.prototype.setElem = function () {
         case 'superior':
             var x = MODULES[this.idModule].el.attrs.x + (MODULES[this.idModule].submoduleWidth * this.countSubmodules) + 10,
                 y = MODULES[this.idModule].el.attrs.y + 4;
-                this.el = PAPER.rect(x, y, 40, 60, 5).attr(this.attrs());
-                this.text = PAPER.text(x + 8, y + 30, this.name).attr(this.textAttrs(MODULES[this.idModule].color));
-                this.text.rotate(-90);
+            this.el = PAPER.rect(x, y, 40, 60, 5).attr(this.attrs());
+            this.text = PAPER.text(x + 8, y + 30, this.name).attr(this.textAttrs(MODULES[this.idModule].color));
+            this.text.rotate(-90);
             break;
         case 'izquierda':
             var x = MODULES[this.idModule].el.attrs.x + 4,
                 y = MODULES[this.idModule].el.attrs.y + (MODULES[this.idModule].submoduleWidth * this.countSubmodules) + 10;
-                this.el = PAPER.rect(x, y, 60, 40, 5).attr(this.attrs());
-                this.text = PAPER.text(x + 30, y + 8, this.name).attr(this.textAttrs(MODULES[this.idModule].color));
-                //text.rotate(-90);
+            this.el = PAPER.rect(x, y, 60, 40, 5).attr(this.attrs());
+            this.text = PAPER.text(x + 30, y + 8, this.name).attr(this.textAttrs(MODULES[this.idModule].color));
+            //text.rotate(-90);
             break;
         case 'inferior':
             var x = MODULES[this.idModule].el.attrs.x + (MODULES[this.idModule].submoduleWidth * this.countSubmodules) + 10,
                 y = MODULES[this.idModule].el.attrs.y + (MODULES[this.idModule].submoduleHeight - 60) - 4;
-                this.el = PAPER.rect(x, y, 40, 60, 5).attr(this.attrs());
-                this.text = PAPER.text(x + 8, y + 30, this.name).attr(this.textAttrs(MODULES[this.idModule].color));
-                this.text.rotate(-90);
+            this.el = PAPER.rect(x, y, 40, 60, 5).attr(this.attrs());
+            this.text = PAPER.text(x + 8, y + 30, this.name).attr(this.textAttrs(MODULES[this.idModule].color));
+            this.text.rotate(-90);
             break;
         case 'derecha':
             var x = MODULES[this.idModule].el.attrs.x + (MODULES[this.idModule].submoduleHeight - 60) - 4,
                 y = MODULES[this.idModule].el.attrs.y + (MODULES[this.idModule].submoduleWidth * this.countSubmodules) + 10;
-                this.el = PAPER.rect(x, y, 60, 40, 5).attr(this.attrs());
-                this.text = PAPER.text(x + 30, y + 8, this.name).attr(this.textAttrs(MODULES[this.idModule].color));
+            this.el = PAPER.rect(x, y, 60, 40, 5).attr(this.attrs());
+            this.text = PAPER.text(x + 30, y + 8, this.name).attr(this.textAttrs(MODULES[this.idModule].color));
                 //text.rotate(-90);
             break;
         case 'superior-izquierda':
@@ -79,24 +79,36 @@ SUBMODULE.prototype.setElem = function () {
                     this.el = PAPER.rect(x, y, 40, 60, 5).attr(this.attrs());                    
                 }
             } else if (MODULES[this.idModule].totalSubmodules === 3) {
-                var x = -30 + (40 * this.countSubmodules),
-                    y = 60;
+                var w = 5,
+                    h = 5,
+                    px = w,
+                    py = h,
+                    x = ((px * Math.cos(Math.PI * -(1 / 4))) - (py * Math.sin(Math.PI * -(1 / 4)))) + 40 - (40 * this.countSubmodules),
+                    y = ((px * Math.sin(Math.PI * -(1 / 4))) + (py * Math.cos(Math.PI * -(1 / 4)))) + 64;
                 this.el = PAPER.rect(x, y, 40, 60, 5).attr(this.attrs());
                 this.el.rotate(-45, 20, 30);
             } else if (MODULES[this.idModule].totalSubmodules === 2) {
-                var x = -10 + (40 * this.countSubmodules),
-                    y = 60;
-                    this.el = PAPER.rect(x, y, 40, 60, 5).attr(this.attrs());
-                    this.el.rotate(-45, 20, 30);
-                    this.text = PAPER.text(x + 50, y + 30, this.name).attr(this.textAttrs(MODULES[this.idModule].color));
-                    this.text.rotate(45);
+                var w = 5,
+                    h = 5,
+                    px = w,
+                    py = h,
+                    x = ((px * Math.cos(Math.PI * -(1 / 4))) - (py * Math.sin(Math.PI * -(1 / 4)))) + 20 - (40 * this.countSubmodules),
+                    y = ((px * Math.sin(Math.PI * -(1 / 4))) + (py * Math.cos(Math.PI * -(1 / 4)))) + 64;
+                this.el = PAPER.rect(x, y, 40, 60, 5).attr(this.attrs());
+                this.el.rotate(-45, 20, 30);
+                this.text = PAPER.text(x + 50, y + 30, this.name).attr(this.textAttrs(MODULES[this.idModule].color));
+                this.text.rotate(45);
             } else if (MODULES[this.idModule].totalSubmodules === 1) {
-                var x = 5 + (40 * this.countSubmodules),
-                    y = 60;
-                    this.el = PAPER.rect(x, y, 40, 60, 5).attr(this.attrs());
-                    this.el.rotate(-45, 20, 30);
-                    this.text = PAPER.text(x + 52, y + 20, this.name).attr(this.textAttrs(MODULES[this.idModule].color));
-                    this.text.rotate(45);
+                var w = 5,
+                    h = 5,
+                    px = w,
+                    py = h,
+                    x = ((px * Math.cos(Math.PI * -(1 / 4))) - (py * Math.sin(Math.PI * -(1 / 4)))) - (40 * this.countSubmodules),
+                    y = ((px * Math.sin(Math.PI * -(1 / 4))) + (py * Math.cos(Math.PI * -(1 / 4)))) + 64;
+                this.el = PAPER.rect(x, y, 40, 60, 5).attr(this.attrs());
+                this.el.rotate(-45, 20, 30);
+                this.text = PAPER.text(x + 52, y + 20, this.name).attr(this.textAttrs(MODULES[this.idModule].color));
+                this.text.rotate(45);
             }          
             break;   
         case 'superior-derecha':
@@ -114,18 +126,29 @@ SUBMODULE.prototype.setElem = function () {
                 }
             } else if (MODULES[this.idModule].totalSubmodules === 3) {
                 var w = $(window).width() - 5,
-                    x = 1280 + (40 * this.countSubmodules),
-                    y = -1270;
+                    h = 5,
+                    px = w - 150,
+                    py = h - 100,
+                    x = ((px * Math.cos(Math.PI * (1 / 4))) - (py * Math.sin(Math.PI * (1 / 4)))) + 46 - (40 * this.countSubmodules),
+                    y = -((px * Math.sin(Math.PI * (1 / 4))) + (py * Math.cos(Math.PI * (1 / 4)))) - 86;
                 this.el = PAPER.rect(x, y, 40, 60, 5).attr(this.attrs());
                 this.el.rotate(45, 20, 30);
             } else if (MODULES[this.idModule].totalSubmodules === 2) {
-                var x = 1300 + (40 * this.countSubmodules),
-                    y = -1270;
+                var w = $(window).width() - 5,
+                    h = 5,
+                    px = w - 150,
+                    py = h - 100,
+                    x = ((px * Math.cos(Math.PI * (1 / 4))) - (py * Math.sin(Math.PI * (1 / 4)))) + 26 - (40 * this.countSubmodules),
+                    y = -((px * Math.sin(Math.PI * (1 / 4))) + (py * Math.cos(Math.PI * (1 / 4)))) - 86;
                 this.el = PAPER.rect(x, y, 40, 60, 5).attr(this.attrs());
                 this.el.rotate(45, 20, 30);
             } else if (MODULES[this.idModule].totalSubmodules === 1) {
-                var x = 1320 + (40 * this.countSubmodules),
-                    y = -1270;
+                var w = $(window).width() - 5,
+                    h = 5,
+                    px = w - 150,
+                    py = h - 100,
+                    x = ((px * Math.cos(Math.PI * (1 / 4))) - (py * Math.sin(Math.PI * (1 / 4)))) + 6 - (40 * this.countSubmodules),
+                    y = -((px * Math.sin(Math.PI * (1 / 4))) + (py * Math.cos(Math.PI * (1 / 4)))) - 86;
                 this.el = PAPER.rect(x, y, 40, 60, 5).attr(this.attrs());
                 this.el.rotate(45, 20, 30);
             }     
@@ -144,18 +167,30 @@ SUBMODULE.prototype.setElem = function () {
                     this.el = PAPER.rect(x, y, 40, 60, 5).attr(this.attrs());                    
                 }
             } else if (MODULES[this.idModule].totalSubmodules === 3) {
-                var x = -710 + (40 * this.countSubmodules),
-                    y = -605;
+                var w = 5,
+                    h = $(window).height() - 5,
+                    px = w - 150,
+                    py = h - 100,
+                    x = -((px * Math.cos(Math.PI * (7 / 4))) - (py * Math.sin(Math.PI * (7 / 4)))) - 102 - (40 * this.countSubmodules),
+                    y = -((px * Math.sin(Math.PI * (7 / 4))) + (py * Math.cos(Math.PI * (7 / 4)))) + 134;
                 this.el = PAPER.rect(x, y, 40, 60, 5).attr(this.attrs());
                 this.el.rotate(-135, 20, 30);
             } else if (MODULES[this.idModule].totalSubmodules === 2) {
-                var x = -690 + (40 * this.countSubmodules),
-                    y = -605;
+                var w = 5,
+                    h = $(window).height() - 5,
+                    px = w - 150,
+                    py = h - 100,
+                    x = -((px * Math.cos(Math.PI * (7 / 4))) - (py * Math.sin(Math.PI * (7 / 4)))) - 122 - (40 * this.countSubmodules),
+                    y = -((px * Math.sin(Math.PI * (7 / 4))) + (py * Math.cos(Math.PI * (7 / 4)))) + 134;
                 this.el = PAPER.rect(x, y, 40, 60, 5).attr(this.attrs());
                 this.el.rotate(-135, 20, 30);
             } else if (MODULES[this.idModule].totalSubmodules === 1) {
-                var x = -675 + (40 * this.countSubmodules),
-                    y = -605;
+                var w = 5,
+                    h = $(window).height() - 5,
+                    px = w - 150,
+                    py = h - 100,
+                    x = -((px * Math.cos(Math.PI * (7 / 4))) - (py * Math.sin(Math.PI * (7 / 4)))) - 142 - (40 * this.countSubmodules),
+                    y = -((px * Math.sin(Math.PI * (7 / 4))) + (py * Math.cos(Math.PI * (7 / 4)))) + 134;
                 this.el = PAPER.rect(x, y, 40, 60, 5).attr(this.attrs());
                 this.el.rotate(-135, 20, 30);
             }      
@@ -181,18 +216,29 @@ SUBMODULE.prototype.setElem = function () {
                 }
             } else if (MODULES[this.idModule].totalSubmodules === 3) {
                 var w = $(window).width() - 5,
-                    x = -700 + (40 * this.countSubmodules),
-                    y = -1935;
+                    h = $(window).height() - 5,
+                    px = w - 150,
+                    py = h - 100,
+                    x = -((px * Math.cos(Math.PI * -(7 / 4))) - (py * Math.sin(Math.PcI * -(7 / 4)))) - 2 - (40 * this.countSubmodules),
+                    y = -((px * Math.sin(Math.PI * -(7 / 4))) + (py * Math.cos(Math.PI * -(7 / 4)))) - 50;
                 this.el = PAPER.rect(x, y, 40, 60, 5).attr(this.attrs());
                 this.el.rotate(135, 20, 30);
             } else if (MODULES[this.idModule].totalSubmodules === 2) {
-                var x = -680 + (40 * this.countSubmodules),
-                    y = -1935;
+                var w = $(window).width() - 5,
+                    h = $(window).height() - 5,
+                    px = w - 150,
+                    py = h - 100,
+                    x = -((px * Math.cos(Math.PI * -(7 / 4))) - (py * Math.sin(Math.PI * -(7 / 4)))) - 22 - (40 * this.countSubmodules),
+                    y = -((px * Math.sin(Math.PI * -(7 / 4))) + (py * Math.cos(Math.PI * -(7 / 4)))) - 50;
                 this.el = PAPER.rect(x, y, 40, 60, 5).attr(this.attrs());
                 this.el.rotate(135, 20, 30);
             } else if (MODULES[this.idModule].totalSubmodules === 1) {
-                var x = -660 + (40 * this.countSubmodules),
-                    y = -1935;
+                var w = $(window).width() - 5,
+                    h = $(window).height() - 5,
+                    px = w - 150,
+                    py = h - 100,
+                    x = -((px * Math.cos(Math.PI * -(7 / 4))) - (py * Math.sin(Math.PI * -(7 / 4)))) - 42 - (40 * this.countSubmodules),
+                    y = -((px * Math.sin(Math.PI * -(7 / 4))) + (py * Math.cos(Math.PI * -(7 / 4)))) - 50;
                 this.el = PAPER.rect(x, y, 40, 60, 5).attr(this.attrs());
                 this.el.rotate(135, 20, 30);
             }    
