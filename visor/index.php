@@ -27,6 +27,7 @@
                 PAPER.canvas.setAttribute("preserveAspectRatio", "xMinYMin");
                 
                 var make = new MAKER();
+<<<<<<< HEAD
 
                 message('Conectando al servidor...');
                 $.get("../services/zoneInfo.php?zone=1",function(data,status){
@@ -90,12 +91,41 @@
             });
             
             message = function (message) {
+=======
+                message('Conectando al servidor...');
+                $.get("../services/zoneInfo.php?zone=1",function(data,status){
+                    message('Servidor conectado!. Esperando los datos...');
+                    if(status=='success') {
+                        if(data==='error') {
+                            message('Error al obtener los datos!');
+                        } else {
+                            var zone = {};
+                            info = JSON.parse(data);
+                            $.each(info, function(index, mod){
+                                if($.isPlainObject(mod)) {
+                                    make.module(mod.name, mod.id, 'module', mod.position, '#'+mod.color, mod.submodules);
+                                } else {
+                                    zone[index] = mod;
+                                }
+                            });
+                            make.module(zone.name, zone.id, 'waiting-room', 'center', '#818878', null, zone.seats);
+                            message('Objetos creados');
+                        }
+                    }
+                });
+            });
+            message = function(message) {
+>>>>>>> 4f093acfc79f5ac08d754e50f66e87374801ab3c
                 $('#message').fadeOut(500, function() {
                     $('#message').html(message);
                     $('#message').fadeIn(1000);
                 });
                 setTimeout(function() {
+<<<<<<< HEAD
                     $('#message').fadeOut(500);
+=======
+                      $('#message').fadeOut(500);
+>>>>>>> 4f093acfc79f5ac08d754e50f66e87374801ab3c
                 }, 5000);
             };
         </script>

@@ -16,15 +16,25 @@ if($zoneId) {
 	$mRows = $module->doSql($sql);
 	if($mRows) {
 		do {
+<<<<<<< HEAD
 			$data['modules'][$j] = array("id"=>$mRows['id'], "name"=>$mRows['name'], "max_wait"=>$mRows['max_wait'], "position"=>$mRows['position'], "max_wait"=>$mRows['max_wait'], 
 													"color"=>$mRows['color'], "shape"=>$mRows['shape']);
 			$sql = "SELECT s.id, s.name, s.state AS submodule_state, u.username, u.state AS user_state FROM submodule AS s LEFT JOIN users AS u ON u.id=s.users WHERE s.module=".$mRows['id']." ORDER BY s.id";
+=======
+			$data[$j] = array("id"=>$mRows['id'], "name"=>$mRows['name'], "max_wait"=>$mRows['max_wait'], "position"=>$mRows['position'], "max_wait"=>$mRows['max_wait'], 
+													"color"=>$mRows['color'], "shape"=>$mRows['shape']);
+			$sql = "SELECT s.id, s.name, s.state AS submodule_state, u.username, u.state AS user_state FROM submodule AS s LEFT JOIN users AS u ON u.id=s.users WHERE s.module=".$mRows['id'];
+>>>>>>> 4f093acfc79f5ac08d754e50f66e87374801ab3c
 			//echo $sql;
 			$sRows = $submodule->doSql($sql);
 			if($sRows) {
 				$k = 0;
 				do {
+<<<<<<< HEAD
 					$data['modules'][$j]['submodules'][$k] = array("id"=>$sRows['id'], "name"=>$sRows['name'], "submodule_state"=>$sRows['submodule_state'], "username"=>$sRows['username'], "user_state"=>$sRows['user_state']);
+=======
+					$data[$j]['submodules'][$k] = array("id"=>$sRows['id'], "name"=>$sRows['name'], "submodule_state"=>$sRows['submodule_state'], "username"=>$sRows['username'], "user_state"=>$sRows['user_state']);
+>>>>>>> 4f093acfc79f5ac08d754e50f66e87374801ab3c
 					$k++;
 				} while($sRows=pg_fetch_assoc($submodule->actualResults));
 			}
