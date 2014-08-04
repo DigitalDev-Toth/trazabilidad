@@ -12,7 +12,6 @@ SUBMODULE.prototype.textAttrs = function (color) {
     return {
         'fill': this.setColor(color, -0.15),
         'font-size': '10px'
-        //'stroke': this.setColor(color, -0.5)
     };
 };
 SUBMODULE.prototype.setColor = function (hex, lum) {
@@ -219,7 +218,7 @@ SUBMODULE.prototype.setElem = function () {
                     h = $(window).height() - 5,
                     px = w - 150,
                     py = h - 100,
-                    x = -((px * Math.cos(Math.PI * -(7 / 4))) - (py * Math.sin(Math.PcI * -(7 / 4)))) - 2 - (40 * this.countSubmodules),
+                    x = -((px * Math.cos(Math.PI * -(7 / 4))) - (py * Math.sin(Math.PI * -(7 / 4)))) - 2 - (40 * this.countSubmodules),
                     y = -((px * Math.sin(Math.PI * -(7 / 4))) + (py * Math.cos(Math.PI * -(7 / 4)))) - 50;
                 this.el = PAPER.rect(x, y, 40, 60, 5).attr(this.attrs());
                 this.el.rotate(135, 20, 30);

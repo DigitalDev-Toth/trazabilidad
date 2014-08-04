@@ -28,13 +28,26 @@ MAKER.prototype.patient = function (id) {
     var p = new PATIENT(id);
     PATIENTS[id] = p;
 };
-MAKER.prototype.goTo = function (id, idModule, idSubmodule) {
-    if (idModule === null && idSubmodule === null) {
-        PATIENTS[id].seat = this.findSeat();
-        PATIENTS[id].goToWaitingRoom(id);
-    } else {
-        PATIENTS[id].goTo(idModule, idSubmodule);
+MAKER.prototype.goTo = function (comet, rut, action, idSubmodule) {
+    for (var i in MODULES) {
+        if (MODULES[i].submodules !== null) {
+            if (MODULES[i].submodules[idSubmodule] !== undefined) {
+                var idModule = parseInt(i);
+                console.log(idModule);
+            }
+        }        
     }    
+    if (comet === 'tothem' && action === 'in') {
+        var p = new PATIENT(rut, idModule);
+        PATIENTS[rut] = p;
+        
+        PATIENTS[rut].goTo(idModule, idSubmodule);
+    } else if (action === 'to') {
+        PATIENTS[rut].seat = this.findSeat();
+        PATIENTS[rut].goToWaitingRoom(rut);
+    } else if (action === 'in') {
+        PATIENTS[id].goTo(idModule, idSubmodule);
+    }   
 };
 MAKER.prototype.findSeat = function () {
     for (var i = 0; i < MODULES['wr'].seats; i++) {

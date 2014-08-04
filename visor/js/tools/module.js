@@ -1,9 +1,10 @@
 var MODULE = function (name, id, type, pos, color, submodules, seats) {
-    this.id = id;
-    this.submodules = {};
+    this.id = id;    
     if(submodules !== null) {
+        this.submodules = {};
         this.totalSubmodules = submodules.length;
     } else {
+        this.submodules = null;
         this.seats = seats;
         this.seatsPos = [];
         this.nextPos = null;
