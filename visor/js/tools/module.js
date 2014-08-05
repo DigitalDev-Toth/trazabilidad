@@ -84,92 +84,117 @@ MODULE.prototype.setElem = function () { // element in DOM for module
                     x = $(window).width() - 95,
                     y = ($(window).height() / 2) - (h / 2);
                 this.el = PAPER.rect(x, y, this.submoduleHeight, h, this.moduleRound).attr(this.attrs(this.color));
-                this.text = PAPER.text(x - 15, y + (h / 2), this.name).attr(this.textAttrs(this.color));
+                this.text = PAPER.text(x - 10, y + (h / 2), this.name).attr(this.textAttrs(this.color));
                 this.text.rotate(90);
                 break;
             case 'superior-izquierda':
                 if (this.totalSubmodules >= 4) {
                     if ((this.totalSubmodules % 2) === 0) {
-                        var w = 110 + (40 * (this.totalSubmodules / 2)),
-                            h = 110 + (40 * (this.totalSubmodules / 2));
+                        var w = 90 + 10 + (40 * (this.totalSubmodules / 2)),
+                            h = 90 + 10 + (40 * (this.totalSubmodules / 2));
                     } else {
                         var totalH = parseInt((this.totalSubmodules / 2).toFixed(0)),
                             totalW = totalH - 1,
-                            w = 110 + (40 * totalW),
-                            h = 110 + (40 * totalH);
+                            w = 90 + 10 + (40 * totalW),
+                            h = 90 + 10 + (40 * totalH);
                     }                    
-                    var p = 'M5,5L'+ w +',5L'+ w +',100L100,100L100,'+ h +'L5,'+ h +'Z';
+                    var xt = 130,
+                        yt = 100,
+                        rt = 0,
+                        p = 'M5,5L'+ w +',5L'+ w +',90L90,90L90,'+ h +'L5,'+ h +'Z';
                 } else {
                     var w = 200,
                         h = 200,
+                        xt = (w / 2) + 5,
+                        yt = (h / 2) + 15,
+                        rt = -45,
                         p = 'M5,5L'+ w +',5L5,'+ h +'Z';
                 }
                 this.el = PAPER.path(p).attr(this.attrs(this.color));
-                this.text = PAPER.text((w / 2) + 15, (h / 2) + 15, this.name).attr(this.textAttrs(this.color));
-                this.text.rotate(-45);
+                this.text = PAPER.text(xt, yt, this.name).attr(this.textAttrs(this.color));
+                this.text.rotate(rt);
                 break;
             case 'superior-derecha':                
                 if (this.totalSubmodules >= 4) {
                     if ((this.totalSubmodules % 2) === 0) {
-                        var w = 100 + (40 * (this.totalSubmodules / 2)) + 5,
-                            h = 100 + (40 * (this.totalSubmodules / 2));
+                        var w = 90 + 10 + (40 * (this.totalSubmodules / 2)) + 5,
+                            h = 90 + 10 + (40 * (this.totalSubmodules / 2));
                     } else {
                         var totalW = parseInt((this.totalSubmodules / 2).toFixed(0)),
                             totalH = totalW - 1,
-                            w = 100 + (40 * totalW) + 5,
-                            h = 100 + (40 * totalH);
+                            w = 90 + (40 * totalW) + 5,
+                            h = 90 + (40 * totalH);
                     }  
                     var bx = $(window).width() - 5,
                         fx = $(window).width() - w,
-                        p = 'M'+ bx +',5L'+ fx +',5L'+ fx +',100L'+ (bx - 100) +',100L'+ (bx - 100) +','+ h +'L'+ bx +','+ h +'Z';
+                        xt = bx - 100,
+                        yt = h - 50,
+                        rt = 90,
+                        p = 'M'+ bx +',5L'+ fx +',5L'+ fx +',90L'+ (bx - 90) +',90L'+ (bx - 90) +','+ h +'L'+ bx +','+ h +'Z';
                 } else {
                     var w = 200,
                         h = 200,
                         bx = $(window).width() - 5,
                         fx = $(window).width() - w,
+                        xt = bx - 105,
+                        yt = h - 90,
+                        rt = 45,
                         p = 'M'+ bx +',5L'+ fx +',5L'+ bx +','+ h +'Z';
                 }                
                 this.el = PAPER.path(p).attr(this.attrs(this.color));
+                this.text = PAPER.text(xt, yt, this.name).attr(this.textAttrs(this.color));
+                this.text.rotate(rt);
                 break;
             case 'inferior-izquierda':
                 if (this.totalSubmodules >= 4) {
                     if ((this.totalSubmodules % 2) === 0) {
-                        var w = 100 + (40 * (this.totalSubmodules / 2)),
-                            h = 100 + (40 * (this.totalSubmodules / 2)) + 5;
+                        var w = 90 + 10 + (40 * (this.totalSubmodules / 2)),
+                            h = 90 + 10 + (40 * (this.totalSubmodules / 2)) + 5;
                     } else {
                         var totalH = parseInt((this.totalSubmodules / 2).toFixed(0)),
                             totalW = totalH - 1,
-                            w = 100 + (40 * totalW),
-                            h = 100 + (40 * totalH) + 5;
+                            w = 90 + 10 + (40 * totalW),
+                            h = 90 + 10 + (40 * totalH) + 5;
                     }  
                     var by = $(window).height() - 5,
                         fy = $(window).height() + 5,
-                        p = 'M5,'+ by +'L'+ w +','+ by +'L'+ w +','+ (by - 100) +'L100,'+ (by - 100) +'L100,'+ (fy - h) +'L5,'+ (fy - h) +'Z';
+                        xt = w - 50,
+                        yt = by - 100,
+                        rt = 0,
+                        p = 'M5,'+ by +'L'+ w +','+ by +'L'+ w +','+ (by - 90) +'L90,'+ (by - 90) +'L90,'+ (fy - h) +'L5,'+ (fy - h) +'Z';
                 } else {
                     var w = 200,
                         h = 200,
                         by = $(window).height() - 5,
                         fy = $(window).height() - h,
+                        xt = w - 90,
+                        yt = by - 105,
+                        rt = 45,
                         p = 'M5,'+ by +'L'+ w +','+ by +'L5,'+ fy +'Z';
                 }      
                 this.el = PAPER.path(p).attr(this.attrs(this.color));
+                this.text = PAPER.text(xt, yt, this.name).attr(this.textAttrs(this.color));
+                this.text.rotate(rt);
                 break;
             case 'inferior-derecha':
                 if (this.totalSubmodules >= 4) {
                     if ((this.totalSubmodules % 2) === 0) {
-                        var w = 100 + (40 * (this.totalSubmodules / 2)) + 5,
-                            h = 100 + (40 * (this.totalSubmodules / 2));
+                        var w = 90 + 10 + (40 * (this.totalSubmodules / 2)) + 5,
+                            h = 90 + 10 + (40 * (this.totalSubmodules / 2));
                     } else {
                         var totalW = parseInt((this.totalSubmodules / 2).toFixed(0)),
                             totalH = totalW - 1,
-                            w = 100 + (40 * totalW) + 5,
-                            h = 100 + (40 * totalH);
+                            w = 90 + 10 + (40 * totalW) + 5,
+                            h = 90 + 10 + (40 * totalH);
                     }  
                     var bx = $(window).width() - 5,
                         by = $(window).height() - 5,
                         fx = $(window).width() - w,
                         fy = $(window).height() - h,
-                        p = 'M'+ bx +','+ by +'L'+ fx +','+ by +'L'+ fx +','+ (by - 100) + 'L'+ (bx - 100) +','+ (by - 100) +'L'+ (bx - 100) +','+ fy +'L'+ bx +','+ fy +'Z';
+                        p = 'M'+ bx +','+ by +'L'+ fx +','+ by +'L'+ fx +','+ (by - 90) + 'L'+ (bx - 90) +','+ (by - 90) +'L'+ (bx - 90) +','+ fy +'L'+ bx +','+ fy +'Z';
+                    this.el = PAPER.path(p).attr(this.attrs(this.color));
+                    this.text = PAPER.text(bx - 100, by - 135, this.name).attr(this.textAttrs(this.color));
+                    this.text.rotate(-90);
                 } else {
                     var w = 200,
                         h = 200,
@@ -178,8 +203,10 @@ MODULE.prototype.setElem = function () { // element in DOM for module
                         fx = $(window).width() - w,
                         fy = $(window).height() - h,
                         p = 'M'+ bx +','+ by +'L'+ fx +','+ by +'L'+ bx +','+ fy +'Z';
-                }                    
-                this.el = PAPER.path(p).attr(this.attrs(this.color));
+                    this.el = PAPER.path(p).attr(this.attrs(this.color));
+                    this.text = PAPER.text(bx - 105, by - 105, this.name).attr(this.textAttrs(this.color));
+                    this.text.rotate(-45);
+                }         
                 break;
         }
     }  

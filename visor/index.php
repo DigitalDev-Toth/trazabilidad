@@ -8,6 +8,7 @@
         <script src="js/libs/jquery-2.1.1.min.js"></script>
         <script src="js/libs/bootstrap.min.js"></script>
         <script src="js/libs/raphael-min.js"></script>
+        <script src="js/libs/comet.js"></script>
         <script src="js/tools/module.js"></script>
         <script src="js/tools/submodule.js"></script>
         <script src="js/tools/patient.js"></script>
