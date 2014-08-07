@@ -36,8 +36,9 @@ var Comet = function (data_url) {
 
     this.handleResponse = function(response) {
         if (indexComet !== 0) {
-            var json = $.parseJSON(response.msg);
-            console.log(response, json);
+            var data = $.parseJSON(response.msg);
+            MAKE.goTo(data.comet, data.rut, data.action, 10, 2, data.submodule);
+//            console.log(PATIENTS);
         } else {
             indexComet = 1;
         }

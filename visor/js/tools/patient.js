@@ -1,14 +1,11 @@
-var PATIENT = function (id, idModule) {
+var PATIENT = function (id, attentionNum, waitingFor, idModule) {
     this.id = id; // rut
-    this.zone = null;
-    this.module = null;
-    this.submodule = null;
     this.shape = 'circulo';
-    this.waitingFor = null;
+    this.waitingFor = waitingFor;
     this.seat = null;
-    this.attentionNum = null;
-    this.name = null; 
+    this.attentionNum = attentionNum;
     this.el = null;
+    this.text = null;
     this.setElem(idModule);
 };
 PATIENT.prototype.setElem = function (idModule) {
@@ -53,17 +50,25 @@ PATIENT.prototype.setElem = function (idModule) {
         'stroke-width': 0        
     });   
 };
-PATIENT.prototype.goToTothem = function () {
-    var p = 'M70,70m-12,0a12,12 0 1,0 24,0a12,12 0 1,0 -24,0z';
-    this.el.animate({path: p}, 1000);   
-};
 PATIENT.prototype.goToWaitingRoom = function (idPatient) {
-    var x = MODULES['wr'].seatsPos[this.seat].x,
-        y = MODULES['wr'].seatsPos[this.seat].y;
+    var bx = PATIENTS[idPatient].el.attrs.path[0][1],
+        by = PATIENTS[idPatient].el.attrs.path[0][2],
+        fx = MODULES['wr'].seatsPos[this.seat].x,
+        fy = MODULES['wr'].seatsPos[this.seat].y;
     MODULES['wr'].seatsPos[this.seat].patient = idPatient;
     var s = this.shapePath(),
-        p = 'M'+ x +','+ y + s;
-    this.el.animate({path: p}, 1000);   
+        bp = 'M'+ bx +','+ by + s;
+    this.text = PAPER.text(bx, by, this.attentionNum).attr({
+            'fill': '#000',
+            'font-size': '10px'
+    });
+    this.el.animate({path: bp}, 500, '>', (function (t) {
+        return function () {
+            var fp = 'M'+ fx +','+ fy + s;
+            t.text.animate({x: fx, y: fy}, 1000);
+            t.el.animate({path: fp}, 1000);
+        };        
+    })(this));   
 };
 PATIENT.prototype.goTo = function (idModule, idSubmodule) {
     switch (MODULES[idModule].el.type) {
@@ -149,7 +154,9 @@ PATIENT.prototype.goTo = function (idModule, idSubmodule) {
             this.el.animate({path: p}, 1000);  
             break;
     }
-    MODULES['wr'].seatsPos[this.seat].patient = null;
+    if (MODULES['wr'].seatsPos[this.seat] !== undefined) {
+        MODULES['wr'].seatsPos[this.seat].patient = null;
+    }    
 };
 PATIENT.prototype.shapePath = function () {
     if (this.shape === 'circulo') {
@@ -162,4 +169,8 @@ PATIENT.prototype.shapePath = function () {
         var s = 'm0,-12l12,24l-24,0z';
         return s;
     }   
+};
+PATIENT.prototype.displayAttentionNum = function (idPatient) {
+    var x = PATIENTS[idPatient].el.attrs.path[0][1],
+        y = PATIENTS[idPatient].el.attrs.path[0][2];
 };

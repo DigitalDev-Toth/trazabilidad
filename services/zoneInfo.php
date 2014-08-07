@@ -27,7 +27,7 @@ if (!isset($_SESSION['Username'])) {
 
         $j = 0;
 
-        $sql = "SELECT m.id, m.name, m.max_wait, m.position, t.name AS type_name, t.color, t.shape "
+        $sql = "SELECT m.id, m.name, m.max_wait, m.position, t.color, t.shape "
                 . "FROM module AS m "
                 . "LEFT JOIN module_type AS t ON t.id = m.type "
                 . "WHERE m.zone = $zoneId "
@@ -43,7 +43,6 @@ if (!isset($_SESSION['Username'])) {
                     "max_wait" => $mRows['max_wait'], 
                     "position" => $mRows['position'], 
                     "max_wait" => $mRows['max_wait'], 
-                    "type" => $mRows['type_name'],
                     "color" => $mRows['color'], 
                     "shape" => $mRows['shape']
                 );

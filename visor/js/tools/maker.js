@@ -1,12 +1,11 @@
 var MAKER = function () {
     this.countSubmodules = 0;
 };
-MAKER.prototype.module = function (name, id, type, pos, color, submodules, seats) {
-    var m = new MODULE(name, id, type, pos, color, submodules, seats); 
+MAKER.prototype.module = function (name, id, type, pos, color, shape, submodules, seats) {
+    var m = new MODULE(name, id, type, pos, color, shape, submodules, seats); 
     if (type === 'waiting-room') {
         MODULES['wr'] = m;
         MODULES['wr'].setSeatsPos();
-        return m;
     } else {
         MODULES[id] = m;
     }
@@ -24,30 +23,33 @@ MAKER.prototype.submodule = function (name, id, idModule, posModule) {
     MODULES[idModule].submodules[id] = sm;
     this.countSubmodules++;
 };
-MAKER.prototype.patient = function (id) {
-    var p = new PATIENT(id);
-    PATIENTS[id] = p;
-};
-MAKER.prototype.goTo = function (comet, rut, action, idSubmodule) {
+MAKER.prototype.goTo = function (comet, rut, action, attentionNum, waitingFor, idSubmodule) {
     for (var i in MODULES) {
         if (MODULES[i].submodules !== null) {
             if (MODULES[i].submodules[idSubmodule] !== undefined) {
                 var idModule = parseInt(i);
-                console.log(idModule);
             }
         }        
     }    
-    if (comet === 'tothem' && action === 'in') {
-        var p = new PATIENT(rut, idModule);
-        PATIENTS[rut] = p;
-        
-        PATIENTS[rut].goTo(idModule, idSubmodule);
-    } else if (action === 'to') {
-        PATIENTS[rut].seat = this.findSeat();
-        PATIENTS[rut].goToWaitingRoom(rut);
-    } else if (action === 'in') {
-        PATIENTS[id].goTo(idModule, idSubmodule);
-    }   
+    switch (action) {
+        case 'in':
+            if (comet === 'tothtem') {
+                if (PATIENTS[rut] !== undefined) {
+                    PATIENTS[rut].attentionNum.push(40);
+                } else {
+                    var p = new PATIENT(rut, attentionNum, waitingFor, idModule);
+                    PATIENTS[rut] = p;     
+                }
+            } 
+            PATIENTS[rut].goTo(idModule, idSubmodule);
+            break;
+        case 'to':
+            PATIENTS[rut].displayAttentionNum(rut);
+            PATIENTS[rut].shape = MODULES[waitingFor].shape;
+            PATIENTS[rut].seat = this.findSeat();
+            PATIENTS[rut].goToWaitingRoom(rut);
+            break;
+    }  
 };
 MAKER.prototype.findSeat = function () {
     for (var i = 0; i < MODULES['wr'].seats; i++) {

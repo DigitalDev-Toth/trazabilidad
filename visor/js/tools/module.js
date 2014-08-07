@@ -1,4 +1,4 @@
-var MODULE = function (name, id, type, pos, color, submodules, seats) {
+var MODULE = function (name, id, type, pos, color, shape, submodules, seats) {
     this.id = id;    
     if(submodules !== null) {
         this.submodules = {};
@@ -11,6 +11,7 @@ var MODULE = function (name, id, type, pos, color, submodules, seats) {
     }
     this.pos = pos;
     this.color = color;
+    this.shape = shape;
     this.el = null; // element in DOM for module
     this.text = null; // element in DOM for text module
     this.type = type;
@@ -77,7 +78,7 @@ MODULE.prototype.setElem = function () { // element in DOM for module
                     x = ($(window).width() / 2) - (w / 2),
                     y = $(window).height() - 95;
                 this.el = PAPER.rect(x, y, w, this.submoduleHeight, this.moduleRound).attr(this.attrs(this.color));
-                this.text = PAPER.text(x + (w / 2), y - 15, this.name).attr(this.textAttrs(this.color));
+                this.text = PAPER.text(x + (w / 2), y - 10, this.name).attr(this.textAttrs(this.color));
                 break;
             case 'derecha':
                 var h = (this.totalSubmodules * this.submoduleWidth) + 20,

@@ -17,6 +17,7 @@
             var ZONE = {},
                 MODULES = {},
                 PATIENTS = {},
+                MAKE = null,
                 PAPER = null;
             
             $(function () {
@@ -27,7 +28,7 @@
                 PAPER.setViewBox(0, 0, w, h, true);
                 PAPER.canvas.setAttribute('preserveAspectRatio', 'xMinYMin');
                 
-                var make = new MAKER();
+                MAKE = new MAKER();
 
                 message('Conectando al servidor...');
                 $.get('../services/zoneInfo.php?zone=1',function (data, status) {
@@ -36,27 +37,20 @@
                         if (data === 'error') {
                             message('Error al obtener los datos!');
                         } else if (data === 'error_session') {
-                            console.log(data);
                             window.location.href = '../admin';
                         } else {                            
                             var info = JSON.parse(data);
                             ZONE['id'] = info.id;
                             ZONE['name'] = info.name;
                             ZONE['seats'] = info.seats;
-                            console.log(info);
+//                            console.log(info);
                             
+                            MAKE.module(info.name, info.id, 'waiting-room', 'center', '#818878', info.shape, null, info.seats);
                             for (var i = 0; i < info.modules.length; i++) {   
-                                make.module(info.modules[i].name, info.modules[i].id, 'module', info.modules[i].position, '#'+ info.modules[i].color, info.modules[i].submodules);
-                            }
-                            make.module(info.name, info.id, 'waiting-room', 'center', '#818878', null, info.seats);
+                                MAKE.module(info.modules[i].name, info.modules[i].id, 'module', info.modules[i].position, '#'+ info.modules[i].color, info.modules[i].shape, info.modules[i].submodules);
+                            }                            
                             message('Objetos creados');
                             console.log(MODULES);
-                            var comet = 'tothem',
-                                rut = '16.025.167-0',
-                                action = 'in',
-                                submodule = 1;
-                            make.goTo(comet, rut, action, submodule);
-                            console.log(PATIENTS);
                         }
                     }
                 });                
