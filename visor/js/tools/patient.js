@@ -1,7 +1,6 @@
-var PATIENT = function (id, attentionNum, waitingFor, idModule) {
+var PATIENT = function (id, attentionNum, idModule) {
     this.id = id; // rut
     this.shape = 'circulo';
-    this.waitingFor = waitingFor;
     this.seat = null;
     this.attentionNum = attentionNum;
     this.el = null;
@@ -48,7 +47,16 @@ PATIENT.prototype.setElem = function (idModule) {
         'fill': '#ccc',
         'stroke': '#000',
         'stroke-width': 0        
-    });   
+    }); 
+    
+    this.el.node.setAttribute('data-toggle', 'tooltip');
+    this.el.node.setAttribute('data-placement', 'top'); 
+    this.el.node.setAttribute('data-content', this.id);   
+
+    $(this.el.node).popover({
+        'container': 'body',
+        'trigger': 'hover'
+    });
 };
 PATIENT.prototype.goToWaitingRoom = function (idPatient) {
     var bx = PATIENTS[idPatient].el.attrs.path[0][1],
@@ -58,17 +66,28 @@ PATIENT.prototype.goToWaitingRoom = function (idPatient) {
     MODULES['wr'].seatsPos[this.seat].patient = idPatient;
     var s = this.shapePath(),
         bp = 'M'+ bx +','+ by + s;
-    this.text = PAPER.text(bx, by, this.attentionNum).attr({
+    if (this.text === null) {
+        this.text = PAPER.text(bx, by, this.attentionNum).attr({
             'fill': '#000',
             'font-size': '10px'
-    });
+        });
+        var el = $(this.el.node);
+        $(this.text.node).on('mouseover', function () {
+            return function () {
+                el.popover('show');
+            };            
+        });
+    } else {
+        this.text.attr({text: this.attentionNum});
+    }
     this.el.animate({path: bp}, 500, '>', (function (t) {
         return function () {
             var fp = 'M'+ fx +','+ fy + s;
             t.text.animate({x: fx, y: fy}, 1000);
             t.el.animate({path: fp}, 1000);
         };        
-    })(this));   
+    })(this)); 
+    
 };
 PATIENT.prototype.goTo = function (idModule, idSubmodule) {
     switch (MODULES[idModule].el.type) {
@@ -85,6 +104,9 @@ PATIENT.prototype.goTo = function (idModule, idSubmodule) {
             }              
             var s = this.shapePath(),
                 p = 'M'+ x +','+ y + s;
+            if (this.text !== null) {
+                 this.text.animate({x: x, y: y}, 1000);
+            }           
             this.el.animate({path: p}, 1000);    
             break;
         case 'path':
@@ -151,6 +173,9 @@ PATIENT.prototype.goTo = function (idModule, idSubmodule) {
             } 
             var s = this.shapePath(),
                 p = 'M'+ x +','+ y + s;
+            if (this.text !== null) {                
+                this.text.animate({x: x, y: y}, 1000);
+            }
             this.el.animate({path: p}, 1000);  
             break;
     }
