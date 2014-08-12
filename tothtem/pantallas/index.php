@@ -81,7 +81,7 @@
 //davidwalsh.name/demo/bg-clouds.jpg
 
 
-var modality="";
+var submodule="";
 var currentModule=0;
 var currentNumber='';
 function changeModule(changeM){
@@ -102,11 +102,12 @@ function changeModule(changeM){
 
 }
 $( document ).ready(function() {
-  modality=decodeURIComponent("<?php echo rawurlencode($_GET['id']); ?>");
-  console.log("modalidad inicial="+modality);
-  if(modality!=""){
-    //$("#patientView").attr("src", "pantalla.php?id="+modality);
-    var json=getModality(modality);
+  submodule=decodeURIComponent("<?php echo rawurlencode($_GET['id']); ?>");
+  //submodule=10;
+  console.log("modalidad inicial="+submodule);
+  if(submodule!=""){
+    //$("#patientView").attr("src", "pantalla.php?id="+module);
+    var json=getModule(submodule);
     var dataModality=JSON.parse(json);
 
     var lastTicketModality=dataModality['modalityTicket'];
@@ -114,8 +115,10 @@ $( document ).ready(function() {
 
     $("#modalityTitle").text(modalityName);
     initNumber=lastTicketModality;
+    console.log(initNumber);
     //$('#content').text(initNumber);
     sendComet(0);
+    refreshTable();
   }else{
     alert("Falta Modalidad!");
   }
@@ -124,9 +127,9 @@ $( document ).ready(function() {
 });
 var initNumber;
 
-function getModality(idModality){
+function getModule(idSubModule){
     var result = null;
-    var scriptUrl = "phps/getModality.php?idModality=" + idModality;
+    var scriptUrl = "phps/getModule.php?idSubModule=" + idSubModule;
     $.ajax({
         url: scriptUrl,
         type: 'get',
@@ -138,9 +141,9 @@ function getModality(idModality){
     });
     return result;
 }
-function refreshTickets(idModality,attention,tickets){
+function refreshTickets(idsubModule,attention,tickets){
     var result = null;
-    var scriptUrl = "phps/refreshTickets.php?modality="+idModality+"&attention="+attention+"&tickets="+tickets;
+    var scriptUrl = "phps/refreshTickets.php?submodule="+idsubModule+"&attention="+attention+"&tickets="+tickets;
     $.ajax({
         url: scriptUrl,
         type: 'get',
@@ -153,6 +156,7 @@ function refreshTickets(idModality,attention,tickets){
     return result;
 }
 function sendComet(type){
+  console.log("da");
 	$('#buttons :input').attr('disabled', true);
 
 	if(type==1){
@@ -160,12 +164,12 @@ function sendComet(type){
     //remove last ticket
     var attention='';
     if($("#checkServe").is(':checked')) {  
-      attention='serve';
+      attention='on_serve';
     }else{
-      attention='not serve';
+      attention='no_serve';
     }
-    refreshTickets(modality,attention,(initNumber-1));
-    comet2.doRequest("!");
+    refreshTickets(submodule,attention,(initNumber-1));
+    //comet2.doRequest("!");
 
 	}
 	if(type==2){
@@ -200,7 +204,7 @@ function sendComet(type){
     }, 1000);
   var currentModuleLetter=$("#module").text();
   //write document
-	comet.doRequest(initNumber+"?"+modality+"?"+currentModuleLetter);
+	comet.doRequest(initNumber+"?"+module+"?"+currentModuleLetter);
 }
 
 
@@ -213,73 +217,70 @@ var Comet = function (data_url) {
   this.noerror = true;
 
   this.connect = function() {
-    var self = this;
-    $.ajax({
-      type : 'get',
-      url : this.url,
-      dataType : 'json', 
-      data : {'timestamp' : self.timestamp},
-      success : function(response) {
-        self.timestamp = response.timestamp;
-        self.handleResponse(response);
-        self.noerror = true;          
-      },
-      complete : function(response) {
-        // send a new ajax request when this request is finished
-        
-      
-        if (!self.noerror) {
-          // if a connection problem occurs, try to reconnect each 5 seconds
-          setTimeout(function(){ comet.connect(); }, 1000);           
-        }else {
-          // persistent connection
-          self.connect(); 
-        }
+      var self = this;
+      $.ajax({
+          type : 'get',
+          url : this.url,
+          dataType : 'json', 
+          data : {'timestamp' : self.timestamp},
+          success : function(response) {
+              self.timestamp = response.timestamp;
+              self.handleResponse(response);
+              self.noerror = true;          
+          },
+          complete : function(response) {
+              // send a new ajax request when this request is finished
+              
+            
+              if (!self.noerror) {
+                // if a connection problem occurs, try to reconnect each 5 seconds
+                setTimeout(function(){ comet.connect(); }, 1000);           
+              }else {
+                // persistent connection
+                self.connect(); 
+              }
 
-        self.noerror = false; 
-      }
-    });
+              self.noerror = false; 
+          }
+      });
   }
 
   this.disconnect = function() {}
 
   this.handleResponse = function(response) {
-    $('#buttons :input').attr('disabled', true);
-        window.setTimeout(function(){
-            $('#buttons :input').attr('disabled', false);
-        }, 1000);
-    console.log(response.msg);
-    var message=response.msg;
+      $('#buttons :input').attr('disabled', true);
+          window.setTimeout(function(){
+              $('#buttons :input').attr('disabled', false);
+          }, 1000);
+      //console.log(response.msg);
+      var message=response.msg;
 
-    var split=message.split("?");
-    currentNumber=split[0];
-    var currentModality=split[1];
+      var split=message.split("?");
+      currentNumber=split[0];
+      var currentModality=split[1];
 
-    console.log("mdality->"+modality);
-    console.log("currentModality->"+currentModality);
-    if(modality==currentModality){
-      initNumber=currentNumber;
-      if(currentNumber<10){
-        currentNumber='00'+currentNumber;
+      if(modality==currentModality){
+          initNumber=currentNumber;
+          if(currentNumber<10){
+              currentNumber='00'+currentNumber;
+          }
+          if(currentNumber>=10 && currentNumber<100){
+              currentNumber='0'+currentNumber;
+          }
+         
+          $('#content').fadeOut("slow",function(){
+          $('#content').fadeIn("fast"); 
+              if(currentNumber!='null'){
+                  $('#content').text(currentNumber);
+              }else{
+                  $('#content').text('S/N');
+              } 
+          });
+          window.setTimeout(function(){
+              $('#buttons :input').attr('disabled', false);
+          }, 1000);
       }
-      if(currentNumber>=10 && currentNumber<100){
-        currentNumber='0'+currentNumber;
-      }
-      console.log("in");
-      $('#content').fadeOut("slow",function(){
-      $('#content').fadeIn("fast"); 
-          if(currentNumber!='null'){
-            $('#content').text(currentNumber);
-          }else{
-             $('#content').text('S/N');
-          } 
-      });
-      window.setTimeout(function(){
-          $('#buttons :input').attr('disabled', false);
-        }, 1000);
-      }
-
-    }
+  }
 
   this.doRequest = function(request) {
       $.ajax({
@@ -288,14 +289,10 @@ var Comet = function (data_url) {
         data : {'msg' : request}
       });
   }
-
 }
 
 var comet = new Comet('backend.php');
 comet.connect();
-
-
-
 
 
 
@@ -307,30 +304,30 @@ var Comet2 = function (data_url) {
   this.noerror = true;
 
   this.connect = function() {
-    var self = this;
-    $.ajax({
-      type : 'get',
-      url : this.url,
-      dataType : 'json', 
-      data : {'timestamp' : self.timestamp},
-      success : function(response) {
-        self.timestamp = response.timestamp;
-        self.handleResponse(response);
-        self.noerror = true;          
-      },
-      complete : function(response) {
-        // send a new ajax request when this request is finished
-        if (!self.noerror) {
-          // if a connection problem occurs, try to reconnect each 5 seconds
-          setTimeout(function(){ comet2.connect(); }, 1000);           
-        }else {
-          // persistent connection
-          self.connect(); 
-        }
+      var self = this;
+      $.ajax({
+          type : 'get',
+          url : this.url,
+          dataType : 'json', 
+          data : {'timestamp' : self.timestamp},
+          success : function(response) {
+              self.timestamp = response.timestamp;
+              self.handleResponse(response);
+              self.noerror = true;          
+          },
+          complete : function(response) {
+              // send a new ajax request when this request is finished
+              if (!self.noerror) {
+                // if a connection problem occurs, try to reconnect each 5 seconds
+                setTimeout(function(){ comet2.connect(); }, 1000);           
+              }else {
+                // persistent connection
+                self.connect(); 
+              }
 
-        self.noerror = false; 
-      }
-    });
+              self.noerror = false; 
+          }
+      });
   }
 
   this.disconnect = function() {}
@@ -344,7 +341,6 @@ var Comet2 = function (data_url) {
           //var hourStart=json['hour_start'];
           //var rut=json['rut'];
           //consulta ultimos 5 ticketsTable
-   
 
 
     refreshTable();
@@ -363,11 +359,12 @@ var Comet2 = function (data_url) {
 
 }
 
-var comet2 = new Comet2('../prototipo/phps/backend.php');
-comet2.connect();
+//var comet2 = new Comet2('../prototipo/phps/backend.php');
+//comet2.connect();
 
 function refreshTable(){
-    var totalResult=getLast5Tickets(modality,initNumber);
+    console.log(submodule,initNumber);
+    var totalResult=getLast5Tickets(submodule,initNumber);
     if(totalResult==0){
       $('#contentTicket tr').has('td').remove();
        $('#contentTicket').append('<tr><td>No hay pacientes en espera...</td></tr>');
@@ -376,27 +373,24 @@ function refreshTable(){
 
 
     var ticketsTable = JSON.parse(totalResult);
-    console.log("modalidad="+modality);
-    console.log("numero="+initNumber);
-    //obj[1]['id']
+
     var cant=Object.keys(ticketsTable).length;
    $('#contentTicket').fadeOut('slow', function() {
       $('#contentTicket tr').has('td').remove();
         for (var i=0;i<cant;i++) {
           if(i==0){
-            $('#contentTicket').append('<tr  class="info"><td>'+ticketsTable[i]['last_ticket']+'</td><td>'+ticketsTable[i]['rut_patient']+'</td><td>'+ticketsTable[i]['hour_start']+'</td><td> <input type="checkbox" id="checkServe" checked></td></tr>');
+            $('#contentTicket').append('<tr  class="info"><td>'+ticketsTable[i]['ticket']+'</td><td>'+ticketsTable[i]['rut']+'</td><td>'+ticketsTable[i]['datetime']+'</td><td> <input type="checkbox" id="checkServe" checked></td></tr>');
           }else{
-            $('#contentTicket').append('<tr><td>'+ticketsTable[i]['last_ticket']+'</td><td>'+ticketsTable[i]['rut_patient']+'</td><td>'+ticketsTable[i]['hour_start']+'</td>  </tr></tr>');  
+            $('#contentTicket').append('<tr><td>'+ticketsTable[i]['ticket']+'</td><td>'+ticketsTable[i]['rut']+'</td><td>'+ticketsTable[i]['datetime']+'</td>  </tr></tr>');  
           }
         }
       $('#contentTicket').fadeIn('slow');
     });
     }
 }
-function getLast5Tickets(idModality,last){
+function getLast5Tickets(idModule,last){
     var result = null;
-    var scriptUrl = "phps/lastTickets.php?modality=" + idModality+"&last="+last;
-    console.log(scriptUrl);
+    var scriptUrl = "phps/lastTickets.php?submodule="+idModule+"&last="+last;
     $.ajax({
         url: scriptUrl,
         type: 'get',

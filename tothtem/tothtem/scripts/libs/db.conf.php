@@ -1,8 +1,8 @@
 <?
+$hostname = "digitaldev.org";
 $username = "postgres";
 $password = "justgoon";
-$dbname = "toth14_estesi";
-$hostname = "localhost";
+$dbname = "traza";
 $port = "5432";
 
 ?>

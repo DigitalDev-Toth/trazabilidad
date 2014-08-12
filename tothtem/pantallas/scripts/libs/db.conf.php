@@ -1,8 +1,10 @@
 <?
-$username = "postgres";
+$username = "juan";
 $password = "justgoon";
-$dbname = "toth14_estesi";
-$hostname = "localhost";
+$dbname = "traza";
+$hostname = "digitaldev.org";
 $port = "5432";
 
+//relative directory
+$filesPathDirectory = "../../../uploads/";
 ?>

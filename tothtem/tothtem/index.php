@@ -1,6 +1,4 @@
-<?php 
-echo "ip Totem:".$_SERVER['REMOTE_ADDR'];
-?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -37,29 +35,42 @@ body {
 </head>
 
 <body>
+
 <a href="#espera" id="wait" style="display:block;"></a>
 <a href="#menu" id="_menu" style="display:block;"></a>
 <a id="menu-toggle" href="#" class="btn btn-primary btn-lg toggle" onclick="goInactive();"><span class="glyphicon glyphicon-remove"></span> Salir</i></a>
 
 <!-- pantalla principal-->
 <div id="espera" class="header">
+<img src="img/logoToth.png" style="position: fixed;width: 200px;opacity: 0.2;">
     <div class="vert-text" align="center">
 		<!--
 		<iframe id="ytplayer" type="text/html" width="640" height="360"
 		src="https://www.youtube.com/embed/7QiBfOeWHn8?autoplay=1&controls=0&loop=1&rel=0&showinfo=0&color=white&theme=light"
 		frameborder="0" allowfullscreen></iframe>-->
-        <h1>TothTem</h1>
+
+        <img src="img/logoFalp.png" style="width: 400px;">
+        <br>
+
+        <!--<h1>TothTem</h1>-->
         <div id="start" style="display:block;">
             <h3>
             <a href="#login-menu" onclick="foco();" id="startB" class="btn btn-default btn-lg" style="display:none">Toque para comenzar<br>
             <span class="glyphicon glyphicon-hand-up"></span></a></h3>
-            <span id="glypHand" class="glyphicon glyphicon-hand-right"></span>
-            <label id="labelStart" style="font-size:22pt;">  Toque para comenzar</label>
+
+            <div id="enableTothtem" >
+                <span id="glypHand" class="glyphicon glyphicon-hand-right"></span><label id="labelStart" style="font-size:22pt;">  Toque para comenzar</label>    
+            </div>
+            <div id="disableTothtem" >
+               <label style="font-size:22pt;">  <span class="glyphicon glyphicon-ban-circle"></span>  FUERA DE SERVICIO</label>    
+            </div>
+
+            
+
         </div>
     </div>
 </div>
 <!-- fin pantalla principal-->
-
 <!-- Login rut -->
 <div id="login-menu" class="header">
     <div class="vert-text">
@@ -125,20 +136,35 @@ body {
                         <label id="patientName"></label>
                         </h4>
                     </div>
+
+                    <div id="menuButtons">
+                        
+                    </div>
+
+
+                  
+
+
+                      <!--
                     <div class="modal-body">
-                        <button type="button" style='padding:12px 25px;font-size: 25px;border-radius: 33px;width: 300px;' class="btn btn-primary" onclick="PrintTicket(0);"><span class="glyphicon glyphicon-time"></span> Ticket Informaciones</button>
+                        <button type="button" style='padding:12px 25px;font-size: 25px;border-radius: 33px;width: 300px;' class="btn btn-primary" onclick=""><span class="glyphicon glyphicon-time"></span> Ticket Informaciones</button>
                     </div>
                     <div class="modal-body">
-                        <button type="button" style='padding:12px 25px;font-size: 25px;border-radius: 33px;width: 300px;' class="btn btn-primary" onclick="PrintTicket(1);"><span class="glyphicon glyphicon-time"></span> Ticket Pago</button>
+                        <button type="button" style='padding:12px 25px;font-size: 25px;border-radius: 33px;width: 300px;' class="btn btn-primary" onclick=""><span class="glyphicon glyphicon-time"></span> Ticket Pago</button>
                     </div>
-                    <!--
+
+
+
                     <div class="modal-body" >
                         <a href="#about"><button type="button" style='padding:12px 25px;font-size: 25px;border-radius: 33px;width: 300px;' class="btn btn-primary" onclick="showInfo();"><span class="glyphicon glyphicon-info-sign"></span> Informaciones</button></a>
                     </div>
-                    -->
+                    
+                    
                     <div id="MyExams" class="modal-body">
                         <a href="#about"><button type="button" style='padding:12px 25px;font-size: 25px;border-radius: 33px;width: 300px;' class="btn btn-primary" onclick="showMyExam();"><span class="glyphicon glyphicon-list-alt"></span> Mis Examenes</button></a>
                     </div>
+                    -->
+                   
                     <br>
                    
                 </div>         
@@ -198,11 +224,20 @@ var logIN=0;
 var click=0;
 var cantidad=0;
 var maxtime=maxMin;
+var modulesOk=0;
+var tothemIp='';
 setup();
 
 //***********************************************************
 $("#espera").click(function(event) {
-    $( "#startB" ).click();
+    if(modulesOk==1){
+        $( "#startB" ).click();
+    }else{
+        bootbox.alert("<span class='glyphicon glyphicon-warning-sign'></span> Tothtem Fuera De Servicio <br><br> Favor de consultar otro ToThtem", function() {
+        window.setTimeout(setNull, 5000);
+        });
+    }
+    
 });
 
 
@@ -218,13 +253,12 @@ $(document).click(function(e) {
 var totemId="";
 $(document).ready(function() {
 	//establece id totem
-	totemId= decodeURIComponent("<?php echo rawurlencode($_GET['id']); ?>");
-	console.log("id totem->"+totemId);
+    activesModules();
     resetInput(1);
     $("#login").prop( "disabled", true );
     $("#inputColor").addClass("form-group has-warning has-feedback");
     $("#inputIcon").addClass("glyphicon glyphicon-user form-control-feedback");
-    $("#menu-toggle").fadeOut( 1000 );
+    $("#menu-toggle").hide();
     teclado();
     swap();
 });
@@ -246,7 +280,6 @@ $(window).keyup(function(event){
         init++;
         if(init==8 || init ==9){
             var rutBoolean=verRut($("#rut").val().toUpperCase(),0);
-            console.log(rutBoolean);
             if(rutBoolean==true && logIN==0){
                 logIN=1;
                 changeLogin();
@@ -283,6 +316,26 @@ $(function() {
 //**************************************
 
 
+//loop , cambiar con comet 
+function activesModules(){
+    var results=tothtemConfig();
+    if(results==0){
+        modulesOk=0;
+        $("#disableTothtem").show();
+        $("#enableTothtem").hide();
+    }else{
+        modulesOk=1;
+        $("#enableTothtem").show();
+        $("#disableTothtem").hide();
+    }
+    window.setTimeout(function(){
+        activesModules();
+    }, 20000);
+}
+
+
+
+
 //imprime ticket de atencion
 function PrintTicket(ticketOption){
 	/*option:
@@ -291,50 +344,50 @@ function PrintTicket(ticketOption){
 		recep:2;
 		etc...
 	*/
-	if(totemId!=""){
+	//if(totemId!=""){
 
 
-	    var urlTicket="scripts/returnTicket.php?rut=";
-	    var rut= $("#rut").val().toUpperCase();
-	    var id="&totemId="+totemId;
-	    var ticketOption="&ticketOption="+ticketOption;
-	    var chain=urlTicket+rut+id+ticketOption;
+    var urlTicket="scripts/returnTicket.php?rut=";
+    var rut= $("#rut").val().toUpperCase();
+    var id="&totemId="+totemId;
+    var ticketOption="&ticketOption="+ticketOption;
+    var chain=urlTicket+rut+id+ticketOption;
 
-	    //imprime el ticket
-	    document.getElementById("printIframe").src = chain;
-	    //window.open(urlTicket+rut);
-	    bootbox.alert("Imprimiendo ticket...", function() {
-	    window.setTimeout(setNull, 5000);
-	    });
-	    $("#BootboxButton").css({display:"none"});
-	    window.setTimeout(function(){
-	    bootbox.hideAll();
-	    $("#BootboxButton").css({display:"display"});
-	    }, 3000);
-	    window.setTimeout(function(){
-	        bootbox.dialog({
-	                message: "¿Desea otra operacion?",
-	                title: "Atencion",
-	                buttons: {
-	                    success: {
-	                    label: "Si",
-	                    className: "btn-success",
-	                    callback: function() {
-	                    }
-	                },
-	                main: {
-	                    label: "No",
-	                    className: "btn-primary",
-	                    callback: function() {
-	                        goInactive();
-	                        }
-	                    }
-	                }
-	            });
-	    }, 3200);
-    }else{
+    //imprime el ticket
+    document.getElementById("printIframe").src = chain;
+    //window.open(urlTicket+rut);
+    bootbox.alert("Imprimiendo ticket...", function() {
+        window.setTimeout(setNull, 5000);
+    });
+    $("#BootboxButton").css({display:"none"});
+    window.setTimeout(function(){
+    bootbox.hideAll();
+    $("#BootboxButton").css({display:"display"});
+    }, 3000);
+    window.setTimeout(function(){
+        bootbox.dialog({
+                message: "¿Desea otra operacion?",
+                title: "Atencion",
+                buttons: {
+                    success: {
+                    label: "Si",
+                    className: "btn-success",
+                    callback: function() {
+                    }
+                },
+                main: {
+                    label: "No",
+                    className: "btn-primary",
+                    callback: function() {
+                        goInactive();
+                        }
+                    }
+                }
+            });
+    }, 3200);
+    /*}else{
     	alert("no existe id totem!!");
-    }
+    }*/
 }
 
 //muestra los examenes menu "mis examenes"
@@ -358,7 +411,6 @@ function showMyExam(){
                 for(var i in dataJson){
                     if(dataJson[i]['state']=='validado' || dataJson[i]['state']=='despachado'){
                         //examenes sin despachar
-                        console.log("examen "+j+" -> "+dataJson[i]['state']);
                         exams[j]=i;
                         j++;
                     }
@@ -385,7 +437,7 @@ function showMyExam(){
                 }
             },
             error: function (obj, error, objError){
-            console.log(error);
+                console.log(error);
             }
         });
     });
@@ -468,7 +520,6 @@ function Nentradas() {
         //cantidad++;
         if(cantidad==9 || cantidad==8 || cantidad==11 || cantidad==10){
             var rutC=verRut($("#rut").val().toUpperCase(),0);
-            //console.log(rutC);
             $("#inputColor").removeClass();
             $("#inputIcon").removeClass();
             $("#inputIcon").fadeOut("slow");
@@ -527,11 +578,26 @@ function swap(){
 //login del paciente , comprueba si el rut es correcto o no
 //desabilitado para falp , aun sin examenes
 function loginPatient(){
+
     var rut = $("#rut").val().toUpperCase();
     if(verRut(rut,0)){
         //rut valido
         maxtime=maxMax;
         rut=verRut(rut,1);
+
+        //desde aqui!!
+        
+        $.post('scripts/insertLogs.php',{ rut: rut, description: 'Ingreso de RUT Totem', ip: tothemIp, action: 'in', cometType: 'tothtem' }, function(data, textStatus, xhr) {
+            console.log(data);
+
+            //BACKEND PARA EL COMET, SE INTEGRA CON LOS MÓDULOS DE GESTIÓN, HABILITAR UNA VEZ ESTÉ EN GIT
+            /*$.post('../../inc/tools/comet/backend.php',{msg: data},function(data, textStatus, xhr){
+                console.log("comet->"+data);
+            }); */
+        });
+        
+
+
         document.getElementById('rut').value = rut;
         /*
         $.post('scripts/findRut.php', {rut: rut}, function(data, textStatus, xhr) {
@@ -559,10 +625,74 @@ function loginPatient(){
         });
 		*/
 		//solo falp
+        tothtemConfig();
 		$("#_menu").click();
 		SearchOnLogin("null");
     }
 }
+
+function tothtemConfig(){
+    tothemIp="<?php echo $_SERVER['REMOTE_ADDR'];?>";
+    
+    var result = null;
+    var scriptUrl = "scripts/tothtemConfig.php?ip=" + tothemIp;
+    $.ajax({
+        url: scriptUrl,
+        type: 'get',
+        dataType: 'html',
+        async: false,
+        success: function(data) {
+            result = data;
+        },
+        error: function(data) {
+            console.log("error tothtem config");
+        }
+    });
+    if(result!="nan"){
+        setTothtemConfig(JSON.parse(result));
+        return 1;
+    }else{
+        return 0;
+    }
+}
+
+function getActivesModules(){
+    var tothemIp="<?php echo $_SERVER['REMOTE_ADDR'];?>";
+
+    var result = null;
+    var scriptUrl = "scripts/getActivesModules.php?ip=" + tothemIp;
+    $.ajax({
+        url: scriptUrl,
+        type: 'get',
+        dataType: 'html',
+        async: false,
+        success: function(data) {
+            result = data;
+        },
+        error: function(data) {
+            console.log("error tothtem config");
+        }
+    });
+    console.log("modulos activos:\n"+result);
+    var count = Object.keys(JSON.parse(result)).length;
+
+
+    var jsonModules=JSON.parse(result);
+
+
+    $("#menuButtons").html('');
+    for (var i = 0; i < count; i++) {
+        $("#menuButtons").append('<div class="modal-body"><button type="button" style="padding:12px 25px;font-size: 25px;border-radius: 33px;width: 300px;"" class="btn btn-primary" onclick="PrintTicket('+jsonModules[i]['id']+')"><span class="glyphicon glyphicon-time"></span> '+jsonModules[i]['moduleName'] +'</button>   </div>' );
+    };
+    //jsonModules[i]['moduleName']
+}
+
+
+function setTothtemConfig(){
+    getActivesModules();
+
+}
+
 function SearchOnLogin(datos){
 	$("#MyExams").css({display:"none"});
 	/*
@@ -778,10 +908,7 @@ function Agendamientos(date,datosJson){
     var initialHour=datosJson['hour_c'];
     var state=datosJson['state'];
     var examen=datosJson['exam_name'];
-    console.log(initialHour+" -> "+state);
-    console.log(datosJson['name']);
     //1-hora
-    console.log(state);
     var now=new Date();
     var hours=now.getHours();
     var minutes=now.getMinutes();
@@ -790,9 +917,6 @@ function Agendamientos(date,datosJson){
     var examH=initialHour[0]+initialHour[1];
     var examM=initialHour[3]+initialHour[4];
     var ExamMinutes=(parseInt(examH)*60)+(parseInt(examM));
-	console.log("minutos examen:"+ExamMinutes);
-	console.log("minutos consulta:"+QueryMinutes);
-	console.log(ExamMinutes - QueryMinutes);
 	var minutes=ExamMinutes - QueryMinutes;
     if(minutes<=0 && minutes> -15){
     	alerts("<b>Usted tiene un atrazo de "+parseInt(minutes*-1)+" minutos. Confirme su llegada en recepcion</b>",0);

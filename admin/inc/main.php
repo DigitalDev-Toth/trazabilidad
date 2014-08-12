@@ -21,6 +21,14 @@
 			include("modules/role.php");
 			break;
 
+			case 'roles':
+			include("modules/roles.php");
+			break;
+
+			case 'users_roles':
+			include("modules/users_roles.php");
+			break;
+
 			case 'changePass':
 			include("modules/change_pass.php");
 			break;

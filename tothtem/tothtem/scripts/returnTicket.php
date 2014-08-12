@@ -21,16 +21,29 @@
 $(document).ready(function() {
     sendComet();
 });
+
 var rut = decodeURIComponent("<?php echo rawurlencode($_GET['rut']); ?>");
-var modality = decodeURIComponent("<?php echo rawurlencode($_GET['modality']); ?>");
-var jsonData=getLastTicket(modality,rut);
+//var modality = decodeURIComponent("<?php echo rawurlencode($_GET['modality']); ?>");
+var module = decodeURIComponent("<?php echo rawurlencode($_GET['ticketOption']); ?>");
+
+var jsonData=getLastTicket(module,rut);
+
 var json = JSON.parse(jsonData);
-var newTicket=json['newticket'];
+/*Arreglo json con 2 registros:
+  1- Para comet de submódulos de recepción de tickets
+  2- Para comet de visualización
+*/
+console.log(jsonData);
+console.log(json);
+var newTicket=json[0]['newticket'];
 $("#ticket").text(newTicket);
 
 $("#barCode").barcode(rut, "datamatrix"); 
 //code39 code93 code128 codabar Datamatrix->qr
-
+//BACKEND PARA EL COMET, SE INTEGRA CON LOS MÓDULOS DE GESTIÓN, HABILITAR UNA VEZ ESTÉ EN GIT
+/*$.post('../../inc/tools/comet/backend.php',{msg: json[1]},function(data, textStatus, xhr){
+    console.log("comet->"+data);
+}); */
 var newDate=new Date();
 var month=newDate.getMonth()+1;
 var day=newDate.getDate()+1;
@@ -44,16 +57,17 @@ var time=hour+":"+min;
 var Tdate=day+"/"+month+"/"+year;
 $("#time").text(time);
 $("#Date").text(Tdate);
+
 $(document).ready(function () {
 	window.print();
 });
 
 
 
-function getLastTicket(modality,rut){
-	 var ticket = null;
-     var scriptUrl = "getTicket.php?modality="+modality+"&rut="+rut;
-     $.ajax({
+function getLastTicket(module,rut){
+    var ticket = null;
+    var scriptUrl = "getTicket.php?module="+module+"&rut="+rut;
+    $.ajax({
         url: scriptUrl,
         type: 'get',
         dataType: 'html',
@@ -61,9 +75,9 @@ function getLastTicket(modality,rut){
         success: function(data) {
             ticket = data;
         } 
-     });
+    });
 
-     return ticket;
+    return ticket;
 }
 
 

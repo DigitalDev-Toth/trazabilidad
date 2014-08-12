@@ -12,6 +12,10 @@ if(isset($_GET['selectMany'])) { $this->control("separator"); $this->control("us
 				{
 					echo '<INPUT TYPE="image" src="../images/insert.png" NAME="insert" VALUE="Insertar" onclick="this.form.action='."'".$link."'".';this.form.submit();" />';
 				}
+				if ($item=='insertMany')
+				{
+					echo '<INPUT TYPE="image" src="../images/insert.png" NAME="insertMany" VALUE="Insertar Muchos" title="'.$tip.'" onclick="PopupCenter('."'".$link."'".', '."'insertMany'".',650, 500);" />';
+				}
 				if ($item=='delete')
 				{
 					echo '<INPUT TYPE="image" src="../images/delete.png" VALUE="Borrar" onclick="isMarked(this.form, '."'".$link."'".', '."'delete'".');" />';
@@ -101,6 +105,10 @@ if(isset($_GET['selectMany'])) { $this->control("separator"); $this->control("us
 					if ($item=='insert')
 					{
 						echo 'Insertar';
+					}
+					if ($item=='insertMany')
+					{
+						echo 'Insertar Muchos';
 					}
 					if ($item=='delete')
 					{

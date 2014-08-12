@@ -1,12 +1,17 @@
 <?php
-include ('../scripts/libs/db.class.php');
+//include ('../scripts/libs/db.class.php');
+include ('../../tothtem/scripts/libs/db.class.php');
 //get data
-$modality = $_REQUEST['modality'];
+$submodule = $_REQUEST['submodule'];
 $last = $_REQUEST['last'];
 
 //get last ticket
 $db = NEW DB();
-$sql = "SELECT * FROM tickets WHERE modality=$modality and hour_end='NaN' and CAST(last_ticket AS INT)>=$last ORDER BY id Asc limit 5";
+$sql = "SELECT * 
+		FROM tickets t
+		LEFT JOIN logs l ON l.id=t.logs
+		LEFT JOIN submodule s ON s.module=l.module
+		WHERE s.id=$submodule AND CAST(t.ticket AS INT)>=$last ORDER BY t.id ASC LIMIT 5";
 //echo $sql;
 $lastRecord = $db->doSql($sql);
 
