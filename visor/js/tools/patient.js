@@ -1,11 +1,13 @@
-var PATIENT = function (id, attentionNum, idModule) {
+var PATIENT = function (id, ticket, idModule, storage) {
     this.id = id; // rut
     this.shape = 'circulo';
     this.seat = null;
-    this.attentionNum = attentionNum;
-    this.el = null;
-    this.text = null;
-    this.setElem(idModule);
+    this.ticket = ticket;
+    this.el = null; // element for patient
+    this.text = null; // text for patient
+    if (!storage) {
+        this.setElem(idModule);
+    }    
 };
 PATIENT.prototype.setElem = function (idModule) {
     switch (MODULES[idModule].pos) {
@@ -49,47 +51,77 @@ PATIENT.prototype.setElem = function (idModule) {
         'stroke-width': 0        
     }); 
     
-    this.el.node.setAttribute('data-toggle', 'tooltip');
-    this.el.node.setAttribute('data-placement', 'top'); 
-    this.el.node.setAttribute('data-content', this.id);   
-
-    $(this.el.node).popover({
-        'container': 'body',
-        'trigger': 'hover'
-    });
+//    this.el.node.setAttribute('data-toggle', 'popover');
+//    this.el.node.setAttribute('data-placement', 'top'); 
+//    this.el.node.setAttribute('data-content', this.id); 
+//
+//    $(this.el.node).popover({
+//        'container': 'body',
+//        'trigger': 'click'
+//    });
 };
-PATIENT.prototype.goToWaitingRoom = function (idPatient) {
-    var bx = PATIENTS[idPatient].el.attrs.path[0][1],
-        by = PATIENTS[idPatient].el.attrs.path[0][2],
-        fx = MODULES['wr'].seatsPos[this.seat].x,
-        fy = MODULES['wr'].seatsPos[this.seat].y;
+PATIENT.prototype.goToWaitingRoom = function (idPatient, storage) {   
     MODULES['wr'].seatsPos[this.seat].patient = idPatient;
-    var s = this.shapePath(),
-        bp = 'M'+ bx +','+ by + s;
-    if (this.text === null) {
-        this.text = PAPER.text(bx, by, this.attentionNum).attr({
+    if (storage) {
+        var x = MODULES['wr'].seatsPos[this.seat].x,
+            y = MODULES['wr'].seatsPos[this.seat].y;
+        var s = this.shapePath(),
+            fp = 'M'+ x +','+ y + s;
+            
+        this.el = PAPER.path(fp).attr({
+            'fill': '#ccc',
+            'stroke': '#000',
+            'stroke-width': 0        
+        }); 
+
+        this.text = PAPER.text(x, y, this.ticket).attr({
             'fill': '#000',
             'font-size': '10px'
         });
+
+        this.el.node.setAttribute('data-toggle', 'popover');
+        this.el.node.setAttribute('data-placement', 'top'); 
+        this.el.node.setAttribute('data-content', this.id); 
+
+        $(this.el.node).popover({
+            'container': 'body',
+            'trigger': 'click'
+        });
+
         var el = $(this.el.node);
-        $(this.text.node).on('mouseover', function () {
-            return function () {
-                el.popover('show');
-            };            
+        $(this.text.node).on('click', function () {            
+            el.trigger('click');
         });
     } else {
-        this.text.attr({text: this.attentionNum});
+        var bx = PATIENTS[idPatient].el.attrs.path[0][1],
+            by = PATIENTS[idPatient].el.attrs.path[0][2],
+            fx = MODULES['wr'].seatsPos[this.seat].x,
+            fy = MODULES['wr'].seatsPos[this.seat].y;
+        var s = this.shapePath(),
+            bp = 'M'+ bx +','+ by + s;
+        if (this.text === null) {
+            this.text = PAPER.text(bx, by, this.ticket).attr({
+                'fill': '#000',
+                'font-size': '10px'
+            });
+            var el = $(this.el.node);
+            $(this.text.node).on('click', function () {            
+                el.trigger('click');
+            });
+        } else {
+            this.text.attr({text: this.ticket});
+        }
+        $(this.el.node).popover('hide');
+        this.el.animate({path: bp}, 500, '>', (function (t) {
+            return function () {
+                var fp = 'M'+ fx +','+ fy + s;
+                t.text.animate({x: fx, y: fy}, 1000);
+                t.el.animate({path: fp}, 1000);
+            };        
+        })(this)); 
     }
-    this.el.animate({path: bp}, 500, '>', (function (t) {
-        return function () {
-            var fp = 'M'+ fx +','+ fy + s;
-            t.text.animate({x: fx, y: fy}, 1000);
-            t.el.animate({path: fp}, 1000);
-        };        
-    })(this)); 
-    
 };
-PATIENT.prototype.goTo = function (idModule, idSubmodule) {
+PATIENT.prototype.goTo = function (idModule, idSubmodule, storage) {
     switch (MODULES[idModule].el.type) {
         case 'rect':
             if (MODULES[idModule].pos === 'superior' || MODULES[idModule].pos === 'izquierda') {
@@ -101,13 +133,67 @@ PATIENT.prototype.goTo = function (idModule, idSubmodule) {
             } else if (MODULES[idModule].pos === 'derecha') {
                 var x = MODULES[idModule].submodules[idSubmodule].el.attrs.x + (MODULES[idModule].submodules[idSubmodule].el.attrs.width / 2) - 5,
                     y = MODULES[idModule].submodules[idSubmodule].el.attrs.y + (MODULES[idModule].submodules[idSubmodule].el.attrs.height / 2) + 5;
-            }              
-            var s = this.shapePath(),
-                p = 'M'+ x +','+ y + s;
-            if (this.text !== null) {
-                 this.text.animate({x: x, y: y}, 1000);
-            }           
-            this.el.animate({path: p}, 1000);    
+            }         
+            if (storage) {
+                var s = this.shapePath(),
+                    p = 'M'+ x +','+ y + s;               
+                
+                this.el = PAPER.path(p).attr({
+                    'fill': '#ccc',
+                    'stroke': '#000',
+                    'stroke-width': 0        
+                }); 
+                
+                this.text = PAPER.text(x, y, this.ticket).attr({
+                    'fill': '#000',
+                    'font-size': '10px'
+                });
+                
+                this.el.node.setAttribute('data-toggle', 'popover');
+                if (MODULES[idModule].pos === 'superior') {
+                    this.el.node.setAttribute('data-placement', 'bottom');
+                } else {
+                    this.el.node.setAttribute('data-placement', 'top');
+                }                 
+                this.el.node.setAttribute('data-content', this.id); 
+
+                $(this.el.node).popover({
+                    'container': 'body',
+                    'trigger': 'click'
+                });
+                
+                var el = $(this.el.node);
+                $(this.text.node).on('click', function () {            
+                    el.trigger('click');
+                });
+            } else {
+                var s = this.shapePath(),
+                    p = 'M'+ x +','+ y + s;
+            
+                this.el.node.setAttribute('data-toggle', 'popover');
+                if (MODULES[idModule].pos === 'superior') {
+                    this.el.node.setAttribute('data-placement', 'bottom');
+                } else {
+                    this.el.node.setAttribute('data-placement', 'top');
+                }                 
+                this.el.node.setAttribute('data-content', this.id); 
+
+                $(this.el.node).popover({
+                    'container': 'body',
+                    'trigger': 'click'
+                });
+                
+                var el = $(this.el.node);
+                $(this.text.node).on('click', function () {            
+                    el.trigger('click');
+                });
+
+                $(this.el.node).popover('hide');
+                if (this.text !== null) {
+                    this.text.animate({x: x, y: y}, 1000);
+                }           
+                this.el.animate({path: p}, 1000);
+            }                
             break;
         case 'path':
             if (MODULES[idModule].pos === 'superior-izquierda') {
@@ -171,12 +257,77 @@ PATIENT.prototype.goTo = function (idModule, idSubmodule) {
                     }
                 }
             } 
-            var s = this.shapePath(),
-                p = 'M'+ x +','+ y + s;
-            if (this.text !== null) {                
-                this.text.animate({x: x, y: y}, 1000);
-            }
-            this.el.animate({path: p}, 1000);  
+            
+            if (storage) {
+                var s = this.shapePath(),
+                    p = 'M'+ x +','+ y + s;               
+                
+                this.el = PAPER.path(p).attr({
+                    'fill': '#ccc',
+                    'stroke': '#000',
+                    'stroke-width': 0        
+                }); 
+                
+                this.text = PAPER.text(x, y, this.ticket).attr({
+                    'fill': '#000',
+                    'font-size': '10px'
+                });
+                
+                this.el.node.setAttribute('data-toggle', 'popover');
+                if (((MODULES[idModule].pos === 'superior-izquierda' || MODULES[idModule].pos === 'superior-derecha') &&
+                    MODULES[idModule].totalSubmodules > 3 && 
+                    MODULES[idModule].submodules[idSubmodule].el.attrs.width < MODULES[idModule].submodules[idSubmodule].el.attrs.height) || 
+                    ((MODULES[idModule].pos === 'superior-izquierda' || MODULES[idModule].pos === 'superior-derecha') && 
+                    MODULES[idModule].totalSubmodules <= 3)) {
+                    this.el.node.setAttribute('data-placement', 'bottom');
+                } else {
+                    this.el.node.setAttribute('data-placement', 'top');
+                }   
+                this.el.node.setAttribute('data-content', this.id); 
+
+                $(this.el.node).popover({
+                    'container': 'body',
+                    'trigger': 'click'
+                });
+                
+                var el = $(this.el.node);
+                $(this.text.node).on('click', function () {            
+                    el.trigger('click');
+                });
+            } else {
+                var s = this.shapePath(),
+                    p = 'M'+ x +','+ y + s;
+                
+                this.el.node.setAttribute('data-toggle', 'popover');
+                if (((MODULES[idModule].pos === 'superior-izquierda' || MODULES[idModule].pos === 'superior-derecha') &&
+                    MODULES[idModule].totalSubmodules > 3 && 
+                    MODULES[idModule].submodules[idSubmodule].el.attrs.width < MODULES[idModule].submodules[idSubmodule].el.attrs.height) || 
+                    ((MODULES[idModule].pos === 'superior-izquierda' || MODULES[idModule].pos === 'superior-derecha') && 
+                    MODULES[idModule].totalSubmodules <= 3)) {
+                    this.el.node.setAttribute('data-placement', 'bottom');
+                } else {
+                    this.el.node.setAttribute('data-placement', 'top');
+                }                 
+                this.el.node.setAttribute('data-content', this.id); 
+
+                $(this.el.node).popover({
+                    'container': 'body',
+                    'trigger': 'click'
+                });
+                
+                var el = $(this.el.node);
+                if (this.text !== null) {
+                    $(this.text.node).on('click', function () {            
+                        el.trigger('click');
+                    });
+                }               
+                
+                $(this.el.node).popover('hide');
+                if (this.text !== null) {                
+                    this.text.animate({x: x, y: y}, 1000);
+                }
+                this.el.animate({path: p}, 1000);
+            }              
             break;
     }
     if (MODULES['wr'].seatsPos[this.seat] !== undefined) {
@@ -194,8 +345,4 @@ PATIENT.prototype.shapePath = function () {
         var s = 'm0,-12l12,24l-24,0z';
         return s;
     }   
-};
-PATIENT.prototype.displayAttentionNum = function (idPatient) {
-    var x = PATIENTS[idPatient].el.attrs.path[0][1],
-        y = PATIENTS[idPatient].el.attrs.path[0][2];
 };

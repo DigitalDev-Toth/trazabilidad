@@ -23,31 +23,36 @@ MAKER.prototype.submodule = function (name, id, idModule, posModule) {
     MODULES[idModule].submodules[id] = sm;
     this.countSubmodules++;
 };
-MAKER.prototype.goTo = function (comet, rut, action, attentionNum, idModule, idSubmodule) {
-//    for (var i in MODULES) {
-//        if (MODULES[i].submodules !== null) {
-//            if (MODULES[i].submodules[idSubmodule] !== undefined) {
-//                var idModule = parseInt(i);
-//            }
-//        }        
-//    }    
+MAKER.prototype.patient = function (rut, ticket, attention, idModule, idSubmodule) {
+    var p = new PATIENT(rut, ticket, idModule, true);
+    PATIENTS[rut] = p;
+    
+    if (attention === 'waiting') {
+        PATIENTS[rut].shape = MODULES[idModule].shape;
+        PATIENTS[rut].seat = this.findSeat();
+        PATIENTS[rut].goToWaitingRoom(rut, true);
+    } else if (attention === 'on_serve') {
+        PATIENTS[rut].shape = MODULES[idModule].shape;
+        PATIENTS[rut].goTo(idModule, idSubmodule, true);
+    }
+};
+MAKER.prototype.goTo = function (comet, rut, action, ticket, idModule, idSubmodule) {   
     switch (action) {
         case 'in':
             if (comet === 'tothtem') {
                 if (PATIENTS[rut] !== undefined) {
-                    PATIENTS[rut].attentionNum = attentionNum;
+                    PATIENTS[rut].ticket = ticket;
                 } else {
-                    var p = new PATIENT(rut, attentionNum, idModule);
+                    var p = new PATIENT(rut, ticket, idModule, false);
                     PATIENTS[rut] = p;     
                 }
             } 
-            PATIENTS[rut].goTo(idModule, idSubmodule);
+            PATIENTS[rut].goTo(idModule, idSubmodule, false);
             break;
         case 'to':
-            PATIENTS[rut].displayAttentionNum(rut);
             PATIENTS[rut].shape = MODULES[idModule].shape;
             PATIENTS[rut].seat = this.findSeat();
-            PATIENTS[rut].goToWaitingRoom(rut);
+            PATIENTS[rut].goToWaitingRoom(rut, false);
             break;
     }  
 };

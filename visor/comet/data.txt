@@ -1,1 +1,1 @@
-{"comet":"tothtem","rut":"17.443.625-9","datetime":"2014-08-04 17:21:34","description":"Ticket Nº X","zone":"1","action":"to","module":"1","submodule":"1"}
+{"comet":"tothtem","rut":"17.443.625-6","datetime":"2014-08-04 17:21:34","description":"Ticket Nº X","zone":"1","action":"to","module":"1","submodule":"1"}

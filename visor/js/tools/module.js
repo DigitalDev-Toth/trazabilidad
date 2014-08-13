@@ -33,8 +33,7 @@ MODULE.prototype.attrs = function (color) {
 MODULE.prototype.textAttrs = function (color) {
     return {
         'fill': this.setColor(color, -0.3),
-        'font-size': '14px'
-        //'stroke': this.setColor(color, -0.5)
+        'font-size': '14px'        
     };
 };
 MODULE.prototype.setColor = function (hex, lum) {
@@ -99,21 +98,27 @@ MODULE.prototype.setElem = function () { // element in DOM for module
                             w = 90 + 10 + (40 * totalW),
                             h = 90 + 10 + (40 * totalH);
                     }                    
-                    var xt = 130,
+                    var xt = 95,
                         yt = 100,
                         rt = 0,
-                        p = 'M5,5L'+ w +',5L'+ w +',90L90,90L90,'+ h +'L5,'+ h +'Z';
+                        p = 'M5,5L'+ w +',5L'+ w +',90L90,90L90,'+ h +'L5,'+ h +'Z',
+                        textAttributes = {
+                            'fill': this.setColor(this.color, -0.3),
+                            'font-size': '14px',
+                            'text-anchor': 'start'
+                        };
                 } else {
                     var w = 200,
                         h = 200,
                         xt = (w / 2) + 5,
                         yt = (h / 2) + 15,
                         rt = -45,
-                        p = 'M5,5L'+ w +',5L5,'+ h +'Z';
+                        p = 'M5,5L'+ w +',5L5,'+ h +'Z',
+                        textAttributes = this.textAttrs(this.color);
                 }
                 this.el = PAPER.path(p).attr(this.attrs(this.color));
-                this.text = PAPER.text(xt, yt, this.name).attr(this.textAttrs(this.color));
-                this.text.rotate(rt);
+                this.text = PAPER.text(xt, yt, this.name).attr(textAttributes);
+                this.text.rotate(rt, xt, yt);
                 break;
             case 'superior-derecha':                
                 if (this.totalSubmodules >= 4) {
@@ -129,9 +134,14 @@ MODULE.prototype.setElem = function () { // element in DOM for module
                     var bx = $(window).width() - 5,
                         fx = $(window).width() - w,
                         xt = bx - 100,
-                        yt = h - 50,
+                        yt = h - 85,
                         rt = 90,
-                        p = 'M'+ bx +',5L'+ fx +',5L'+ fx +',90L'+ (bx - 90) +',90L'+ (bx - 90) +','+ h +'L'+ bx +','+ h +'Z';
+                        p = 'M'+ bx +',5L'+ fx +',5L'+ fx +',90L'+ (bx - 90) +',90L'+ (bx - 90) +','+ h +'L'+ bx +','+ h +'Z',
+                        textAttributes = {
+                            'fill': this.setColor(this.color, -0.3),
+                            'font-size': '14px',
+                            'text-anchor': 'start'
+                        };
                 } else {
                     var w = 200,
                         h = 200,
@@ -140,11 +150,13 @@ MODULE.prototype.setElem = function () { // element in DOM for module
                         xt = bx - 105,
                         yt = h - 90,
                         rt = 45,
-                        p = 'M'+ bx +',5L'+ fx +',5L'+ bx +','+ h +'Z';
+                        p = 'M'+ bx +',5L'+ fx +',5L'+ bx +','+ h +'Z',
+                        textAttributes = this.textAttrs(this.color);
+                        
                 }                
                 this.el = PAPER.path(p).attr(this.attrs(this.color));
-                this.text = PAPER.text(xt, yt, this.name).attr(this.textAttrs(this.color));
-                this.text.rotate(rt);
+                this.text = PAPER.text(xt, yt, this.name).attr(textAttributes);
+                this.text.rotate(rt, xt, yt);
                 break;
             case 'inferior-izquierda':
                 if (this.totalSubmodules >= 4) {
@@ -159,10 +171,15 @@ MODULE.prototype.setElem = function () { // element in DOM for module
                     }  
                     var by = $(window).height() - 5,
                         fy = $(window).height() + 5,
-                        xt = w - 50,
+                        xt = w - 85,
                         yt = by - 100,
                         rt = 0,
-                        p = 'M5,'+ by +'L'+ w +','+ by +'L'+ w +','+ (by - 90) +'L90,'+ (by - 90) +'L90,'+ (fy - h) +'L5,'+ (fy - h) +'Z';
+                        p = 'M5,'+ by +'L'+ w +','+ by +'L'+ w +','+ (by - 90) +'L90,'+ (by - 90) +'L90,'+ (fy - h) +'L5,'+ (fy - h) +'Z',
+                        textAttributes = {
+                            'fill': this.setColor(this.color, -0.3),
+                            'font-size': '14px',
+                            'text-anchor': 'start'
+                        };
                 } else {
                     var w = 200,
                         h = 200,
@@ -171,11 +188,12 @@ MODULE.prototype.setElem = function () { // element in DOM for module
                         xt = w - 90,
                         yt = by - 105,
                         rt = 45,
-                        p = 'M5,'+ by +'L'+ w +','+ by +'L5,'+ fy +'Z';
+                        p = 'M5,'+ by +'L'+ w +','+ by +'L5,'+ fy +'Z',
+                        textAttributes = this.textAttrs(this.color);
                 }      
                 this.el = PAPER.path(p).attr(this.attrs(this.color));
-                this.text = PAPER.text(xt, yt, this.name).attr(this.textAttrs(this.color));
-                this.text.rotate(rt);
+                this.text = PAPER.text(xt, yt, this.name).attr(textAttributes);
+                this.text.rotate(rt, xt, yt);
                 break;
             case 'inferior-derecha':
                 if (this.totalSubmodules >= 4) {
@@ -192,10 +210,18 @@ MODULE.prototype.setElem = function () { // element in DOM for module
                         by = $(window).height() - 5,
                         fx = $(window).width() - w,
                         fy = $(window).height() - h,
-                        p = 'M'+ bx +','+ by +'L'+ fx +','+ by +'L'+ fx +','+ (by - 90) + 'L'+ (bx - 90) +','+ (by - 90) +'L'+ (bx - 90) +','+ fy +'L'+ bx +','+ fy +'Z';
+                        xt = bx - 100,
+                        yt = by - 95,
+                        rt = -90,
+                        p = 'M'+ bx +','+ by +'L'+ fx +','+ by +'L'+ fx +','+ (by - 90) + 'L'+ (bx - 90) +','+ (by - 90) +'L'+ (bx - 90) +','+ fy +'L'+ bx +','+ fy +'Z',
+                        textAttributes = {
+                            'fill': this.setColor(this.color, -0.3),
+                            'font-size': '14px',
+                            'text-anchor': 'start'
+                        };
                     this.el = PAPER.path(p).attr(this.attrs(this.color));
-                    this.text = PAPER.text(bx - 100, by - 135, this.name).attr(this.textAttrs(this.color));
-                    this.text.rotate(-90);
+                    this.text = PAPER.text(xt, yt, this.name).attr(textAttributes);
+                    this.text.rotate(rt, xt, yt);
                 } else {
                     var w = 200,
                         h = 200,
@@ -203,10 +229,14 @@ MODULE.prototype.setElem = function () { // element in DOM for module
                         by = $(window).height() - 5,
                         fx = $(window).width() - w,
                         fy = $(window).height() - h,
-                        p = 'M'+ bx +','+ by +'L'+ fx +','+ by +'L'+ bx +','+ fy +'Z';
+                        xt = bx - 105,
+                        yt = by - 105,
+                        rt = -45,
+                        p = 'M'+ bx +','+ by +'L'+ fx +','+ by +'L'+ bx +','+ fy +'Z',
+                        textAttributes = this.textAttrs(this.color);
                     this.el = PAPER.path(p).attr(this.attrs(this.color));
-                    this.text = PAPER.text(bx - 105, by - 105, this.name).attr(this.textAttrs(this.color));
-                    this.text.rotate(-45);
+                    this.text = PAPER.text(xt, yt, this.name).attr(textAttributes);
+                    this.text.rotate(rt, xt, yt);
                 }         
                 break;
         }
