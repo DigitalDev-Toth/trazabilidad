@@ -16,7 +16,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" charset="UTF-8">
 	<title>Login TOTH :: BioRis <?php echo $info['client']; ?></title>	
 	<link rel="SHORTCUT ICON" href="images/favicon.ico" />
 	<link rel="stylesheet" type="text/css" href="login/css/login.css">
@@ -64,16 +64,22 @@
 			var pass = $.base64('encode', $('#passInput').val());
 			if(user && pass) {
 				$.post("inc/sessionAjax.php", { username: user, password: pass }, function(data) {
-					if(data=='ok') {
-						$(location).attr('href','index.php');
-						//console.log("ok");
-					}
-					else {
+					console.log(data);
+
+					if(data==0) {
 						var actualMsg = $('#systemText').html();
 						error(0);
-						changeText(data);
+						changeText("Error en el nombre de Usuario o contraseña");
 						setTimeout("changeText('"+actualMsg+"')", 3000);
+					}else{
+						if(data!=1){
+							$(location).attr('href','tothtem/pantallas/selector.php');
+						}else{
+							$(location).attr('href','index.php');
+						}
+						//console.log("ok");
 					}
+
 				});
 			}
 		});

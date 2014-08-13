@@ -29,7 +29,8 @@ if(!isset($_SESSION['Username'])) { header("location: login.php"); header('Conte
 				$(this).find('ul:first').css({visibility: "hidden"});
 				});
 		$("#header").fadeIn("600");		
-		
+		console.log('<?php echo $_SESSION["Username"];?>');
+		console.log('<?php echo $_SESSION["idRole"];?>');
 	});
 	
 </script>

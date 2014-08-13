@@ -1,0 +1,10 @@
+<?
+$username = "postgres";
+$password = "sql2300";
+$dbname = "plan";
+$hostname = "localhost";
+$port = "5432";
+
+//relative directory
+$filesPathDirectory = "../../uploads/audio/";
+?>

@@ -45,16 +45,17 @@ if (isset($_POST['username'])) {
     $_SESSION['Username'] = $loginUsername;
     $_SESSION['Realname'] = $name;
     $_SESSION['UserRole'] = $role['realname'];
-    $_SESSION['idRole'] = $idRole;
+    $_SESSION['idRole']   = $idRole;
     $_SESSION['UserId']   = $id;
     $_SESSION['Role']     = $role;
     $_SESSION['permission']     = $permission;//colocar en SM
     $_SESSION['alive']    = TRUE;
 	
-    echo "ok";
+    echo $_SESSION['idRole'];
   }
   else {
-    echo "Error en el nombre de Usuario o contraseña";
+    echo 0;
+    //echo "Error en el nombre de Usuario o contraseña";
   }
 }
 ?>

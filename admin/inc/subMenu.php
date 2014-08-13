@@ -31,7 +31,8 @@ function getSubMenu($content) {
 			$subMenu .= '<ul>';
 			$subMenu .= getItemMenu("changePass","Cambiar Password");
 			$subMenu .= getItemMenu("role","Roles");
-			$subMenu .= getItemMenu("users","Usarios");
+			$subMenu .= getItemMenu("roles","Tipo de Roles");
+			$subMenu .= getItemMenu("users","Usuarios");
 			$subMenu .= '<li class = "round_corner_menu_top"></li>';
 			$subMenu .='</ul>';
 		break;
