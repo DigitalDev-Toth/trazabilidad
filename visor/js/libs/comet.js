@@ -38,7 +38,7 @@ var Comet = function (data_url) {
         if (indexComet !== 0) {
             var data = $.parseJSON(response.msg);
             if (data.comet === 'tothtem' || data.comet === 'module') {
-                MAKE.goTo(data.comet, data.rut, data.action, 10, data.module, data.submodule);
+                MAKE.goTo(data.comet, data.rut, data.action, 10, data.datetime, data.module, data.submodule);
             }            
             console.log(PATIENTS);
         } else {

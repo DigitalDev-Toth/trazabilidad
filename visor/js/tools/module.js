@@ -1,13 +1,19 @@
 var MODULE = function (name, id, type, pos, color, shape, submodules, seats) {
     this.id = id;    
-    if(submodules !== null) {
+    if (type === 'module') {
         this.submodules = {};
         this.totalSubmodules = submodules.length;
-    } else {
+    } else if (type === 'waiting-room') {
         this.submodules = null;
-        this.seats = seats;
+        this.maxSeats = seats; // max seats per module 
+        this.seats = 60; // total seats per module
         this.seatsPos = [];
-        this.nextPos = null;
+        this.textMaxSeats = null;
+        this.textMsgMaxSeats = null;
+    } else if (type === 'limb') {
+        this.submodules = null;
+        this.places = 24;
+        this.placesPos = [];
     }
     this.pos = pos;
     this.color = color;
@@ -21,7 +27,7 @@ var MODULE = function (name, id, type, pos, color, shape, submodules, seats) {
     this.moduleRound = 5;    
     this.setElem();
 };
-// modules attributes for all moudles except waiting room
+// attributes for modules except waiting room and limb
 MODULE.prototype.attrs = function (color) {
     return {
         'fill': color,
@@ -53,10 +59,21 @@ MODULE.prototype.setColor = function (hex, lum) {
 MODULE.prototype.setElem = function () { // element in DOM for module
     if (this.type === 'waiting-room') {
         var x = ($(window).width() / 2) - (400 / 2),
-            y = ($(window).height() / 2) - (300 / 2);
-        this.el = PAPER.rect(x, y, 400, 300, 10).attr(this.attrs(this.color));
-        this.text = PAPER.text(x + 12, y + 10, this.seats).attr(this.textAttrs(this.color));
-        this.text = PAPER.text(x + (400 / 2), y + (300 - 12), this.name).attr(this.textAttrs(this.color));        
+            y = (($(window).height() - 100) / 2) - (200 / 2);
+        this.el = PAPER.rect(x, y, 400, 200, 10).attr(this.attrs(this.color));
+        this.textMaxSeats = PAPER.text(x + 12, y + 10, this.maxSeats).attr(this.textAttrs(this.color));
+        this.textMsgMaxSeats = PAPER.text(x + 50, y + 10, 'Se ha sobrepasado la cantidad máxima de pacientes').attr({
+            'fill': 'red',
+            'font-size': '11px',
+            'text-anchor': 'start',
+            'fill-opacity': 0
+        });
+        this.text = PAPER.text(x + (400 / 2), y + (200 - 12), this.name).attr(this.textAttrs(this.color));        
+    } else if (this.type === 'limb') {
+        var x = ($(window).width() / 2) - (400 / 2),
+            y = (($(window).height() + 200) / 2) - (100 / 2) + 3;
+        this.el = PAPER.rect(x, y, 400, 100, 10).attr(this.attrs(this.color));
+        this.text = PAPER.text(x + (400 / 2), y + (100 - 12), this.name).attr(this.textAttrs(this.color));     
     } else {
         switch (this.pos) {
             case 'superior':
@@ -243,21 +260,42 @@ MODULE.prototype.setElem = function () { // element in DOM for module
     }  
 };
 MODULE.prototype.setSeatsPos = function () {
-    var max = 5,
-        space = MODULES['wr'].el.attrs.width / max;
+    var max = 12, // max seats per line
+        space = 30; // space between seats
         
     for (var i = 0, j = 0, k = 0; i < this.seats; i++) {
         if (j < max) {
             var data = {
-                x: MODULES['wr'].el.attrs.x + 40 + (space * j),
-                y: MODULES['wr'].el.attrs.y + 50 + (50 * k),
+                x: MODULES['wr'].el.attrs.x + 35 + (space * j),
+                y: MODULES['wr'].el.attrs.y + 30 + (space * k),
                 patient: null
             };
             j++;
+            this.seatsPos[i] = data; 
         } else {
             j = 0;
             k++;
-        }        
-        this.seatsPos[i] = data;        
+            i--;
+        }             
+    }
+};
+MODULE.prototype.setPlacesPos = function () {
+    var max = 12, // max places per line
+        space = 30; // max places per zone
+    
+    for (var i = 0, j = 0, k = 0; i < this.places; i++) {
+        if (j < max) {
+            var data = {
+                x: MODULES['lb'].el.attrs.x + 35 + (space * j),
+                y: MODULES['lb'].el.attrs.y + 30 + (space * k),
+                patient: null
+            };
+            j++;
+            this.placesPos[i] = data;        
+        } else {
+            j = 0;
+            k++;
+            i--;
+        }    
     }
 };

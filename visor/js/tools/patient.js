@@ -1,10 +1,12 @@
-var PATIENT = function (id, ticket, idModule, storage) {
+var PATIENT = function (id, ticket, datetime, idModule, storage) {
     this.id = id; // rut
     this.shape = 'circulo';
-    this.seat = null;
+    this.seat = null; // seat for waiting room
+    this.place = null; // place for limb
     this.ticket = ticket;
-    this.el = null; // element for patient
-    this.text = null; // text for patient
+    this.datetime = new Date(datetime).getTime();
+    this.el = null; // element DOM for patient
+    this.text = null; // text DOM for patient
     if (!storage) {
         this.setElem(idModule);
     }    
@@ -47,18 +49,10 @@ PATIENT.prototype.setElem = function (idModule) {
     var p = 'M'+ x +','+ y +'m-12,0a12,12 0 1,0 24,0a12,12 0 1,0 -24,0z';
     this.el = PAPER.path(p).attr({
         'fill': '#ccc',
+        'fill-opacity': 1,
         'stroke': '#000',
         'stroke-width': 0        
     }); 
-    
-//    this.el.node.setAttribute('data-toggle', 'popover');
-//    this.el.node.setAttribute('data-placement', 'top'); 
-//    this.el.node.setAttribute('data-content', this.id); 
-//
-//    $(this.el.node).popover({
-//        'container': 'body',
-//        'trigger': 'click'
-//    });
 };
 PATIENT.prototype.goToWaitingRoom = function (idPatient, storage) {   
     MODULES['wr'].seatsPos[this.seat].patient = idPatient;
@@ -70,6 +64,7 @@ PATIENT.prototype.goToWaitingRoom = function (idPatient, storage) {
             
         this.el = PAPER.path(fp).attr({
             'fill': '#ccc',
+            'fill-opacity': 1,
             'stroke': '#000',
             'stroke-width': 0        
         }); 
@@ -117,6 +112,68 @@ PATIENT.prototype.goToWaitingRoom = function (idPatient, storage) {
                 var fp = 'M'+ fx +','+ fy + s;
                 t.text.animate({x: fx, y: fy}, 1000);
                 t.el.animate({path: fp}, 1000);
+            };        
+        })(this)); 
+    }
+};
+PATIENT.prototype.goToLimb = function (idPatient, storage) {
+    MODULES['lb'].placesPos[this.place].patient = idPatient;
+    if (storage) {        
+        var x = MODULES['lb'].placesPos[this.place].x,
+            y = MODULES['lb'].placesPos[this.place].y;
+        var s = this.shapePath(),
+            fp = 'M'+ x +','+ y + s;
+            
+        this.el = PAPER.path(fp).attr({
+            'fill': '#ccc',
+            'fill-opacity': 1,
+            'stroke': '#000',
+            'stroke-width': 0        
+        }); 
+
+        this.el.node.setAttribute('data-toggle', 'popover');
+        this.el.node.setAttribute('data-placement', 'top'); 
+        this.el.node.setAttribute('data-content', this.id); 
+
+        $(this.el.node).popover({
+            'container': 'body',
+            'trigger': 'click'
+        });
+        
+        this.el.animate({'fill-opacity': 0}, 5000, '>', (function (t) {
+            return function () {
+                $(t.el.node).popover('destroy');
+                t.el.remove();                
+                MODULES['lb'].placesPos[t.place].patient = null;
+                delete PATIENTS[idPatient];
+            };
+        })(this));
+    } else {
+        var bx = PATIENTS[idPatient].el.attrs.path[0][1],
+            by = PATIENTS[idPatient].el.attrs.path[0][2],
+            fx = MODULES['lb'].placesPos[this.place].x,
+            fy = MODULES['lb'].placesPos[this.place].y;
+    
+        var s = this.shapePath(),
+            bp = 'M'+ bx +','+ by + s;
+        
+        this.text.remove();
+        $(this.el.node).popover('hide');
+        this.el.animate({path: bp}, 500, '>', (function (t) {
+            return function () {
+                var fp = 'M'+ fx +','+ fy + s;
+                t.el.animate({path: fp}, 1000, '>', (function (s) {
+                    return function () {
+                        s.el.animate({'fill-opacity': 0}, 5000, '>', (function (r) {
+                            return function () {
+                                $(r.el.node).popover('destroy');
+                                r.el.remove();                                
+                                MODULES['lb'].placesPos[r.place].patient = null;
+                                delete PATIENTS[idPatient];
+                            };
+                        })(s));
+                    };
+                })(t));
             };        
         })(this)); 
     }
@@ -192,7 +249,7 @@ PATIENT.prototype.goTo = function (idModule, idSubmodule, storage) {
                 if (this.text !== null) {
                     this.text.animate({x: x, y: y}, 1000);
                 }           
-                this.el.animate({path: p}, 1000);
+                this.el.animate({path: p, 'fill': '#ccc'}, 1000);
             }                
             break;
         case 'path':
