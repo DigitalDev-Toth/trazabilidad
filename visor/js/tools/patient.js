@@ -5,6 +5,7 @@ var PATIENT = function (id, ticket, datetime, idModule, storage) {
     this.place = null; // place for limb
     this.ticket = ticket;
     this.datetime = new Date(datetime).getTime();
+    this.interval = null;
     this.el = null; // element DOM for patient
     this.text = null; // text DOM for patient
     if (!storage) {
@@ -53,6 +54,24 @@ PATIENT.prototype.setElem = function (idModule) {
         'stroke': '#000',
         'stroke-width': 0        
     }); 
+    
+    this.text = PAPER.text(x, y, '').attr({
+        'fill': '#000',
+        'font-size': '10px'
+    });
+    
+    $(this.el.node).popover({
+        'container': 'body',
+        'trigger': 'click',
+        'html': true,
+        'placement': 'top',
+        'content': this.id
+    });
+    
+    var el = $(this.el.node);
+    $(this.text.node).on('click', function () {            
+        el.trigger('click');
+    });
 };
 PATIENT.prototype.goToWaitingRoom = function (idPatient, storage) {   
     MODULES['wr'].seatsPos[this.seat].patient = idPatient;
@@ -68,20 +87,31 @@ PATIENT.prototype.goToWaitingRoom = function (idPatient, storage) {
             'stroke': '#000',
             'stroke-width': 0        
         }); 
-
+        
         this.text = PAPER.text(x, y, this.ticket).attr({
             'fill': '#000',
             'font-size': '10px'
         });
-
-        this.el.node.setAttribute('data-toggle', 'popover');
-        this.el.node.setAttribute('data-placement', 'top'); 
-        this.el.node.setAttribute('data-content', this.id); 
-
+        
         $(this.el.node).popover({
             'container': 'body',
-            'trigger': 'click'
+            'trigger': 'click',
+            'html': true,
+            'placement': 'top'
         });
+        
+        var datetime = this.datetime,
+            id = this.id,
+            el = $(this.el.node);
+        
+        this.interval = setInterval(function () {
+            var time = new Date().getTime() - datetime,
+                minutes = Math.floor((time / 1000) / 60),
+                content = id +'<br />'+
+                        'Juan Perez<br />'+
+                        minutes +' minutos';
+            el.attr('data-content', content);
+        }, 1000);
 
         var el = $(this.el.node);
         $(this.text.node).on('click', function () {            
@@ -94,18 +124,22 @@ PATIENT.prototype.goToWaitingRoom = function (idPatient, storage) {
             fy = MODULES['wr'].seatsPos[this.seat].y;
         var s = this.shapePath(),
             bp = 'M'+ bx +','+ by + s;
-        if (this.text === null) {
-            this.text = PAPER.text(bx, by, this.ticket).attr({
-                'fill': '#000',
-                'font-size': '10px'
-            });
-            var el = $(this.el.node);
-            $(this.text.node).on('click', function () {            
-                el.trigger('click');
-            });
-        } else {
-            this.text.attr({text: this.ticket});
-        }
+
+        this.text.attr({text: this.ticket});
+        
+        var datetime = this.datetime,
+            id = this.id,
+            el = $(this.el.node);
+        
+        this.interval = setInterval(function () {
+            var time = new Date().getTime() - datetime,
+                minutes = Math.floor((time / 1000) / 60),
+                content = id +'<br />'+
+                        'Juan Perez<br />'+
+                        minutes +' minutos';
+            el.attr('data-content', content);
+        }, 1000);
+        
         $(this.el.node).popover('hide');
         this.el.animate({path: bp}, 500, '>', (function (t) {
             return function () {
@@ -117,6 +151,7 @@ PATIENT.prototype.goToWaitingRoom = function (idPatient, storage) {
     }
 };
 PATIENT.prototype.goToLimb = function (idPatient, storage) {
+    clearInterval(this.interval);
     MODULES['lb'].placesPos[this.place].patient = idPatient;
     if (storage) {        
         var x = MODULES['lb'].placesPos[this.place].x,
@@ -130,14 +165,13 @@ PATIENT.prototype.goToLimb = function (idPatient, storage) {
             'stroke': '#000',
             'stroke-width': 0        
         }); 
-
-        this.el.node.setAttribute('data-toggle', 'popover');
-        this.el.node.setAttribute('data-placement', 'top'); 
-        this.el.node.setAttribute('data-content', this.id); 
-
+        
         $(this.el.node).popover({
             'container': 'body',
-            'trigger': 'click'
+            'trigger': 'click',
+            'html': true,
+            'placement': 'top',
+            'content': this.id
         });
         
         this.el.animate({'fill-opacity': 0}, 5000, '>', (function (t) {
@@ -179,6 +213,7 @@ PATIENT.prototype.goToLimb = function (idPatient, storage) {
     }
 };
 PATIENT.prototype.goTo = function (idModule, idSubmodule, storage) {
+    clearInterval(this.interval);
     switch (MODULES[idModule].el.type) {
         case 'rect':
             if (MODULES[idModule].pos === 'superior' || MODULES[idModule].pos === 'izquierda') {
@@ -193,7 +228,9 @@ PATIENT.prototype.goTo = function (idModule, idSubmodule, storage) {
             }         
             if (storage) {
                 var s = this.shapePath(),
-                    p = 'M'+ x +','+ y + s;               
+                    p = 'M'+ x +','+ y + s,
+                    content = this.id +'<br />'+
+                                'Juan Perez';               
                 
                 this.el = PAPER.path(p).attr({
                     'fill': '#ccc',
@@ -206,17 +243,18 @@ PATIENT.prototype.goTo = function (idModule, idSubmodule, storage) {
                     'font-size': '10px'
                 });
                 
-                this.el.node.setAttribute('data-toggle', 'popover');
                 if (MODULES[idModule].pos === 'superior') {
-                    this.el.node.setAttribute('data-placement', 'bottom');
+                    var placement = 'bottom';
                 } else {
-                    this.el.node.setAttribute('data-placement', 'top');
-                }                 
-                this.el.node.setAttribute('data-content', this.id); 
-
+                    var placement = 'top';
+                }
+                
                 $(this.el.node).popover({
                     'container': 'body',
-                    'trigger': 'click'
+                    'trigger': 'click',
+                    'html': true,
+                    'placement': placement,
+                    'content': content
                 });
                 
                 var el = $(this.el.node);
@@ -225,30 +263,14 @@ PATIENT.prototype.goTo = function (idModule, idSubmodule, storage) {
                 });
             } else {
                 var s = this.shapePath(),
-                    p = 'M'+ x +','+ y + s;
-            
-                this.el.node.setAttribute('data-toggle', 'popover');
-                if (MODULES[idModule].pos === 'superior') {
-                    this.el.node.setAttribute('data-placement', 'bottom');
-                } else {
-                    this.el.node.setAttribute('data-placement', 'top');
-                }                 
-                this.el.node.setAttribute('data-content', this.id); 
-
-                $(this.el.node).popover({
-                    'container': 'body',
-                    'trigger': 'click'
-                });
+                    p = 'M'+ x +','+ y + s,
+                    content = this.id +'<br />'+
+                                'Juan Perez';
                 
-                var el = $(this.el.node);
-                $(this.text.node).on('click', function () {            
-                    el.trigger('click');
-                });
-
+                $(this.el.node).attr('data-content', content);
+                
                 $(this.el.node).popover('hide');
-                if (this.text !== null) {
-                    this.text.animate({x: x, y: y}, 1000);
-                }           
+                this.text.animate({x: x, y: y}, 1000);          
                 this.el.animate({path: p, 'fill': '#ccc'}, 1000);
             }                
             break;
@@ -317,7 +339,9 @@ PATIENT.prototype.goTo = function (idModule, idSubmodule, storage) {
             
             if (storage) {
                 var s = this.shapePath(),
-                    p = 'M'+ x +','+ y + s;               
+                    p = 'M'+ x +','+ y + s,
+                    content = this.id +'<br />'+
+                                'Juan Perez';               
                 
                 this.el = PAPER.path(p).attr({
                     'fill': '#ccc',
@@ -330,21 +354,22 @@ PATIENT.prototype.goTo = function (idModule, idSubmodule, storage) {
                     'font-size': '10px'
                 });
                 
-                this.el.node.setAttribute('data-toggle', 'popover');
                 if (((MODULES[idModule].pos === 'superior-izquierda' || MODULES[idModule].pos === 'superior-derecha') &&
                     MODULES[idModule].totalSubmodules > 3 && 
                     MODULES[idModule].submodules[idSubmodule].el.attrs.width < MODULES[idModule].submodules[idSubmodule].el.attrs.height) || 
                     ((MODULES[idModule].pos === 'superior-izquierda' || MODULES[idModule].pos === 'superior-derecha') && 
                     MODULES[idModule].totalSubmodules <= 3)) {
-                    this.el.node.setAttribute('data-placement', 'bottom');
+                    var placement = 'bottom';
                 } else {
-                    this.el.node.setAttribute('data-placement', 'top');
+                    var placement = 'top';
                 }   
-                this.el.node.setAttribute('data-content', this.id); 
-
+                
                 $(this.el.node).popover({
                     'container': 'body',
-                    'trigger': 'click'
+                    'trigger': 'click',
+                    'html': true,
+                    'placement': placement,
+                    'content': content
                 });
                 
                 var el = $(this.el.node);
@@ -353,37 +378,17 @@ PATIENT.prototype.goTo = function (idModule, idSubmodule, storage) {
                 });
             } else {
                 var s = this.shapePath(),
-                    p = 'M'+ x +','+ y + s;
+                    p = 'M'+ x +','+ y + s,
+                    content = this.id +'<br />'+
+                                'Juan Perez';                
                 
-                this.el.node.setAttribute('data-toggle', 'popover');
-                if (((MODULES[idModule].pos === 'superior-izquierda' || MODULES[idModule].pos === 'superior-derecha') &&
-                    MODULES[idModule].totalSubmodules > 3 && 
-                    MODULES[idModule].submodules[idSubmodule].el.attrs.width < MODULES[idModule].submodules[idSubmodule].el.attrs.height) || 
-                    ((MODULES[idModule].pos === 'superior-izquierda' || MODULES[idModule].pos === 'superior-derecha') && 
-                    MODULES[idModule].totalSubmodules <= 3)) {
-                    this.el.node.setAttribute('data-placement', 'bottom');
-                } else {
-                    this.el.node.setAttribute('data-placement', 'top');
-                }                 
-                this.el.node.setAttribute('data-content', this.id); 
-
-                $(this.el.node).popover({
-                    'container': 'body',
-                    'trigger': 'click'
-                });
+                $(this.el.node).attr('data-content', content);
                 
-                var el = $(this.el.node);
-                if (this.text !== null) {
-                    $(this.text.node).on('click', function () {            
-                        el.trigger('click');
-                    });
-                }               
+                var el = $(this.el.node);              
                 
-                $(this.el.node).popover('hide');
-                if (this.text !== null) {                
-                    this.text.animate({x: x, y: y}, 1000);
-                }
-                this.el.animate({path: p}, 1000);
+                $(this.el.node).popover('hide');                
+                this.text.animate({x: x, y: y}, 1000);
+                this.el.animate({path: p, 'fill': '#ccc'}, 1000);
             }              
             break;
     }
