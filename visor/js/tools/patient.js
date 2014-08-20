@@ -64,7 +64,7 @@ PATIENT.prototype.setElem = function (idModule) {
         'container': 'body',
         'trigger': 'click',
         'html': true,
-        'placement': 'top',
+        'placement': 'auto',
         'content': this.id
     });
     
@@ -97,7 +97,7 @@ PATIENT.prototype.goToWaitingRoom = function (idPatient, storage) {
             'container': 'body',
             'trigger': 'click',
             'html': true,
-            'placement': 'top'
+            'placement': 'auto'
         });
         
         var datetime = this.datetime,
@@ -170,7 +170,7 @@ PATIENT.prototype.goToLimb = function (idPatient, storage) {
             'container': 'body',
             'trigger': 'click',
             'html': true,
-            'placement': 'top',
+            'placement': 'auto',
             'content': this.id
         });
         
@@ -243,17 +243,11 @@ PATIENT.prototype.goTo = function (idModule, idSubmodule, storage) {
                     'font-size': '10px'
                 });
                 
-                if (MODULES[idModule].pos === 'superior') {
-                    var placement = 'bottom';
-                } else {
-                    var placement = 'top';
-                }
-                
                 $(this.el.node).popover({
                     'container': 'body',
                     'trigger': 'click',
                     'html': true,
-                    'placement': placement,
+                    'placement': 'auto',
                     'content': content
                 });
                 
@@ -352,23 +346,13 @@ PATIENT.prototype.goTo = function (idModule, idSubmodule, storage) {
                 this.text = PAPER.text(x, y, this.ticket).attr({
                     'fill': '#000',
                     'font-size': '10px'
-                });
-                
-                if (((MODULES[idModule].pos === 'superior-izquierda' || MODULES[idModule].pos === 'superior-derecha') &&
-                    MODULES[idModule].totalSubmodules > 3 && 
-                    MODULES[idModule].submodules[idSubmodule].el.attrs.width < MODULES[idModule].submodules[idSubmodule].el.attrs.height) || 
-                    ((MODULES[idModule].pos === 'superior-izquierda' || MODULES[idModule].pos === 'superior-derecha') && 
-                    MODULES[idModule].totalSubmodules <= 3)) {
-                    var placement = 'bottom';
-                } else {
-                    var placement = 'top';
-                }   
+                });  
                 
                 $(this.el.node).popover({
                     'container': 'body',
                     'trigger': 'click',
                     'html': true,
-                    'placement': placement,
+                    'placement': 'auto',
                     'content': content
                 });
                 
