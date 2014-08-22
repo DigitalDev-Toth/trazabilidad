@@ -89,6 +89,7 @@ MAKER.prototype.goTo = function (comet, rut, action, ticket, datetime, idModule,
             PATIENTS[rut].goTo(idModule, idSubmodule, false);
             break;
         case 'to':
+            PATIENTS[rut].ticket = ticket;
             PATIENTS[rut].shape = MODULES[idModule].shape;
             PATIENTS[rut].seat = this.findSeat();
             PATIENTS[rut].goToWaitingRoom(rut, false);
