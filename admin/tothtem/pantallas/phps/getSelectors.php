@@ -2,10 +2,10 @@
 //include ('../scripts/libs/db.class.php');
 include ('../../tothtem/scripts/libs/db.class.php');
 //get data
-/*
+
 session_start();
-$userId = $_SESSION['userId'];
-*/
+//$userId = $_SESSION['UserId'];
+
 $userId = $_REQUEST['userId'];
 $type = $_REQUEST['type'];
 
@@ -48,7 +48,10 @@ if($type=='zone'){
 
     $sql="SELECT *
         FROM submodule
-        WHERE module=$module AND state='activo' ORDER BY id";
+        WHERE module=$module ORDER BY id";
+        /*$sql="SELECT *
+        FROM submodule
+        WHERE module=$module AND state='inactivo' ORDER BY id";*/
     $submodules = $db->doSql($sql);
     do{
         $data[] = array(

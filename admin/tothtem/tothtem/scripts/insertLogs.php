@@ -32,6 +32,6 @@ $db->doSql($sql);
 
 //Comet es el encabezado que corresponde al tipo de comet a entregar: ejemplo : comet tipo tothtem , comet tipo gestion
 
-$returnComet = array('Comet' => $cometType,'rut' => $rut, 'datetime' => $datetime, 'description' => $description, 'zone' => $zone, 'action' => $action, 'subModule' => $subModule, 'module' => $module);
+$returnComet = array('comet' => $cometType,'rut' => $rut, 'datetime' => $datetime, 'description' => $description, 'zone' => $zone, 'action' => $action, 'submodule' => $subModule, 'module' => $module);
 echo json_encode($returnComet);
 ?>

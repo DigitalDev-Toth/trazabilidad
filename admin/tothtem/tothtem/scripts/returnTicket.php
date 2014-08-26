@@ -33,17 +33,17 @@ var json = JSON.parse(jsonData);
   1- Para comet de submódulos de recepción de tickets
   2- Para comet de visualización
 */
-console.log(jsonData);
-console.log(json);
-var newTicket=json[0]['newticket'];
+
+var newTicket=json['newticket'];
 $("#ticket").text(newTicket);
 
 $("#barCode").barcode(rut, "datamatrix"); 
 //code39 code93 code128 codabar Datamatrix->qr
+console.log(jsonData);
 //BACKEND PARA EL COMET, SE INTEGRA CON LOS MÓDULOS DE GESTIÓN, HABILITAR UNA VEZ ESTÉ EN GIT
-/*$.post('../../inc/tools/comet/backend.php',{msg: json[1]},function(data, textStatus, xhr){
-    console.log("comet->"+data);
-}); */
+$.post('../../../../visor/comet/backend.php',{msg: jsonData},function(data, textStatus, xhr){
+    //console.log("comet->"+data);
+});
 var newDate=new Date();
 var month=newDate.getMonth()+1;
 var day=newDate.getDate()+1;
@@ -92,7 +92,6 @@ function sendComet(){
 var Comet = function (data_url) {
   this.timestamp = 0;
   this.url = data_url;
-  console.debug(this.url)
   this.noerror = true;
 
   this.connect = function() {

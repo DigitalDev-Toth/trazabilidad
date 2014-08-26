@@ -5,9 +5,10 @@
 
 ?>
 <html>
-<head>
+	<head>
+		<link href="../style/main.css" rel="stylesheet" type="text/css" />
 	</head>
-<link href="../style/main.css" rel="stylesheet" type="text/css" />
+	<body style="overflow:visible;">
 <?
 	@$modulo=$_GET['modulo'];
 	switch ($modulo)
@@ -47,6 +48,10 @@
 
 			case 'submodule':
 			include("modules/submodule.php");
+			break;
+
+			case 'display':
+			include("modules/show_displays.php");
 			break;
 			
 			default:

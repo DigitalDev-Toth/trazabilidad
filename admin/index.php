@@ -7,7 +7,7 @@ if(!isset($_SESSION['Username'])) { header("location: login.php"); header('Conte
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es-es">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=latin1" />
-<title>BioPacs :: Home</title>
+<title>Trazabilidad :: Home</title>
 <link href="style/index.css" rel="stylesheet" type="text/css" /> 
 <link href="style/menuTop.css" rel="stylesheet" type="text/css" />
 <link rel="SHORTCUT ICON" href="images/favicon.ico"> 
@@ -29,8 +29,6 @@ if(!isset($_SESSION['Username'])) { header("location: login.php"); header('Conte
 				$(this).find('ul:first').css({visibility: "hidden"});
 				});
 		$("#header").fadeIn("600");		
-		console.log('<?php echo $_SESSION["Username"];?>');
-		console.log('<?php echo $_SESSION["idRole"];?>');
 	});
 	
 </script>

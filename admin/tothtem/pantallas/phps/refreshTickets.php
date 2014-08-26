@@ -29,16 +29,11 @@ try {
 	$result = $db->doSql($sql);
 	$id=$result['id'];
 
-	//echo '<br/>'.$id;
-	$db2 = NEW DB();
-	$stringSql="UPDATE tickets SET attention='$attention' WHERE id=$id";
-	$db2->doSql($stringSql);
-
 	//INSERCIÓN LOGS
 	$rut = $rutPatient;
 	$description = 'Ingreso a submódulo';
 	$action = 'in';
-	$cometType = 'subModule';
+	$cometType = 'module';
 	$datetime = date("Y-m-d H:i:s");
 
 	$sbIp = '192.168.0.122';
@@ -58,9 +53,22 @@ try {
 	$dblog->doSql($sql);
 
 
+
+	//Actualización de ticket con su estado de atención y nuevo log
+
+	$dbLogNew = NEW DB();
+	$sqlLogNew = "SELECT id FROM logs ORDER BY id DESC LIMIT 1";
+	$resultLogNew = $dbLogNew->doSql($sqlLogNew);
+	$log=$resultLogNew['id'];
+
+	$db2 = NEW DB();
+	$stringSql="UPDATE tickets SET attention='$attention', logs=$log WHERE id=$id";
+	$db2->doSql($stringSql);
+
+
 	//Comet es el encabezado que corresponde al tipo de comet a entregar: ejemplo : comet tipo tothtem , comet tipo gestion
 
-	$returnComet = array('Comet' => $cometType,'rut' => $rut, 'datetime' => $datetime, 'description' => $description, 'zone' => $zone, 'action' => $action, 'subModule' => $submodule, 'module' => $module);
+	$returnComet = array('comet' => $cometType,'rut' => $rut, 'datetime' => $datetime, 'description' => $description, 'zone' => $zone, 'action' => $action, 'submodule' => $submodule, 'module' => $module);
 	echo json_encode($returnComet);
 
 } catch (Exception $e) {

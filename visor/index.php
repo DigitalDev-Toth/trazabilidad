@@ -46,43 +46,13 @@
                             for (var i = 0; i < info.modules.length; i++) {   
                                 MAKE.module(info.modules[i].name, info.modules[i].id, 'module', info.modules[i].position, '#'+ info.modules[i].color, info.modules[i].shape, info.modules[i].submodules);
                             }    
-                            MAKE.patient('16.025.167-0', 88, '2014-08-18 12:56:30', 'waiting', 2, 2);
-                            MAKE.patient('16.025.167-1', 89, '2014-08-18 12:56:30', 'waiting', 1, 2);
-                            MAKE.patient('16.025.167-2', 90, '2014-08-18 12:56:30', 'waiting', 1, 2);
-                            MAKE.patient('16.025.167-3', 91, '2014-08-18 12:56:30', 'waiting', 2, 2);
-                            MAKE.patient('16.025.167-4', 92, '2014-08-18 12:56:30', 'waiting', 1, 2);
-                            MAKE.patient('16.025.167-5', 93, '2014-08-18 12:56:30', 'waiting', 2, 2);
-                            MAKE.patient('16.025.167-6', 94, '2014-08-18 12:56:30', 'waiting', 1, 2);
-                            MAKE.patient('16.025.167-7', 95, '2014-08-18 12:56:30', 'waiting', 2, 2);
-                            MAKE.patient('16.025.167-8', 96, '2014-08-18 12:56:30', 'waiting', 1, 2);
-                            MAKE.patient('16.025.167-9', 97, '2014-08-18 12:56:30', 'waiting', 2, 2);
-                            MAKE.patient('16.025.167-10', 98, '2014-08-18 12:56:30', 'waiting', 1, 2);
-                            MAKE.patient('16.025.167-11', 99, '2014-08-18 12:56:30', 'waiting', 2, 2);
-                            MAKE.patient('16.025.167-12', 60, '2014-08-18 12:56:30', 'waiting', 1, 2);
-                            MAKE.patient('16.025.167-13', 61, '2014-08-18 12:56:30', 'waiting', 2, 2);
-                            MAKE.patient('16.025.167-14', 61, '2014-08-18 12:56:30', 'waiting', 2, 2);
-                            MAKE.patient('16.025.167-15', 61, '2014-08-18 12:56:30', 'waiting', 2, 2);
-                            MAKE.patient('16.025.167-16', 61, '2014-08-18 12:56:30', 'waiting', 2, 2);
-                            MAKE.patient('16.025.167-17', 61, '2014-08-18 12:56:30', 'waiting', 2, 2);
-                            MAKE.patient('16.025.167-18', 61, '2014-08-18 12:56:30', 'waiting', 2, 2);
-
-                            MAKE.patient('16.025.168-2', 90, '2014-08-18 12:56:30', 'limb', 1, 2);
-                            MAKE.patient('16.025.168-2', 90, '2014-08-18 12:56:30', 'limb', 1, 2);
-                            MAKE.patient('16.025.168-2', 90, '2014-08-18 12:56:30', 'limb', 1, 2);
-                            MAKE.patient('16.025.168-2', 90, '2014-08-18 12:56:30', 'limb', 1, 2);
-                            MAKE.patient('16.025.168-2', 90, '2014-08-18 12:56:30', 'limb', 1, 2);
-                            MAKE.patient('16.025.168-2', 90, '2014-08-18 12:56:30', 'limb', 1, 2);
-                            MAKE.patient('16.025.168-2', 90, '2014-08-18 12:56:30', 'limb', 1, 2);
-                            MAKE.patient('16.025.168-2', 90, '2014-08-18 12:56:30', 'limb', 1, 2);
-                            MAKE.patient('16.025.168-2', 90, '2014-08-18 12:56:30', 'limb', 1, 2);
-                            MAKE.patient('16.025.168-2', 90, '2014-08-18 12:56:30', 'limb', 1, 2);
-                            MAKE.patient('16.025.168-2', 90, '2014-08-18 12:56:30', 'limb', 1, 2);
-                            MAKE.patient('16.025.168-2', 90, '2014-08-18 12:56:30', 'limb', 1, 2);
-                            MAKE.patient('16.025.168-2', 90, '2014-08-18 12:56:30', 'limb', 1, 2);
-                            MAKE.patient('16.025.168-3', 87, '2014-08-18 12:56:30', 'on_serve', 8, 35);
-                            MAKE.patient('16.025.168-4', 86, '2014-08-18 12:56:30', 'on_serve', 2, 3);
-                            MAKE.patient('16.025.168-5', 85, '2014-08-18 12:56:30', 'on_serve', 4, 6);
-
+                            $.get('../services/getPatients.php?zone=1',function (data, status) {
+                                console.log(data);
+                                var jsonData = JSON.parse(data);
+                                for(i=0; i<jsonData.length;i++){
+                                    MAKE.patient(jsonData[i].rut, jsonData[i].ticket, jsonData[i].datetime, jsonData[i].attention, jsonData[i].module, jsonData[i].submodule);
+                                }
+                            });
                             message('Objetos creados');
                             console.log(MODULES);
                         }

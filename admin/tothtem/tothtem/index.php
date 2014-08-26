@@ -114,7 +114,7 @@ body {
 				    <input type="button" name="number" value="-" id="_g" class="btn btn-default btn-lg" onclick="teclado()">-->
 				    <input type="button" name="number" value="0" id="_0" class="btn btn-default btn-lg" onclick="teclado()">
 				    <input type="button" name="number" value="K" id="ka" class="btn btn-default btn-lg" onclick="teclado()">
-				    <button class="btn btn-default btn-lg" onclick="deleteString()"><span class="glyphicon glyphicon-arrow-left"></span> </button>
+                    <button class="btn btn-default btn-lg" onclick="deleteString()"><span class="glyphicon glyphicon-arrow-left"></span> </button>
 				    <input type="button" id="Borrar" value="Borrar"class="btn btn-default btn-lg" >
 			    </div>
 			</div><br>
@@ -591,9 +591,9 @@ function loginPatient(){
             console.log(data);
 
             //BACKEND PARA EL COMET, SE INTEGRA CON LOS MÓDULOS DE GESTIÓN, HABILITAR UNA VEZ ESTÉ EN GIT
-            /*$.post('../../inc/tools/comet/backend.php',{msg: data},function(data, textStatus, xhr){
+            $.post('../../../visor/comet/backend.php',{msg: data},function(data, textStatus, xhr){
                 console.log("comet->"+data);
-            }); */
+            });
         });
         
 
@@ -673,7 +673,7 @@ function getActivesModules(){
             console.log("error tothtem config");
         }
     });
-    console.log("modulos activos:\n"+result);
+    //console.log("modulos activos:\n"+result);
     var count = Object.keys(JSON.parse(result)).length;
 
 

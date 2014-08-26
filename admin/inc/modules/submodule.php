@@ -9,9 +9,12 @@ $submodule = new DB("submodule", "id");
 $submodule->exceptions(array("module", "users"));
 $submodule->relation("module", "module", "id", "name");
 $submodule->additions("module", array("name"=>"modulename"));
-$submodule->relation("users", "users", "id", "name");
-$submodule->additions("users", array("name"=>"usersname"));
 
+$submodule->relation("users", "users", "id", "name");
+//$submodule->additions("users", array("name"=>"usersname"));
+$submodule->insertExternalInShow('Usuario actual', 'http://localhost/new_traza/admin/inc/modules/subModuleTime.php?submodule=%id%&type=user');
+$submodule->insertExternalInShow('Hora inicio', 'http://localhost/new_traza/admin/inc/modules/subModuleTime.php?submodule=%id%&type=ini');
+$submodule->insertExternalInShow('Tiempo de Actividad', 'http://localhost/new_traza/admin/inc/modules/subModuleTime.php?submodule=%id%&type=total');
 makeControls($submodule, "modules/submoduleForm.php", "modules/submoduleDelete.php", "modules/submoduleUpdate.php", $_SERVER['HTTP_REFERER']);
 
 $submodule->showControls();

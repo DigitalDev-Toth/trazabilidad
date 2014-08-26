@@ -1,5 +1,5 @@
 <?php 
-	$infoFile = file_get_contents("info");
+	/*$infoFile = file_get_contents("info");
 	$lines = explode("\n", $infoFile);
 	foreach ($lines as $line) {
 		$exp = explode("=", $line);
@@ -11,13 +11,13 @@
 		if($system) {
 			$systemImages .= '<img src="images/'.strtolower($system).'.png" />';
 		}
-	}
+	}*/
 ?>
 <!DOCTYPE html>
 <html>
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" charset="UTF-8">
-	<title>Login TOTH :: BioRis <?php echo $info['client']; ?></title>	
+	<title>Login TOTH :: Trazabilidad <?php echo $info['client']; ?></title>	
 	<link rel="SHORTCUT ICON" href="images/favicon.ico" />
 	<link rel="stylesheet" type="text/css" href="login/css/login.css">
 	<script src="login/js/jquery-2.0.3.js"></script>
@@ -64,7 +64,6 @@
 			var pass = $.base64('encode', $('#passInput').val());
 			if(user && pass) {
 				$.post("inc/sessionAjax.php", { username: user, password: pass }, function(data) {
-					console.log(data);
 
 					if(data==0) {
 						var actualMsg = $('#systemText').html();
@@ -77,7 +76,6 @@
 						}else{
 							$(location).attr('href','index.php');
 						}
-						//console.log("ok");
 					}
 
 				});

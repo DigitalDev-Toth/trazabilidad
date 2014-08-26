@@ -5,7 +5,7 @@ ini_set("display_errors", 1);
 //get data
 $module = $_REQUEST['module'];
 $rut = $_REQUEST['rut'];
-$cometType = 'espera';
+$cometType = 'module';
 //$sbIp=$_REQUEST['ip'];
 
 //get last ticket
@@ -49,9 +49,10 @@ $db4 = NEW DB();
 $db4->doSql("INSERT INTO tickets(logs,ticket,attention) VALUES (".$idLog['id'].",'$newticket','waiting')");
 
 //$ticketData = array('newticket' => $newticket, 'modality' => $module, 'rut' => $rut);
-$ticketData[0] = array('newticket' => $newticket, 'modality' => $module, 'date_t' => date("Y-m-d"), 'hour_start' => date("H:i:s"), 'hour_end' => 'NaN', 'rut' => $rut);
+//$ticketData[0] = array('newticket' => $newticket, 'modality' => $module, 'date_t' => date("Y-m-d"), 'hour_start' => date("H:i:s"), 'hour_end' => 'NaN', 'rut' => $rut);
 //COMET para visualización
-$ticketData[1] = array('Comet' => $cometType,'rut' => $rut, 'datetime' => $datetime, 'description' => $description, 'zone' => $zone, 'action' => 'to', 'subModule' => $subModule, 'module' => $module);
+//$ticketData[1] = array('comet' => $cometType,'rut' => $rut, 'datetime' => $datetime, 'description' => $description, 'zone' => $zone, 'action' => 'to', 'submodule' => $subModule, 'module' => $module);
+$ticketData = array('comet' => $cometType,'rut' => $rut, 'datetime' => $datetime, 'description' => $description, 'zone' => $zone, 'action' => 'to', 'submodule' => $subModule, 'module' => $module,'newticket' => "$newticket");
 
 echo json_encode($ticketData);
 ?>

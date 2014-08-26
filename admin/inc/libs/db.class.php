@@ -1032,7 +1032,7 @@ var $toMany; //matriz que almacena las relaciones uno a muchos para la insercion
 						else { $comma = ", "; }
 						if($this->formObjectChanges[$field]['enc']=='md5') { $simpleData = md5($simpleData); }
 						if ($attrs['type']=='timestamp') { $attrs['type']='date'; }
-						if ($attrs['type']=='text') { $attrs['type']='varchar'; }
+						if ($attrs['type']=='text' || $attrs['type']=='inet') { $attrs['type']='varchar'; }
 						if ($attrs['type'] == 'varchar') { $dataWithType = "'".$simpleData."'"; }
 						elseif ($attrs['type'] == 'date') { $dataWithType = "'".$simpleData."'"; }
 						elseif(($attrs['type']=='numeric' || $attrs['type']=='int4' || $attrs['type']=='int8') && $simpleData=='') { $dataWithType = 'null'; }

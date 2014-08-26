@@ -1,5 +1,5 @@
 <?
-$username = "juan";
+$username = "postgres";
 $password = "justgoon";
 $dbname = "traza";
 $hostname = "digitaldev.org";
