@@ -13,6 +13,15 @@ makeControls($module_type, "modules/module_typeForm.php", "modules/module_typeDe
 $module_type->showControls();
 echo '<div algin="center" id="showTitle">Tipos de modulo</div>';
 
+$module_type->changeItemInShowIf("shape", "==", "circulo", "replaceWithImage", "../images/geometrics/circulo.png");
+$module_type->changeItemInShowIf("shape", "==", "cuadrado", "replaceWithImage", "../images/geometrics/cuadrado.png");
+$module_type->changeItemInShowIf("shape", "==", "triangulo", "replaceWithImage", "../images/geometrics/triangulo.png");
+$module_type->changeItemInShowIf("shape", "==", "rombo", "replaceWithImage", "../images/geometrics/rombo.png");
+$module_type->changeItemInShowIf("shape", "==", "pentagono", "replaceWithImage", "../images/geometrics/pentagono.png");
+$module_type->changeItemInShowIf("shape", "==", "hexagono", "replaceWithImage", "../images/geometrics/hexagono.png");
+$module_type->changeItemInShowIf("shape", "==", "octogono", "replaceWithImage", "../images/geometrics/octogono.png");
+$module_type->changeItemInShowIf("shape", "==", "estrella", "replaceWithImage", "../images/geometrics/estrella.png");
+
 //$where = array();
 $rows = $module_type->select();
 echo $module_type->showData($rows, TRUE);

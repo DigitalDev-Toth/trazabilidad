@@ -5,9 +5,10 @@
 
 ?>
 <html>
-<head>
+	<head>
+		<link href="../style/main.css" rel="stylesheet" type="text/css" />
 	</head>
-<link href="../style/main.css" rel="stylesheet" type="text/css" />
+	<body style="overflow:visible;">
 <?
 	@$modulo=$_GET['modulo'];
 	switch ($modulo)
@@ -19,6 +20,14 @@
 			
 			case 'role':
 			include("modules/role.php");
+			break;
+
+			case 'roles':
+			include("modules/roles.php");
+			break;
+
+			case 'users_roles':
+			include("modules/users_roles.php");
 			break;
 
 			case 'changePass':
@@ -39,6 +48,10 @@
 
 			case 'submodule':
 			include("modules/submodule.php");
+			break;
+
+			case 'display':
+			include("modules/show_displays.php");
 			break;
 			
 			default:

@@ -828,7 +828,7 @@ var $toMany; //matriz que almacena las relaciones uno a muchos para la insercion
 				if($attrs['type']!="foo")
 				{
 					$simpleData = $data[str_replace('.', '_', $field)];
-					if(($attrs['type']=='numeric' || $attrs['type']=='date') && $simpleData=='') { }
+					if(($attrs['type']=='numeric' || $attrs['type']=='date' || $attrs['type']=='inet') && $simpleData=='') { }
 					elseif($this->formObjectChanges[$field]['type']=="file" && $_FILES[str_replace('.', '_', $field)]['name'] =='') {}
 					else
 					{
@@ -849,7 +849,7 @@ var $toMany; //matriz que almacena las relaciones uno a muchos para la insercion
 						if($this->formObjectChanges[$field]['enc']=='md5') { $simpleData = md5($simpleData); }
 						if ($attrs['type']=='timestamp') { $attrs['type']='date'; }
 						if ($attrs['type']=='text') { $attrs['type']='varchar'; }
-						if ($attrs['type']=='varchar' || $attrs['type']=='date') { $dataWithType = "'".$simpleData."'"; }
+						if ($attrs['type']=='varchar' || $attrs['type']=='date' || $attrs['type']=='inet') { $dataWithType = "'".$simpleData."'"; }
 						elseif(($attrs['type']=='numeric' || $attrs['type']=='int4' || $attrs['type']=='int8') && $simpleData=='') { $dataWithType = 'null'; }
 						else { $dataWithType = $simpleData; }
 						$datas = $datas.$comma.$dataWithType;
@@ -1032,7 +1032,7 @@ var $toMany; //matriz que almacena las relaciones uno a muchos para la insercion
 						else { $comma = ", "; }
 						if($this->formObjectChanges[$field]['enc']=='md5') { $simpleData = md5($simpleData); }
 						if ($attrs['type']=='timestamp') { $attrs['type']='date'; }
-						if ($attrs['type']=='text') { $attrs['type']='varchar'; }
+						if ($attrs['type']=='text' || $attrs['type']=='inet') { $attrs['type']='varchar'; }
 						if ($attrs['type'] == 'varchar') { $dataWithType = "'".$simpleData."'"; }
 						elseif ($attrs['type'] == 'date') { $dataWithType = "'".$simpleData."'"; }
 						elseif(($attrs['type']=='numeric' || $attrs['type']=='int4' || $attrs['type']=='int8') && $simpleData=='') { $dataWithType = 'null'; }

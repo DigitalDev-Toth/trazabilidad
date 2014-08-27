@@ -5,6 +5,16 @@ if(!isset($_SESSION['Username'])) { header("location: ../../login.php?error=hack
 <link href="../../style/style.css" rel="stylesheet" type="text/css" />
 <?
 include("../libs/db.class.php");
+
+function sendComet(){
+	$comet = '{"comet":"f5"}';
+	echo '<script src="../js/jquery-1.8.1.min.js"></script>';
+	echo '<script>
+		    $.post("../../../visor/comet/backend.php",{msg: JSON.stringify('.$comet.')},function(data, textStatus, xhr){
+		    });
+		</script>';
+}
+
 $submodule = new DB("submodule", "id");
 $submodule->exceptions(array("id"));
 
@@ -17,6 +27,7 @@ $submodule->toolTipInFormObject('submodule.position', ' - Posicion en la pantall
 if (isset($_GET['update']))
 {
 	$submodule->updateData($_GET['update'], FALSE);
+	sendComet();
 }
 else
 {
@@ -28,6 +39,7 @@ else
 		echo '<a href="../contentMain.php?module=submodule"><img src="../../images/back.png"/>Volver al menu de Sub-Modulos</a>';
 		echo '<a href="'.$_SERVER['HTTP_REFERER'].'"><img src="../../images/mas.png"/>Agregar Nuevo Sub-Modulo</a><br>';
 		echo '</div>';
+		sendComet();
 		exit();
 	}
 	echo '<br><div id="back"><a href="../contentMain.php?module=submodule"><img src="../../images/back.png"/>Volver al menu de Sub-Modulos</a></div><br>';

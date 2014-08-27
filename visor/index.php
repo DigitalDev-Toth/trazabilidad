@@ -4,57 +4,69 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
         <title>FALP - Trazabilidad</title>
-        <link rel="stylesheet" type="text/css" href="css/style.css">
-        <script src="js/jquery-2.1.1.min.js"></script>
-        <script src="js/bootstrap.min.js"></script>
-        <script src="js/raphael-min.js"></script>
-        <script src="js/module.js"></script>
-        <script src="js/submodule.js"></script>
-        <script src="js/maker.js"></script>
+        <link rel="stylesheet" type="text/css" href="css/style.css" />
+        <script src="js/libs/jquery-2.1.1.min.js"></script>
+        <script src="js/libs/bootstrap.min.js"></script>
+        <script src="js/libs/raphael-min.js"></script>
+        <script src="js/libs/comet.js"></script>
+        <script src="js/tools/module.js"></script>
+        <script src="js/tools/submodule.js"></script>
+        <script src="js/tools/patient.js"></script>
+        <script src="js/tools/maker.js"></script>
         <script type="text/javascript">
             var MODULES = {},
-                PATIENTS = [],
-                PAPER;
+                PATIENTS = {},
+                MAKE = null,
+                PAPER = null;
             
             $(function () {
-
                 PAPER = Raphael('workspace', '100%', '100%');
-                var w = $(window).width();
-                var h = $(window).height();
+                var w = $(window).width(),
+                    h = $(window).height();
 
                 PAPER.setViewBox(0, 0, w, h, true);
-                PAPER.canvas.setAttribute("preserveAspectRatio", "xMinYMin");
+                PAPER.canvas.setAttribute('preserveAspectRatio', 'xMinYMin');
                 
-                var make = new MAKER();
+                MAKE = new MAKER();
+
                 message('Conectando al servidor...');
-                $.get("../services/zoneInfo.php?zone=1",function(data,status){
+                $.get('../services/zoneInfo.php?zone=1',function (data, status) {
                     message('Servidor conectado!. Esperando los datos...');
-                    if(status=='success') {
-                        if(data==='error') {
+                    if (status === 'success') {
+                        if (data === 'error') {
                             message('Error al obtener los datos!');
-                        } else {
-                            var zone = {};
-                            info = JSON.parse(data);
-                            $.each(info, function(index, mod){
-                                if($.isPlainObject(mod)) {
-                                    make.module(mod.name, mod.id, 'module', mod.position, '#'+mod.color, mod.submodules);
-                                } else {
-                                    zone[index] = mod;
+                        } else if (data === 'error_session') {
+                            window.location.href = '../admin';
+                        } else {                            
+                            var info = JSON.parse(data);
+//                            console.log(info);
+                            
+                            MAKE.module(info.name, info.id, 'waiting-room', 'center', '#818878', info.shape, null, info.seats);
+                            MAKE.module('Limbo', info.id, 'limb', 'center', '#A24A4A', null, null, null);
+                            for (var i = 0; i < info.modules.length; i++) {   
+                                MAKE.module(info.modules[i].name, info.modules[i].id, 'module', info.modules[i].position, '#'+ info.modules[i].color, info.modules[i].shape, info.modules[i].submodules);
+                            }    
+                            $.get('../services/getPatients.php?zone=1',function (data, status) {
+                                console.log(data);
+                                var jsonData = JSON.parse(data);
+                                for(i=0; i<jsonData.length;i++){
+                                    MAKE.patient(jsonData[i].rut, jsonData[i].ticket, jsonData[i].datetime, jsonData[i].attention, jsonData[i].module, jsonData[i].submodule);
                                 }
                             });
-                            make.module(zone.name, zone.id, 'waiting-room', 'center', '#818878', null, zone.seats);
                             message('Objetos creados');
+                            console.log(MODULES);
                         }
                     }
-                });
+                });                
             });
-            message = function(message) {
-                $('#message').fadeOut(500, function() {
+            
+            message = function (message) {
+                $('#message').fadeOut(500, function () {
                     $('#message').html(message);
                     $('#message').fadeIn(1000);
                 });
-                setTimeout(function() {
-                      $('#message').fadeOut(500);
+                setTimeout(function () {
+                    $('#message').fadeOut(500);
                 }, 5000);
             };
         </script>

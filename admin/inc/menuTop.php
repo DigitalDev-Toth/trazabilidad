@@ -1,6 +1,8 @@
 <?
 session_start();
 include("subMenu.php");
+include("role.php");
+
 function itemMenu($item,$title,$state, $link_direct=true)
 {
 	if($state=='enable')
@@ -18,10 +20,35 @@ function itemMenu($item,$title,$state, $link_direct=true)
 }
 echo '<div id = "header">
 			<ul id="nav">';
-			
-				echo '<li>'.itemMenu("admin","Administrar", true, false).'</li>';
+
+				if(findRole("administration", "show_menu")) 
+				{$state='enable';}
+				else { $state='disable';}
+				echo '<li>'.itemMenu("admin","Administrar",$state, false).'</li>';
+
+				if(findRole("users", "show")) 
+				{$state='enable';}
+				else { $state='disable';}
+				echo '<li>'.itemMenu("users","Personas",$state, false).'</li>';
+
+				if(findRole("visor", "show_menu")) 
+				{$state='enable';}
+				else { $state='disable';}
+				echo '<li>'.itemMenu("visor","Visor",$state, false).'</li>';
+
+				/*if(findRole("visor", "show_menu")) 
+				{$state='enable';}
+				else { $state='disable';}*/
+				echo '<li>'.itemMenu("display","Pantalla",'enable', true).'</li>';
+
+				/*if(findRole("admin", "show_menu")) 
+				{$state='enable';}
+				else { $state='disable';}
+				echo '<li>'.itemMenu("admin","Administrar",$state, false).'</li>';
+
+				/*echo '<li>'.itemMenu("admin","Administrar", true, false).'</li>';
 				echo '<li>'.itemMenu("users","Personas", true, false).'</li>';
-				echo '<li>'.itemMenu("visor","Visor", true, false).'</li>';
+				echo '<li>'.itemMenu("visor","Visor", true, false).'</li>';*/
 				
 
 				
