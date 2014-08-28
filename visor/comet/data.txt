@@ -1,1 +1,1 @@
-{"comet":"f5"}
+{"comet":"module","rut":"22.222.222-2","datetime":"2014-08-28 18:55:26","description":"Retiro de ticket N\u00ba 82 , M\u00f3dulo 3","zone":"1","action":"to","submodule":"1","module":"3","newticket":"82"}

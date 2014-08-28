@@ -21,6 +21,7 @@ $module_type->changeItemInShowIf("shape", "==", "pentagono", "replaceWithImage",
 $module_type->changeItemInShowIf("shape", "==", "hexagono", "replaceWithImage", "../images/geometrics/hexagono.png");
 $module_type->changeItemInShowIf("shape", "==", "octogono", "replaceWithImage", "../images/geometrics/octogono.png");
 $module_type->changeItemInShowIf("shape", "==", "estrella", "replaceWithImage", "../images/geometrics/estrella.png");
+$module_type->changeItemInShowIf("shape", "==", "cruz", "replaceWithImage", "../images/geometrics/cruz.png");
 
 //$where = array();
 $rows = $module_type->select();

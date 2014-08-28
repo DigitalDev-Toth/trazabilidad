@@ -390,9 +390,20 @@ PATIENT.prototype.shapePath = function () {
     } else if (this.shape === 'triangulo') {
         var s = 'm0,-12l12,24l-24,0z';
         return s;
-    }
-    else if (this.shape === 'rombo') {
-        var s = 'm0,-12l12,24l-24,0z';
+    } else if (this.shape === 'rombo') {
+        var s = 'm0,-10l10,10l-10,10l-10,-10z';
         return s;
-    }    
+    } else if (this.shape === 'pentagono') {
+        var s = 'm0,-10l10,8l-4,12l-12,0l-4,-12z';
+        return s;
+    } else if (this.shape === 'hexagono') {
+        var s = 'm0,-10l10,6l0,10l-10,6l-10,-6l0,-10z';
+        return s;
+    } else if (this.shape === 'cruz') {
+        var s = 'm-4,-10l10,0l0,6l6,0l0,10l-6,0l0,6l-10,0l0,-6l-6,0l0,-10l6,0l0,-6z';
+        return s;
+    } else if (this.shape === 'estrella') {
+        var s = 'm0,-12l3,6l9,0l-5,6l2,9l-9,-5 l-9,5l2,-9l-5,-6l9,0z';
+        return s;
+    }
 };
