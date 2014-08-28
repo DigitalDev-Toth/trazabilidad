@@ -390,5 +390,9 @@ PATIENT.prototype.shapePath = function () {
     } else if (this.shape === 'triangulo') {
         var s = 'm0,-12l12,24l-24,0z';
         return s;
-    }   
+    }
+    else if (this.shape === 'rombo') {
+        var s = 'm0,-12l12,24l-24,0z';
+        return s;
+    }    
 };
