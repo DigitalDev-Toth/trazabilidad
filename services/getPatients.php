@@ -25,7 +25,7 @@ if($lastRecord){
 	} while($lastRecord=pg_fetch_assoc($db->actualResults));
 	echo json_encode($tickets);
 }else{
-	return 0;
+	echo 0;
 }
 
 

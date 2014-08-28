@@ -13,7 +13,7 @@ $module_type->toolTipInFormObject('module_type.shape', ' - Forma que toma el pac
 $module_type->toolTipInFormObject('module_type.color', ' - Color que toma el modulo en la visualizacion de las zonas');
 $module_type->changeFormObject('module_type.shape', 'menu', null, array("circulo"=>"circulo", "cuadrado"=>"cuadrado", "triangulo"=>"triangulo",
 																"rombo"=>"rombo", "pentagono"=>"pentagono",
-																"hexagono"=>"hexagono", "octogono"=>"octogono", "estrella"=>"estrella"));
+																"hexagono"=>"hexagono", "cruz"=>"cruz", "estrella"=>"estrella"));
 
 if (isset($_GET['update']))
 {
