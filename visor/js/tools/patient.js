@@ -52,7 +52,7 @@ PATIENT.prototype.setElem = function (idModule) {
         'fill': '#ccc',
         'fill-opacity': 1,
         'stroke': '#000',
-        'stroke-width': 0        
+        'stroke-width': 1        
     }); 
     
     this.text = PAPER.text(x, y, '').attr({
@@ -82,10 +82,10 @@ PATIENT.prototype.goToWaitingRoom = function (idPatient, storage) {
             fp = 'M'+ x +','+ y + s;
             
         this.el = PAPER.path(fp).attr({
-            'fill': '#ccc',
+            'fill': '#fff',
             'fill-opacity': 1,
             'stroke': '#000',
-            'stroke-width': 0        
+            'stroke-width': 1        
         }); 
         
         this.text = PAPER.text(x, y, this.ticket).attr({
@@ -163,7 +163,7 @@ PATIENT.prototype.goToLimb = function (idPatient, storage) {
             'fill': '#ccc',
             'fill-opacity': 1,
             'stroke': '#000',
-            'stroke-width': 0        
+            'stroke-width': 1        
         }); 
         
         $(this.el.node).popover({
@@ -235,7 +235,7 @@ PATIENT.prototype.goTo = function (idModule, idSubmodule, storage) {
                 this.el = PAPER.path(p).attr({
                     'fill': '#ccc',
                     'stroke': '#000',
-                    'stroke-width': 0        
+                    'stroke-width': 1        
                 }); 
                 
                 this.text = PAPER.text(x, y, this.ticket).attr({
@@ -339,8 +339,8 @@ PATIENT.prototype.goTo = function (idModule, idSubmodule, storage) {
                 
                 this.el = PAPER.path(p).attr({
                     'fill': '#ccc',
-                    'stroke': '#000',
-                    'stroke-width': 0        
+                    'stroke': '#fff',
+                    'stroke-width': 10        
                 }); 
                 
                 this.text = PAPER.text(x, y, this.ticket).attr({
