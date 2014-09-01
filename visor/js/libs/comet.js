@@ -40,6 +40,10 @@ var Comet = function (data_url) {
             //console.log(data);
             if (data.comet === 'tothtem' || data.comet === 'module') {
                 MAKE.goTo(data.comet, data.rut, data.action, data.newticket, data.datetime, data.module, data.submodule);
+                if(data.action==='cl') {
+                    MODULES[SUBMODULES[data.id]].submodules[data.id].blink(0);
+                    console.log(data);
+                }
             } else if (data.comet === 'submodule') {
                 console.log(data);
                 if(data.state==='activo') {
