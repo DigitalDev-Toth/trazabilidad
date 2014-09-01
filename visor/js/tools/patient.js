@@ -12,6 +12,17 @@ var PATIENT = function (id, ticket, datetime, idModule, storage) {
         this.setElem(idModule);
     }    
 };
+PATIENT.prototype.blink = function (i) {
+    if(i<7){
+        i++;
+        var stroke = this.el.attrs.stroke;
+        this.el.animate({stroke: '#fff'}, 100, 'linear', (function (t, i) {
+                return function() {
+                    t.el.animate({stroke: stroke}, 100, t.blink(i));
+                }
+        })(this, i));
+    }
+};
 PATIENT.prototype.setElem = function (idModule) {
     switch (MODULES[idModule].pos) {
         case 'superior':
