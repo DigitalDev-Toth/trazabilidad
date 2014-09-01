@@ -56,6 +56,7 @@ MAKER.prototype.module = function (name, id, type, pos, color, shape, submodules
 MAKER.prototype.submodule = function (name, id, idModule, posModule, state) {    
     var sm = new SUBMODULE(name, id, idModule, posModule, this.countSubmodules, state);
     MODULES[idModule].submodules[id] = sm;
+    SUBMODULES[id] = idModule;
     this.countSubmodules++;
 };
 MAKER.prototype.patient = function (rut, ticket, datetime, attention, idModule, idSubmodule) {

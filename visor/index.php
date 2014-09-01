@@ -15,6 +15,7 @@
         <script src="js/tools/maker.js"></script>
         <script type="text/javascript">
             var MODULES = {},
+                SUBMODULES = {},
                 PATIENTS = {},
                 MAKE = null,
                 PAPER = null;
