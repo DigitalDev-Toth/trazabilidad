@@ -37,10 +37,20 @@ var Comet = function (data_url) {
     this.handleResponse = function(response) {
         if (indexComet !== 0) {
             var data = $.parseJSON(response.msg);
+            //console.log(data);
             if (data.comet === 'tothtem' || data.comet === 'module') {
                 MAKE.goTo(data.comet, data.rut, data.action, data.newticket, data.datetime, data.module, data.submodule);
-            }            
-            console.log(PATIENTS);
+            } else if (data.comet === 'submodule') {
+                console.log(data);
+                if(data.state==='activo') {
+                    MODULES[SUBMODULES[data.id]].submodules[data.id].setActive();
+                } else if(data.state==='inactivo') {
+                    MODULES[SUBMODULES[data.id]].submodules[data.id].setInactive();
+                } else if(data.state==='blink') {
+                    MODULES[SUBMODULES[data.id]].submodules[data.id].blink(0);
+                }
+            }
+            //console.log(PATIENTS);
         } else {
             indexComet = 1;
         }

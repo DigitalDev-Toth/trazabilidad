@@ -48,14 +48,15 @@ MAKER.prototype.module = function (name, id, type, pos, color, shape, submodules
         var totalSubmodules = submodules.length;
         for (var i = 0; i < totalSubmodules; i++) {
             var sub = submodules[i];
-            this.submodule(sub.name, sub.id, id, pos);
+            this.submodule(sub.name, sub.id, id, pos, sub.submodule_state);
         }
         this.countSubmodules = 0;
     }    
 };
-MAKER.prototype.submodule = function (name, id, idModule, posModule) {    
-    var sm = new SUBMODULE(name, id, idModule, posModule, this.countSubmodules);
+MAKER.prototype.submodule = function (name, id, idModule, posModule, state) {    
+    var sm = new SUBMODULE(name, id, idModule, posModule, this.countSubmodules, state);
     MODULES[idModule].submodules[id] = sm;
+    SUBMODULES[id] = idModule;
     this.countSubmodules++;
 };
 MAKER.prototype.patient = function (rut, ticket, datetime, attention, idModule, idSubmodule) {

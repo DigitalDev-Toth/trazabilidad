@@ -15,6 +15,7 @@
         <script src="js/tools/maker.js"></script>
         <script type="text/javascript">
             var MODULES = {},
+                SUBMODULES = {},
                 PATIENTS = {},
                 MAKE = null,
                 PAPER = null;
@@ -39,7 +40,7 @@
                             window.location.href = '../admin';
                         } else {                            
                             var info = JSON.parse(data);
-//                            console.log(info);
+                            //console.log(info);
                             
                             MAKE.module(info.name, info.id, 'waiting-room', 'center', '#818878', info.shape, null, info.seats);
                             MAKE.module('Limbo', info.id, 'limb', 'center', '#A24A4A', null, null, null);
@@ -54,12 +55,11 @@
                                 }
                             });
                             message('Objetos creados');
-                            console.log(MODULES);
+                            //console.log(MODULES);
                         }
                     }
                 });                
             });
-            
             message = function (message) {
                 $('#message').fadeOut(500, function () {
                     $('#message').html(message);

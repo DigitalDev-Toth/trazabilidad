@@ -1,16 +1,17 @@
-var SUBMODULE = function (name, id, idModule, posModule, countSubmodules) {
+var SUBMODULE = function (name, id, idModule, posModule, countSubmodules, state) {
     this.id = id;
     this.name = name;
     this.idModule = idModule;
     this.posModule = posModule;
     this.countSubmodules = countSubmodules;
+    this.state = state;
     this.el = null; // element in DOM
     this.text = null;
     this.setElem();
 };
 SUBMODULE.prototype.textAttrs = function (color) {
     return {
-        'fill': this.setColor(color, -0.15),
+        'fill': this.setColor(color, 0.5),
         'font-size': '10px'
     };
 };
@@ -29,12 +30,38 @@ SUBMODULE.prototype.setColor = function (hex, lum) {
     return rgb;
 };
 SUBMODULE.prototype.attrs = function () {
+    if(this.state==='activo') {
+        stroke = this.setColor(MODULES[this.idModule].color, -0.3);
+        fill = this.setColor(MODULES[this.idModule].color, -0.2);
+    } else {
+        fill = "#aaa";
+        stroke = "#777"
+    }
     return {
-        'fill': 'none',
-        'stroke': '#fff',
+        'fill': fill,
+        'stroke': stroke,
         'stroke-width': 2,
         'stroke-linejoin': 'round'
     };
+};
+SUBMODULE.prototype.setActive = function () {
+    this.state = "activo";
+    this.el.animate(this.attrs(), 500);
+};
+SUBMODULE.prototype.setInactive = function () {
+    this.state = "inactivo";
+    this.el.animate(this.attrs(), 500);
+};
+SUBMODULE.prototype.blink = function (i) {
+    if(i<7){
+        i++;
+        var stroke = this.el.attrs.stroke;
+        this.el.animate({stroke: '#fff'}, 100, 'linear', (function (t, i) {
+                return function() {
+                    t.el.animate({stroke: stroke}, 100, t.blink(i));
+                }
+        })(this, i));
+    }
 };
 SUBMODULE.prototype.setElem = function () {
     switch (this.posModule) {
