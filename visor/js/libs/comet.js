@@ -41,7 +41,7 @@ var Comet = function (data_url) {
             if (data.comet === 'tothtem' || data.comet === 'module') {
                 MAKE.goTo(data.comet, data.rut, data.action, data.newticket, data.datetime, data.module, data.submodule);
             } else if (data.comet === 'submodule') {
-                //console.log(data);
+                console.log(data);
                 if(data.state==='activo') {
                     MODULES[SUBMODULES[data.id]].submodules[data.id].setActive();
                 } else if(data.state==='inactivo') {
