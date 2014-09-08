@@ -14,6 +14,14 @@ function sendComet(){
 		    });
 		</script>';
 }
+function setState($id, $state){
+	$comet = '{"comet":"submodule", "id":"'.$id.'", "state":"'.$state.'"}';
+	echo '<script src="../js/jquery-1.8.1.min.js"></script>';
+	echo '<script>
+		    $.post("../../../visor/comet/backend.php",{msg: JSON.stringify('.$comet.')},function(data, textStatus, xhr){
+		    });
+		</script>';
+}
 
 $submodule = new DB("submodule", "id");
 $submodule->exceptions(array("id"));
@@ -26,8 +34,9 @@ $submodule->toolTipInFormObject('submodule.position', ' - Posicion en la pantall
 
 if (isset($_GET['update']))
 {
-	$submodule->updateData($_GET['update'], FALSE);
-	sendComet();
+	if($submodule->updateData($_GET['update'], FALSE)) {
+		setState($_GET['update'], $_POST['submodule_state']);
+	}
 }
 else
 {
