@@ -42,7 +42,7 @@ body {
     <br/>
     <br/>
     <span>Sistema de Trazabilidad de Pacientes</span>
-    <span>Versión 0.1</span>
+    <span>Versión 1.0b</span>
 </div>
 
 <br/>
@@ -63,11 +63,13 @@ body {
                     		<span class="glyphicon glyphicon-calendar"></span> Gestión o pantalla de submódulo
                 		</button> 
                   	</div>
+                    <!--
                   	<div class="modal-body" style="text-align: center;">
                     	<button id="visor" type="button" style="padding:12px 25px;font-size: 25px;border-radius: 33px;width: 300px;" class="btn btn-primary" title="Visualización de movimiento de pacientes en Zona 1">
                     		<span class="glyphicon glyphicon-eye-open"></span> Visualizador
                 		</button> 
                   	</div>
+                    -->
                 </div>
                 <br>
                

@@ -1,15 +1,17 @@
 <?php
-include ('../admin/inc/libs/db.class.php');
+//include ('../scripts/libs/db.class.php');
+include ('../../tothtem/scripts/libs/db.class.php');
 
-//get data
-$zone = $_REQUEST['zone'];
+$id = $_REQUEST['id'];
 
 //get last ticket
 $db = NEW DB();
-$sql = "SELECT *
+$sql = "SELECT * 
 		FROM tickets t
 		LEFT JOIN logs l ON l.id=t.logs
-		WHERE t.attention IN('waiting','on_serve','limb','derived') AND l.zone=$zone AND l.datetime>'".date('Y-m-d')."'";
+		WHERE t.id=$id";
+
+//echo $sql;
 $lastRecord = $db->doSql($sql);
 
 if($lastRecord){
@@ -26,8 +28,6 @@ if($lastRecord){
 }else{
 	echo 0;
 }
-
-
 
 ?>
 

@@ -89,6 +89,16 @@ if(isset($_GET['selectMany'])) { $this->control("separator"); $this->control("us
 					$aeNodes = new DB("ae", "pk", "pacsdb");
 					echo $aeNodes->fillComboDB($aeNodes->doSql("SELECT * FROM ae WHERE aet not in('BIOPACS', 'CDRECORD') AND ae_desc is not NULL"), "ae_desc", "pk", "nodes", $aeNodes->actualResults, NULL);
 				}
+				if ($item=='activateSubModule')
+				{
+					echo '<INPUT TYPE="image" src="../images/reported.png" VALUE="activateSubModule" onclick="PopupCenter2('."'".$link."'".',this.form, '."'activateSubModule'".',300, 300);" />';
+					//echo '<INPUT TYPE="image" src="../images/iconMenu/ex_despachado.png" VALUE="despachado" onclick="isMarked(this.form, '."'".$link."'".', '."'delete'".');" />';
+				}
+				if ($item=='desactivateSubModule')
+				{
+					echo '<INPUT TYPE="image" src="../images/unviewed.png" VALUE="desactivateSubModule" onclick="PopupCenter2('."'".$link."'".',this.form, '."'desactivateSubModule'".',300, 300);" />';
+					//echo '<INPUT TYPE="image" src="../images/iconMenu/ex_despachado.png" VALUE="despachado" onclick="isMarked(this.form, '."'".$link."'".', '."'delete'".');" />';
+				}
 				echo '</td>';
 			}
 		}
@@ -182,6 +192,16 @@ if(isset($_GET['selectMany'])) { $this->control("separator"); $this->control("us
 					{
 						echo 'Enviar a Nodo';
 					}
+					if ($item=='activateSubModule')
+					{
+						echo 'Activar';
+					}
+					if ($item=='desactivateSubModule')
+					{
+						echo 'Desactivar';
+					}
+
+					
 					echo '</td>';
 				}
 			}		

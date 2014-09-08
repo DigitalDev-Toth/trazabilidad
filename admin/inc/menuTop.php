@@ -40,7 +40,7 @@ echo '<div id = "header">
 				{$state='enable';}
 				else { $state='disable';}*/
 				echo '<li>'.itemMenu("display","Pantalla",'enable', true).'</li>';
-
+				echo '<li>'.itemMenu("statistical","Estadistica",'enable', true).'</li>';
 				/*if(findRole("admin", "show_menu")) 
 				{$state='enable';}
 				else { $state='disable';}

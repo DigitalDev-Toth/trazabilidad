@@ -23,7 +23,7 @@ var Comet = function (data_url) {
                 if (!self.noerror) {
                     setTimeout(function () {
                         comet.connect();
-                    }, 5000);
+                    }, 1000);
                 } else {
                     self.connect();
                 }
@@ -41,12 +41,14 @@ var Comet = function (data_url) {
             if (data.comet === 'tothtem' || data.comet === 'module') {
                 if(data.module==moduleInCourse){
                     refreshTable();
+                    //refreshTableDerived();
                     //console.log('si');
                 }
             }
         } else {
             indexComet = 1;
         }
+
     };
 
     this.doRequest = function (request) {

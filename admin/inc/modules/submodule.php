@@ -15,6 +15,10 @@ $submodule->relation("users", "users", "id", "name");
 $submodule->insertExternalInShow('Usuario actual', 'http://localhost/new_traza/admin/inc/modules/subModuleTime.php?submodule=%id%&type=user');
 $submodule->insertExternalInShow('Hora inicio', 'http://localhost/new_traza/admin/inc/modules/subModuleTime.php?submodule=%id%&type=ini');
 $submodule->insertExternalInShow('Tiempo de Actividad', 'http://localhost/new_traza/admin/inc/modules/subModuleTime.php?submodule=%id%&type=total');
+$submodule->control("activateSubModule", "modules/changeStatus.php?state=activo");
+$submodule->control("desactivateSubModule", "modules/changeStatus.php?state=inactivo");
+
+
 makeControls($submodule, "modules/submoduleForm.php", "modules/submoduleDelete.php", "modules/submoduleUpdate.php", $_SERVER['HTTP_REFERER']);
 
 $submodule->showControls();

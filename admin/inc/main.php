@@ -53,7 +53,13 @@
 			case 'display':
 			include("modules/show_displays.php");
 			break;
-			
+
+			case 'statistical':
+			include("modules/statistical.php");
+			break;
+
+		
+
 			default:
 			//include("modules/search.php");
 			break;

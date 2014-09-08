@@ -1,9 +1,9 @@
 <?php
 session_start();
-if (!isset($_SESSION['Username'])) { 
+/*if (!isset($_SESSION['Username'])) { 
 //    header("location: ../admin/login.php"); 
     echo 'error_session';
-} else {
+} else {*/
     include("../admin/inc/libs/db.class.php");
 
     $zoneId = $_GET['zone'];
@@ -80,4 +80,4 @@ if (!isset($_SESSION['Username'])) {
             echo "error";
         }
     }
-}
+//}
