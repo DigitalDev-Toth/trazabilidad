@@ -1323,13 +1323,14 @@ var $toMany; //matriz que almacena las relaciones uno a muchos para la insercion
 	{
 		return pg_fetch_assoc($result);
 	}*/
-	function changeItemInShowIf($field, $logic, $compare, $objectToChange, $attrib)
+	function changeItemInShowIf($field, $logic, $compare, $objectToChange, $attrib, $other=null)
 	{
 		$i = count($this->showObjectChangeIf[$field])+1;
 		$this->showObjectChangeIf[$field][$i]['logic']=$logic;
 		$this->showObjectChangeIf[$field][$i]['compare']=$compare;
 		$this->showObjectChangeIf[$field][$i]['object']=$objectToChange;
 		$this->showObjectChangeIf[$field][$i]['attrib']=$attrib;
+		$this->showObjectChangeIf[$field][$i]['other']=$other;
 	}
 	function changeItemInShow($field, $attrib)
 	{
