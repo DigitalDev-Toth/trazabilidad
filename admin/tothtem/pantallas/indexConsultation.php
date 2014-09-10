@@ -24,7 +24,7 @@ if(!isset($_SESSION['Username'])) { header("location: ../../login.php"); header(
     <div class="container">
         <div class="row">
             <div class="col-lg-9">
-                <h1 class="page-header">Pantalla:
+                <h1 class="page-header">Consulta Médica:
                     <small id="modalityTitle">...</small>
                 </h1>
             </div>
@@ -35,49 +35,67 @@ if(!isset($_SESSION['Username'])) { header("location: ../../login.php"); header(
         </div>
 
         <div class="row">
-            <div class="col-md-12">
-           		 <div class="panel panel-primary">
+            <div class="col-md-6">
+           		 <div class="panel panel-default">
                     <div class="panel-heading">Panel De Control Pacientes en curso</div>
                     <div class="panel-body" align="center">
                         <div class="row" >
-                            <label>Numero</label><br>
+                            <label>Datos Paciente</label><br>
                             <label id="content" style="font-size:70px;"></label>
                             <div class="row">
-                                <div class="col-md-4">
-                                    
+                                <div>
+                                    <table>
+                                        <tr>
+                                            <td>RUT:</td>
+                                            <td>&nbsp;&nbsp;</td>
+                                            <td>17.172.852-5</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Nombre:</td>
+                                            <td>&nbsp;&nbsp;</td>
+                                            <td>Enzo Latorre Barra</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Hora Agenda:</td>
+                                            <td>&nbsp;&nbsp;</td>
+                                            <td>16:00</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Hora Inicio Atención:</td>
+                                            <td>&nbsp;&nbsp;</td>
+                                            <td>16:12</td>
+                                        </tr>                                                                                                                        
+                                    </table>
                                 </div>
-                                <div class="col-md-4">
-                                    <div id="buttons" class="text-center">
-                                
-                                        <div class="col-md-2">
-                                            <button type="button" class="btn btn-default btn-lg" onclick="sendComet('minus')" id="minusButton" title="Volver a llamar número anterior"><span class="glyphicon glyphicon-minus"></span></button>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <button type="button" class="btn btn-default btn-lg" onclick="sendComet('plus')" id="plusButton" title="Llamar paciente"><span class="glyphicon glyphicon-plus"></span></button>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <button type="button" class="btn btn-default btn-lg" onclick="sendComet('notHere')" id="notHereButton" title="No llegó paciente" style="color: red;"><span class="glyphicon glyphicon-remove-circle"></span></button>
-                                        
-                                        </div>
-                                        <div class="col-md-2">
-                                        <button type="button" class="btn btn-default btn-lg" onclick="sendComet('finished')" id="finishedButton" title="Finalizar Atención"><span class="glyphicon glyphicon-thumbs-up"></span></button>
-                                            
-                                        </div>
-                                        <div class="col-md-2">
-                                        <button type="button" class="btn btn-default btn-lg" onclick="sendComet('redirect')" id="redirectButton" title="Derivar"><span class="glyphicon glyphicon-share"></span></button>
-                                            
-                                        </div>
+                                <br/>
+                            	<div id="buttons" class="text-center">
+                            		<div class="col-md-1"></div>
+
+                            		<!--<div class="col-md-1">
+                            			<button type="button" class="btn btn-default btn-lg" onclick="sendComet('minus')" id="minusButton" title="Volver a llamar número anterior"><span class="glyphicon glyphicon-minus"></span></button>
+                            		</div>-->
+
+                            		<div class="col-md-2">
+	                               		<button type="button" class="btn btn-default btn-lg" onclick="sendComet('plus')" id="plusButton" title="Llamar paciente"><span class="glyphicon glyphicon-plus"></span></button>
+                            		</div>
+
+                            		<div class="col-md-2">
+	                                	<button type="button" class="btn btn-default btn-lg" onclick="sendComet('notHere')" id="notHereButton" title="No llegó paciente" style="color: red;"><span class="glyphicon glyphicon-remove-circle"></span></button>	
+                            		</div>
+
+                            		<div class="col-md-1">
+	                                    <button type="button" class="btn btn-default btn-lg" onclick="sendComet('finished')" id="finishedButton" title="Finalizar Atención"><span class="glyphicon glyphicon-thumbs-up"></span></button>
+                            		</div>
+
+                                    <div class="col-md-4">
+                                        <input type="checkbox"> Plan de Tratamiento
                                     </div>
-                                </div>
-                                <div class="col-md-4">
                                     
-                                </div>
-                            	
+                     		    </div>
                             </div>
                         
                         </div>
-
-                        <!-- MODAL no atendidos-->
+          <!-- MODAL no atendidos-->
 						<div id="modalNoServe" class="modal fade " tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
 							<div class="modal-dialog">
 								<div class="modal-content">
@@ -90,53 +108,29 @@ if(!isset($_SESSION['Username'])) { header("location: ../../login.php"); header(
 							</div>
 						</div>
 
-						<!-- MODAL Derivación-->
-						<div id="modalDerived" class="modal fade " tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-							<div class="modal-dialog">
-								<div class="modal-content">
-									<h4 class="text-center">Módulo a Derivar...<h4>
-									<div id="menuButtons">
-					                    
-				                	</div>
-									<div class="row">
-										
-									</div>
-									<table id="modalNoServeContent" class="table table-striped text-center">
-									</table>
-								</div>
-							</div>
-						</div>
-						
+				
                     </div>
-                    <table id="contentTicket" class="table table-striped text-center" >
-                        <th>Numero de atencion</th><th>RUT</th><th>Hora Retiro de Ticket</th><th>Tiempo de espera</th>
-                    </table>
+                  
                 </div>
             </div>
+            <div class="col-md-6">
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">Panel De Control Pacientes en curso</div>
+                        <div class="panel-body" align="center">
+                            <table id="contentTicket" class="table table-striped" >
+                                <th>Hora Agendada</th><th>RUT</th><th>Nombre</th>
+                            </table>
+                        </div>
+                </div>
+              
+            </div>
+
+
         </div>
 
 
-        <div class="row">
-        	<div class="col-md-12">
-    			<div class="panel panel-primary">
-                	<div class="panel-heading">Paciente</div>
-                    <div class="panel-body" align="center">
-                        <div class="col-lg-10 col-md-10" >
-                       		<div class="row">
-                                <div class="col-md-4 text-center">
-                                    <div id="patientPicture"></div>
-                                </div>
-                                 <div class="col-md-7">
-                                <div id="patientData"></div>    
-                            </div>
-                            </div>
-                           
-                            
-                   	 	</div>
-                	</div>
-    			</div>
-        	</div>
-        </div>
+
 
         <hr>
         <footer>
@@ -167,25 +161,19 @@ $(document).ready(function() {
         var dataModality = JSON.parse(getModule(submodule));
         moduleInCourse=dataModality.modalityId;
         console.log(dataModality);
-        $("#modalityTitle").text(dataModality['modalityName']+' - '+dataModality['subModuleName']);
+        $("#modalityTitle").text(dataModality['subModuleName']);
         initNumber = dataModality['modalityTicket'];
         refreshTable();
         setCurrentNumber();
     }else{
         alert("Falta Modalidad!");
     }
-$(window).on('beforeunload', function(){ alert ('Bye now')});
+//$(window).on('beforeunload', function(){ alert ('Bye now')});
 });
 
 
 function inactiveSubModule(typeButton){//Desactiva el submódulo y genera log de cierre de sesión
     $.post('phps/activeSubModule.php', {type: 'inactivo', user: "<?php echo $_SESSION['UserId']; ?>", submodule: submodule}, function(data, textStatus, xhr) {
-        $.ajax({
-            url: '../../../visor/comet/backend.php',
-            type: 'GET',
-            dataType: 'default',
-            data: {msg: data},
-        });
         if(typeButton=='logout'){
             $(location).attr('href','../../exit.php');
         }else{
@@ -213,7 +201,7 @@ function setCurrentNumber(){//Muestra el número actual que se está atendiendo
 		    activeButtons(jsonData[0].attention);
 		    ticketAttention = jsonData[0].ticketid;
 		}else{
-			$('#content').text('Standby');
+			//$('#content').text('Standby');
 		}
     });
 }
@@ -244,7 +232,7 @@ function insertLog(description,action,cometType,attentionNew,ticketId,module){//
 }
 
 function checkComet(data){
-    $.ajax({
+  $.ajax({
         url: '../../../visor/comet/backend.php',
         type: 'GET',
         dataType: 'default',
@@ -260,27 +248,6 @@ function checkComet(data){
            setCurrentNumber();
     });
 }
-
-
-
-// original
-/*function insertLog(description,action,cometType,attentionNew,ticketId,module){//Inserción de log y escritura de comet
-    var totalResult = getTicketData(ticketId);
-    if(totalResult!=0){
-        var jsonData = JSON.parse(totalResult);
-        $.post('services/insertLogs.php', {rut: jsonData[0].rut,description:description,action:action,subModule:submodule,cometType:cometType,attentionNew:attentionNew,ticketId:ticketId,module:module} , function(data, textStatus, xhr) {
-            $.post('../../../visor/comet/backend.php',{msg: data},function(data, textStatus, xhr){
-                console.debug("backend->"+data);
-                console.debug("textStatus->"+textStatus);
-                setCurrentNumber();
-                //HISTORIAL DE TICKETS ATENDIDOS EN FOOTER
-            });
-        });
-    }
-}*/
-
-
-
 
 /*
 	first state : waiting
@@ -299,68 +266,33 @@ function sendComet(type){//Genera la acción de los distintos botones a través 
 	if(type==='minus'){
 		getNoServeTickets();
 	}
-	/*if(type==='plus'){
-		myState = true;
-		activeButtons('call');
-		ticketAttention = firstTicketId;
-		insertLog('Siguiente Ticket','cl','module','call',ticketAttention);
-	}*/
+
 	if(type==='isHere' || type==='plus'){
 		myState = true;
 		activeButtons('on_serve');
 		ticketAttention = firstTicketId;
 		insertLog('Ticket ha venido','in','module','on_serve',ticketAttention);
-        getPatientData(ticketAttention);
 	}
 	if(type==='notHere'){
 		myState = false;
 		insertLog('Ticket Ausente','lb','module','no_serve',ticketAttention);
 		$('#content').css('color','black');
-        $('#patientPicture').html('');
-        $('#patientData').html('');
 	}
 	if(type==='finished'){
 		myState = false;
 		//activeButtons('call');
 		insertLog('Ticket Finalizado','lb','module','served',ticketAttention);
 		$('#content').css('color','black');
-        $('#patientPicture').html('');
-        $('#patientData').html('');
-	}
-	if(type==='redirect'){
-		getActivesModules();
-		$('#modalDerived').modal('show');
-
-
 	}
 	if(type==='exception'){
 		$('#modalException').modal('show');
 	}
 
-/*	if(type==='plusDerived'){
-		myState = true;
-		activeButtons('on_serve');
-		ticketAttention = firstTicketIdDerived;
-		insertLog('Ticket ha venido','in','module','on_serve',ticketAttention);
-		//insertLog('Siguiente Ticket','cl','module','call',ticketAttention);
-		$('#content').css('color','red');
-	}*/
-}
-
-function derive(moduleTo){//Deriva el ticket al módulo seleccionado
-	myState = false;
-	//activeButtons('call');
-	insertLog('Ticket Derivado','to','module','derived',ticketAttention,moduleTo);//En este caso, insertlog recibirá el módulo al que se deriva
-	$('#modalDerived').modal('hide');
-	$('#content').css('color','black');
-    refreshTable();
-         $('#patientPicture').html('');
-        $('#patientData').html('');
 }
 
 
 function refreshTable(){ //Actualiza la tabla de pacientes en espera
-    var totalResult=getLast5Tickets(submodule,initNumber);
+    var totalResult = getLast5Tickets(submodule,initNumber);
     if(totalResult==0){
         $('#contentTicket tr').has('td').remove();
         $('#contentTicket').append('<tr><td>No hay pacientes en espera...</td></tr>');
@@ -376,9 +308,9 @@ function refreshTable(){ //Actualiza la tabla de pacientes en espera
                 for (var i=0;i<cant;i++) {
                     if(i==0){
 
-                        $('#contentTicket').append('<tr class="info"><td>'+ticketsTable[i]['ticket']+'</td><td>'+ticketsTable[i]['rut']+'</td><td>'+ticketsTable[i]['datetime'].split(' ')[1]+'</td><td>'+hourDiff(ticketsTable[i]['datetime'])+'</td></tr>');
+                        $('#contentTicket').append('<tr class="info"><td>'+ticketsTable[i]['ticket']+'</td><td>'+ticketsTable[i]['rut']+'</td><td>'+ticketsTable[i]['datetime'].split(' ')[1]+'</td></tr>');
                     }else{
-                        $('#contentTicket').append('<tr><td>'+ticketsTable[i]['ticket']+'</td><td>'+ticketsTable[i]['rut']+'</td><td>'+ticketsTable[i]['datetime'].split(' ')[1]+'</td><td>'+hourDiff(ticketsTable[i]['datetime'])+'</td></tr>');  
+                        $('#contentTicket').append('<tr><td>'+ticketsTable[i]['ticket']+'</td><td>'+ticketsTable[i]['rut']+'</td><td>'+ticketsTable[i]['datetime'].split(' ')[1]+'</td>  </tr></tr>');  
                     }
                 }
             $('#contentTicket').fadeIn('slow');
@@ -388,24 +320,6 @@ function refreshTable(){ //Actualiza la tabla de pacientes en espera
         });
     }
 }
-
-function hourDiff(initialHour){
-    var initialHour = new Date(initialHour);
-    var finishedHour = new Date();
-    if (finishedHour < initialHour) {
-        finishedHour.setDate(finishedHour.getDate() + 1);
-    }
-    var diff = finishedHour - initialHour;
-
-    return Math.floor(diff / 1000 / 60)+' Minutos';
-}
-
-//so doge
-$("#patientPicture").hover(function() {
-    $("#patientPicture").html('<img src="http://i0.kym-cdn.com/entries/icons/original/000/014/285/not.jpg">');
-}, function() {
-  $("#patientPicture").html('<img src="http://placehold.it/200x200">');
-});
 
 function getLast5Tickets(idModule,last){//Devuelve los últimos 5 pacientes en espera
 	if(last==null) last=0;
@@ -494,7 +408,6 @@ function activeButtons(type){//Activa o inactiva botones
 	if(type=='onload'){
 		$('#buttons :input').attr('disabled', true);
 		$('#minusButton').attr('disabled', false);
-		$('#exceptionButton').attr('disabled', false);
 		$('.getout').attr('disabled', false);
     }
 	if(type=='next'){
@@ -502,9 +415,6 @@ function activeButtons(type){//Activa o inactiva botones
       	$('#minusButton').attr('disabled', false);
       	$('#notHereButton').attr('disabled', true);
       	$('#finishedButton').attr('disabled', true);
-      	$('#redirectButton').attr('disabled', true);
-      	$('#exceptionButton').attr('disabled', false);
-      	$('#plusDerivedButton').attr('disabled', true);
       	$('.getout').attr('disabled', false);
     }
 
@@ -513,14 +423,10 @@ function activeButtons(type){//Activa o inactiva botones
       	$('#minusButton').attr('disabled', true);
       	$('#notHereButton').attr('disabled', false);
       	$('#finishedButton').attr('disabled', false);
-      	$('#redirectButton').attr('disabled', false);
-      	$('#exceptionButton').attr('disabled', true);
-      	$('#plusDerivedButton').attr('disabled', true);
-      	$('.getout').attr('disabled', true);
+       	$('.getout').attr('disabled', true);
     }
 
 }
-
 
 
 function getActivesModules(){
@@ -546,42 +452,6 @@ function getActivesModules(){
     };
 
 }
-
-
-function getPatientData(ticketId){
-    var totalResult = getTicketData(ticketId);
-    var jsonData = JSON.parse(totalResult);
-    var namePatient = '';
-    $.post('../tothtem/scripts/getPatientName.php',{rut: jsonData[0]['rut']},function(data, textStatus, xhr){
-
-        if(data!='0'){
-            var dataJson = JSON.parse(data);
-            namePatient = '<br><p>Nombre:'+dataJson[0]['name']+' '+dataJson[0]['lastname']+'</p>';
-            namePatient +='<p>Fecha de Nacimiento:'+dataJson[0]['birthdate'] +'</p>';
-            namePatient +='<p>Genero:'+gender(dataJson[0]['gender'])+'</p>';
-            namePatient +='<p>Direccion:'+dataJson[0]['address']+'</p>';
-            $('#patientData').html(namePatient);
-            $('#patientPicture').html('<img src="http://placehold.it/200x200">');
-        
-        }else{
-           
-            $('#patientPicture').html('');
-            $('#patientData').html('<p>Sin Datos Asociados al paciente</p>');
-        }
-
-    });
-}
-function gender(gen){
-    if(gen=='M'){
-        return 'MASCULINO';
-    }else{
-        return 'FEMENINO';
-    }
-
-}
-
-
-
 
 </script>
 </body>

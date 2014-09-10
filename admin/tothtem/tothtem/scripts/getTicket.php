@@ -43,8 +43,13 @@ $dbLog->doSql($sql);
 $sql = "SELECT id FROM logs ORDER BY id DESC LIMIT 1";
 $idLog = $dbLog->doSql($sql);
 
+//Return module alias
+$dbAlias = NEW DB();
+$sql = "SELECT alias FROM module WHERE id=$module";
+$alias = $dbAlias->doSql($sql);
 
 //insert new ticket patient
+$newticket=$newticket.$alias['alias'];
 $db4 = NEW DB();
 $db4->doSql("INSERT INTO tickets(logs,ticket,attention) VALUES (".$idLog['id'].",'$newticket','waiting')");
 

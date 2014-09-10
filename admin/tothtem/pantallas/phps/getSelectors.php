@@ -6,16 +6,17 @@ include ('../../tothtem/scripts/libs/db.class.php');
 session_start();
 //$userId = $_SESSION['UserId'];
 
-$userId = $_REQUEST['userId'];
+if(isset($_REQUEST['userId'])) $userId = $_REQUEST['userId'];
 $type = $_REQUEST['type'];
 
 $db = NEW DB();
 if($type=='zone'){
+    if(!isset($_REQUEST['all'])) $where = "WHERE um.users=$userId ";
     $sql="SELECT z.id AS id, z.name AS name
         FROM zone z
         LEFT JOIN module m ON m.zone=z.id
         LEFT JOIN users_modules um ON um.module=m.id
-        WHERE um.users=$userId GROUP BY z.id, z.name";
+        $where GROUP BY z.id, z.name";
     $zones = $db->doSql($sql);
     do{
         $data[] = array(
@@ -46,12 +47,12 @@ if($type=='zone'){
 }elseif($type=='submodule'){
     $module = $_REQUEST['module'];
 
-    $sql="SELECT *
+    /*$sql="SELECT *
         FROM submodule
-        WHERE module=$module ORDER BY id";
-        /*$sql="SELECT *
+        WHERE module=$module ORDER BY id";*/
+        $sql="SELECT *
         FROM submodule
-        WHERE module=$module AND state='inactivo' ORDER BY id";*/
+        WHERE module=$module AND state='inactivo' ORDER BY id";
     $submodules = $db->doSql($sql);
     do{
         $data[] = array(

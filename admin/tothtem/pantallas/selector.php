@@ -38,6 +38,13 @@ if(!isset($_SESSION['Username'])) { header("location: ../../login.php"); header(
                 console.log(submodule);
                 if(submodule!=null){
                     $.post('phps/activeSubModule.php', {type: 'activo', user: userId, submodule: submodule}, function(data, textStatus, xhr) {
+                        $.ajax({
+                            url: '../../../visor/comet/backend.php',
+                            type: 'GET',
+                            dataType: 'default',
+                            data: {msg: data},
+                        });
+
                         $(location).attr('href','index.php?id='+submodule);
                     });
                 }else{
@@ -58,7 +65,7 @@ if(!isset($_SESSION['Username'])) { header("location: ../../login.php"); header(
                 async: false
             };
             var dataAdapter = new $.jqx.dataAdapter(source);
-            $("#listZones").jqxDropDownList({selectedIndex: 0, source: dataAdapter, displayMember: "name", valueMember: "id", width: 200, height: 30});
+            $("#listZones").jqxDropDownList({selectedIndex: 0, source: dataAdapter, displayMember: "name", valueMember: "id", width: 200, height: 30, autoDropDownHeight: true});
             $("#listZones").on('select', function (event) {
                 getModule(event.args.item.value);//Id Zona
             });
@@ -76,14 +83,13 @@ if(!isset($_SESSION['Username'])) { header("location: ../../login.php"); header(
                 async: false
             };
             var dataAdapter = new $.jqx.dataAdapter(source);
-            $("#listModules").jqxDropDownList({selectedIndex: 0, source: dataAdapter, displayMember: "name", valueMember: "id", width: 200, height: 30});
+            $("#listModules").jqxDropDownList({selectedIndex: 0, source: dataAdapter, displayMember: "name", valueMember: "id", width: 200, height: 30, autoDropDownHeight: true});
             $("#listModules").on('select', function (event) {
                 getSubModule(event.args.item.value);//Id Zona
             });
         }
 
         function getSubModule(module){
-            console.log("phps/getSelectors.php?type=submodule&module="+module+"&userId="+userId);
             var source =
             {
                 datatype: "json",
@@ -95,7 +101,7 @@ if(!isset($_SESSION['Username'])) { header("location: ../../login.php"); header(
                 async: false
             };
             var dataAdapter = new $.jqx.dataAdapter(source);
-            $("#listSubModules").jqxDropDownList({selectedIndex: 0, source: dataAdapter, displayMember: "name", valueMember: "id", width: 200, height: 30});
+            $("#listSubModules").jqxDropDownList({selectedIndex: 0, source: dataAdapter, displayMember: "name", valueMember: "id", width: 200, height: 30, autoDropDownHeight: true});
         }
 
 

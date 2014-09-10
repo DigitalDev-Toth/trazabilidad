@@ -17,7 +17,8 @@ $sql = "SELECT *, t.id AS ticketid
 		FROM tickets t
 		LEFT JOIN logs l ON l.id=t.logs
 		LEFT JOIN submodule s ON s.module=l.module
-		WHERE s.id=$submodule AND CAST(t.ticket AS INT)>=$last AND t.attention IN ('waiting','derived') ORDER BY l.datetime ASC LIMIT 5";
+		WHERE s.id=$submodule AND t.attention IN ('waiting','derived') ORDER BY l.datetime ASC LIMIT 5";
+		//WHERE s.id=$submodule AND CAST(t.ticket AS INT)>=$last AND t.attention IN ('waiting','derived') ORDER BY l.datetime ASC LIMIT 5";
 //echo $sql;
 $lastRecord = $db->doSql($sql);
 

@@ -12,6 +12,7 @@
         <script src="js/jquery.zrssfeed.js" type="text/javascript"></script>
         <script src="js/jquery.vticker.js" type="text/javascript"></script>
         <script src="js/jquery.zweatherfeed.js" type="text/javascript"></script>
+        <script src="js/cometDisplay.js" type="text/javascript"></script>
         <link href="css/bootstrap.css" rel="stylesheet">
         <link href="css/2-col-portfolio.css" rel="stylesheet">
     </head>
@@ -23,8 +24,8 @@
         <div style="width:100%; height: 100%;">
             <div class="row">
                 <div class="col-lg-12">
-                    <h2 class="page-header">Toth:
-                        <small id="modalityTitle">Sala de Espera<label id="modality"></label></small>
+                    <h2 class="page-header">ZONA:
+                        <small id="zoneName">Sala de Espera<label id="modality"></label></small>
                     </h2>
                 </div>
             </div>
@@ -79,12 +80,12 @@
 
         <script type="text/javascript">
 
-            var modalityPage='';
+            var zone='';
             $(document).ready(function() {
 
-                modalityPage=decodeURIComponent("<?php echo rawurlencode($_GET['id']); ?>");
-                var modalityName=getModality(modalityPage);//Contiene un json con las modalidades y últimos tickets
-                $('#modalityName').text(modalityName['modalityName']);
+                zone=decodeURIComponent("<?php echo rawurlencode($_GET['zone']); ?>");
+                var zoneName=getZone(zone);//Contiene un json con las modalidades y últimos tickets
+                $('#zoneName').text(zoneName['zoneName']);
 
                 //$('#modality').text(modalityPage);
                 $('#rss').rssfeed('http://www.cnnchile.com/rss/',{}, function(e) {
@@ -92,14 +93,14 @@
                     $(".rssBody").height('100%');
                 });
                 $('#weather').weatherfeed(['CIXX0031']);
-                showModalities(modalityName);  
+                showModules(zone);  
             });
 
 
             //Devuelve una colección de modalidades junto con su último ticket almacenado
-            function getModality(idModality){
+            function getZone(idZone){
                 var result = null;
-                var scriptUrl = "phpToth/getModality.php?idModality=" + idModality;
+                var scriptUrl = "phps/getZone.php?idZone=" + idZone;
                 $.ajax({
                     url: scriptUrl,
                     type: 'get',
@@ -128,35 +129,41 @@
             }*/
 
             //Crea cada panel por modalidad dentro del div principal 'modalities' incluyendo su conteo de tickets
-            function showModalities(tickets){
-                var panel="";
-                var modalityWidth = 100 / tickets.length;
-                for(i=0;i<tickets.length;i++){
+            function showModules(zone){
 
-                    var color = " background-color:#D9EDF7;";
+                $.post('phps/getModuleTickets.php', {zone: zone}, function(data, textStatus, xhr) {
+                    var panel="";
                     
-                    if(i%2==0) color="";
-                    //panel += '<div style="display: inline-block;border: 1px solid black; width: 50%">';
-                    panel += '<div style="display: inline-block; width: '+modalityWidth+'%;'+color+'">';
-                    panel += '<div class="panel-heading" style="font-size:150%;">'+tickets[i]["modalityName"]+'</div>';
-                    panel += '<div class="panel-body" align="center">';
-                    panel += '<div class="col-lg-5 col-md-5" >'
-                    panel += '<table>';
-                    //panel += '<tr style="font-size:30px;"><th id="modalityName'+tickets[i]["modality"]+'"></th></tr>';
-                    panel += '<tr style="font-size:150%;"><th>Numero</th><th>Modulo</th></tr>';
-                    panel += '<b>';
-                    panel += '<tr style="font-size:700%;" id="rows'+tickets[i]["modality"]+'"><td id="number'+tickets[i]["modality"]+'"></td><td id="module'+tickets[i]["modality"]+'" ></td></tr>';
-                    panel += '</b>';
-                    panel += '</table>';
-                    panel += '</div>';
-                    panel += '</div>';
-                    panel += '</div>';
-                }
-                $('#modalities').html(panel);
+                    var tickets = JSON.parse(data);
+                    var modalityWidth = 100 / tickets.length;
+                    for(i=0;i<tickets.length;i++){
 
-                for(i=0;i<tickets.length;i++){
-                  showLastTicket(tickets[i]["modalityTicket"],"A",tickets[i]["modality"]);
-                }
+                        var color = " background-color:#D9EDF7;";
+                        
+                        if(i%2==0) color="";
+                        //panel += '<div style="display: inline-block;border: 1px solid black; width: 50%">';
+                        panel += '<div style="display: inline-block; width: '+modalityWidth+'%;'+color+'">';
+                        panel += '<div class="panel-heading" style="font-size:150%;">'+tickets[i]["moduleName"]+'</div>';
+                        panel += '<div class="panel-body" align="center">';
+                        panel += '<div class="col-lg-5 col-md-5" >'
+                        panel += '<table>';
+                        //panel += '<tr style="font-size:30px;"><th id="modalityName'+tickets[i]["modality"]+'"></th></tr>';
+                        panel += '<tr style="font-size:150%;"><th>Numero</th><th>Modulo</th></tr>';
+                        panel += '<b>';
+                        panel += '<tr style="font-size:700%;" id="rows'+tickets[i]["moduleId"]+'"><td id="number'+tickets[i]["moduleId"]+'"></td><td id="module'+tickets[i]["moduleId"]+'" ></td></tr>';
+                        panel += '</b>';
+                        panel += '</table>';
+                        panel += '</div>';
+                        panel += '</div>';
+                        panel += '</div>';
+                    }
+                    $('#modalities').html(panel);
+
+                    for(i=0;i<tickets.length;i++){
+                      showLastTicket(tickets[i]["moduleTicket"],"A",tickets[i]["moduleId"]);
+                    }
+                });
+                
             }
 
             //Asigna el ticket correspondiente a la modalidad enviada

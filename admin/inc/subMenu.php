@@ -52,6 +52,21 @@ function getSubMenu($content) {
 			$subMenu .='</ul>';
 		break;
 
+		case 'patient':
+			$subMenu .= '<ul>';
+			
+			$db = new DB();
+			$sql = "SELECT id, name FROM zone";
+			$rows = $db->doSql($sql);
+			do {
+				$subMenu .= '<li><a href="tothtem/pantallas/display.php?zone='.$rows['id'].'" target="main" >'.$rows['name'].'</a></li>';
+				//$subMenu .= getItemMenu("visor&zone=".$rows['id'],$rows['name']);
+			} while ($rows = pg_fetch_assoc($db->actualResults));
+
+			$subMenu .= '<li class = "round_corner_menu_top"></li>';
+			$subMenu .='</ul>';
+		break;
+
 		case 'profile':
 			$subMenu .= '<li><a href="exit.php" >Salir</a>';
 		

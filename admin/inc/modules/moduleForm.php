@@ -23,6 +23,7 @@ $module->changeFormObject('module.position', 'menu', null, array("superior-izqui
 																"derecha"=>"derecha", "inferior-derecha"=>"inferior-derecha",
 																"inferior"=>"inferior", "inferior-izquierda"=>"inferior-izquierda",
 																"izquierda"=>"izquierda"));
+$module->changeFormObject('module.alias', 'menu', null, array("A"=>"A","B"=>"B","C"=>"C","D"=>"D","E"=>"E","F"=>"F"));
 $module->toolTipInFormObject('module.max_wait', ' - tiempo maximo en minutos que un paciente puede esperar');
 $module->toolTipInFormObject('module.position', ' - Posicion en la pantalla de visualizacion de las zonas');
 

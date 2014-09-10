@@ -856,9 +856,10 @@ function SearchOnLogin(datos){
     //solo mostrar el rut , nombre ficticio
 
     $('#patientName').text($("#rut").val().toUpperCase());
-    var namePatient = ' (return patientName_webservice)';
+    var namePatient = '';
     $.post('scripts/getPatientName.php',{rut: $('#patientName').html()},function(data, textStatus, xhr){
-        namePatient = data;
+        var dataJson = JSON.parse(data);
+        namePatient = dataJson[0]['name']+' '+dataJson[0]['lastname'];
         $('#WelcomeLabel').text(Welcome()+' '+namePatient);
 
     });

@@ -35,5 +35,8 @@ $db = NEW DB();
 $sql = "INSERT INTO logs(rut,datetime,description,zone,action,sub_module,module) VALUES('$rut','$datetime','$description',$zone,'$action',$subModule,$module)";
 $db->doSql($sql);
 
+$submoduleData = array('comet' => 'submodule', 'state' => $type, 'id' => $subModule);
+
+echo json_encode($submoduleData);
 
 ?>
