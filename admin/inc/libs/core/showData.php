@@ -30,6 +30,7 @@ foreach ($result as $field=>$data)
 				$compare=$item['compare'];
 				$object=$item['object'];
 				$attrib=$item['attrib'];
+				$other=$item['other'];
 				if($logic=='==')
 				{
 					if($result[$field]==$compare)
@@ -91,7 +92,7 @@ foreach ($result as $field=>$data)
 					if($compare==NULL) { $compare=" "; $result[$field]=" "; }
 					if($objectToChange=="addRigthText") { $addRigthText=$attrib; }
 					elseif($objectToChange=="addRigthImage") { $addRigthImage='<img align="center" src="'.$attrib.'" border="0" />'; }
-					elseif($objectToChange=="replaceWithImage") { $replaceWithImage=str_replace($compare, '<div align="center" id="tip"><img align="center" src="'.$attrib.'" border="0" title=" - '.$result[$field].'" /></div>', $result[$field]); $result[$field]=$replaceWithImage; }
+					elseif($objectToChange=="replaceWithImage") { $replaceWithImage=str_replace($compare, '<div align="center" id="tip"><img align="center" src="'.$attrib.'" border="0" title=" - '.$result[$field].'" '.$other.' /></div>', $result[$field]); $result[$field]=$replaceWithImage; }
 					elseif($objectToChange=="replaceWithText") { $replaceWithText=str_replace($compare, $attrib, $result[$field]); $result[$field]=$replaceWithText; }
 					break;
 				}
