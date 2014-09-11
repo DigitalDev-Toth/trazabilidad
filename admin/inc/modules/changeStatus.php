@@ -21,8 +21,10 @@ if(isset($_GET['id'])){
 		echo '<a href="#" onclick="window.close();return false;" ><img src="../../images/back.png"/>Volver al menu de Submodulos</a>';
 		echo '<script language="Javascript">opener.window.location.reload(false);</script>';		
 	}else{
-		echo('<script language="Javascript">  window.parent.focus();window.parent.alert("Seleccione al menos un submodulo a '.$msg.'"); window.close();</script>');		
-		exit();
+		echo "<h3> Seleccione al menos un submodulo a ".$msg." </h3>";
+		echo '<a href="#" onclick="window.close();return false;" ><img src="../../images/back.png"/>Volver al menu de Submodulos</a>';
+		//echo('<script language="Javascript">  window.parent.focus();window.parent.alert("Seleccione al menos un submodulo a '.$msg.'"); window.close();</script>');		
+		//exit();
 	}
 }
 

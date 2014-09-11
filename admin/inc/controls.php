@@ -23,5 +23,11 @@ function makeControls($obj, $insertLink, $deleteLink, $updateLink, $backLink)
         $obj->control("insertMany", "$url&selectMany=".str_replace("&", "*", $_SERVER['REQUEST_URI'])); 
         $obj->control("separator");
     }
+    if($module=="users_modules")
+    {
+        $url = 'main.php?modulo=modules&modules='.$_GET['module'].'&pwd='.$module;
+        $obj->control("insertMany", "$url&selectMany=".str_replace("&", "*", $_SERVER['REQUEST_URI'])); 
+        $obj->control("separator");
+    }
 }
 ?>

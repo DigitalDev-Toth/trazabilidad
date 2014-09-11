@@ -35,11 +35,12 @@ $submodule->additions("module", array("name"=>"modulename"));
 
 $submodule->relation("users", "users", "id", "name");
 //$submodule->additions("users", array("name"=>"usersname"));
-$submodule->insertExternalInShow('Usuario actual', 'http://localhost/new_traza/admin/inc/modules/subModuleTime.php?submodule=%id%&type=user');
+$submodule->insertExternalInShow('Zona', 'http://localhost/traza_enzo/admin/inc/services/showZones.php?module=%id%');
+/*$submodule->insertExternalInShow('Usuario actual', 'http://localhost/new_traza/admin/inc/modules/subModuleTime.php?submodule=%id%&type=user');
 $submodule->insertExternalInShow('Hora inicio', 'http://localhost/new_traza/admin/inc/modules/subModuleTime.php?submodule=%id%&type=ini');
-$submodule->insertExternalInShow('Tiempo de Actividad', 'http://localhost/new_traza/admin/inc/modules/subModuleTime.php?submodule=%id%&type=total');
-//$submodule->control("activateSubModule", "modules/changeStatus.php?state=activo");
-//$submodule->control("desactivateSubModule", "modules/changeStatus.php?state=inactivo");
+$submodule->insertExternalInShow('Tiempo de Actividad', 'http://localhost/new_traza/admin/inc/modules/subModuleTime.php?submodule=%id%&type=total');*/
+$submodule->control("activateSubModule", "modules/changeStatus.php?state=activo");
+$submodule->control("desactivateSubModule", "modules/changeStatus.php?state=inactivo");
 
 $submodule->changeItemInShow("state", '<a href="?modulo=submodule&id=%id%&state=%value%"><img src="../images/%value%.png"></a>');
 

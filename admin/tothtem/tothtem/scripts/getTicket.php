@@ -5,23 +5,38 @@ ini_set("display_errors", 1);
 //get data
 $module = $_REQUEST['module'];
 $rut = $_REQUEST['rut'];
+$moduleSpecial = $_REQUEST['moduleSpecial'];
 $cometType = 'module';
 //$sbIp=$_REQUEST['ip'];
 
-//get last ticket
-$db = NEW DB();
-$sql = "SELECT ticket FROM last_tickets WHERE module='$module'";
-$lastTicket = $db->doSql($sql);
-$newticket=(int)$lastTicket["ticket"]+1; 
-if($newticket==1000){
-    $newticket=1;
-}
-//set last ticket
-$db2 = NEW DB();
-$db2->doSql("UPDATE last_tickets SET ticket='$newticket' WHERE module='$module'");
+if($moduleSpecial=='0'){
+	//get last ticket
+	$db = NEW DB();
+	$sql = "SELECT ticket FROM last_tickets WHERE module='$module'";
+	$lastTicket = $db->doSql($sql);
+	$newticket=(int)$lastTicket["ticket"]+1; 
+	if($newticket==1000){
+	    $newticket=1;
+	}
+	//set last ticket
+	$db2 = NEW DB();
+	$db2->doSql("UPDATE last_tickets SET ticket='$newticket' WHERE module='$module'");
 
+}else{
+	//get last ticket
+	$db = NEW DB();
+	$sql = "SELECT last_ticket FROM module_special WHERE id='$moduleSpecial'";
+	$lastTicket = $db->doSql($sql);
+	$newticket=(int)$lastTicket["last_ticket"]+1; 
+	if($newticket==1000){
+	    $newticket=1;
+	}
+	//set last ticket
+	$db2 = NEW DB();
+	$db2->doSql("UPDATE module_special SET last_ticket=$newticket WHERE id='$moduleSpecial'");
+}
 //INSERCIÓN DE LOGS
-$sbIp='192.168.0.122';
+$sbIp='192.168.0.123';
 
 $sqlZone="SELECT zone.id AS zone , submodule.id AS submodule 
           FROM zone 
@@ -43,10 +58,18 @@ $dbLog->doSql($sql);
 $sql = "SELECT id FROM logs ORDER BY id DESC LIMIT 1";
 $idLog = $dbLog->doSql($sql);
 
-//Return module alias
-$dbAlias = NEW DB();
-$sql = "SELECT alias FROM module WHERE id=$module";
-$alias = $dbAlias->doSql($sql);
+
+if($moduleSpecial=='0'){
+	//Return module alias
+	$dbAlias = NEW DB();
+	$sql = "SELECT alias FROM module WHERE id=$module";
+	$alias = $dbAlias->doSql($sql);
+}else{
+	//Return module alias
+	$dbAlias = NEW DB();
+	$sql = "SELECT alias FROM module_special WHERE id=$moduleSpecial";
+	$alias = $dbAlias->doSql($sql);
+}
 
 //insert new ticket patient
 $newticket=$newticket.$alias['alias'];

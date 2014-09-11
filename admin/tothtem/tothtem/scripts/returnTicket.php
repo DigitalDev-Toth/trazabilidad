@@ -19,15 +19,17 @@
 </html>
 <script type="text/javascript">
 $(document).ready(function() {
-    sendComet();
+
 });
 
 var rut = decodeURIComponent("<?php echo rawurlencode($_GET['rut']); ?>");
 //var modality = decodeURIComponent("<?php echo rawurlencode($_GET['modality']); ?>");
 var module = decodeURIComponent("<?php echo rawurlencode($_GET['ticketOption']); ?>");
+var moduleSpecial = decodeURIComponent("<?php echo rawurlencode($_GET['moduleSpecial']); ?>");
 
-var jsonData=getLastTicket(module,rut);
-
+console.log(module,rut,moduleSpecial);
+var jsonData=getLastTicket(module,rut,moduleSpecial);
+console.log(jsonData);
 var json = JSON.parse(jsonData);
 /*Arreglo json con 2 registros:
   1- Para comet de submódulos de recepción de tickets
@@ -64,9 +66,9 @@ $(document).ready(function () {
 
 
 
-function getLastTicket(module,rut){
+function getLastTicket(module,rut,moduleSpecial){
     var ticket = null;
-    var scriptUrl = "getTicket.php?module="+module+"&rut="+rut;
+    var scriptUrl = "getTicket.php?module="+module+"&rut="+rut+"&moduleSpecial="+moduleSpecial;
     $.ajax({
         url: scriptUrl,
         type: 'get',
@@ -80,65 +82,6 @@ function getLastTicket(module,rut){
     return ticket;
 }
 
-
-//super Comet!
-function sendComet(){
-    comet.doRequest(jsonData);
-}
-
-
-
-// comet implementation
-var Comet = function (data_url) {
-  this.timestamp = 0;
-  this.url = data_url;
-  this.noerror = true;
-
-  this.connect = function() {
-    var self = this;
-    $.ajax({
-      type : 'get',
-      url : this.url,
-      dataType : 'json', 
-      data : {'timestamp' : self.timestamp},
-      success : function(response) {
-        self.timestamp = response.timestamp;
-        self.handleResponse(response);
-        self.noerror = true;          
-      },
-      complete : function(response) {
-        // send a new ajax request when this request is finished
-        if (!self.noerror) {
-          // if a connection problem occurs, try to reconnect each 5 seconds
-          setTimeout(function(){ comet.connect(); }, 5000);           
-        }else {
-          // persistent connection
-          self.connect(); 
-        }
-
-        self.noerror = false; 
-      }
-    });
-  }
-
-  this.disconnect = function() {}
-
-  this.handleResponse = function(response) {
-    //var currentNumber=response.msg;
-  }
-
-  this.doRequest = function(request) {
-      $.ajax({
-        type : 'get',
-        url : this.url,
-        data : {'msg' : request}
-      });
-  }
-
-}
-
-var comet = new Comet('backend.php');
-comet.connect();
 
 </script>
 
