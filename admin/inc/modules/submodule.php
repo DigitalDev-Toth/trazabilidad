@@ -1,32 +1,27 @@
 <?php
-function setState($id, $state){
-	$comet = '{"comet":"submodule", "id":"'.$id.'", "state":"'.$state.'"}';
-	echo '<script src="js/jquery-1.8.1.min.js"></script>';
-	echo '<script>
-		    $.post("../../visor/comet/backend.php",{msg: JSON.stringify('.$comet.')},function(data, textStatus, xhr){
-		    });
-		</script>';
-}
-
 session_start();
 if(!isset($_SESSION['Username'])) { header("location: ../../login.php?error=hack"); header('Content-Type: text/html; charset=utf8');  }
 
 include("libs/db.class.php");
 include("controls.php");
 
-if(isset($_GET['state'])) {
-	$db = new DB();
-	$id = $_GET['id'];
-	$state = $_GET['state'];
-	if($state=='activo') {
-		$state = 'inactivo';
+?>
+<script src="js/jquery-1.8.1.min.js"></script>
+<script>
+var setState = function(id, state) {
+	if(state!='blink') {
+		$.get("modules/updateSubmoduleState.php",{"id": id, "state": state},function(data, textStatus, xhr){
+			state=data;
+			$('#state_'+id).html('<img src="../images/'+state+'.png" onClick="setState('+id+', '+"'"+state+"'"+');">');
+			$.post("../../visor/comet/backend.php",{msg: JSON.stringify({"comet":"submodule", "id":id, "state":state})},function(data, textStatus, xhr){});
+		});
 	} else {
-		$state = 'activo';
+		$.post("../../visor/comet/backend.php",{msg: JSON.stringify({"comet":"submodule", "id":id, "state":state})},function(data, textStatus, xhr){});
 	}
-	$sql = "UPDATE submodule SET state='$state' WHERE id=$id";
-	$db->doSql($sql);
-	setState($id, $state);
-}
+	
+};
+</script>
+<?php
 
 $submodule = new DB("submodule", "id");
 $submodule->exceptions(array("module", "users"));
@@ -42,7 +37,9 @@ $submodule->insertExternalInShow('Tiempo de Actividad', 'http://localhost/new_tr
 $submodule->control("activateSubModule", "modules/changeStatus.php?state=activo");
 $submodule->control("desactivateSubModule", "modules/changeStatus.php?state=inactivo");
 
-$submodule->changeItemInShow("state", '<a href="?modulo=submodule&id=%id%&state=%value%"><img src="../images/%value%.png"></a>');
+$submodule->changeItemInShow("state", '<a id="state_%id%" class="state"><img id="image_%id%" src="../images/%value%.png" onClick="setState(%id%, '."'%value%'".');"></a>
+							<a class="state" onClick="setState(%id%, '."'blink'".');"><img src="../images/info.png"></a>
+							');
 
 makeControls($submodule, "modules/submoduleForm.php", "modules/submoduleDelete.php", "modules/submoduleUpdate.php", $_SERVER['HTTP_REFERER']);
 

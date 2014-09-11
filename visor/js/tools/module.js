@@ -1,30 +1,31 @@
-var MODULE = function (name, id, type, pos, color, shape, submodules, seats) {
+var MODULE = function (name, id, type, pos, color, shape, waitingTime, submodules, seats) {
     this.id = id;    
     if (type === 'module') {
         this.submodules = {};
         this.totalSubmodules = submodules.length;
+        this.maxWaitingTime = waitingTime;
+        this.beginWaitingTime = waitingTime * 60000 * 1.2;
+        this.finalWaitingTime = waitingTime * 60000 * 1.5;
+        this.shape = shape;
+        this.submoduleWidth = 40;
+        this.submoduleHeight = 90;
+        this.moduleRound = 5;   
     } else if (type === 'waiting-room') {
-        this.submodules = null;
         this.maxSeats = seats; // max seats per module 
         this.seats = 60; // total seats per module
         this.seatsPos = [];
         this.textMaxSeats = null;
         this.textMsgMaxSeats = null;
     } else if (type === 'limb') {
-        this.submodules = null;
         this.places = 24;
         this.placesPos = [];
     }
-    this.pos = pos;
     this.color = color;
-    this.shape = shape;
+    this.pos = pos;
     this.el = null; // element in DOM for module
     this.text = null; // element in DOM for text module
     this.type = type;
-    this.name = name;
-    this.submoduleWidth = 40;
-    this.submoduleHeight = 90;
-    this.moduleRound = 5;    
+    this.name = name;     
     this.setElem();
 };
 // attributes for modules except waiting room and limb
