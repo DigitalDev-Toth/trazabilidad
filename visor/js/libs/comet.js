@@ -39,14 +39,14 @@ var Comet = function (data_url) {
             var data = $.parseJSON(response.msg);
         	console.log(response.msg);
             if (data.comet === 'tothtem' || data.comet === 'module') {
-                MAKE.goTo(data.comet, data.rut, data.action, data.newticket, data.datetime, data.module, data.submodule);
+                MAKE.goTo(data.comet, data.rut, 'Juan Perez', data.action, data.newticket, data.datetime, data.module, data.submodule);
             } else if (data.comet === 'submodule') {
-                if(SUBMODULES[data.id]!=undefined) {
-                    if(data.state==='activo') {
+                if (SUBMODULES[data.id] !== undefined) {
+                    if (data.state === 'activo') {
                         MODULES[SUBMODULES[data.id]].submodules[data.id].setActive();
-                    } else if(data.state==='inactivo') {
+                    } else if (data.state === 'inactivo') {
                         MODULES[SUBMODULES[data.id]].submodules[data.id].setInactive();
-                    } else if(data.state==='blink') {
+                    } else if (data.state === 'blink') {
                         MODULES[SUBMODULES[data.id]].submodules[data.id].blink(0);
                     }
                 }

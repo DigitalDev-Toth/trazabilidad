@@ -55,22 +55,22 @@ if(isset($_GET['idZone'])){
                             window.location.href = '../admin';
                         } else {                            
                             var info = JSON.parse(data);
-                            //console.log(info);
+//                            console.log(info);
                             
-                            MAKE.module(info.name, info.id, 'waiting-room', 'center', '#818878', info.shape, null, info.seats);
-                            MAKE.module('Limbo', info.id, 'limb', 'center', '#A24A4A', null, null, null);
+                            MAKE.module(info.name, info.id, 'waiting-room', 'center', '#818878', null, null, null, info.seats);
+                            MAKE.module('Limbo', info.id, 'limb', 'center', '#A24A4A', null, null, null, null);
                             for (var i = 0; i < info.modules.length; i++) {   
-                                MAKE.module(info.modules[i].name, info.modules[i].id, 'module', info.modules[i].position, '#'+ info.modules[i].color, info.modules[i].shape, info.modules[i].submodules);
+                                MAKE.module(info.modules[i].name, info.modules[i].id, 'module', info.modules[i].position, '#'+ info.modules[i].color, info.modules[i].shape, info.modules[i].max_wait, info.modules[i].submodules);
                             }    
-                            $.get('../services/getPatients.php?zone='+idZone,function (data, status) {
-                                console.log(data);
+                            $.get('../services/getPatients.php?zone='+idZone, function (data, status) {
+//                                console.log(data);
                                 var jsonData = JSON.parse(data);
                                 for(i=0; i<jsonData.length;i++){
-                                    MAKE.patient(jsonData[i].rut, jsonData[i].ticket, jsonData[i].datetime, jsonData[i].attention, jsonData[i].module, jsonData[i].sub_module);
+                                    MAKE.patient(jsonData[i].rut, 'Juan Perez', jsonData[i].ticket, jsonData[i].datetime, jsonData[i].attention, jsonData[i].module, jsonData[i].sub_module);
                                 }
                             });
                             message('Objetos creados');
-                            //console.log(MODULES);
+//                            console.log(MODULES);
                         }
                     }
                 });                

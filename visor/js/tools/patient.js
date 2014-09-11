@@ -1,6 +1,8 @@
-var PATIENT = function (id, ticket, datetime, idModule, storage) {
+var PATIENT = function (id, name, ticket, datetime, idModule, storage) {
     this.id = id; // rut
+    this.name = name;
     this.shape = 'circulo';
+    this.idModule = idModule;
     this.seat = null; // seat for waiting room
     this.place = null; // place for limb
     this.ticket = ticket;
@@ -14,13 +16,13 @@ var PATIENT = function (id, ticket, datetime, idModule, storage) {
 
 };
 PATIENT.prototype.blink = function (i) {
-    if(i<7){
+    if (i < 7) {
         i++;
         var stroke = this.el.attrs.stroke;
         this.el.animate({stroke: '#fff'}, 100, 'linear', (function (t, i) {
-                return function() {
-                    t.el.animate({stroke: stroke}, 100, t.blink(i));
-                }
+            return function() {
+                t.el.animate({stroke: stroke}, 100, t.blink(i));
+            };
         })(this, i));
     }
 
@@ -62,7 +64,7 @@ PATIENT.prototype.setElem = function (idModule) {
     }
     var p = 'M'+ x +','+ y +'m-12,0a12,12 0 1,0 24,0a12,12 0 1,0 -24,0z';
     this.el = PAPER.path(p).attr({
-        'fill': '#ccc',
+        'fill': '#01DF01',
         'fill-opacity': 1,
         'stroke': '#000',
         'stroke-width': 1        
@@ -95,7 +97,7 @@ PATIENT.prototype.goToWaitingRoom = function (idPatient, storage) {
             fp = 'M'+ x +','+ y + s;
             
         this.el = PAPER.path(fp).attr({
-            'fill': '#fff',
+            'fill': '#01DF01',
             'fill-opacity': 1,
             'stroke': '#000',
             'stroke-width': 1        
@@ -115,13 +117,15 @@ PATIENT.prototype.goToWaitingRoom = function (idPatient, storage) {
         
         var datetime = this.datetime,
             id = this.id,
-            el = $(this.el.node);
-        
-        this.interval = setInterval(function () {
+            name = this.name,
+            el = $(this.el.node),
+            idModule = this.idModule;
+        this.interval = setInterval(function () {            
             var time = new Date().getTime() - datetime,
                 minutes = Math.floor((time / 1000) / 60),
                 content = id +'<br />'+
-                        'Juan Perez<br />'+
+                        name +'<br />'+
+                        'Esperando por: '+ MODULES[idModule].name +'<br />'+
                         minutes +' minutos';
             el.attr('data-content', content);
         }, 1000);
@@ -142,13 +146,16 @@ PATIENT.prototype.goToWaitingRoom = function (idPatient, storage) {
         
         var datetime = this.datetime,
             id = this.id,
-            el = $(this.el.node);
+            name = this.name,
+            el = $(this.el.node),
+            idModule = this.idModule;
         
         this.interval = setInterval(function () {
             var time = new Date().getTime() - datetime,
                 minutes = Math.floor((time / 1000) / 60),
                 content = id +'<br />'+
-                        'Juan Perez<br />'+
+                        name +'<br />'+
+                        'Esperando por: '+ MODULES[idModule].name +'<br />'+
                         minutes +' minutos';
             el.attr('data-content', content);
         }, 1000);
@@ -173,7 +180,7 @@ PATIENT.prototype.goToLimb = function (idPatient, storage) {
             fp = 'M'+ x +','+ y + s;
             
         this.el = PAPER.path(fp).attr({
-            'fill': '#ccc',
+            'fill': '#01DF01',
             'fill-opacity': 1,
             'stroke': '#000',
             'stroke-width': 1        
@@ -243,10 +250,10 @@ PATIENT.prototype.goTo = function (idModule, idSubmodule, storage) {
                 var s = this.shapePath(),
                     p = 'M'+ x +','+ y + s,
                     content = this.id +'<br />'+
-                                'Juan Perez';               
+                                this.name;               
                 
                 this.el = PAPER.path(p).attr({
-                    'fill': '#ccc',
+                    'fill': '#01DF01',
                     'stroke': '#000',
                     'stroke-width': 1        
                 }); 
@@ -272,13 +279,13 @@ PATIENT.prototype.goTo = function (idModule, idSubmodule, storage) {
                 var s = this.shapePath(),
                     p = 'M'+ x +','+ y + s,
                     content = this.id +'<br />'+
-                                'Juan Perez';
+                                this.name;
                 
                 $(this.el.node).attr('data-content', content);
                 
                 $(this.el.node).popover('hide');
                 this.text.animate({x: x, y: y}, 1000);          
-                this.el.animate({path: p, 'fill': '#ccc'}, 1000);
+                this.el.animate({path: p, 'fill': '#01DF01'}, 1000);
             }                
             break;
         case 'path':
@@ -348,10 +355,10 @@ PATIENT.prototype.goTo = function (idModule, idSubmodule, storage) {
                 var s = this.shapePath(),
                     p = 'M'+ x +','+ y + s,
                     content = this.id +'<br />'+
-                                'Juan Perez';               
+                                this.name;               
                 
                 this.el = PAPER.path(p).attr({
-                    'fill': '#ccc',
+                    'fill': '#01DF01',
                     'stroke': '#fff',
                     'stroke-width': 10        
                 }); 
@@ -377,7 +384,7 @@ PATIENT.prototype.goTo = function (idModule, idSubmodule, storage) {
                 var s = this.shapePath(),
                     p = 'M'+ x +','+ y + s,
                     content = this.id +'<br />'+
-                                'Juan Perez';                
+                                this.name;                
                 
                 $(this.el.node).attr('data-content', content);
                 
@@ -385,7 +392,7 @@ PATIENT.prototype.goTo = function (idModule, idSubmodule, storage) {
                 
                 $(this.el.node).popover('hide');                
                 this.text.animate({x: x, y: y}, 1000);
-                this.el.animate({path: p, 'fill': '#ccc'}, 1000);
+                this.el.animate({path: p, 'fill': '#01DF01'}, 1000);
             }              
             break;
     }
