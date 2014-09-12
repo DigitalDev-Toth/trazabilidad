@@ -4,8 +4,12 @@ error_reporting(E_ALL);
 ini_set("display_errors", 1);
 
 if(isset($_REQUEST['ip'])){
-	//$ip = $_REQUEST['ip'];
-	$ip='192.168.0.122';
+	$ip = $_REQUEST['ip'];
+	if($ip==1){
+		$ip='192.168.0.122';
+	}else if($ip==2){
+		$ip='192.168.0.123';
+	}
 	$db = NEW DB();
 	$sql = "SELECT module.id as id_module , module.name as module_name , submodule.name as submodule_name , module_type.name as type, submodule.state as state   
 			FROM module , submodule , module_type WHERE module.zone =(

@@ -5,13 +5,18 @@ ini_set("display_errors", 1);
 
 if(isset($_REQUEST['ip'])){
 	//$ip = $_REQUEST['ip'];
-	$ip='192.168.0.122';
+	$ip = $_REQUEST['ip'];
+	if($ip==1){
+		$ip='192.168.0.122';
+	}else if($ip==2){
+		$ip='192.168.0.123';
+	}
 	$db = NEW DB();
-	$sql = "SELECT  module.id ,module.name 
-			FROM module , submodule , module_type WHERE module.zone =(
+	$sql = "SELECT  module.id ,module.name AS name,  module_type.name AS type_name
+			FROM module, submodule , module_type WHERE module.zone =(
 			SELECT module.zone FROM module WHERE module.id=(
-			SELECT submodule.module FROM submodule WHERE ip='$ip')) and submodule.module=module.id and module.type=module_type.id 
-			and state='activo' and module_type.name!='Tothtem'  group by module.id ,module.name 
+			SELECT submodule.module FROM submodule WHERE ip='$ip')) AND submodule.module=module.id AND module.type=module_type.id 
+			AND state='activo' AND NOT module_type.name IN('Tothtem') GROUP BY module.id ,module.name,module_type.name 
 			";
 
 	//echo $sql;
@@ -19,10 +24,12 @@ if(isset($_REQUEST['ip'])){
 	if($data){
 	    do{
 	        $moduleName = $data['name'];
+	        $module_type = $data['type_name'];
 	        $id = $data['id'];
 	        $config[] = array(
 	        	'id' => $id,
-	            'moduleName' => $moduleName
+	            'moduleName' => $moduleName,
+	            'moduleType' => $module_type
 	        );
 	    }while($data = pg_fetch_assoc($db->actualResults));
 	    echo json_encode($config);

@@ -45,7 +45,13 @@ else
 		echo '<a href="../contentMain.php?module=module"><img src="../../images/back.png"/>Volver al menu de Modulos</a>';
 		echo '<a href="'.$_SERVER['HTTP_REFERER'].'"><img src="../../images/mas.png"/>Agregar Nuevo Modulo</a><br>';
 		echo '</div>';
-		//echo '<script src="../js/jquery-1.8.1.min.js"></script>';
+
+		$db = new DB();
+		$sql = "SELECT id from module ORDER BY id DESC  limit 1 ";
+		$result=$db->doSql($sql);
+		$sql ="INSERT INTO last_tickets(ticket,module) VALUES('1',".$result['id'].") ";
+		$db->doSql($sql);
+
 		sendComet();
 		exit();
 	}

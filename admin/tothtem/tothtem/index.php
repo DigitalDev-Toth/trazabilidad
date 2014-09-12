@@ -405,8 +405,8 @@ function activesModules(){
 
 
 
-//imprime ticket de atencion
-function PrintTicket(ticketOption){
+//imprime ticket de atencion (TicketOption indica el id del módulo correspondiente; en caso de ser módulo especial, se envía además el id de este)
+function PrintTicket(ticketOption,moduleSpecial){
 	/*option:
 		caja:0
 		informaciones :1
@@ -420,7 +420,8 @@ function PrintTicket(ticketOption){
     var rut= $("#rut").val().toUpperCase();
     var id="&totemId="+totemId;
     var ticketOption="&ticketOption="+ticketOption;
-    var chain=urlTicket+rut+id+ticketOption;
+    var moduleSpecial="&moduleSpecial="+moduleSpecial;
+    var chain=urlTicket+rut+id+ticketOption+moduleSpecial;
 
     //imprime el ticket
     document.getElementById("printIframe").src = chain;
@@ -774,8 +775,9 @@ function loginPatient(){
 }
 
 function tothtemConfig(){
-    tothemIp="<?php echo $_SERVER['REMOTE_ADDR'];?>";
-    
+    //tothemIp="<?php echo $_SERVER['REMOTE_ADDR'];?>";
+    tothemIp="<?php echo $_REQUEST['toth'];?>";
+    console.log(tothemIp);
     var result = null;
     var scriptUrl = "scripts/tothtemConfig.php?ip=" + tothemIp;
     $.ajax({
@@ -799,8 +801,8 @@ function tothtemConfig(){
 }
 
 function getActivesModules(){
-    var tothemIp="<?php echo $_SERVER['REMOTE_ADDR'];?>";
-
+    //var tothemIp="<?php echo $_SERVER['REMOTE_ADDR'];?>";
+    tothemIp="<?php echo $_REQUEST['toth'];?>";
     var result = null;
     var scriptUrl = "scripts/getActivesModules.php?ip=" + tothemIp;
     $.ajax({
@@ -819,8 +821,22 @@ function getActivesModules(){
     var jsonModules=JSON.parse(result);
 
     $("#menuButtons").html('');
+    console.log(jsonModules);
+
     for (var i = 0; i < jsonModules.length; i++) {
-        $("#menuButtons").append('<div class="modal-body"><button type="button" style="padding:12px 25px;font-size: 25px;border-radius: 33px;width: 300px;"" class="btn btn-primary" onclick="PrintTicket('+jsonModules[i]['id']+'); selAttention=true;"><span class="glyphicon glyphicon-time"></span> '+jsonModules[i]['moduleName'] +'</button>   </div>' );
+        if(jsonModules[i]['moduleType']!='Especial'){        
+            $("#menuButtons").append('<div class="modal-body"><button type="button" style="padding:12px 25px;font-size: 25px;border-radius: 33px;width: 300px;"" class="btn btn-primary" onclick="PrintTicket('+jsonModules[i]['id']+',0); selAttention=true;"><span class="glyphicon glyphicon-time"></span> '+jsonModules[i]['moduleName'] +'</button>   </div>' );
+        }else{
+            var moduleId = jsonModules[i]['id'];
+            $.post('scripts/getActivesModulesSpecial.php', {module: moduleId}, function(data, textStatus, xhr) {
+                if(data!='nan'){
+                    var jsonData = JSON.parse(data);
+                    for(j=0; j < jsonData.length;j++){
+                        $("#menuButtons").append('<div class="modal-body"><button type="button" style="padding:12px 25px;font-size: 25px;border-radius: 33px;width: 300px;"" class="btn btn-primary" onclick="PrintTicket('+moduleId+','+jsonData[j]['id']+'); selAttention=true;"><span class="glyphicon glyphicon-time"></span> '+jsonData[j]['name'] +'</button>   </div>' );
+                    }
+                }
+            });
+        }
     };
     //jsonModules[i]['moduleName']
 }
@@ -828,7 +844,6 @@ function getActivesModules(){
 
 function setTothtemConfig(){
     getActivesModules();
-
 }
 
 function SearchOnLogin(datos){
@@ -858,13 +873,17 @@ function SearchOnLogin(datos){
     $('#patientName').text($("#rut").val().toUpperCase());
     var namePatient = '';
     $.post('scripts/getPatientName.php',{rut: $('#patientName').html()},function(data, textStatus, xhr){
-        var dataJson = JSON.parse(data);
-        namePatient = dataJson[0]['name']+' '+dataJson[0]['lastname'];
-        $('#WelcomeLabel').text(Welcome()+' '+namePatient);
+        if(data!="0"){
+            var dataJson = JSON.parse(data);
+            namePatient = dataJson[0]['name']+' '+dataJson[0]['lastname'];
+            $('#WelcomeLabel').text(Welcome()+' '+namePatient);
+        }else{
+            $('#WelcomeLabel').text(Welcome());
+        }
 
     });
 
-    $('#WelcomeLabel').text(Welcome()+' '+namePatient);
+    //$('#WelcomeLabel').text(Welcome()+' '+namePatient);
     /*
     for(var i in dataJson){
         datos += dataJson[i];

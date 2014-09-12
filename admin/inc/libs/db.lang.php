@@ -49,11 +49,13 @@ $languaje['module'] = array (
 		"name" => "Nombre",
 		"max_wait" => "Max T. Espera",
 		"position" => "Posicion",
+		"alias" => "Alias",
 		"zonename" => "Zona",
 		"modulename" => "Tipo",
 		"module.name" => "Nombre",
 		"module.max_wait" => "Max T. Espera",
 		"module.position" => "Posicion",
+		"module.alias" => "Alias",
 		"module.zone" => "Zona",
 		"module.type" => "Tipo"
 		);
@@ -64,10 +66,24 @@ $languaje['submodule'] = array (
 		"state" => "Estado",
 		"usersname" => "Usuario",
 		"modulename" => "Modulo",
+		"ip" => "IP",
 		"submodule.name" => "Nombre",
 		"submodule.state" => "Estado",
 		"submodule.module" => "Modulo",
 		"submodule.users" => "Usuario",
 		"submodule.state" => "Estado",
+		"submodule.ip" => "IP"
+		);
+
+$languaje['module_special'] = array (
+		"id" => "ID",
+		"module" => "Modulo",
+		"name" => "Nombre",
+		"alias" => "Sufijo",
+		"last_ticket" => "Ultimo Ticket",
+		"module_special.module" => "Modulo",
+		"module_special.name" => "Nombre",
+		"module_special.alias" => "Sufijo",
+		"module_special.last_ticket" => "Ultimo Ticket",
 		);
 ?>

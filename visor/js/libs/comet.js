@@ -42,7 +42,11 @@ var Comet = function(data_url) {
                 MAKE.goTo(data.comet, data.rut, 'Juan Perez', data.action, data.newticket, data.datetime, data.module, data.submodule);
             } else if (data.comet === 'submodule') {
 <<<<<<< HEAD
+<<<<<<< HEAD
                 if (SUBMODULES[data.id] != undefined) {
+=======
+                if (SUBMODULES[data.id] !== undefined) {
+>>>>>>> FETCH_HEAD
 =======
                 if (SUBMODULES[data.id] !== undefined) {
 >>>>>>> FETCH_HEAD

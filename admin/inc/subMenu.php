@@ -23,6 +23,7 @@ function getSubMenu($content) {
 			$subMenu .= getItemMenu("module_type","Tipo Modulo");
 			$subMenu .= getItemMenu("module","Modulos");
 			$subMenu .= getItemMenu("submodule","Sub Modulos");
+			$subMenu .= getItemMenu("module_special","Modulos Especiales");
 			$subMenu .= '<li class = "round_corner_menu_top"></li>';
 			$subMenu .='</ul>';
 		break;

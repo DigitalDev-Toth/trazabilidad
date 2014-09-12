@@ -11,15 +11,34 @@ if($last==null){
 	exit();
 }
 
+//get module_type
+$dbModule = NEW DB();
+$sql = "SELECT mt.name
+		FROM module_type mt
+		LEFT JOIN module m ON m.type=mt.id
+		LEFT JOIN submodule s ON s.module=m.id
+		WHERE s.id=$submodule";
+$module = $dbModule->doSql($sql);
+
+$module_type = $module['name'];
+
 //get last ticket
 $db = NEW DB();
-$sql = "SELECT *, t.id AS ticketid 
-		FROM tickets t
-		LEFT JOIN logs l ON l.id=t.logs
-		LEFT JOIN submodule s ON s.module=l.module
-		WHERE s.id=$submodule AND t.attention IN ('waiting','derived') ORDER BY l.datetime ASC LIMIT 5";
-		//WHERE s.id=$submodule AND CAST(t.ticket AS INT)>=$last AND t.attention IN ('waiting','derived') ORDER BY l.datetime ASC LIMIT 5";
-//echo $sql;
+if($module_type!='Especial'){
+	$sql = "SELECT *, t.id AS ticketid 
+			FROM tickets t
+			LEFT JOIN logs l ON l.id=t.logs
+			LEFT JOIN submodule s ON s.module=l.module
+			WHERE s.id=$submodule AND t.attention IN ('waiting','derived') AND l.datetime>'".date('Y-m-d')."' ORDER BY l.datetime ASC LIMIT 5";
+			//WHERE s.id=$submodule AND CAST(t.ticket AS INT)>=$last AND t.attention IN ('waiting','derived') ORDER BY l.datetime ASC LIMIT 5";
+}else{
+	$sql = "SELECT *, t.id AS ticketid 
+			FROM tickets t
+			LEFT JOIN logs l ON l.id=t.logs
+			LEFT JOIN submodule s ON s.module=l.module
+			WHERE s.id=$submodule AND t.attention IN ('waiting','derived') AND l.datetime>'".date('Y-m-d')."' ORDER BY SUBSTR (ticket, Length (ticket)) ,l.datetime ASC LIMIT 10";
+}
+
 $lastRecord = $db->doSql($sql);
 
 if($lastRecord){

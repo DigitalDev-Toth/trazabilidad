@@ -17,6 +17,14 @@
 			case 'users':
 			include("modules/users.php");
 			break;
+
+			case 'users_modules':
+			include("modules/users_modules.php");
+			break;			
+
+			case 'modules':
+			include("modules/modules.php");
+			break;
 			
 			case 'role':
 			include("modules/role.php");
@@ -48,6 +56,10 @@
 
 			case 'submodule':
 			include("modules/submodule.php");
+			break;
+
+			case 'module_special':
+			include("modules/module_special.php");
 			break;
 
 			case 'display':

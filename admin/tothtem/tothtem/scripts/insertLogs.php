@@ -9,7 +9,7 @@ $action=$_REQUEST['action'];
 $cometType=$_REQUEST['cometType'];
 $datetime = date("Y-m-d H:i:s");
 
-$sbIp = '192.168.0.122';
+$sbIp = '192.168.0.123';
 //$sbIp = $_SERVER['REMOTE_ADDR'];
 
 $sqlZone="SELECT zone.id AS zone , submodule.id AS submodule, submodule.module AS module
