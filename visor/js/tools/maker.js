@@ -1,26 +1,21 @@
 var MAKER = function () {
     this.countSubmodules = 0;
 };
-MAKER.prototype.module = function (name, id, type, pos, color, shape, submodules, seats) {
-    var m = new MODULE(name, id, type, pos, color, shape, submodules, seats); 
+MAKER.prototype.module = function (name, id, type, pos, color, shape, waitingTime, submodules, seats) {
+    var m = new MODULE(name, id, type, pos, color, shape, waitingTime, submodules, seats); 
     if (type === 'waiting-room') {
         MODULES['wr'] = m;
-        MODULES['wr'].setSeatsPos();
+        MODULES['wr'].setSeatsPos();        
         setInterval(function () {
             var count = 0;
             for (var i = 0; i < MODULES['wr'].seats; i++) {
-                if (MODULES['wr'].seatsPos[i].patient !== null) {
-                    if ((new Date().getTime() - PATIENTS[MODULES['wr'].seatsPos[i].patient].datetime) >= 600000 && 
-                        (new Date().getTime() - PATIENTS[MODULES['wr'].seatsPos[i].patient].datetime) < 1200000) {
+                if (MODULES['wr'].seatsPos[i].patient !== null) {                    
+                    if ((new Date().getTime() - PATIENTS[MODULES['wr'].seatsPos[i].patient].datetime) >= MODULES[PATIENTS[MODULES['wr'].seatsPos[i].patient].idModule].beginWaitingTime && 
+                        (new Date().getTime() - PATIENTS[MODULES['wr'].seatsPos[i].patient].datetime) < MODULES[PATIENTS[MODULES['wr'].seatsPos[i].patient].idModule].finalWaitingTime) {
                         PATIENTS[MODULES['wr'].seatsPos[i].patient].el.animate({
                             'fill': 'yellow'
                         }, 1000);
-                    } else if ((new Date().getTime() - PATIENTS[MODULES['wr'].seatsPos[i].patient].datetime) >= 1200000 &&
-                        (new Date().getTime() - PATIENTS[MODULES['wr'].seatsPos[i].patient].datetime) < 1800000) {
-                        PATIENTS[MODULES['wr'].seatsPos[i].patient].el.animate({
-                            'fill': 'orange'
-                        }, 1000);
-                    } else if ((new Date().getTime() - PATIENTS[MODULES['wr'].seatsPos[i].patient].datetime) >= 1800000) {
+                    } else if ((new Date().getTime() - PATIENTS[MODULES['wr'].seatsPos[i].patient].datetime) >= MODULES[PATIENTS[MODULES['wr'].seatsPos[i].patient].idModule].finalWaitingTime) {
                         PATIENTS[MODULES['wr'].seatsPos[i].patient].el.animate({
                             'fill': 'red'
                         }, 1000);
@@ -59,8 +54,8 @@ MAKER.prototype.submodule = function (name, id, idModule, posModule, state) {
     SUBMODULES[id] = idModule;
     this.countSubmodules++;
 };
-MAKER.prototype.patient = function (rut, ticket, datetime, attention, idModule, idSubmodule) {
-    var p = new PATIENT(rut, ticket, datetime, idModule, true);
+MAKER.prototype.patient = function (rut, name, ticket, datetime, attention, idModule, idSubmodule) {
+    var p = new PATIENT(rut, name, ticket, datetime, idModule, true);
     PATIENTS[rut] = p;
     
     if (attention === 'waiting' || attention === 'derived') {
@@ -76,14 +71,14 @@ MAKER.prototype.patient = function (rut, ticket, datetime, attention, idModule, 
         PATIENTS[rut].goTo(idModule, idSubmodule, true);
     }
 };
-MAKER.prototype.goTo = function (comet, rut, action, ticket, datetime, idModule, idSubmodule) {   
+MAKER.prototype.goTo = function (comet, rut, name, action, ticket, datetime, idModule, idSubmodule) {   
     switch (action) {
         case 'in':
             if (comet === 'tothtem') {
                 if (PATIENTS[rut] !== undefined) {
                     PATIENTS[rut].ticket = ticket;
                 } else {
-                    var p = new PATIENT(rut, ticket, datetime, idModule, false);
+                    var p = new PATIENT(rut, name, ticket, datetime, idModule, false);
                     PATIENTS[rut] = p;     
                 }
             } 
@@ -93,6 +88,7 @@ MAKER.prototype.goTo = function (comet, rut, action, ticket, datetime, idModule,
             PATIENTS[rut].ticket = ticket;
             PATIENTS[rut].shape = MODULES[idModule].shape;
             PATIENTS[rut].seat = this.findSeat();
+            PATIENTS[rut].datetime = datetime;
             PATIENTS[rut].goToWaitingRoom(rut, false);
             break;
         case 'lb':

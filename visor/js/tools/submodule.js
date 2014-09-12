@@ -30,12 +30,12 @@ SUBMODULE.prototype.setColor = function (hex, lum) {
     return rgb;
 };
 SUBMODULE.prototype.attrs = function () {
-    if(this.state==='activo') {
-        stroke = this.setColor(MODULES[this.idModule].color, -0.3);
-        fill = this.setColor(MODULES[this.idModule].color, -0.2);
+    if(this.state === 'activo') {
+        var stroke = this.setColor(MODULES[this.idModule].color, -0.3);
+        var fill = this.setColor(MODULES[this.idModule].color, -0.2);
     } else {
-        fill = "#aaa";
-        stroke = "#777"
+        var fill = '#aaa';
+        var stroke = '#777';
     }
     return {
         'fill': fill,
@@ -45,21 +45,21 @@ SUBMODULE.prototype.attrs = function () {
     };
 };
 SUBMODULE.prototype.setActive = function () {
-    this.state = "activo";
+    this.state = 'activo';
     this.el.animate(this.attrs(), 500);
 };
 SUBMODULE.prototype.setInactive = function () {
-    this.state = "inactivo";
+    this.state = 'inactivo';
     this.el.animate(this.attrs(), 500);
 };
 SUBMODULE.prototype.blink = function (i) {
-    if(i<7){
+    if (i < 7) {
         i++;
         var stroke = this.el.attrs.stroke;
         this.el.animate({stroke: '#fff'}, 100, 'linear', (function (t, i) {
-                return function() {
-                    t.el.animate({stroke: stroke}, 100, t.blink(i));
-                }
+            return function () {
+                t.el.animate({stroke: stroke}, 100, t.blink(i));
+            };
         })(this, i));
     }
 };
