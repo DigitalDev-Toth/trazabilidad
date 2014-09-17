@@ -6,8 +6,10 @@ var PATIENT = function (id, name, ticket, datetime, idModule, storage) {
     this.seat = null; // seat for waiting room
     this.place = null; // place for limb
     this.ticket = ticket;
+    this.pt = false; // plan de tratamiento
     this.datetime = new Date(datetime).getTime();
-    this.interval = null;
+    this.ivWR = null;
+    this.ivPT = null;
     this.el = null; // element DOM for patient
     this.text = null; // text DOM for patient
     if (!storage) {
@@ -26,6 +28,15 @@ PATIENT.prototype.blink = function (i) {
         })(this, i));
     }
 
+};
+PATIENT.prototype.transitionColor = function () {
+    var t = this;
+    this.ivPT = setInterval(function () {
+        var rColor = 'rgb('+ (Math.floor(Math.random() * 256)) +', '+ (Math.floor(Math.random() * 256)) +', '+ (Math.floor(Math.random() * 256)) +')';
+        t.el.animate({
+            'fill': rColor
+        }, 1000);
+    }, 1000);
 };
 PATIENT.prototype.setElem = function (idModule) {
     switch (MODULES[idModule].pos) {
@@ -120,7 +131,7 @@ PATIENT.prototype.goToWaitingRoom = function (idPatient, storage) {
             name = this.name,
             el = $(this.el.node),
             idModule = this.idModule;
-        this.interval = setInterval(function () {            
+        this.ivWR = setInterval(function () {            
             var time = new Date().getTime() - datetime,
                 minutes = Math.floor((time / 1000) / 60),
                 content = id +'<br />'+
@@ -150,7 +161,7 @@ PATIENT.prototype.goToWaitingRoom = function (idPatient, storage) {
             el = $(this.el.node),
             idModule = this.idModule;
         
-        this.interval = setInterval(function () {
+        this.ivWR = setInterval(function () {
             var time = new Date().getTime() - datetime,
                 minutes = Math.floor((time / 1000) / 60),
                 content = id +'<br />'+
@@ -171,8 +182,13 @@ PATIENT.prototype.goToWaitingRoom = function (idPatient, storage) {
     }
 };
 PATIENT.prototype.goToLimb = function (idPatient, storage) {
-    clearInterval(this.interval);
+    clearInterval(this.ivWR);
     MODULES['lb'].placesPos[this.place].patient = idPatient;
+    if (this.pt) {
+        var timeToDisappear = 180000;
+    } else {
+        var timeToDisappear = 120000;
+    }
     if (storage) {        
         var x = MODULES['lb'].placesPos[this.place].x,
             y = MODULES['lb'].placesPos[this.place].y;
@@ -194,8 +210,9 @@ PATIENT.prototype.goToLimb = function (idPatient, storage) {
             'content': this.id
         });
         
-        this.el.animate({'fill-opacity': 0}, 5000, '>', (function (t) {
+        this.el.animate({'fill-opacity': 0}, timeToDisappear, '>', (function (t) {
             return function () {
+                clearInterval(t.ivPT);
                 $(t.el.node).popover('destroy');
                 t.el.remove();                
                 MODULES['lb'].placesPos[t.place].patient = null;
@@ -218,8 +235,9 @@ PATIENT.prototype.goToLimb = function (idPatient, storage) {
                 var fp = 'M'+ fx +','+ fy + s;
                 t.el.animate({path: fp}, 1000, '>', (function (s) {
                     return function () {
-                        s.el.animate({'fill-opacity': 0}, 5000, '>', (function (r) {
+                        s.el.animate({'fill-opacity': 0}, timeToDisappear, '>', (function (r) {
                             return function () {
+                                clearInterval(r.ivPT);
                                 $(r.el.node).popover('destroy');
                                 r.el.remove();                                
                                 MODULES['lb'].placesPos[r.place].patient = null;
@@ -233,7 +251,7 @@ PATIENT.prototype.goToLimb = function (idPatient, storage) {
     }
 };
 PATIENT.prototype.goTo = function (idModule, idSubmodule, storage) {
-    clearInterval(this.interval);
+    clearInterval(this.ivWR);
     switch (MODULES[idModule].el.type) {
         case 'rect':
             if (MODULES[idModule].pos === 'superior' || MODULES[idModule].pos === 'izquierda') {

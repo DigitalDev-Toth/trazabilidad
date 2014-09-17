@@ -9,7 +9,7 @@ $db = NEW DB();
 $sql = "SELECT *
 		FROM tickets t
 		LEFT JOIN logs l ON l.id=t.logs
-		WHERE t.attention IN('waiting','on_serve','limb','derived') AND l.zone=$zone AND l.datetime>'".date('Y-m-d')."'";
+		WHERE t.attention IN('waiting','on_serve','limb','derived','limb_pt') AND l.zone=$zone AND l.datetime>'".date('Y-m-d')."'";
 $lastRecord = $db->doSql($sql);
 
 if($lastRecord){
