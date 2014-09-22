@@ -28,7 +28,6 @@ var MODULE = function (name, id, type, pos, color, shape, waitingTime, submodule
     this.name = name;     
     this.setElem();
 };
-// attributes for modules except waiting room and limb
 MODULE.prototype.attrs = function (color) {
     return {
         'fill': color,
