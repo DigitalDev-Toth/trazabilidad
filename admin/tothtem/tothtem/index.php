@@ -239,6 +239,7 @@ var maxtime=maxMin;
 var modulesOk=0;
 var tothemIp='';
 var selAttention=false;
+var getAccept=false;//Consulta si presionó botón aceptar
 var inputTypeT='';
 setup();
 
@@ -630,6 +631,7 @@ function loginPatient(){
     var rut = $("#rut").val().toUpperCase();
     var descrip='';
     if(verRut(rut,0) || inputTypeT==2){
+        getAccept=true;
         //rut valido
         maxtime=maxMax;
         if(inputTypeT!=2){
@@ -1136,7 +1138,7 @@ function resetTimer(e) {
 }
 //cuando pasa a inactivo
 function goInactive() {
-    if(selAttention==false){
+    if(selAttention==false && getAccept==true){
         // AGREGAR COMET QUE ENVÍE AL LIMBO EN CASO DE QUE NO HAGA NADA
         $.post('scripts/insertLogs.php',{ rut: $("#patientName").html(), description: 'No seleccionó atención', ip: tothemIp, action: 'lb', cometType: 'tothtem' }, function(data, textStatus, xhr) {
 
@@ -1155,6 +1157,7 @@ function goInactive() {
     cantidad=0;
     maxtime=maxMin;
     document.getElementById('wait').click();
+    getAccept=false;
 
 
 }

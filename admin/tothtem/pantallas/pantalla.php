@@ -16,10 +16,9 @@
 
 
 
-
 <div class="panel panel-default">
   <div class="panel-heading">
-    <h3 class="panel-title  text-center">FALP</h3>
+    <h2 class="panel-title  text-center" id="zoneName" >FALP</h2>
   </div>
   <div class="panel-body">
 
@@ -29,7 +28,7 @@
 	  	  		Area
 	  	  	</div>
 	  	  	<div class="col-md-3 well well-sm">
-	  	  		Module
+	  	  		Modulo
 	  	  	</div>
 	  	  	 	<div class="col-md-3 well well-sm">
 	  	  		Numero
@@ -48,23 +47,42 @@
 
 
 
-
-
-
+ <footer>
+    <div class="row">
+        <div class="col-lg-12">
+            <p>Toth 2014 &copy;</p>
+        </div>
+    </div>
+</footer>
 <script type="text/javascript">
 
+
+
+//****************************************
+//document ready
+//****************************************
 var zone;
 $(document).ready(function() {
 	zone = decodeURIComponent("<?php echo rawurlencode($_GET['zone']); ?>");
+	getZoneName(zone);
 	initConfig(zone);
 });
 
+//****************************************
+//Get zone name for header
+//****************************************
+function getZoneName(zone){
+	$.post('phps/getZone.php', {idZone: zone} , function(data, textStatus, xhr) {
+		var json = JSON.parse(data);
+		$("#zoneName").html("FALP - "+json.zoneName);
+	});
+}
 
+//****************************************
+//initial config
+//****************************************
 function initConfig(zone){
-	//$("#content").html('');
-	
 	if(zone != ''){
-		
 		getActivesModules(zone);
 		getLastTickets(zone);
 		return true;
@@ -74,6 +92,9 @@ function initConfig(zone){
 
 }
 
+//****************************************
+//get last ticket
+//****************************************
 function getLastTickets(zone){
 	$.post('phps/getModuleTicketsPatients.php', {zone: zone } , function(data, textStatus, xhr) {
 		//console.log(data);
@@ -85,37 +106,54 @@ function getLastTickets(zone){
 	});
 }
 
+//****************************************
+//get 3 last tickes called
+//****************************************
 function lastTicketsCalled(module , lc){
 	if(module != null){
 		$.post('phps/lastTicketsCalled.php', { module: module } , function(data, textStatus, xhr) {
-		var json = JSON.parse(data);
-		$(lc).html('');
-		var htmlC='';
-		for (var i = 0; i < json.length; i++) {
-			htmlC += '<div class="row">'+json[i].ticket+' '+ json[i].datetime +'</div>'
-		};
-		$(lc).html(htmlC);
-	});
+			var json = JSON.parse(data);
+		
+			
+			$(lc).html('');
+			var htmlC='';
+			for (var i = 0; i < json.length; i++) {
+				
+				
+				htmlC += '<div class="row">'+fixNumber(json[i].ticket)+'  '+ fixHours(json[i].datetime) +'</div>'
+			};
+			
+			$(lc).html(htmlC);
+		});
 	}
 	
 }
 
+//****************************************
+//fix date to hours
+//****************************************
+function fixHours(date){
+	var d = new Date(date);
+	var hour = d.getHours() < 10 ? '0' + d.getHours() : d.getHours();
+	var minutes = d.getMinutes() < 10 ? '0' + d.getMinutes() : d.getMinutes();
+	return hour+":"+minutes;
+}
 
-
+//****************************************
+// fill each row 
+//****************************************
 function fillModules(name,id){
-
 	var content='';
-
 	content += "<div class='row' id='RW"+id+"'> " +
-					"<div class='col-md-3' style='padding-top: 35px;'>"+name+"</div>"+
-						"<div class='col-md-3' style='padding-top: 35px;'>" +
+					"<div class='col-md-3' style='padding-top: 55px;'>"+name+"</div>"+
+						"<div class='col-md-3' style='padding-top: 55px;'>" +
 							"<div class='row'>"+
 								"<div id='SM"+id+"'>"+
 							"</div></div>"+
 						"</div>"+
 						"<div class='col-md-3' > " +
-							"<div class='row' style='padding-top: 15px;'>"+
-								"<h1><div id='NM"+id+"'></h1>"+
+							"<div class='row' >"+
+								"<h1><div id='NM"+id+"' style='font-size: 90px;'></h1>"+
 							"</div>"+
 
 						"</div>"+
@@ -123,66 +161,96 @@ function fillModules(name,id){
 						"<div class='col-md-3'>" +
 							"<div id='LC"+id+"'> </div>"+
 						"</div>"+
-
-
-
 			    "</div><hr>";
-
+			    
 	$('#content').append(content);
 
 }
 
 
-
-
+//****************************************
+//Change the current number of module
+//****************************************//****************************************
 function changeNumber(data,type){
 	if(data.module != null){
-		var sm = '#SM'+data.module;
-		var nm = '#NM'+data.module;
-		var lc = '#LC'+data.module;
-		var rw = '#RW'+data.module;
+		var sm = '#SM'+data.module; //submodule name
+		var nm = '#NM'+data.module; // number/ticket
+		var lc = '#LC'+data.module; // last called
+		var rw = '#RW'+data.module; //row id
 		var modulename,ticket;
 		lastTicketsCalled(data.module,lc);
 
-
-		if(type==1){
-			modulename=data['moduleName'];
-			ticket=data['moduleTicket'];		
-		}else{
-			$.post('phps/getSubmoduleName.php', {sub_module: data.submodule} , function(dataR, textStatus, xhr) {
-				modulename=dataR;
-				ticket=data.newticket;
+		console.log(data);
+		if(data.action != 'lb'){
+			if(type==1){
+				modulename=data['moduleName'];
+				ticket=data['moduleTicket'];		
+			}else{
+				$.post('phps/getSubmoduleName.php', {sub_module: data.submodule} , function(dataR, textStatus, xhr) {
+					modulename=dataR;
+					ticket=data.newticket;
+				});
+			}	
+			$(sm).fadeOut('fast', function() {
+				$(sm).text(modulename);
+				$(sm).fadeIn('fast');
 			});
-		}	
-		$(sm).fadeOut('fast', function() {
-			$(sm).text(modulename);
-			$(sm).fadeIn('fast');
-		});
-		$(nm).fadeOut('fast', function() {
-			$(nm).text(ticket);
-			$(nm).fadeIn('fast');
-		});
+			$(nm).fadeOut('fast', function() {
+				
+				$(nm).text(fixNumber(ticket));
+				$(nm).fadeIn('fast');
+			});
 
-		$(rw).css('background-color', 'rgb(121, 175, 245)');
-		$(rw).css({
-		    transition : 'background-color 1s ease-in-out',
-		    "background-color": "rgb(121, 175, 245)'"
-		});
-		setTimeout(function() {
-			$(rw).css('background-color', 'white');
+			$(rw).css('background-color', 'rgb(121, 175, 245)');
 			$(rw).css({
-			    transition : 'background-color 2s ease-in-out',
-			    "background-color": "white'"
+			    transition : 'background-color 1s ease-in-out',
+			    "background-color": "rgb(121, 175, 245)'"
 			});
-		}, 2000);
+			setTimeout(function() {
+				$(rw).css('background-color', 'white');
+				$(rw).css({
+				    transition : 'background-color 2s ease-in-out',
+				    "background-color": "white'"
+				});
+			}, 2000);
+		}
+		if(data.action == 'lb'){
+			$(sm).fadeOut('fast', function() {
+				$(sm).text('-');
+				$(sm).fadeIn('fast');
+			});
+			$(nm).fadeOut('fast', function() {
+				$(nm).text('-');
+				$(nm).fadeIn('fast');
+			});
+		}
+	
 	}else{
-		console.log(data.moduleId);
-		lastTicketsCalled(data.moduleId,('#RW'+data.moduleId));
+		
+		lastTicketsCalled(data.moduleId,('#LC'+data.moduleId));
 	}
 	
 
 }
 
+//****************************************
+// fix the current o last tickets: 7B -> 007-B
+//****************************************
+function fixNumber(number){
+	var letter = number.slice(-1);
+	var onlyNumbers = number.substring(0, number.length - 1);
+	if(onlyNumbers.length == 1){
+		onlyNumbers = '00'+onlyNumbers;
+	}
+	if(onlyNumbers.length == 2){
+		onlyNumbers = '0'+onlyNumbers;
+	}
+	return onlyNumbers+'-'+letter;
+}
+
+//****************************************
+//get only actives modules of the zone
+//****************************************
 function getActivesModules(zone){
     var result = null;
     var scriptUrl = "phps/getModuleDisplay.php?zone=" + zone;
@@ -199,10 +267,8 @@ function getActivesModules(zone){
         }
     });
     var jsonModules=JSON.parse(result);
-    console.log(jsonModules);
 	$("#content").html('');
     for (var i = 0; i < jsonModules.length; i++) {
-
         if(jsonModules[i]['type']!=12){        
         	fillModules(jsonModules[i]['name'],jsonModules[i]['id']);
         }else{

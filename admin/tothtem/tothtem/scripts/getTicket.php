@@ -21,7 +21,7 @@ if($moduleSpecial=='0'){
 	//set last ticket
 	$db2 = NEW DB();
 	$db2->doSql("UPDATE last_tickets SET ticket='$newticket' WHERE module='$module'");
-
+	$sbIp='192.168.0.122';
 }else{
 	//get last ticket
 	$db = NEW DB();
@@ -34,9 +34,10 @@ if($moduleSpecial=='0'){
 	//set last ticket
 	$db2 = NEW DB();
 	$db2->doSql("UPDATE module_special SET last_ticket=$newticket WHERE id='$moduleSpecial'");
+	$sbIp='192.168.0.123';
 }
 //INSERCIÓN DE LOGS
-$sbIp='192.168.0.123';
+//$sbIp='192.168.0.123';
 
 $sqlZone="SELECT zone.id AS zone , submodule.id AS submodule 
           FROM zone 
