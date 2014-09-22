@@ -1,5 +1,7 @@
 <?php
 session_start();
+//include 'role.php';
+//if(findRole("insert","study")) echo "";
 if(!isset($_SESSION['Username'])) { header("location: ../../login.php"); header('Content-Type: text/html; charset=utf8');  }
 ?>
 <!DOCTYPE html>
@@ -23,21 +25,24 @@ if(!isset($_SESSION['Username'])) { header("location: ../../login.php"); header(
 <body>
     <div class="container">
         <div class="row">
-            <div class="col-lg-9">
-                <h1 class="page-header">Pantalla:
-                    <small id="modalityTitle">...</small>
+            <div class="col-md-12">
+               
+                <h1 class="page-header"><div id="ModuleHeader">...</div>
+                    <small id="modalityTitle"></small>
+                        <button class="btn btn-default getout pull-right" onclick="inactiveSubModule('logout')"><span class="glyphicon glyphicon-log-out"></span> SALIR</button>  
+                        <p class="pull-right">&nbsp;</p>
+                         <button class="btn btn-primary getout pull-right" onclick="inactiveSubModule('change')"> <span class="glyphicon glyphicon-transfer"></span> CAMBIAR SUBMÓDULO</button>
+
                 </h1>
+
             </div>
-            <div class="col-lg-3">
-                <button class="btn btn-primary getout" onclick="inactiveSubModule('change')">CAMBIAR SUBMÓDULO</button>  
-                <button class="btn btn-default getout" onclick="inactiveSubModule('logout')">SALIR</button>  
-            </div>
+        
         </div>
 
         <div class="row">
             <div class="col-md-12">
            		 <div class="panel panel-primary">
-                    <div class="panel-heading">Panel De Control Pacientes en curso</div>
+                    <div class="panel-heading"><span class="glyphicon glyphicon-list"></span>  Panel De Control Pacientes en curso</div>
                     <div class="panel-body" align="center">
                         <div class="row" >
                             <label>Numero</label><br>
@@ -60,7 +65,7 @@ if(!isset($_SESSION['Username'])) { header("location: ../../login.php"); header(
                                         
                                         </div>
                                         <div class="col-md-2">
-                                        <button type="button" class="btn btn-default btn-lg" onclick="sendComet('finished')" id="finishedButton" title="Finalizar Atención"><span class="glyphicon glyphicon-thumbs-up"></span></button>
+                                        <button type="button" class="btn btn-default btn-lg" onclick="sendComet('finished')" id="finishedButton" title="Finalizar Atención" ><span class="glyphicon glyphicon-thumbs-up"></span></button>
                                             
                                         </div>
                                         <div class="col-md-2">
@@ -84,6 +89,7 @@ if(!isset($_SESSION['Username'])) { header("location: ../../login.php"); header(
 									<div class="row">
 										<h4 class="text-center">Pacientes No Atendidos...<h4>
 									</div>
+
 									<table id="modalNoServeContent" class="table table-striped text-center">
 									</table>
 								</div>
@@ -108,9 +114,12 @@ if(!isset($_SESSION['Username'])) { header("location: ../../login.php"); header(
 						</div>
 						
                     </div>
+
                     <table id="contentTicket" class="table table-striped text-center" >
-                        <th>Numero de atencion</th><th>RUT</th><th>Hora Retiro de Ticket</th><th>Tiempo de espera</th>
+                        <th class="text-center">Numero de atencion</th><th class="text-center">RUT</th><th class="text-center">Hora Retiro de Ticket</th><th class="text-center">Tiempo de espera</th>
                     </table>
+
+
                 </div>
             </div>
         </div>
@@ -119,7 +128,7 @@ if(!isset($_SESSION['Username'])) { header("location: ../../login.php"); header(
         <div class="row">
         	<div class="col-md-12">
     			<div class="panel panel-primary">
-                	<div class="panel-heading">Paciente</div>
+                	<div class="panel-heading"><span class="glyphicon glyphicon-user"></span> Datos Del Paciente</div>
                     <div class="panel-body" align="center">
                         <div class="col-lg-10 col-md-10" >
                        		<div class="row">
@@ -167,17 +176,21 @@ $(document).ready(function() {
         var dataModality = JSON.parse(getModule(submodule));
         moduleInCourse=dataModality.modalityId;
         console.log(dataModality);
-        $("#modalityTitle").text(dataModality['modalityName']+' - '+dataModality['subModuleName']);
+        $("#modalityTitle").text(dataModality['modalityName']);
+        $("#ModuleHeader").text(dataModality['subModuleName']);
         initNumber = dataModality['modalityTicket'];
         refreshTable();
         setCurrentNumber();
     }else{
         alert("Falta Modalidad!");
     }
-$(window).on('beforeunload', function(){ alert ('Bye now')});
+
 });
 
-
+function closeWindow(){ 
+    window.open('','_self',''); 
+    window.close(); 
+} 
 function inactiveSubModule(typeButton){//Desactiva el submódulo y genera log de cierre de sesión
     $.post('phps/activeSubModule.php', {type: 'inactivo', user: "<?php echo $_SESSION['UserId']; ?>", submodule: submodule}, function(data, textStatus, xhr) {
         $.ajax({
@@ -200,10 +213,10 @@ function setCurrentNumber(){//Muestra el número actual que se está atendiendo
 			var jsonData = JSON.parse(data);
 			var number = jsonData[0].ticket;
 
-			if(number<10){
+			if(number.length==2){
 		    	number='00'+number;
 		    }
-		    if(number>=10 && number<100){
+		    if(number.length==3){
 		      	number='0'+number;
 		    }
 		    $('#content').fadeOut("slow",function(){
@@ -363,7 +376,7 @@ function refreshTable(){ //Actualiza la tabla de pacientes en espera
     var totalResult=getLast5Tickets(submodule,initNumber);
     if(totalResult==0){
         $('#contentTicket tr').has('td').remove();
-        $('#contentTicket').append('<tr><td>No hay pacientes en espera...</td></tr>');
+        $('#contentTicket').append('<tr><td>No hay pacientes en espera...</td><td></td><td></td><td></td></tr>');
         if(myState==false){
         	activeButtons('onload');
         }
@@ -580,6 +593,13 @@ function gender(gen){
 
 }
 
+$(window).on('beforeunload', function(e) {
+    return 'Se cerrara su sesion';
+});
+$(window).on('unload', function(e) {
+    
+    return inactiveSubModule('logout');
+});
 
 
 

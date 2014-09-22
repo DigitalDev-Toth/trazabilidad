@@ -36,13 +36,11 @@ var Comet = function (data_url) {
 
     this.handleResponse = function(response) {
         if (indexComet !== 0) {
-            console.log(response);
             var data = $.parseJSON(response.msg);
             if (data.comet === 'tothtem' || data.comet === 'module') {
                 if(data.module==moduleInCourse){
                     refreshTable();
                     //refreshTableDerived();
-                    //console.log('si');
                 }
             }
         } else {

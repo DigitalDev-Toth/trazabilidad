@@ -21,7 +21,7 @@ if(php_uname('s')=='Linux') {
 
 	while ($currentmodif <= $lastmodif) // check if the data file has been modified
 	{
-	  usleep(1000); // sleep 10ms to unload the CPU
+	  usleep(10000); // sleep 10ms to unload the CPU
 	  clearstatcache();
 	  $currentmodif = exec("ls --full-time 'data.txt'");
 		$data = explode(' ',$currentmodif);

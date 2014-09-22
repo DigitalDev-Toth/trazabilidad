@@ -36,9 +36,15 @@ if(isset($_GET['data']))
 $users_modules = new DB("users_modules", "id");
 $users_modules->relation("users", "users", "id");
 $users_modules->additions("users", array("realname"=>"usersrealname"));
-$users_modules->relation("module", "module", "id");
-$users_modules->additions("module", array("obs"=>"Descripcion"));
+$users_modules->relation("module", "module", "id","name");
+$users_modules->additions("module", array("name"=>"module") );
+//$users_modules->additions("module", array("obs"=>"Descripcion"));
 $users_modules->exceptions(array("users"));
+
+/*$module->relation("zone", "zone", "id", "name");
+$module->additions("zone", array("name"=>"zonename"));
+*/
+
 
 makeControls($users_modules, NULL, "modules/users_modulesDelete.php", NULL, $_SERVER['HTTP_REFERER']);
 $db = new DB ();

@@ -50,13 +50,10 @@
 
         <!--<h1>TothTem</h1>-->
         <div id="start" style="display:block;">
-            <h3>
-            <a href="#login-menu" onclick="foco();" id="startB" class="btn btn-default btn-lg" style="display:none">Toque para comenzar<br>
+           
+           <h3>
+            <a href="#login-menu" onclick="initMenu();" id="startB" class="btn btn-default btn-lg" style="display:none">Toque para comenzar<br>
             <span class="glyphicon glyphicon-hand-up"></span></a></h3>
-
-
-         
-
            
             <div id="enableTothtem" >
                 <label id="labelStart" style="font-size:22pt;">  Seleccione una opcion para comenzar</label>    
@@ -66,13 +63,13 @@
             </div>
             <br>
 
-               <a id="rutOption" href="#login-menu" type="button" style="padding:12px 25px;font-size: 25px;border-radius: 33px;width: 300px;" class="btn btn-primary"  onclick="foco();">
+               <a id="rutOption" href="#login-menu" type="button" style="padding:12px 25px;font-size: 25px;border-radius: 33px;width: 300px;" class="btn btn-primary"  onclick="initMenu(1);">
             	<span class="glyphicon glyphicon-home"></span> Rut Normal
             </a> 
 
             <br><br>
 
-            <a id="dniOption" type="button" href="#login-menu" style="padding:12px 25px;font-size: 25px;border-radius: 33px;width: 300px;" class="btn btn-primary" onclick="foco();">
+            <a id="dniOption" type="button" href="#login-menu" style="padding:12px 25px;font-size: 25px;border-radius: 33px;width: 300px;" class="btn btn-primary" onclick="initMenu(2);">
             	<span class="glyphicon glyphicon-globe"></span> DNI Extranjeros
             </a> 
 
@@ -132,50 +129,6 @@
 	    <button class="btn btn-default btn-lg" id="login">Aceptar</button>
 		</div>
 	</div>
-
-<div class="vert-text" id="OnlyDni">
-
-    <h1 id="bigText">Ingrese Su DNI</h1>
-
-       
-			<form class="form-inline" role="form">
-			
-					<label class="control-label" for="dniDiv"></label>
-					<input type="text" class="form-control"  placeholder="Ej.12345679" style="margin: 0 auto;text-align:center;"  maxlength="9"  />
-			
-			</form>   
-		
-
-		<div id="buttonsGrid">
-			<div  style="width:155px;margin: 0 auto" align="center">
-			    <div id="row1">
-				    <input type="button" name="numberDni" value="1" id="_1" class="btn btn-default btn-lg" onclick="teclado('dni')"/>
-				    <input type="button" name="numberDni" value="2" id="_2" class="btn btn-default btn-lg" onclick="teclado('dni')"/>
-				    <input type="button" name="numberDni" value="3" id="_3" class="btn btn-default btn-lg" onclick="teclado('dni')"/>
-			    </div>
-			    <div id="row2">
-				    <input type="button" name="numberDni" value="4" id="_4" class="btn btn-default btn-lg" onclick="teclado('dni')"/>
-				    <input type="button" name="numberDni" value="5" id="_5" class="btn btn-default btn-lg" onclick="teclado('dni')"/>
-				    <input type="button" name="numberDni" value="6" id="_6" class="btn btn-default btn-lg">
-			    </div>
-			    <div id="row3">
-				    <input type="button" name="numberDni" value="7" id="_7" class="btn btn-default btn-lg" onclick="teclado('dni')">
-				    <input type="button" name="numberDni" value="8" id="_8" class="btn btn-default btn-lg" onclick="teclado('dni')">
-				    <input type="button" name="numberDni" value="9" id="_9" class="btn btn-default btn-lg" onclick="teclado('dni')">
-			    </div>
-			    <div id="row4">
-				    <input type="button" name="numberDni" value="0" id="_0" class="btn btn-default btn-lg" onclick="teclado('dni')"/>
-                    <button class="btn btn-default btn-lg" onclick="deleteString()" style="width: 44px;"><span class="glyphicon glyphicon-arrow-left"></span> </button>
-                    <!--<button class="btn btn-default btn-lg" onclick="deleteString()"><span class="glyphicon glyphicon-arrow-left"></span> </button>-->
-				    <input type="button" id="Borrar" value="Borrar"class="btn btn-default btn-lg" >
-			    </div>
-			</div><br>
-	    <button class="btn btn-default btn-lg" id="login">Aceptar</button>
-		</div>
-
-
-	</div>
-
 
 
 
@@ -286,6 +239,7 @@ var maxtime=maxMin;
 var modulesOk=0;
 var tothemIp='';
 var selAttention=false;
+var inputTypeT='';
 setup();
 
 //***********************************************************
@@ -300,14 +254,23 @@ $("#espera").click(function(event) {
     
 });
 
-$("#rutOption").click(function(event) {
+function initMenu(idType){
+	$("#menu-toggle").fadeIn(1000);
+	if(idType==1){
+		$('#ka').show();
+		$('#bigText').text('Ingrese Su Rut');
+		inputTypeT=1;
+	}else{
+		$('#ka').hide();
+		$('#bigText').text('Ingrese Su DNI');
+		$("#login").animate({fontSize: "26px"}, {queue: false,duration: 0}).prop( "disabled", false );
+		inputTypeT=2;
+
+	}
 	$("#OnlyRut").show('fast');
-	$("#OnlyDni").hide('fast');
-});
-$("#dniOption").click(function(event) {
-	$("#OnlyRut").hide('fast');
-	$("#OnlyDni").show('fast');
-});
+}
+
+
 
 $(document).click(function(e) { 
     if (e.button == 0 && click==0) {
@@ -328,7 +291,6 @@ $(document).ready(function() {
     $("#inputIcon").addClass("glyphicon glyphicon-user form-control-feedback");
     $("#menu-toggle").hide();
     teclado('number');
-    teclado('dni');
     swap();
 });
 
@@ -337,9 +299,11 @@ $("#login").click(function() {
 });
 
 $("#Borrar").click(function() {
-    document.getElementById('rut').value ="";
-    cantidad=0;
-    resetInput(1);
+	document.getElementById('rut').value ="";
+	if(inputTypeT!=2){
+		cantidad=0;
+   		resetInput(1);
+	}
     $("#rut").focus();
 
 });
@@ -553,85 +517,86 @@ function showInfo(){
 }
 //registra el numeros del teclado virtual
 function teclado(type){
-	if(type!='dni'){
-		var numeros = document.getElementsByName("number");
-		for (var i=0; i < numeros.length; i++) { 
-        	numeros[i].onclick=Nentradas;
-   		}
-	}else{
-		var numeros = document.getElementsByName("numberDni");
-		for (var i=0; i < numeros.length; i++) { 
-        	numeros[i].onclick=dniNumbers;
-   		}
+	
+	var numeros = document.getElementsByName("number");
+	for (var i=0; i < numeros.length; i++) { 
+    	numeros[i].onclick=Nentradas;
 	}
+	
   
     
 }
 
-function dniNumbers(){
-	console.log(this.value);
-}
+
 
 //resetea variables para cuando sale el usuario
 function resetInput(ind){
-    $( "#login" ).animate({fontSize: "18px"}, {queue: false,duration: 500}).prop( "disabled", true );
-    logIN=0;
-    init=0;
-    normalLogin();
-    $('#loadingLabel').fadeOut('slow');
-    $('#loadingLogo').fadeOut('slow');
-    $('#rut').attr("disabled", false);
-    $('#patientName').text('');
-    $("#inputColor").removeClass();
-    $("#inputIcon").removeClass();
-    $("#inputColor").addClass("form-group has-warning has-feedback");
-    $("#inputIcon").addClass("glyphicon glyphicon-user form-control-feedback");
-    if(ind){
-        $("#inputIcon").fadeOut("slow");
-        $("#inputIcon").fadeIn("slow");
-    }
+	if(inputTypeT!=2){
+		$( "#login" ).animate({fontSize: "18px"}, {queue: false,duration: 500}).prop( "disabled", true );
+	    logIN=0;
+	    init=0;
+	    normalLogin();
+	    $('#loadingLabel').fadeOut('slow');
+	    $('#loadingLogo').fadeOut('slow');
+	    $('#rut').attr("disabled", false);
+	    $('#patientName').text('');
+	    $("#inputColor").removeClass();
+	    $("#inputIcon").removeClass();
+	    $("#inputColor").addClass("form-group has-warning has-feedback");
+	    $("#inputIcon").addClass("glyphicon glyphicon-user form-control-feedback");
+	    if(ind){
+	        $("#inputIcon").fadeOut("slow");
+	        $("#inputIcon").fadeIn("slow");
+	    }
+	}
+  
 }
 //comprueba si el rut es correcto en el input
 function Nentradas() {
     var digito=this.value;
     //document.getElementById('rut').value +=this.value;
     resetInput(0);
-    cantidad++;
-    if(digito!="-" || digito!="."){
-        document.getElementById('rut').value +=this.value;
-        //var rut = $("#rut").val();
-        //cantidad++;
-        if(cantidad==9 || cantidad==8 || cantidad==11 || cantidad==10){
-            var rutC=verRut($("#rut").val().toUpperCase(),0);
-            $("#inputColor").removeClass();
-            $("#inputIcon").removeClass();
-            $("#inputIcon").fadeOut("slow");
-            if(rutC==true){
-                document.getElementById('rut').value = verRut($("#rut").val(),1).toUpperCase();
-                $("#inputColor").addClass("form-group has-success has-feedback");
-                $("#inputIcon").addClass("glyphicon glyphicon-ok form-control-feedback");
-                $("#login").animate({fontSize: "26px"}, {queue: false,duration: 500}).prop( "disabled", false );
-            }else{
-                $("#inputColor").addClass("form-group has-error has-feedback");
-                $("#inputIcon").addClass("glyphicon glyphicon-remove form-control-feedback");
-                $("#login").animate({fontSize: "18px"}, {queue: false,duration: 500}).prop( "disabled", true );
-            }
-            $("#inputIcon").fadeIn("slow");
-        }
+    if(inputTypeT==2){
+    	document.getElementById('rut').value +=this.value;
+    }else{
+	    cantidad++;
+	    if(digito!="-" || digito!="."){
+	        document.getElementById('rut').value +=this.value;
+	        //var rut = $("#rut").val();
+	        //cantidad++;
+	        if(cantidad==9 || cantidad==8 || cantidad==11 || cantidad==10){
+	            var rutC=verRut($("#rut").val().toUpperCase(),0);
+	            $("#inputColor").removeClass();
+	            $("#inputIcon").removeClass();
+	            $("#inputIcon").fadeOut("slow");
+	            if(rutC==true){
+	                document.getElementById('rut').value = verRut($("#rut").val(),1).toUpperCase();
+	                $("#inputColor").addClass("form-group has-success has-feedback");
+	                $("#inputIcon").addClass("glyphicon glyphicon-ok form-control-feedback");
+	                $("#login").animate({fontSize: "26px"}, {queue: false,duration: 500}).prop( "disabled", false );
+	            }else{
+	                $("#inputColor").addClass("form-group has-error has-feedback");
+	                $("#inputIcon").addClass("glyphicon glyphicon-remove form-control-feedback");
+	                $("#login").animate({fontSize: "18px"}, {queue: false,duration: 500}).prop( "disabled", true );
+	            }
+	            $("#inputIcon").fadeIn("slow");
+	        }
+	    }    	
     }
+
 }
 function deleteString(){
     var rutVar=$("#rut").val().toUpperCase();
+    if(inputTypeT!=2){
+  	    $("#login").animate({fontSize: "18px"}, {queue: false,duration: 500}).prop( "disabled", true );
+    }
     rutVar = rutVar.substring(0, rutVar.length - 1);
     $("#rut").val(rutVar);
     cantidad--;
-    $("#login").animate({fontSize: "18px"}, {queue: false,duration: 500}).prop( "disabled", true );
+
 }
-//foco al input
-function foco(){
-	//habilita menu salir
-    $("#menu-toggle").fadeIn(1000);
-}
+
+
 
 
 //mensaje de bienvenida
@@ -663,15 +628,21 @@ function swap(){
 function loginPatient(){
 
     var rut = $("#rut").val().toUpperCase();
-    if(verRut(rut,0)){
+    var descrip='';
+    if(verRut(rut,0) || inputTypeT==2){
         //rut valido
         maxtime=maxMax;
-        rut=verRut(rut,1);
-
+        if(inputTypeT!=2){
+        	rut=verRut(rut,1);
+        	descrip='Ingreso de RUT Totem';
+        }else{
+        	descrip='Ingreso de DNI Totem';
+        }
+        
         //Se consulta si el rut ya tiene algún ticket
         $.post('scripts/findLogsRut.php',{ rut: rut}, function(data, textStatus, xhr) {
             if(data==0){
-                $.post('scripts/insertLogs.php',{ rut: rut, description: 'Ingreso de RUT Totem', ip: tothemIp, action: 'in', cometType: 'tothtem' }, function(data, textStatus, xhr) {
+                $.post('scripts/insertLogs.php',{ rut: rut, description: descrip, ip: tothemIp, action: 'in', cometType: 'tothtem' }, function(data, textStatus, xhr) {
                     //BACKEND PARA EL COMET
                     $.post('../../../visor/comet/backend.php',{msg: data},function(data, textStatus, xhr){
                     });
@@ -777,7 +748,7 @@ function loginPatient(){
 function tothtemConfig(){
     //tothemIp="<?php echo $_SERVER['REMOTE_ADDR'];?>";
     tothemIp="<?php echo $_REQUEST['toth'];?>";
-    console.log(tothemIp);
+    //console.log(tothemIp);
     var result = null;
     var scriptUrl = "scripts/tothtemConfig.php?ip=" + tothemIp;
     $.ajax({
@@ -821,7 +792,7 @@ function getActivesModules(){
     var jsonModules=JSON.parse(result);
 
     $("#menuButtons").html('');
-    console.log(jsonModules);
+    //console.log(jsonModules);
 
     for (var i = 0; i < jsonModules.length; i++) {
         if(jsonModules[i]['moduleType']!='Especial'){        
@@ -927,7 +898,12 @@ function changeLogin(){
     $('#inputText').fadeOut('slow');
     $('#bigText').fadeOut('slow', function() {
         $('#loadingLogo').fadeIn('slow');
-        $('#bigText').text('Verificando Rut...');
+        if(inputTypeT==2){
+			$('#bigText').text('Verificando DNI...');
+        }else{
+        	$('#bigText').text('Verificando Rut...');
+        }
+        
         $('#bigText').fadeIn('slow');
     });
     window.setTimeout(function(){
@@ -939,17 +915,21 @@ function changeLogin(){
 }
 //normaliza las animaciones del login
 function normalLogin(){
-    $('#buttonsGrid').fadeIn('slow');
-    $('#inputText').fadeIn('slow');
-    $('#bigText').fadeIn('slow', function() {
-        $('#loadingLogo').fadeOut('slow');
-        $('#bigText').text('Ingrese Su Rut');
-        $('#bigText').fadeIn('slow');
-    });
+	window.setTimeout(function(){
+ 		$('#buttonsGrid').fadeIn('slow');
+	    $('#inputText').fadeIn('slow');
+	    $('#bigText').fadeIn('slow', function() {
+	        $('#loadingLogo').fadeOut('slow');
+	        $('#bigText').text('Ingrese Su Rut');
+	        $('#bigText').fadeIn('slow');
+	    });
+
+    }, 500);
+
     window.setTimeout(function(){
         $('#bigText').fadeIn('slow'); 
         $('#rut').attr("disabled", false);
-    }, 100);
+    }, 500);
 }
 
 //alertas en general , (1.- si /no) (2.-evaluacion) (3.- si/No para imprimir)

@@ -14,7 +14,7 @@ $users->changeItemInShow("color", '<table align="center" border="0" width="40"><
 
 //if(findRole($module, "show_roles")) {
 	$users->insertLinkInShow("roles", "#", "../images/role.png", 'onclick="PopupCenter('."'main.php?modulo=users_roles&###'".', '."'roles'".', 800, 600)"', "Permisos", NULL, array("table"=>"users_roles", "field"=>"users", "image"=>"../images/roleBack.png"));
-	$users->insertLinkInShow("module", "#", "../images/role.png", 'onclick="PopupCenter('."'main.php?modulo=users_modules&###'".', '."'module'".', 800, 600)"', "Modulos", NULL, array("table"=>"users_modules", "field"=>"users", "image"=>"../images/roleBack.png"));
+	$users->insertLinkInShow("module", "#", "../images/branch.png", 'onclick="PopupCenter('."'main.php?modulo=users_modules&###'".', '."'module'".', 800, 600)"', "Modulos", NULL, array("table"=>"users_modules", "field"=>"users", "image"=>"../images/branchBack.png"));
 //}
 makeControls($users, "modules/usersForm.php", "modules/usersDelete.php", "modules/usersUpdate.php", $_SERVER['HTTP_REFERER']);
 

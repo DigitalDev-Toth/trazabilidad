@@ -35,6 +35,7 @@ echo '<div id = "header">
 				{$state='enable';}
 				else { $state='disable';}
 				echo '<li>'.itemMenu("visor","Visor",$state, false).'</li>';
+				echo '<li>'.itemMenu("trace","Traza Pacientes",'enable', true).'</li>';
 				echo '<li>'.itemMenu("patient","Pantalla Pacientes","enable", false).'</li>';
 
 				/*if(findRole("visor", "show_menu")) 

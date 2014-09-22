@@ -2,9 +2,10 @@
 $languaje['users'] = array (
 		"name" => "Nombre",
 		"username" => "Usuario",
-		"role"=>"Rol",
+		"rol"=>"Rol",
 		"id" => "ID",
 		"state" => "Estado",
+		"color" => "Color",
 		"users.name" => "Nombre",
 		"users.username" => "Usuario",
 		"users.password" => "Password",
@@ -20,6 +21,18 @@ $languaje['role'] = array (
 		"description" => "Descripcion",
 		"role.name" => "Nombre",
 		"role.description" => "Descripcion"
+);
+
+$languaje['roles'] = array (
+		"id" => "ID",
+		"module" => "Modulo",
+		"type" => "Tipo",
+		"label" => "Etiqueta",
+		"obs" => "Observacion",
+		"roles.module" => "Modulo",
+		"roles.type" => "Tipo",
+		"roles.label" => "Etiqueta",
+		"roles.obs" => "Observacion"
 );
 
 $languaje['module_type'] = array (
@@ -50,7 +63,8 @@ $languaje['module'] = array (
 		"max_wait" => "Max T. Espera",
 		"position" => "Posicion",
 		"alias" => "Alias",
-		"zonename" => "Zona",
+		"zone" => "Zona",
+		"type" => "Tipo",
 		"modulename" => "Tipo",
 		"module.name" => "Nombre",
 		"module.max_wait" => "Max T. Espera",
@@ -85,5 +99,10 @@ $languaje['module_special'] = array (
 		"module_special.name" => "Nombre",
 		"module_special.alias" => "Sufijo",
 		"module_special.last_ticket" => "Ultimo Ticket",
+		);
+
+$languaje['users_modules'] = array (
+		"id" => "ID",
+		"module" => "Modulo"
 		);
 ?>

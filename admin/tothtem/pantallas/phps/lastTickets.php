@@ -5,11 +5,11 @@ include ('../../tothtem/scripts/libs/db.class.php');
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 $submodule = $_REQUEST['submodule'];
-$last = $_REQUEST['last'];
+/*$last = $_REQUEST['last'];
 if($last==null){
 	echo 1;
 	exit();
-}
+}*/
 
 //get module_type
 $dbModule = NEW DB();

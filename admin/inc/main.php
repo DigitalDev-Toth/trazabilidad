@@ -70,6 +70,10 @@
 			include("modules/statistical.php");
 			break;
 
+			case 'trace':
+			include("modules/trace.php");
+			break;
+
 		
 
 			default:

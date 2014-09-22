@@ -8,7 +8,10 @@ include("libs/db.class.php");
 include("controls.php");
 
 $modules = new DB("module", "id");
-
+$modules->relation("zone", "zone", "id", "name");
+$modules->additions("zone", array("name"=>"zone"));
+$modules->relation("module_type", "type", "id", "name");
+$modules->additions("module_type", array("name"=>"type"));
 makeControls($modules, NULL , NULL , NULL , $_SERVER['HTTP_REFERER']);
 
 
@@ -21,7 +24,6 @@ echo '<div algin="center" id="showTitle">MODULOS</div>';
 if(isset($_GET['modules']))
 {
 	$module=$_GET['modules'];
-	echo $module;
 	$where=array(""=>" module.id NOT IN (SELECT module FROM users_modules WHERE users=$module)");
 	//$where=array(""=>" module.id NOT IN (SELECT module FROM users_roles WHERE users=$rol)");
 }

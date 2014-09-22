@@ -72,6 +72,12 @@ function getSubMenu($content) {
 			$subMenu .= '<li><a href="exit.php" >Salir</a>';
 		
 		break;
+
+		
+
+
+
+
 	}
 	return $subMenu;
 }

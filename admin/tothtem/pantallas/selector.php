@@ -27,15 +27,16 @@ if(!isset($_SESSION['Username'])) { header("location: ../../login.php"); header(
     <script type="text/javascript">
 
         var userId = '<?php echo $_SESSION["UserId"]; ?>';
+        var userRole = '<?php echo $_SESSION["idRole"]; ?>';
         
         $(document).ready(function() {
+            console.log(userRole);
             getZone();
             getModule($("#listZones").jqxDropDownList("getSelectedItem").value);
             getSubModule($("#listModules").jqxDropDownList("getSelectedItem").value);
 
             $("#activeModule").click(function (e) {
                 var submodule = $("#listSubModules").jqxDropDownList('getSelectedItem').value;
-                console.log(submodule);
                 if(submodule!=null){
                     $.post('phps/activeSubModule.php', {type: 'activo', user: userId, submodule: submodule}, function(data, textStatus, xhr) {
                         $.ajax({
@@ -44,8 +45,11 @@ if(!isset($_SESSION['Username'])) { header("location: ../../login.php"); header(
                             dataType: 'default',
                             data: {msg: data},
                         });
-
-                        $(location).attr('href','index.php?id='+submodule);
+                        if(userRole==2){ //Rol "Secretaria"
+                            $(location).attr('href','index.php?id='+submodule);
+                        }else if(userRole==4){ //Rol "Médico"
+                            $(location).attr('href','indexConsultation.php?id='+submodule);
+                        }
                     });
                 }else{
                     alert("No ha seleccionado sub-módulo");
