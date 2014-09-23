@@ -1,5 +1,5 @@
 <?php
-include ('../../tothtem/scripts/libs/db.class.php');
+include ('libs/db.class.php');
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 

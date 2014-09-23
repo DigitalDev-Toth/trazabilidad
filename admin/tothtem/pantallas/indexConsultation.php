@@ -1,13 +1,6 @@
 <?php
 session_start();
 if(!isset($_SESSION['Username'])) { header("location: ../../login.php"); header('Content-Type: text/html; charset=utf8');  }
-
-include ('phps/findRole.php');
-if(!findRole("medical_consultation","show_consultation")){
-    echo '<script>alert("No tiene permisos para ingresar a esta consulta");
-        window.history.back();
-    </script>';
-}
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -43,34 +36,34 @@ if(!findRole("medical_consultation","show_consultation")){
 
         <div class="row">
             <div class="col-md-6">
-                 <div class="panel panel-primary">
-                    <div class="panel-heading"><span class="glyphicon glyphicon-list"></span> Panel De Control Pacientes en curso</div>
+                 <div class="panel panel-default">
+                    <div class="panel-heading">Panel De Control Pacientes en curso</div>
                     <div class="panel-body" align="center">
                         <div class="row" >
                             <label>Datos Paciente</label><br>
                             <label id="content" style="font-size:70px;"></label>
                             <div class="row">
-                                <div id="patientData">
+                                <div>
                                     <table>
                                         <tr>
                                             <td>RUT:</td>
                                             <td>&nbsp;&nbsp;</td>
-                                            <td id="patientRut"></td>
+                                            <td>17.172.852-5</td>
                                         </tr>
                                         <tr>
                                             <td>Nombre:</td>
                                             <td>&nbsp;&nbsp;</td>
-                                            <td id="patientName"></td>
+                                            <td>Enzo Latorre Barra</td>
                                         </tr>
                                         <tr>
                                             <td>Hora Agenda:</td>
                                             <td>&nbsp;&nbsp;</td>
-                                            <td id="patientWait"></td>
+                                            <td>16:00</td>
                                         </tr>
                                         <tr>
                                             <td>Hora Inicio Atención:</td>
                                             <td>&nbsp;&nbsp;</td>
-                                            <td id="patientInit"></td>
+                                            <td>16:12</td>
                                         </tr>                                                                                                                        
                                     </table>
                                 </div>
@@ -95,7 +88,7 @@ if(!findRole("medical_consultation","show_consultation")){
                                     </div>
 
                                     <div class="col-md-4">
-                                        <input id="plantto" type="checkbox"> Plan de Tratamiento
+                                        <input type="checkbox"> Plan de Tratamiento
                                     </div>
                                     
                                 </div>
@@ -122,8 +115,8 @@ if(!findRole("medical_consultation","show_consultation")){
             </div>
             <div class="col-md-6">
 
-                <div class="panel panel-primary">
-                    <div class="panel-heading"><span class="glyphicon glyphicon-user"></span> Panel De Control Pacientes en curso</div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">Panel De Control Pacientes en curso</div>
                         <div class="panel-body" align="center">
                             <table id="contentTicket" class="table table-striped" >
                                 <th>Hora Agendada</th><th>RUT</th><th>Nombre</th>
@@ -167,6 +160,7 @@ $(document).ready(function() {
     if(submodule != ""){
         var dataModality = JSON.parse(getModule(submodule));
         moduleInCourse=dataModality.modalityId;
+        console.log(dataModality);
         $("#modalityTitle").text(dataModality['subModuleName']);
         initNumber = dataModality['modalityTicket'];
         refreshTable();
@@ -200,47 +194,14 @@ function setCurrentNumber(){//Muestra el número actual que se está atendiendo
             if(number>=10 && number<100){
                 number='0'+number;
             }
-            /*$('#content').fadeOut("slow",function(){
+            $('#content').fadeOut("slow",function(){
                 $('#content').fadeIn("fast");
                 $('#content').text(number);
-                $('#patientRut').text(jsonData[0].rut);
-                
-                $('#patientWait').text(jsonData[0].waitingDatetime);
-                $('#patientInit').text(jsonData[0].datetime);
-
-                $.post('phps/getPatientName.php', {rut: jsonData[0].rut}, function(data, textStatus, xhr) {
-                    var dataJson = JSON.parse(data);
-                    namePatient = dataJson[0]['name']+' '+dataJson[0]['lastname'];
-                    $('#patientName').text(namePatient);
-                });
-            });*/
-            $('#patientData').fadeOut("slow",function(){
-                $('#content').text('');
-                $('#patientData').fadeIn("slow");
-                $('#patientRut').text(jsonData[0].rut);
-                
-                $('#patientWait').text(jsonData[0].waitingDatetime);
-                $('#patientInit').text(jsonData[0].datetime);
-
-                $.post('phps/getPatientName.php', {rut: jsonData[0].rut}, function(data, textStatus, xhr) {
-                    var dataJson = JSON.parse(data);
-                    namePatient = dataJson[0]['name']+' '+dataJson[0]['lastname'];
-                    $('#patientName').text(namePatient);
-                });
             });
             activeButtons(jsonData[0].attention);
             ticketAttention = jsonData[0].ticketid;
         }else{
-            $('#patientData').fadeOut("slow",function(){
-                //$('#patientData').fadeIn("slow");
-                $('#content').text('Standby');
-                $('#content').fadeIn("slow");
-                $('#patientRut').text('');
-                $('#patientName').text('');
-                $('#patientWait').text('');
-                $('#patientInit').text('');
-            });
-
+            //$('#content').text('Standby');
         }
     });
 }
@@ -278,10 +239,10 @@ function checkComet(data){
         data: {msg: data},
     })
     .done(function(e) {
-        //console.log(e);
+        console.log(e);
     })
     .fail(function(e) {
-        //console.log(e);
+        console.log(e);
     })
     .always(function() {
            setCurrentNumber();
@@ -320,11 +281,7 @@ function sendComet(type){//Genera la acción de los distintos botones a través 
     if(type==='finished'){
         myState = false;
         //activeButtons('call');
-        if($('#plantto').prop('checked')==true){
-            insertLog('Atención Finalizada - Plan de Tratamiento','lp','module','served',ticketAttention);
-        }else{
-            insertLog('Atención Finalizada','lb','module','served',ticketAttention);
-        }
+        insertLog('Atención Finalizada','lb','module','served',ticketAttention);
         $('#content').css('color','black');
     }
     if(type==='exception'){
@@ -336,6 +293,7 @@ function sendComet(type){//Genera la acción de los distintos botones a través 
 
 function refreshTable(){ //Actualiza la tabla de pacientes en espera
     var totalResult = getLast5Tickets(submodule,initNumber);
+    console.log(totalResult);
     if(totalResult==0){
         $('#contentTicket tr').has('td').remove();
         $('#contentTicket').append('<tr><td>No hay pacientes en espera...</td></tr>');
@@ -350,11 +308,11 @@ function refreshTable(){ //Actualiza la tabla de pacientes en espera
             $('#contentTicket tr').has('td').remove();
                 for (var i=0;i<cant;i++) {
                     if(i==0){
-                        //$('#contentTicket').append('<tr class="info"><td>'+ticketsTable[i]['ticket']+'</td><td>'+ticketsTable[i]['rut']+'</td><td>'+ticketsTable[i]['datetime'].split(' ')[1]+'</td></tr>');
-                        $('#contentTicket').append('<tr class="info"><td>'+ticketsTable[i]['datetime']+'</td><td>'+ticketsTable[i]['rut']+'</td><td>'+ticketsTable[i]['patient_name']+'</td></tr>');
+                        $('#contentTicket').append('<tr class="info"><td>'+ticketsTable[i]['ticket']+'</td><td>'+ticketsTable[i]['rut']+'</td><td>'+ticketsTable[i]['datetime'].split(' ')[1]+'</td></tr>');
+                        //$('#contentTicket').append('<tr class="info"><td>'+ticketsTable[i]['hour_c']+'</td><td>'+ticketsTable[i]['patient_rut']+'</td><td>'+ticketsTable[i]['patient_name']+'</td></tr>');
                     }else{
-                        //$('#contentTicket').append('<tr><td>'+ticketsTable[i]['ticket']+'</td><td>'+ticketsTable[i]['rut']+'</td><td>'+ticketsTable[i]['datetime'].split(' ')[1]+'</td>  </tr></tr>');  
-                        $('#contentTicket').append('<tr><td>'+ticketsTable[i]['datetime']+'</td><td>'+ticketsTable[i]['rut']+'</td><td>'+ticketsTable[i]['patient_name']+'</td></tr>');
+                        $('#contentTicket').append('<tr><td>'+ticketsTable[i]['ticket']+'</td><td>'+ticketsTable[i]['rut']+'</td><td>'+ticketsTable[i]['datetime'].split(' ')[1]+'</td>  </tr></tr>');  
+                        //$('#contentTicket').append('<tr><td>'+ticketsTable[i]['hour_c']+'</td><td>'+ticketsTable[i]['patient_rut']+'</td><td>'+ticketsTable[i]['patient_name']+'</td></tr>');
                     }
                 }
             $('#contentTicket').fadeIn('slow');

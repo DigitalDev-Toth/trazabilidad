@@ -25,7 +25,7 @@ $trace->relation("tickets","id" ,"logs");
 
 $trace->additions("module_type", array("name"=>"modulename"));
 */
-
+$ZoneCombo['Todos'] = "";
 $db = new DB("zone","id");
 $sql = $db->doSql("SELECT id,name from zone order by id");
 do{
@@ -36,11 +36,19 @@ do{
 		$ZoneCombo[$nameZ] = $idZ;
 	}
 }while($sql = pg_fetch_assoc($db->actualResults));
-$ZoneCombo['Todos'] = "";
+
 
 $db = new DB("module","id");
 $sql = $db->doSql("SELECT id,name from module order by id");
+if(isset($_REQUEST['zone'])){
+	$idZone = $_REQUEST['zone'];
+	if($idZone != ''){
+		$sql = $db->doSql("SELECT id,name from module where zone=$idZone order by id");
+	}
+	
+}
 
+$ModuleCombo['Todos'] = "";
 do{
 	$nameM = $sql['name'];
 	$idM = $sql['id'];
@@ -49,10 +57,10 @@ do{
 		$ModuleCombo[$nameM] = $idM;
 	}
 }while($sql = pg_fetch_assoc($db->actualResults));
-$ModuleCombo['Todos'] = "";
 
 
-$state = array("No Atendidos" => 'no_served', "Atendidos" => 'served',"En Espera" => "waiting" ,"Derivados" => "derived" ,"Con plan de tratamiento" => "limb_pt","Todos" => '' );
+
+$state = array("Todos" => '',"No Atendidos" => 'no_served', "Atendidos" => 'served',"En Espera" => "waiting" ,"Derivados" => "derived" ,"Con plan de tratamiento" => "limb_pt" );
 
 
 
@@ -101,7 +109,7 @@ if(isset($_REQUEST['attention'])){
 }
 if(isset($_REQUEST['module'])){
 	$module = $_REQUEST['module'];
-	if($atention != ''){
+	if($module != ''){
 		$search .="and module='$module'";
 	}
 	
@@ -124,9 +132,9 @@ echo '<table  id="tableForm" align="center"><tr><td>';
 		echo '<form name="between" method="POST">';
 			echo '<table>';
 				echo '<tr>';
-					echo '<td>Zona</td><td>'.$trace->fillCombo($ZoneCombo,"zone","zone").'</td>';
-					echo '<td>Modulo</td><td>'.$trace->fillCombo($ModuleCombo,"module","module").'</td>';
-					echo '<td>Estado:</td><td>'.$trace->fillCombo($state,"attention","attention").'</td>';
+					echo '<td>Zona</td><td>'.$trace->fillCombo($ZoneCombo,"zone","zone",'id="zone" onclick="submit();"').'</td>';
+					echo '<td>Modulo</td><td>'.$trace->fillCombo($ModuleCombo,"module","module",'id="module" onclick="submit();"').'</td>';
+					echo '<td>Estado:</td><td>'.$trace->fillCombo($state,"attention","attention",'id="attention" onclick="submit();"').'</td>';
 					echo '<td>Fecha Inicial</td>';
 					echo $trace->makeObjectForm("idate", array('type'=>'date', 'isNull'=>'YES'), $idate);
 					echo '<td>Fecha Final</td>';
@@ -141,8 +149,30 @@ echo '</td></tr></table>';
 
 
 
-
-//$where = array();
 $rows = $trace->select($where);
 echo $trace->showData($rows, TRUE);
+
+
+
 ?>
+<script>
+$(document).ready(function() {
+	var zone = "<?php echo $_REQUEST['zone'] ?>";
+	if(zone != ''){
+		$("#zone").val(zone);
+
+	}else{
+		$("#module").val(0);
+		$("#zone").val(0);
+	}
+	var module = "<?php echo $_REQUEST['module'] ?>";
+	if(module != ''){
+		$("#module").val(module);
+	}
+	var attention = "<?php echo $_REQUEST['attention'] ?>";
+	if(attention != ''){
+		$("#attention").val(attention);
+	}
+});
+
+</script>

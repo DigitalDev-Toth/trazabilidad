@@ -10,6 +10,7 @@ $cometType = 'module';
 //$sbIp=$_REQUEST['ip'];
 
 if($moduleSpecial=='0'){
+	$sbIp='192.168.0.122';
 	//get last ticket
 	$db = NEW DB();
 	$sql = "SELECT ticket FROM last_tickets WHERE module='$module'";
@@ -21,8 +22,9 @@ if($moduleSpecial=='0'){
 	//set last ticket
 	$db2 = NEW DB();
 	$db2->doSql("UPDATE last_tickets SET ticket='$newticket' WHERE module='$module'");
-	$sbIp='192.168.0.122';
+
 }else{
+	$sbIp='192.168.0.123';
 	//get last ticket
 	$db = NEW DB();
 	$sql = "SELECT last_ticket FROM module_special WHERE id='$moduleSpecial'";
@@ -34,10 +36,10 @@ if($moduleSpecial=='0'){
 	//set last ticket
 	$db2 = NEW DB();
 	$db2->doSql("UPDATE module_special SET last_ticket=$newticket WHERE id='$moduleSpecial'");
-	$sbIp='192.168.0.123';
 }
 //INSERCIÓN DE LOGS
 //$sbIp='192.168.0.123';
+
 
 $sqlZone="SELECT zone.id AS zone , submodule.id AS submodule 
           FROM zone 
@@ -73,6 +75,8 @@ if($moduleSpecial=='0'){
 }
 
 //insert new ticket patient
+
+
 $newticket=$newticket.$alias['alias'];
 $db4 = NEW DB();
 $db4->doSql("INSERT INTO tickets(logs,ticket,attention) VALUES (".$idLog['id'].",'$newticket','waiting')");

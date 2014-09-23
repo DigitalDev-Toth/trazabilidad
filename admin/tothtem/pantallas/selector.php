@@ -117,7 +117,7 @@ if(!isset($_SESSION['Username'])) { header("location: ../../login.php"); header(
         <br>
         <div class="panel panel-primary" id="selectBox">
             <div class="panel-heading">
-                <h3 class="panel-title ">Fundación Arturo Lopez Rodriguez ~ FALP</h3>
+                <h3 class="panel-title ">Fundación Arturo López Pérez ~ FALP</h3>
             </div>
             <div class="panel-body">
                 <p class="text-center">Seleccione zona, módulo y submódulo en que operará</p>

@@ -31,7 +31,7 @@ if(php_uname('s')=='Linux') {
 		$date = $data[5].' '.$min;
 		$currentmodif = strtotime($date).$mili;
 	} // infinite loop until the data file is not modified
-} elseif(php_uname('s')=='Darwin') {
+} elseif(php_uname('s')=='Windows') {
 	$lastmodif    = isset($_GET['timestamp']) ? $_GET['timestamp'] : 0;
 	$currentmodif = filemtime($filename);
 	while ($currentmodif <= $lastmodif) // check if the data file has been modified

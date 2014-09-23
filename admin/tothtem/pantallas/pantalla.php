@@ -100,9 +100,10 @@ function getLastTickets(zone){
 		//console.log(data);
 		var jsonData= JSON.parse(data);
 		for (var i = 0; i < jsonData.length; i++) {
+
 			changeNumber(jsonData[i] ,1);
 		};
-		
+
 	});
 }
 
@@ -110,11 +111,11 @@ function getLastTickets(zone){
 //get 3 last tickes called
 //****************************************
 function lastTicketsCalled(module , lc){
+	
+
 	if(module != null){
 		$.post('phps/lastTicketsCalled.php', { module: module } , function(data, textStatus, xhr) {
 			var json = JSON.parse(data);
-		
-			
 			$(lc).html('');
 			var htmlC='';
 			for (var i = 0; i < json.length; i++) {
@@ -170,17 +171,33 @@ function fillModules(name,id){
 
 //****************************************
 //Change the current number of module
-//****************************************//****************************************
+//****************************************
+
 function changeNumber(data,type){
+	console.log(data);
 	if(data.module != null){
-		var sm = '#SM'+data.module; //submodule name
-		var nm = '#NM'+data.module; // number/ticket
-		var lc = '#LC'+data.module; // last called
-		var rw = '#RW'+data.module; //row id
+		var sm,nm,lc,rw = '';
+
+		//if is special or not
+		$.post('phps/getSpecialSubModules.php', {module: data.module , ticket: (data.newticket).slice(-1) } , function(dataSpecial, textStatus, xhr) {
+			if(dataSpecial != 0){
+				sm = '#SM'+dataSpecial; //submodule name
+				nm = '#NM'+dataSpecial; // number/ticket
+				lc = '#LC'+dataSpecial; // last called
+				rw = '#RW'+dataSpecial; //row id
+
+			}else{
+				sm = '#SM'+data.module; //submodule name
+				nm = '#NM'+data.module; // number/ticket
+				lc = '#LC'+data.module; // last called
+				rw = '#RW'+data.module; //row id
+			}
+		console.log(sm,nm,lc,rw);
 		var modulename,ticket;
 		lastTicketsCalled(data.module,lc);
 
-		console.log(data);
+		//console.log(data);
+
 		if(data.action != 'lb'){
 			if(type==1){
 				modulename=data['moduleName'];
@@ -197,8 +214,11 @@ function changeNumber(data,type){
 			});
 			$(nm).fadeOut('fast', function() {
 				
-				$(nm).text(fixNumber(ticket));
-				$(nm).fadeIn('fast');
+				setTimeout(function() {
+					$(nm).text(fixNumber(ticket));
+					$(nm).fadeIn('fast');
+				}, 1000);
+				
 			});
 
 			$(rw).css('background-color', 'rgb(121, 175, 245)');
@@ -216,14 +236,19 @@ function changeNumber(data,type){
 		}
 		if(data.action == 'lb'){
 			$(sm).fadeOut('fast', function() {
-				$(sm).text('-');
-				$(sm).fadeIn('fast');
+				setTimeout(function() {
+					$(sm).text('-');
+					$(sm).fadeIn('fast');
+				}, 1000);
+				
 			});
 			$(nm).fadeOut('fast', function() {
 				$(nm).text('-');
 				$(nm).fadeIn('fast');
 			});
 		}
+		});
+	
 	
 	}else{
 		
@@ -234,7 +259,7 @@ function changeNumber(data,type){
 }
 
 //****************************************
-// fix the current o last tickets: 7B -> 007-B
+// fix the current o last tickets: 7B -> 007-B 
 //****************************************
 function fixNumber(number){
 	var letter = number.slice(-1);

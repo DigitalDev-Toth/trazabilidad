@@ -23,18 +23,6 @@ $languaje['role'] = array (
 		"role.description" => "Descripcion"
 );
 
-$languaje['roles'] = array (
-		"id" => "ID",
-		"module" => "Modulo",
-		"type" => "Tipo",
-		"label" => "Etiqueta",
-		"obs" => "Observacion",
-		"roles.module" => "Modulo",
-		"roles.type" => "Tipo",
-		"roles.label" => "Etiqueta",
-		"roles.obs" => "Observacion"
-);
-
 $languaje['module_type'] = array (
 		"id" => "ID",
 		"name" => "Nombre",

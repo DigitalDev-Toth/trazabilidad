@@ -43,10 +43,67 @@ $submodule->changeItemInShow("state", '<a id="state_%id%" class="state"><img id=
 
 makeControls($submodule, "modules/submoduleForm.php", "modules/submoduleDelete.php", "modules/submoduleUpdate.php", $_SERVER['HTTP_REFERER']);
 
-$submodule->showControls();
-echo '<div algin="center" id="showTitle">Sub-Modulos</div>';
 
+
+
+
+$ZoneCombo['Todos'] = "";
+$db = new DB("zone","id");
+$sql = $db->doSql("SELECT id,name from zone order by id");
+do{
+	$nameZ = $sql['name'];
+	$idZ = $sql['id'];
+	if($idZ!='')
+	{
+		$ZoneCombo[$nameZ] = $idZ;
+	}
+}while($sql = pg_fetch_assoc($db->actualResults));
+
+
+
+
+echo '<div algin="center" id="showTitle">Sub-Modulos</div>';
+echo '<link href="../style/styleAll.css" rel="stylesheet" type="text/css" title="default" media="screen" />';
+$submodule->showControls();
+echo '<table  id="tableForm" align="center"><tr><td>';
+	echo '<div>';
+		echo '<form name="between" method="POST">';
+			echo '<table>';
+				echo '<tr>';
+					echo '<td>Zona</td><td>'.$submodule->fillCombo($ZoneCombo,"zone","zone",'id="zone" onclick="submit();"').'</td>';
+				echo '</tr>';
+			echo '</table>';
+		echo '</form>';
+	echo '</div>';
+echo '</td></tr></table>';
 //$where = array();
-$rows = $submodule->select();
+
+
+$search = '';
+if(isset($_REQUEST['zone'])){
+	$idZone = $_REQUEST['zone'];
+	if($idZone != ''){
+		$search ="zone=$idZone";
+		$where = array(''=>$search);
+	}else{
+		$where='';
+	}
+	
+}
+
+$rows = $submodule->select($where);
 echo $submodule->showData($rows, TRUE);
 ?>
+<script>
+$(document).ready(function() {
+	var zone = "<?php echo $_REQUEST['zone'] ?>";
+	if(zone != ''){
+		$("#zone").val(zone);
+
+	}else{
+		$("#zone").val(0);
+	}
+
+});
+
+</script>

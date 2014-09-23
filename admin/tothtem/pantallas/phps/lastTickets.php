@@ -5,11 +5,11 @@ include ('../../tothtem/scripts/libs/db.class.php');
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 $submodule = $_REQUEST['submodule'];
-/*$last = $_REQUEST['last'];
+$last = $_REQUEST['last'];
 if($last==null){
 	echo 1;
 	exit();
-}*/
+}
 
 //get module_type
 $dbModule = NEW DB();
@@ -36,6 +36,7 @@ if($module_type!='Especial'){
 			FROM tickets t
 			LEFT JOIN logs l ON l.id=t.logs
 			LEFT JOIN submodule s ON s.module=l.module
+			LEFT JOIN module_special ss ON ss.alias = SUBSTR (ticket, Length (ticket))
 			WHERE s.id=$submodule AND t.attention IN ('waiting','derived') AND l.datetime>'".date('Y-m-d')."' ORDER BY SUBSTR (ticket, Length (ticket)) ,l.datetime ASC LIMIT 10";
 }
 

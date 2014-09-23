@@ -3,8 +3,6 @@ header('Content-Type: text/html; charset=utf-8');
 $medical = $_REQUEST['medical']; //Id de usuario médico
 $submodule = $_REQUEST['submodule'];
 
-
-////////////////////WEBSERVICE - AGENDAMIENTOS////////////////////////
 $con = pg_connect("host=biopacs.com port=5432 dbname=es14b_hrt2 user=postgres password=justgoon") or die('NO HAY CONEXION: ' . pg_last_error());
 
 $sql="SELECT *, c.id AS id_calendar
@@ -12,11 +10,9 @@ $sql="SELECT *, c.id AS id_calendar
     LEFT JOIN patient p ON p.id=c.patient
     WHERE c.users=$medical AND c.date_c='".date('Y-m-d')."'";
 
+
 $resultado = pg_query($con, $sql);
 $row = pg_numrows($resultado);
-
-///////////////////////////////////////////////////////////////////////
-
 
 include ('../../tothtem/scripts/libs/db.class.php');
 //DATOS DE ZONA Y MÓDULO, PARA EL INICIO DE ESPERA DE ATENCIÓN
@@ -35,7 +31,7 @@ for($i=0;$i<$row; $i++){
     $line = pg_fetch_array($resultado, null, PGSQL_ASSOC);
     
     //Se revisa si existe log (y por ende ticket)
-    $sqlLog="SELECT COUNT(*) AS count
+    $sqlLog="SELECT COUNT(*) as count
         FROM logs
         WHERE datetime='".$line['date_c'].' '.$line['hour_c']."' AND rut='".$line['rut']."'";
     $dblog = NEW DB();
@@ -116,26 +112,12 @@ $lastRecord = $db->doSql($sql);
 if($lastRecord){
     $i=0;
     do {
-        //fill tasks array
-        foreach ($lastRecord as $field=>$value) {
-            $tickets[$i][$field] = $value;
-
-            /////////PARTE DE WEBSERVICE, NOMBRE DE PACIENTE/////////////
-            if($field=='rut'){
-                $sql="SELECT * FROM patient WHERE rut='$value'";
-                $resultadob = pg_query($con, $sql);
-                $rowb = pg_numrows($resultadob);
-                if($rowb){
-                    $tickets[$i]['patient_name'] = pg_result($resultadob,0,2).' '.pg_result($resultadob,0,3);
-                }else{
-                    $tickets[$i]['patient_name'] = 'NADA';
-                }
-                    
-            }
-            /////////////////////////////////////////////////////////////
-            //$tasks[$i][$field] = utf8_decode(htmlentities($value));
-        }
-        $i++;
+    //fill tasks array
+    foreach ($lastRecord as $field=>$value) {
+        $tickets[$i][$field] = $value;
+        //$tasks[$i][$field] = utf8_decode(htmlentities($value));
+    }
+    $i++;
     } while($lastRecord=pg_fetch_assoc($db->actualResults));
     echo json_encode($tickets);
 }else{

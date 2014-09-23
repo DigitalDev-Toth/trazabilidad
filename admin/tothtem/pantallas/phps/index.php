@@ -23,24 +23,21 @@ if(!isset($_SESSION['Username'])) { header("location: ../../login.php"); header(
 <body>
     <div class="container">
         <div class="row">
-            <div class="col-md-12">
-               
-                <h1 class="page-header"><div id="ModuleHeader">...</div>
-                    <small id="modalityTitle"></small>
-                        <button class="btn btn-default getout pull-right" onclick="inactiveSubModule('logout')"><span class="glyphicon glyphicon-log-out"></span> SALIR</button>  
-                        <p class="pull-right">&nbsp;</p>
-                         <button class="btn btn-primary getout pull-right" onclick="inactiveSubModule('change')"> <span class="glyphicon glyphicon-transfer"></span> CAMBIAR SUBMÓDULO</button>
-
+            <div class="col-lg-9">
+                <h1 class="page-header">Pantalla:
+                    <small id="modalityTitle">...</small>
                 </h1>
-
             </div>
-        
+            <div class="col-lg-3">
+                <button class="btn btn-primary getout" onclick="inactiveSubModule('change')">CAMBIAR SUBMÓDULO</button>  
+                <button class="btn btn-default getout" onclick="inactiveSubModule('logout')">SALIR</button>  
+            </div>
         </div>
 
         <div class="row">
             <div class="col-md-12">
            		 <div class="panel panel-primary">
-                    <div class="panel-heading"><span class="glyphicon glyphicon-list"></span>  Panel De Control Pacientes en curso</div>
+                    <div class="panel-heading">Panel De Control Pacientes en curso</div>
                     <div class="panel-body" align="center">
                         <div class="row" >
                             <label>Numero</label><br>
@@ -63,7 +60,7 @@ if(!isset($_SESSION['Username'])) { header("location: ../../login.php"); header(
                                         
                                         </div>
                                         <div class="col-md-2">
-                                        <button type="button" class="btn btn-default btn-lg" onclick="sendComet('finished')" id="finishedButton" title="Finalizar Atención" ><span class="glyphicon glyphicon-thumbs-up"></span></button>
+                                        <button type="button" class="btn btn-default btn-lg" onclick="sendComet('finished')" id="finishedButton" title="Finalizar Atención"><span class="glyphicon glyphicon-thumbs-up"></span></button>
                                             
                                         </div>
                                         <div class="col-md-2">
@@ -87,7 +84,6 @@ if(!isset($_SESSION['Username'])) { header("location: ../../login.php"); header(
 									<div class="row">
 										<h4 class="text-center">Pacientes No Atendidos...<h4>
 									</div>
-
 									<table id="modalNoServeContent" class="table table-striped text-center">
 									</table>
 								</div>
@@ -112,12 +108,9 @@ if(!isset($_SESSION['Username'])) { header("location: ../../login.php"); header(
 						</div>
 						
                     </div>
-
                     <table id="contentTicket" class="table table-striped text-center" >
-                        <th class="text-center">Numero de atencion</th><th class="text-center">RUT</th><th class="text-center">Hora Retiro de Ticket</th><th class="text-center">Tiempo de espera</th>
+                        <th>Numero de atencion</th><th>RUT</th><th>Hora Retiro de Ticket</th><th>Tiempo de espera</th>
                     </table>
-
-
                 </div>
             </div>
         </div>
@@ -126,7 +119,7 @@ if(!isset($_SESSION['Username'])) { header("location: ../../login.php"); header(
         <div class="row">
         	<div class="col-md-12">
     			<div class="panel panel-primary">
-                	<div class="panel-heading"><span class="glyphicon glyphicon-user"></span> Datos Del Paciente</div>
+                	<div class="panel-heading">Paciente</div>
                     <div class="panel-body" align="center">
                         <div class="col-lg-10 col-md-10" >
                        		<div class="row">
@@ -165,42 +158,26 @@ var firstTicketId = '';
 var firstTicketIdDerived = '';
 var ticketAttention = 0; //Indica qué número se está atendiendo (id del ticket)
 var myState = false; //Indica si el submódulo está atendiendo y/o llamando
-var subModuleType ='';
+
 
 //se extrae la modalidad , el ultimo numero y se rellena la tabla
 $(document).ready(function() {
     submodule=decodeURIComponent("<?php echo rawurlencode($_GET['id']); ?>");
     if(submodule != ""){
-        $.post('phps/getModuleType.php', { submodule: submodule}, function(data, textStatus, xhr) {
-            subModuleType=data;
-            if(data != 12){
-                $("#contentTicket").html('<th class="text-center">Numero de atencion</th><th class="text-center">RUT</th><th class="text-center">Hora Retiro de Ticket</th><th class="text-center">Tiempo de espera</th>')
-            }else{
-                $("#contentTicket").html('<th class="text-center">Numero de atencion</th><th class="text-center">RUT</th><th class="text-center">Motivo</th><th class="text-center">Hora Retiro de Ticket</th><th class="text-center">Tiempo de espera</th>')    
-            }
-
-            var dataModality = JSON.parse(getModule(submodule));
-            moduleInCourse=dataModality.modalityId;
-            //console.log(dataModality);
-            $("#modalityTitle").text(dataModality['modalityName']);
-            $("#ModuleHeader").text(dataModality['subModuleName']);
-            initNumber = dataModality['modalityTicket'];
-            refreshTable();
-            setCurrentNumber();
-
-        });
-
-        
+        var dataModality = JSON.parse(getModule(submodule));
+        moduleInCourse=dataModality.modalityId;
+        console.log(dataModality);
+        $("#modalityTitle").text(dataModality['modalityName']+' - '+dataModality['subModuleName']);
+        initNumber = dataModality['modalityTicket'];
+        refreshTable();
+        setCurrentNumber();
     }else{
         alert("Falta Modalidad!");
     }
-
+$(window).on('beforeunload', function(){ alert ('Bye now')});
 });
 
-function closeWindow(){ 
-    window.open('','_self',''); 
-    window.close(); 
-} 
+
 function inactiveSubModule(typeButton){//Desactiva el submódulo y genera log de cierre de sesión
     $.post('phps/activeSubModule.php', {type: 'inactivo', user: "<?php echo $_SESSION['UserId']; ?>", submodule: submodule}, function(data, textStatus, xhr) {
         $.ajax({
@@ -223,10 +200,10 @@ function setCurrentNumber(){//Muestra el número actual que se está atendiendo
 			var jsonData = JSON.parse(data);
 			var number = jsonData[0].ticket;
 
-			if(number.length==2){
+			if(number<10){
 		    	number='00'+number;
 		    }
-		    if(number.length==3){
+		    if(number>=10 && number<100){
 		      	number='0'+number;
 		    }
 		    $('#content').fadeOut("slow",function(){
@@ -261,17 +238,7 @@ function insertLog(description,action,cometType,attentionNew,ticketId,module){//
 	if(totalResult!=0){
 		var jsonData = JSON.parse(totalResult);
 		$.post('services/insertLogs.php', {rut: jsonData[0].rut,description:description,action:action,subModule:submodule,cometType:cometType,attentionNew:attentionNew,ticketId:ticketId,module:module} , function(data, textStatus, xhr) {
-		    if(data!=0){
-                checkComet(data);
-                if(attentionNew =='on_serve'){
-                    myState = true;
-                    activeButtons('on_serve');
-                    
-                    var dataComet = JSON.parse(data);
-                    getPatientData(dataComet.idticket);
-                }
-            }
-
+		    checkComet(data);
 		});
 	}
 }
@@ -290,7 +257,7 @@ function checkComet(data){
         console.log(e);
     })
     .always(function() {
-        setCurrentNumber();
+           setCurrentNumber();
     });
 }
 
@@ -339,11 +306,11 @@ function sendComet(type){//Genera la acción de los distintos botones a través 
 		insertLog('Siguiente Ticket','cl','module','call',ticketAttention);
 	}*/
 	if(type==='isHere' || type==='plus'){
-		//myState = true;
-		//activeButtons('on_serve');
+		myState = true;
+		activeButtons('on_serve');
 		ticketAttention = firstTicketId;
 		insertLog('Ticket ha venido','in','module','on_serve',ticketAttention);
-        //getPatientData(ticketAttention);
+        getPatientData(ticketAttention);
 	}
 	if(type==='notHere'){
 		myState = false;
@@ -387,22 +354,16 @@ function derive(moduleTo){//Deriva el ticket al módulo seleccionado
 	$('#modalDerived').modal('hide');
 	$('#content').css('color','black');
     refreshTable();
-         $('#patientPicture').html('');
+        $('#patientPicture').html('');
         $('#patientData').html('');
 }
 
 
 function refreshTable(){ //Actualiza la tabla de pacientes en espera
     var totalResult=getLast5Tickets(submodule,initNumber);
-    console.log(totalResult);
     if(totalResult==0){
         $('#contentTicket tr').has('td').remove();
-        console.log(subModuleType);
-        if(subModuleType == 12){
-            $('#contentTicket').append('<tr><td>No hay pacientes en espera...</td><td></td><td></td><td></td><td></td></tr>');
-        }else{
-            $('#contentTicket').append('<tr><td>No hay pacientes en espera...</td><td></td><td></td><td></td></tr>');    
-        }
+        $('#contentTicket').append('<tr><td>No hay pacientes en espera...</td></tr>');
         if(myState==false){
         	activeButtons('onload');
         }
@@ -412,29 +373,14 @@ function refreshTable(){ //Actualiza la tabla de pacientes en espera
         var cant=Object.keys(ticketsTable).length;
         $('#contentTicket').fadeOut('slow', function() {
             $('#contentTicket tr').has('td').remove();
-
-            for (var i=0;i<cant;i++) {
-                if(subModuleType != 12){
+                for (var i=0;i<cant;i++) {
                     if(i==0){
+
                         $('#contentTicket').append('<tr class="info"><td>'+ticketsTable[i]['ticket']+'</td><td>'+ticketsTable[i]['rut']+'</td><td>'+ticketsTable[i]['datetime'].split(' ')[1]+'</td><td>'+hourDiff(ticketsTable[i]['datetime'])+'</td></tr>');
                     }else{
                         $('#contentTicket').append('<tr><td>'+ticketsTable[i]['ticket']+'</td><td>'+ticketsTable[i]['rut']+'</td><td>'+ticketsTable[i]['datetime'].split(' ')[1]+'</td><td>'+hourDiff(ticketsTable[i]['datetime'])+'</td></tr>');  
-                    }    
-                }else{
-                    if(i==0){
-                        $('#contentTicket').append('<tr class="info"><td>'+ticketsTable[i]['ticket']+'</td><td>'+ticketsTable[i]['rut']+'</td><td>'+ticketsTable[i]['name']+'</td><td>'+ticketsTable[i]['datetime'].split(' ')[1]+'</td><td>'+hourDiff(ticketsTable[i]['datetime'])+'</td></tr>');
-                    }else{
-                        $('#contentTicket').append('<tr><td>'+ticketsTable[i]['ticket']+'</td><td>'+ticketsTable[i]['rut']+'</td><td>'+ticketsTable[i]['name']+'</td><td>'+ticketsTable[i]['datetime'].split(' ')[1]+'</td><td>'+hourDiff(ticketsTable[i]['datetime'])+'</td></tr>');  
-                    } 
-                  
+                    }
                 }
-
-               
-            }
-                
-
-               
-
             $('#contentTicket').fadeIn('slow');
             if(myState==false){
             	activeButtons('next');
@@ -446,9 +392,6 @@ function refreshTable(){ //Actualiza la tabla de pacientes en espera
 function hourDiff(initialHour){
     var initialHour = new Date(initialHour);
     var finishedHour = new Date();
-    finishedHour.setSeconds(finishedHour.getSeconds() + 15);
-
-    
     if (finishedHour < initialHour) {
         finishedHour.setDate(finishedHour.getDate() + 1);
     }
@@ -592,33 +535,32 @@ function getActivesModules(){
             result = data;
         },
         error: function(data) {
-           
         }
     });
-
-    /*var jsonModules=JSON.parse(result);
     $("#menuButtons").html('');
-    for (var i = 0; i < jsonModules.length; i++) {
-        $("#menuButtons").append('<div class="modal-body"><button type="button" style="padding:12px 25px;font-size: 25px;border-radius: 33px;width: 300px;"" class="btn btn-primary" onclick="derive('+jsonModules[i]['id']+');"><span class="glyphicon glyphicon-time"></span> '+jsonModules[i]['moduleName'] +'</button>   </div>' );
-    };*/
 
     var jsonModules=JSON.parse(result);
-    $("#menuButtons").html('');
+    console.log(jsonModules);
     for (var i = 0; i < jsonModules.length; i++) {
-        if(jsonModules[i]['moduleType']!='Especial'){
-            $("#menuButtons").append('<div class="modal-body"><button type="button" style="padding:12px 25px;font-size: 25px;border-radius: 33px;width: 300px;"" class="btn btn-primary" onclick="derive('+jsonModules[i]['id']+');"><span class="glyphicon glyphicon-time"></span> '+jsonModules[i]['moduleName'] +'</button>   </div>' );
+        if(jsonModules[i]['moduleType']!='Especial'){        
+            $("#menuButtons").append('<div class="modal-body"><button type="button" style="padding:12px 25px;font-size: 25px;border-radius: 33px;width: 300px;"" class="btn btn-primary" onclick="derive('+jsonModules[i]['id']+',0);"><span class="glyphicon glyphicon-time"></span> '+jsonModules[i]['moduleName'] +'</button>   </div>' );
         }else{
             var moduleId = jsonModules[i]['id'];
             $.post('phps/getActivesModulesSpecial.php', {module: moduleId}, function(data, textStatus, xhr) {
                 if(data!='nan'){
                     var jsonData = JSON.parse(data);
                     for(j=0; j < jsonData.length;j++){
+                        //$("#menuButtons").append('<div class="modal-body"><button type="button" style="padding:12px 25px;font-size: 25px;border-radius: 33px;width: 300px;"" class="btn btn-primary" onclick="derive('+moduleId+','+jsonData[j]['id']+');"><span class="glyphicon glyphicon-time"></span> '+jsonData[j]['name'] +'</button>   </div>' );
                         $("#menuButtons").append('<div class="modal-body"><button type="button" style="padding:12px 25px;font-size: 25px;border-radius: 33px;width: 300px;"" class="btn btn-primary" onclick="derive('+moduleId+');"><span class="glyphicon glyphicon-time"></span> '+jsonData[j]['name'] +'</button>   </div>' );
                     }
                 }
             });
         }
     };
+    /*$("#menuButtons").html('');
+    for (var i = 0; i < jsonModules.length; i++) {
+        $("#menuButtons").append('<div class="modal-body"><button type="button" style="padding:12px 25px;font-size: 25px;border-radius: 33px;width: 300px;"" class="btn btn-primary" onclick="derive('+jsonModules[i]['id']+');"><span class="glyphicon glyphicon-time"></span> '+jsonModules[i]['moduleName'] +'</button>   </div>' );
+    };*/
 
 }
 
@@ -655,13 +597,6 @@ function gender(gen){
 
 }
 
-$(window).on('beforeunload', function(e) {
-    return 'Se cerrara su sesion';
-});
-$(window).on('unload', function(e) {
-    
-    return inactiveSubModule('logout');
-});
 
 
 

@@ -1,13 +1,6 @@
 <?php
 session_start();
 if(!isset($_SESSION['Username'])) { header("location: login.php"); header('Content-Type: text/html; charset=utf8');  }
-/*
-include ('inc/role.php');
-if(!findRole("administration","show_administration")){
-    echo '<script>alert("No tiene permisos para ingresar a Administracion");
-        window.history.back();
-    </script>';
-}*/
 ?>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"> 
@@ -35,7 +28,7 @@ if(!findRole("administration","show_administration")){
 				},function(){
 				$(this).find('ul:first').css({visibility: "hidden"});
 				});
-		$("#header").fadeIn("600");
+		$("#header").fadeIn("600");		
 	});
 	
 </script>

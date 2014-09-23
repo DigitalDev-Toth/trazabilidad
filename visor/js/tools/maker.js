@@ -66,12 +66,6 @@ MAKER.prototype.patient = function (rut, name, ticket, datetime, attention, idMo
         PATIENTS[rut].shape = 'circulo';
         PATIENTS[rut].place = this.findPlace();
         PATIENTS[rut].goToLimb(rut, true);
-    } else if (attention === 'limb_pt') {
-        PATIENTS[rut].shape = 'circulo';
-        PATIENTS[rut].place = this.findPlace();
-        PATIENTS[rut].transitionColor();
-        PATIENTS[rut].pt = true;
-        PATIENTS[rut].goToLimb(rut, true);
     } else if (attention === 'on_serve') {
         PATIENTS[rut].shape = MODULES[idModule].shape;
         PATIENTS[rut].goTo(idModule, idSubmodule, true);
@@ -100,13 +94,6 @@ MAKER.prototype.goTo = function (comet, rut, name, action, ticket, datetime, idM
         case 'lb':
             PATIENTS[rut].shape = 'circulo';
             PATIENTS[rut].place = this.findPlace();
-            PATIENTS[rut].goToLimb(rut, false);
-            break;
-        case 'lp':
-            PATIENTS[rut].shape = 'circulo';
-            PATIENTS[rut].place = this.findPlace();
-            PATIENTS[rut].transitionColor();
-            PATIENTS[rut].pt = true;
             PATIENTS[rut].goToLimb(rut, false);
             break;
     }  

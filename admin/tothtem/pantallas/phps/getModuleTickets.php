@@ -17,7 +17,7 @@ if($modules){
 		$sql2 = "SELECT t.ticket AS ticket
 			FROM tickets t
 			LEFT JOIN logs l ON l.id=t.logs
-			WHERE l.module=".$modules['id']." AND t.attention IN ('waiting','derived') AND l.datetime>'2014-09-05' ORDER BY l.datetime LIMIT 1";
+			WHERE l.module=".$modules['id']." AND t.attention IN ('waiting','derived') AND l.datetime>'".date('Y-m-d')."' ORDER BY l.datetime LIMIT 1";
 			
 		$db2 = NEW DB();
         $moduleTickets = $db2->doSql($sql2);

@@ -37,11 +37,13 @@ var Comet = function (data_url) {
     this.handleResponse = function(response) {
 
         if (indexComet !== 0) {
-            console.log(response);
             var data = $.parseJSON(response.msg);
-            if (data.comet === 'module') {
-                if(data.action=='in'){
-                    showLastTicket(data.newticket,"A",data.module);
+            if (data.zone === zone && data.comet === 'module') {
+                if(data.action == 'in'){
+                    changeNumber(data,0);
+                }
+                if(data.action == 'lb'){
+                    changeNumber(data,0);   
                 }
             }
         } else {
