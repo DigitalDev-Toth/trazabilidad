@@ -25,6 +25,7 @@
 var rut = decodeURIComponent("<?php echo rawurlencode($_GET['rut']); ?>");
 var module = decodeURIComponent("<?php echo rawurlencode($_GET['ticketOption']); ?>");
 var moduleSpecial = decodeURIComponent("<?php echo rawurlencode($_GET['moduleSpecial']); ?>");
+var totemId = decodeURIComponent("<?php echo rawurlencode($_GET['totemId']); ?>");
 var jsonData=getLastTicket(module,rut,moduleSpecial);
 var json = JSON.parse(jsonData);
 /*Arreglo json con 2 registros:
@@ -42,7 +43,7 @@ $(document).ready(function () {
 
 function getLastTicket(module,rut,moduleSpecial){
     var ticket = null;
-    var scriptUrl = "getTicket.php?module="+module+"&rut="+rut+"&moduleSpecial="+moduleSpecial;
+    var scriptUrl = "getTicket.php?module="+module+"&rut="+rut+"&moduleSpecial="+moduleSpecial+"&ip="+totemId;
     $.ajax({
         url: scriptUrl,
         type: 'get',

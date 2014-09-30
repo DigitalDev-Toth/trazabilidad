@@ -56,6 +56,15 @@
 </footer>
 <script type="text/javascript">
 
+/*
+phps/getZone.php 
+phps/getModuleTicketsPatients.php
+phps/lastTicketsCalled.php
+phps/getSpecialSubModules.php
+phps/getSubmoduleName.php
+phps/getModuleDisplay.php
+phps/getActivesModulesSpecial.php
+*/
 
 
 //****************************************
@@ -111,7 +120,7 @@ function getLastTickets(zone){
 //get 3 last tickes called
 //****************************************
 function lastTicketsCalled(module , lc){
-	
+	console.log(module,lc);
 
 	if(module != null){
 		$.post('phps/lastTicketsCalled.php', { module: module } , function(data, textStatus, xhr) {
@@ -172,11 +181,11 @@ function fillModules(name,id){
 //****************************************
 //Change the current number of module
 //****************************************
-
+var sm,nm,lc,rw = '';
+var toDelete ='';
 function changeNumber(data,type){
-	console.log(data);
+	
 	if(data.module != null){
-		var sm,nm,lc,rw = '';
 
 		//if is special or not
 		$.post('phps/getSpecialSubModules.php', {module: data.module , ticket: (data.newticket).slice(-1) } , function(dataSpecial, textStatus, xhr) {
@@ -185,6 +194,7 @@ function changeNumber(data,type){
 				nm = '#NM'+dataSpecial; // number/ticket
 				lc = '#LC'+dataSpecial; // last called
 				rw = '#RW'+dataSpecial; //row id
+				toDelete = dataSpecial;
 
 			}else{
 				sm = '#SM'+data.module; //submodule name
@@ -192,13 +202,12 @@ function changeNumber(data,type){
 				lc = '#LC'+data.module; // last called
 				rw = '#RW'+data.module; //row id
 			}
-		console.log(sm,nm,lc,rw);
+	
 		var modulename,ticket;
 		lastTicketsCalled(data.module,lc);
 
-		//console.log(data);
 
-		if(data.action != 'lb'){
+		if(data.action == 'in'){
 			if(type==1){
 				modulename=data['moduleName'];
 				ticket=data['moduleTicket'];		
@@ -213,12 +222,8 @@ function changeNumber(data,type){
 				$(sm).fadeIn('fast');
 			});
 			$(nm).fadeOut('fast', function() {
-				
-				setTimeout(function() {
 					$(nm).text(fixNumber(ticket));
 					$(nm).fadeIn('fast');
-				}, 1000);
-				
 			});
 
 			$(rw).css('background-color', 'rgb(121, 175, 245)');
@@ -234,16 +239,28 @@ function changeNumber(data,type){
 				});
 			}, 2000);
 		}
+
+		if(data.action == 'to'){
+
+		
+			$('#SM'+toDelete).fadeOut('fast', function() {
+					$('#SM'+toDelete).text('');
+					$('#SM'+toDelete).fadeIn('fast');
+			});
+			$('#NM'+toDelete).fadeOut('fast', function() {
+				$('#NM'+toDelete).text('');
+				$('#NM'+toDelete).fadeIn('fast');
+			});
+
+		}
+
 		if(data.action == 'lb'){
 			$(sm).fadeOut('fast', function() {
-				setTimeout(function() {
-					$(sm).text('-');
+					$(sm).text('');
 					$(sm).fadeIn('fast');
-				}, 1000);
-				
 			});
 			$(nm).fadeOut('fast', function() {
-				$(nm).text('-');
+				$(nm).text('');
 				$(nm).fadeIn('fast');
 			});
 		}
@@ -310,6 +327,10 @@ function getActivesModules(zone){
     };
  
 }
+function reloadDisplay(data){
+	initConfig(zone);
+}
+
 
 
 </script>

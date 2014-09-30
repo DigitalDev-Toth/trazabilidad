@@ -457,12 +457,12 @@ function hourDiff(initialHour){
     return Math.floor(diff / 1000 / 60)+' Minutos';
 }
 
-//so doge
-$("#patientPicture").hover(function() {
+//so doge, wow, much code
+/*$("#patientPicture").hover(function() {
     $("#patientPicture").html('<img src="http://i0.kym-cdn.com/entries/icons/original/000/014/285/not.jpg">');
 }, function() {
   $("#patientPicture").html('<img src="http://placehold.it/200x200">');
-});
+});*/
 
 function getLast5Tickets(idModule,last){//Devuelve los últimos 5 pacientes en espera
 	if(last==null) last=0;
@@ -613,7 +613,10 @@ function getActivesModules(){
                 if(data!='nan'){
                     var jsonData = JSON.parse(data);
                     for(j=0; j < jsonData.length;j++){
-                        $("#menuButtons").append('<div class="modal-body"><button type="button" style="padding:12px 25px;font-size: 25px;border-radius: 33px;width: 300px;"" class="btn btn-primary" onclick="derive('+moduleId+');"><span class="glyphicon glyphicon-time"></span> '+jsonData[j]['name'] +'</button>   </div>' );
+                        var widthButton = '';
+                        if(jsonData[j]['name'].length<17) widthButton='width: 300px;';
+                        else widthButton='';
+                        $("#menuButtons").append('<div class="modal-body"><button type="button" style="padding:12px 25px;font-size: 25px;border-radius: 33px;'+widthButton+'" class="btn btn-primary" onclick="derive('+moduleId+');"><span class="glyphicon glyphicon-time"></span> '+jsonData[j]['name'] +'</button>   </div>' );
                     }
                 }
             });

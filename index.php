@@ -45,7 +45,7 @@ body {
     <br/>
     <br/>
     <span>Sistema de Trazabilidad de Pacientes</span>
-    <span>Versión 0.3</span>
+    <span>Versión 0.4</span>
 </div>
 
 <br/>
@@ -57,18 +57,18 @@ body {
 
                 <div id="menuButtons">
                     <div class="modal-body" style="text-align: center;">
-                    	<button id="totem" type="button" style="padding:12px 25px;font-size: 25px;border-radius: 33px;width: 300px;" class="btn btn-primary" title="Tótem para retiro de número de atención, Zona 1">
-                    		<span class="glyphicon glyphicon-list-alt"></span> Tótem
-                		</button> 
+                    <button id="admin" type="button" style="padding:12px 25px;font-size: 25px;border-radius: 33px;width: 500px;" class="btn btn-primary" title="Ingreso a opciones de módulos para administrador, o movimiento de números para usuario">
+                            <span class="glyphicon glyphicon-calendar"></span> Gestión o pantalla de submódulo
+                        </button> 
                   	</div>
                   	<div class="modal-body" style="text-align: center;">
-                    	<button id="admin" type="button" style="padding:12px 25px;font-size: 25px;border-radius: 33px;width: 500px;" class="btn btn-primary" title="Ingreso a opciones de módulos para administrador, o movimiento de números para usuario">
-                    		<span class="glyphicon glyphicon-calendar"></span> Gestión o pantalla de submódulo
-                		</button> 
+                        Seleccione Zona para mostrar:
+                        <div id="listZones" style="margin-left: auto; margin-right: auto;"></div><br/>
+                        <button id="totem" type="button" style="padding:12px 25px;font-size: 25px;border-radius: 33px;width: 300px;" class="btn btn-primary" title="Tótem para retiro de número de atención, Zona 1">
+                            <span class="glyphicon glyphicon-list-alt"></span> Tótem
+                        </button> 	
                   	</div>
                     <div class="modal-body" style="text-align: center;">
-                        Seleccione Zona para mostrar en pantalla de pacientes
-                        <div id="listZones" style="margin-left: auto; margin-right: auto;"></div><br/>
                     	<button id="display" type="button" style="padding:12px 25px;font-size: 25px;border-radius: 33px;width: 400px;" class="btn btn-primary" title="Visualización Pantalla de Pacientes">
                     		<span class="glyphicon glyphicon-eye-open"></span> Pantalla de Pacientes
                 		</button> 
@@ -110,15 +110,26 @@ var totemId="";
 $(document).ready(function() {
     getZone();
 	$("#totem").click(function() {
-      	window.open("admin/tothtem/tothtem/index.php", '_blank');
-      	return false;
+        /*
+        1 Hall Central
+        2 Consultas Medicas
+        3 Carpa
+        4 Plataforma Central
+        5 Plataforma Oriente
+        */
+        if($("#listZones").jqxDropDownList("getSelectedItem").value!=2){
+      	    window.open("admin/tothtem/tothtem/index.php?tothtem="+$("#listZones").jqxDropDownList("getSelectedItem").value, '_blank');
+      	    return false;
+        }else{
+            alert("No hay Tótem en Consultas Médicas");
+        }
    	});
    	$("#admin").click(function() {
       	window.open("admin/login.php", '_blank');
       	return false;
    	});
 	$("#display").click(function() {
-      	window.open("admin/tothtem/pantallas/display.php?zone="+$("#listZones").jqxDropDownList("getSelectedItem").value, '_blank');
+      	window.open("admin/tothtem/pantallas/pantalla.php?zone="+$("#listZones").jqxDropDownList("getSelectedItem").value, '_blank');
       	return false;
    	});
 	

@@ -96,8 +96,8 @@ input {
     }
     .clientLogo img {
         display: none;
-        width: 120px;
-        margin: 20px 40px;
+        width: 180px;
+        margin: 20px 10px;
     }
     .username {
         width: 270px;

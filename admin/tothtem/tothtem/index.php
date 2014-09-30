@@ -383,7 +383,8 @@ function PrintTicket(ticketOption,moduleSpecial){
 
     var urlTicket="scripts/returnTicket.php?rut=";
     var rut= $("#rut").val().toUpperCase();
-    var id="&totemId="+totemId;
+    //var id="&totemId="+totemId;
+    var id="&totemId="+tothemIp;
     var ticketOption="&ticketOption="+ticketOption;
     var moduleSpecial="&moduleSpecial="+moduleSpecial;
     var chain=urlTicket+rut+id+ticketOption+moduleSpecial;
@@ -605,7 +606,7 @@ function Welcome(){
     var now=new Date();
     var hours=now.getHours();
     if(hours>=0 && hours<=11){
-        return "Buenos Dias";
+        return "Buenos Días";
     }else{
         if(hours>=12 && hours<=19){
             return "Buenas Tardes";  
@@ -644,6 +645,7 @@ function loginPatient(){
         //Se consulta si el rut ya tiene algún ticket
         $.post('scripts/findLogsRut.php',{ rut: rut}, function(data, textStatus, xhr) {
             if(data==0){
+                console.log(tothemIp);
                 $.post('scripts/insertLogs.php',{ rut: rut, description: descrip, ip: tothemIp, action: 'in', cometType: 'tothtem' }, function(data, textStatus, xhr) {
                     //BACKEND PARA EL COMET
                     $.post('../../../visor/comet/backend.php',{msg: data},function(data, textStatus, xhr){
@@ -749,7 +751,7 @@ function loginPatient(){
 
 function tothtemConfig(){
     //tothemIp="<?php echo $_SERVER['REMOTE_ADDR'];?>";
-    tothemIp="<?php echo $_REQUEST['toth'];?>";
+    tothemIp="<?php echo $_REQUEST['tothtem'];?>";
     //console.log(tothemIp);
     var result = null;
     var scriptUrl = "scripts/tothtemConfig.php?ip=" + tothemIp;
@@ -775,7 +777,7 @@ function tothtemConfig(){
 
 function getActivesModules(){
     //var tothemIp="<?php echo $_SERVER['REMOTE_ADDR'];?>";
-    tothemIp="<?php echo $_REQUEST['toth'];?>";
+    tothemIp="<?php echo $_REQUEST['tothtem'];?>";
     var result = null;
     var scriptUrl = "scripts/getActivesModules.php?ip=" + tothemIp;
     $.ajax({
@@ -805,7 +807,10 @@ function getActivesModules(){
                 if(data!='nan'){
                     var jsonData = JSON.parse(data);
                     for(j=0; j < jsonData.length;j++){
-                        $("#menuButtons").append('<div class="modal-body"><button type="button" style="padding:12px 25px;font-size: 25px;border-radius: 33px;width: 300px;"" class="btn btn-primary" onclick="PrintTicket('+moduleId+','+jsonData[j]['id']+'); selAttention=true;"><span class="glyphicon glyphicon-time"></span> '+jsonData[j]['name'] +'</button>   </div>' );
+                        var widthButton = '';
+                        if(jsonData[j]['name'].length<17) widthButton='width: 300px;';
+                        else widthButton='';
+                        $("#menuButtons").append('<div class="modal-body"><button type="button" style="padding:12px 25px;font-size: 25px;border-radius: 33px;'+widthButton+'" class="btn btn-primary" onclick="PrintTicket('+moduleId+','+jsonData[j]['id']+'); selAttention=true;"><span class="glyphicon glyphicon-time"></span> '+jsonData[j]['name'] +'</button>   </div>' );
                     }
                 }
             });

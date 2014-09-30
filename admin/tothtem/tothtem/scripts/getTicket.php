@@ -7,10 +7,26 @@ $module = $_REQUEST['module'];
 $rut = $_REQUEST['rut'];
 $moduleSpecial = $_REQUEST['moduleSpecial'];
 $cometType = 'module';
-//$sbIp=$_REQUEST['ip'];
+$sbIp=$_REQUEST['ip'];
+/*
+        1 Hall Central
+        2 Consultas Medicas
+        3 Carpa
+        4 Plataforma Central
+        5 Plataforma Oriente
+    */
+	if($sbIp==1){
+		$sbIp='192.168.0.122';
+	}else if($sbIp==3){
+		$sbIp='192.168.0.123';
+	}else if($sbIp==4){
+		$sbIp='192.168.0.124';
+	}else if($sbIp==5){
+		$sbIp='192.168.0.125';
+	}
 
 if($moduleSpecial=='0'){
-	$sbIp='192.168.0.122';
+	//$sbIp='192.168.0.122';
 	//get last ticket
 	$db = NEW DB();
 	$sql = "SELECT ticket FROM last_tickets WHERE module='$module'";
@@ -24,7 +40,7 @@ if($moduleSpecial=='0'){
 	$db2->doSql("UPDATE last_tickets SET ticket='$newticket' WHERE module='$module'");
 
 }else{
-	$sbIp='192.168.0.123';
+	//$sbIp='192.168.0.123';
 	//get last ticket
 	$db = NEW DB();
 	$sql = "SELECT last_ticket FROM module_special WHERE id='$moduleSpecial'";

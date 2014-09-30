@@ -13,14 +13,15 @@ if($last==null){
 
 //get module_type
 $dbModule = NEW DB();
-$sql = "SELECT mt.name
+$sql = "SELECT mt.name AS name, m.id AS id
 		FROM module_type mt
 		LEFT JOIN module m ON m.type=mt.id
 		LEFT JOIN submodule s ON s.module=m.id
 		WHERE s.id=$submodule";
-$module = $dbModule->doSql($sql);
+$moduleType = $dbModule->doSql($sql);
 
-$module_type = $module['name'];
+$module_type = $moduleType['name'];
+$moduleId = $moduleType['id'];
 
 //get last ticket
 $db = NEW DB();
@@ -37,7 +38,7 @@ if($module_type!='Especial'){
 			LEFT JOIN logs l ON l.id=t.logs
 			LEFT JOIN submodule s ON s.module=l.module
 			LEFT JOIN module_special ss ON ss.alias = SUBSTR (ticket, Length (ticket))
-			WHERE s.id=$submodule AND t.attention IN ('waiting','derived') AND l.datetime>'".date('Y-m-d')."' ORDER BY SUBSTR (ticket, Length (ticket)) ,l.datetime ASC LIMIT 10";
+			WHERE s.id=$submodule AND ss.module=$moduleId AND t.attention IN ('waiting','derived') AND l.datetime>'".date('Y-m-d')."' ORDER BY SUBSTR (ticket, Length (ticket)) ,l.datetime ASC LIMIT 10";
 }
 
 $lastRecord = $db->doSql($sql);

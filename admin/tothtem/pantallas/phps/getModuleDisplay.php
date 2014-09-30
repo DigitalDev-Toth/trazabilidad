@@ -6,7 +6,9 @@ if( isset( $_REQUEST['zone'] ) ){
 
     $zone = $_REQUEST['zone'];
     $db = NEW DB();
-    $sql = "SELECT id,name,type FROM module WHERE zone = $zone and type != 1";
+    $sql = "SELECT module.id,module.name,module.type from module
+            left join submodule as sm on sm.module=module.id 
+            where zone =$zone and type !=1 and sm.state='activo' group by module.id";
     $modules = $db->doSql($sql);
     do{
         $data[] = array(

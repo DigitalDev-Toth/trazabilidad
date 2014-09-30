@@ -52,6 +52,7 @@ $languaje['module'] = array (
 		"position" => "Posicion",
 		"alias" => "Alias",
 		"zone" => "Zona",
+		"zonename" => "Zona",
 		"type" => "Tipo",
 		"modulename" => "Tipo",
 		"module.name" => "Nombre",

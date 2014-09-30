@@ -6,7 +6,7 @@ ini_set("display_errors", 1);
 $module = $_REQUEST['module'];
 
 $db = NEW DB();
-$sql = "SELECT * FROM module_special WHERE module=$module";
+$sql = "SELECT * FROM module_special WHERE module=$module ORDER BY name";
 
 $data = $db->doSql($sql);
 if($data){

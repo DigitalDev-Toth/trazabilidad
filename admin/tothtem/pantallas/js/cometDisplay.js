@@ -35,7 +35,7 @@ var Comet = function (data_url) {
     this.disconnect = function () {};
 
     this.handleResponse = function(response) {
-
+        console.log(response);
         if (indexComet !== 0) {
             var data = $.parseJSON(response.msg);
             if (data.zone === zone && data.comet === 'module') {
@@ -45,6 +45,12 @@ var Comet = function (data_url) {
                 if(data.action == 'lb'){
                     changeNumber(data,0);   
                 }
+                if(data.action == 'to'){
+                    changeNumber(data,0);   
+                }
+            }
+            if(data.comet == 'submodule' && (data.state == 'activo' || data.state == 'inactivo' ) ){
+                reloadDisplay(data);
             }
         } else {
             indexComet = 1;
