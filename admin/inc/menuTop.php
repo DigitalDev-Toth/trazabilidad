@@ -36,12 +36,12 @@ echo '<div id = "header">
 				else { $state='disable';}
 				echo '<li>'.itemMenu("visor","Visor",$state, false).'</li>';
 				echo '<li>'.itemMenu("trace","Traza Pacientes",'enable', true).'</li>';
-				echo '<li>'.itemMenu("patient","Pantalla Pacientes","enable", false).'</li>';
-
+				//echo '<li>'.itemMenu("patient","Pantalla Pacientes","enable", false).'</li>'; YA NO ES REQUISITO 30/09/14
+				echo '<li>'.itemMenu("bitacora","bitacora",'enable', true).'</li>';
 				/*if(findRole("visor", "show_menu")) 
 				{$state='enable';}
 				else { $state='disable';}*/
-				echo '<li>'.itemMenu("display","Pantalla",'enable', true).'</li>';
+				//echo '<li>'.itemMenu("display","Pantalla",'enable', true).'</li>'; MODIFICAR
 				echo '<li>'.itemMenu("statistical","Estadistica",'enable', true).'</li>';
 				/*if(findRole("admin", "show_menu")) 
 				{$state='enable';}

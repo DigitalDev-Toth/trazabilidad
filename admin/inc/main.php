@@ -74,6 +74,13 @@
 			include("modules/trace.php");
 			break;
 
+			case 'supervision':
+			include("modules/supervision.php");
+			break;
+
+			case 'bitacora':
+			include("modules/bitacora.php");
+			break;
 		
 
 			default:
