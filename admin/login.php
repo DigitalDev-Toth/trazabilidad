@@ -74,7 +74,10 @@ echo $info['client'];?></title>
 					}else if(data == 1){
 						$(location).attr('href','index.php');
 					}else if(data==10) {
-
+						var actualMsg = $('#systemText').html();
+						error(0);
+						changeText("No tiene permiso para ingresar a este módulo, favor contacte a su administrador");
+						setTimeout("changeText('"+actualMsg+"')", 3000);
 					}else {
 						data = data.split('-sub');
 						submodule = data[0];
