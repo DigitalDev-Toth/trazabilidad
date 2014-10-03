@@ -1,5 +1,6 @@
-<?
-$hostname = "digitaldev.org";
+<?php
+
+$hostname = "localhost";
 $username = "postgres";
 $password = "justgoon";
 $dbname = "traza";
