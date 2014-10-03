@@ -1,23 +1,25 @@
-<?php 
-	/*$infoFile = file_get_contents("info");
-	$lines = explode("\n", $infoFile);
-	foreach ($lines as $line) {
-		$exp = explode("=", $line);
-		$info[$exp[0]] = $exp[1];
-	}
-	$systemStr = implode(' + ', explode(',', $info['systems']));
-	$systems = explode(', ', $info['systems']);
-	foreach ($systems as $system) {
-		if($system) {
-			$systemImages .= '<img src="images/'.strtolower($system).'.png" />';
-		}
-	}*/
+<?php
+
+/*$infoFile = file_get_contents("info");
+$lines = explode("\n", $infoFile);
+foreach ($lines as $line) {
+$exp = explode("=", $line);
+$info[$exp[0]] = $exp[1];
+}
+$systemStr = implode(' + ', explode(',', $info['systems']));
+$systems = explode(', ', $info['systems']);
+foreach ($systems as $system) {
+if($system) {
+$systemImages .= '<img src="images/'.strtolower($system).'.png" />';
+}
+}*/
 ?>
 <!DOCTYPE html>
 <html>
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" charset="UTF-8">
-	<title>Login TOTH :: Trazabilidad <?php echo $info['client']; ?></title>	
+	<title>Login TOTH :: Trazabilidad <?php
+echo $info['client'];?></title>
 	<link rel="SHORTCUT ICON" href="images/favicon.ico" />
 	<link rel="stylesheet" type="text/css" href="login/css/login.css">
 	<script src="login/js/jquery-2.0.3.js"></script>
@@ -64,18 +66,19 @@
 			var pass = $.base64('encode', $('#passInput').val());
 			if(user && pass) {
 				$.post("inc/sessionAjax.php", { username: user, password: pass }, function(data) {
-
 					if(data==0) {
 						var actualMsg = $('#systemText').html();
 						error(0);
 						changeText("Error en el nombre de Usuario o contraseña");
 						setTimeout("changeText('"+actualMsg+"')", 3000);
-					}else{
-						if(data!=1){
-							$(location).attr('href','tothtem/pantallas/selector.php');
-						}else{
-							$(location).attr('href','index.php');
-						}
+					}else if(data == 1){
+						$(location).attr('href','index.php');
+					}else if(data==10) {
+
+					}else {
+						data = data.split('-sub');
+						submodule = data[0];
+						$(location).attr('href','tothtem/pantallas/index.php?id='+submodule);
 					}
 
 				});
@@ -125,7 +128,8 @@
 	}
 </script>
 <body>
-<div id="modules"><b>Modulos:</b> <?php echo $info['modules']; ?></div>
+<div id="modules"><b>Modulos:</b> <?php
+echo $info['modules'];?></div>
 <div id="shine"></div>
 <div id="pc" class="container-fluid">
 	<div class="row-fluid">
@@ -135,7 +139,8 @@
 					<div id="loginForm">
 						<img id="logo" src="images/logo.png" />
 						<div id="hr"><hr></div>
-						<div id="systemText">Bienvenido al sistema <?php echo $systemStr; ?>!</div>
+						<div id="systemText">Bienvenido al sistema <?php
+echo $systemStr;?>!</div>
 						<div id="formContent">
 							<div class="box clientLogo" id="clientLogo"><img src="images/client.png"></div>
 							<div class="box username" id="username"><img src="images/user.png"><input type="text" name="username" id="userInput" placeholder="Usuario" required/></div>
@@ -158,7 +163,7 @@
 					<div class="box clientLogo" id="clientLogo"><img src="images/client.png"></div>
 					<div class="container-hr"><div id="hrMobile"><hr></div></div>
 					<div id="systemTextMobile">Bienvenido al sistema BioRis!</div>
-					<div id="formContentMobile">						
+					<div id="formContentMobile">
 						<div class="box username" id="username"><img src="images/user.png"><input type="text" name="username" id="userInputMobile" placeholder="Usuario" required/></div>
 						<div class="box password" id="password"><img src="images/pass.png"><input type="password" name="password" id="passInputMobile" placeholder="Contrase&ntilde;a" required/></div>
 						<input type="submit" class="box submit center-block" id="submitMobile" value="Iniciar Sesi&oacute;n"/>

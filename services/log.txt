@@ -1,1 +1,1 @@
-Rut: 16.836.159-9 -------- Action: out ------ Plan: true ----- Date:  -------- Doctor: Carcamo ------- Sala: Consulta 
+Rut: prueba -------- Action: out ------ Plan: true ----- Date:  -------- Doctor: Carcamo ------- Sala: Consulta 
