@@ -23,7 +23,7 @@ var Comet = function (data_url) {
                 if (!self.noerror) {
                     setTimeout(function () {
                         comet.connect();
-                    }, 5000);
+                    }, 1000);
                 } else {
                     self.connect();
                 }
@@ -37,7 +37,7 @@ var Comet = function (data_url) {
     this.handleResponse = function(response) {
         if (indexComet !== 0) {
             var data = $.parseJSON(response.msg);
-            //console.log(data);
+        	console.log(response.msg);
             if (data.comet === 'tothtem' || data.comet === 'module') {
                 MAKE.goTo(data.comet, data.rut, data.action, data.newticket, data.datetime, data.module, data.submodule);
                 if(data.action==='cl') {
@@ -45,16 +45,32 @@ var Comet = function (data_url) {
                     console.log(data);
                 }
             } else if (data.comet === 'submodule') {
-                console.log(data);
-                if(data.state==='activo') {
-                    MODULES[SUBMODULES[data.id]].submodules[data.id].setActive();
-                } else if(data.state==='inactivo') {
-                    MODULES[SUBMODULES[data.id]].submodules[data.id].setInactive();
-                } else if(data.state==='blink') {
-                    MODULES[SUBMODULES[data.id]].submodules[data.id].blink(0);
+                if(SUBMODULES[data.id]!=undefined) {
+                    if(data.state==='activo') {
+                        MODULES[SUBMODULES[data.id]].submodules[data.id].setActive();
+                    } else if(data.state==='inactivo') {
+                        MODULES[SUBMODULES[data.id]].submodules[data.id].setInactive();
+                    } else if(data.state==='blink') {
+                        MODULES[SUBMODULES[data.id]].submodules[data.id].blink(0);
+                    }
                 }
             }
-            //console.log(PATIENTS);
+            /*for(var i=0;i<data.length;i++){
+                console.log('hi');
+                if (data[i].comet === 'tothtem' || data[i].comet === 'module') {
+                    MAKE.goTo(data[i].comet, data[i].rut, data[i].action, data[i].newticket, data[i].datetime, data[i].module, data[i].submodule);
+
+                } else if (data[i].comet === 'submodule') {
+                    if(data[i].state==='activo') {
+                        MODULES[SUBMODULES[data[i].id]].submodules[data[i].id].setActive();
+                    } else if(data[i].state==='inactivo') {
+                        MODULES[SUBMODULES[data[i].id]].submodules[data[i].id].setInactive();
+                    } else if(data[i].state==='blink') {
+                        MODULES[SUBMODULES[data[i].id]].submodules[data[i].id].blink(0);
+                    }
+                }
+            }*/
+
         } else {
             indexComet = 1;
         }

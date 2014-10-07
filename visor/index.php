@@ -1,3 +1,15 @@
+<?php
+if(isset($_GET['idZone'])){
+    $zone=$_GET['idZone'];
+}else{
+    echo 'Falta Id Zona!';
+    exit();
+}
+
+
+?>
+
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -21,6 +33,9 @@
                 PAPER = null;
             
             $(function () {
+                var idZone='<?php echo $zone?>';
+                console.log(idZone);
+
                 PAPER = Raphael('workspace', '100%', '100%');
                 var w = $(window).width(),
                     h = $(window).height();
@@ -31,7 +46,7 @@
                 MAKE = new MAKER();
 
                 message('Conectando al servidor...');
-                $.get('../services/zoneInfo.php?zone=1',function (data, status) {
+                $.get('../services/zoneInfo.php?zone='+idZone,function (data, status) {
                     message('Servidor conectado!. Esperando los datos...');
                     if (status === 'success') {
                         if (data === 'error') {
@@ -47,11 +62,11 @@
                             for (var i = 0; i < info.modules.length; i++) {   
                                 MAKE.module(info.modules[i].name, info.modules[i].id, 'module', info.modules[i].position, '#'+ info.modules[i].color, info.modules[i].shape, info.modules[i].submodules);
                             }    
-                            $.get('../services/getPatients.php?zone=1',function (data, status) {
+                            $.get('../services/getPatients.php?zone='+idZone,function (data, status) {
                                 console.log(data);
                                 var jsonData = JSON.parse(data);
                                 for(i=0; i<jsonData.length;i++){
-                                    MAKE.patient(jsonData[i].rut, jsonData[i].ticket, jsonData[i].datetime, jsonData[i].attention, jsonData[i].module, jsonData[i].submodule);
+                                    MAKE.patient(jsonData[i].rut, jsonData[i].ticket, jsonData[i].datetime, jsonData[i].attention, jsonData[i].module, jsonData[i].sub_module);
                                 }
                             });
                             message('Objetos creados');

@@ -11,6 +11,7 @@ var PATIENT = function (id, ticket, datetime, idModule, storage) {
     if (!storage) {
         this.setElem(idModule);
     }    
+
 };
 PATIENT.prototype.blink = function (i) {
     if(i<7){
@@ -22,6 +23,7 @@ PATIENT.prototype.blink = function (i) {
                 }
         })(this, i));
     }
+
 };
 PATIENT.prototype.setElem = function (idModule) {
     switch (MODULES[idModule].pos) {

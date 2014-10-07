@@ -44,7 +44,8 @@ function getSubMenu($content) {
 			$sql = "SELECT id, name FROM zone";
 			$rows = $db->doSql($sql);
 			do {
-				$subMenu .= getItemMenu("visor",$rows['name']);
+				$subMenu .= '<li><a href="../visor/index.php?idZone='.$rows['id'].'" target="main" >'.$rows['name'].'</a></li>';
+				//$subMenu .= getItemMenu("visor&zone=".$rows['id'],$rows['name']);
 			} while ($rows = pg_fetch_assoc($db->actualResults));
 
 			$subMenu .= '<li class = "round_corner_menu_top"></li>';

@@ -1,15 +1,19 @@
 <?php
-include ('../admin/inc/libs/db.class.php');
-
+//include ('../scripts/libs/db.class.php');
+include ('../../tothtem/scripts/libs/db.class.php');
 //get data
-$zone = $_REQUEST['zone'];
+error_reporting(E_ALL);
+ini_set("display_errors", 1);
+$submodule = $_REQUEST['submodule'];
 
 //get last ticket
 $db = NEW DB();
-$sql = "SELECT *
+$sql = "SELECT *, t.id AS ticketid 
 		FROM tickets t
 		LEFT JOIN logs l ON l.id=t.logs
-		WHERE t.attention IN('waiting','on_serve','limb','derived') AND l.zone=$zone AND l.datetime>'".date('Y-m-d')."'";
+		LEFT JOIN submodule s ON s.module=l.module
+		WHERE s.id=$submodule AND t.attention='derived' AND l.datetime>'".date('Y-m-d')."'ORDER BY datetime";
+//echo $sql;
 $lastRecord = $db->doSql($sql);
 
 if($lastRecord){

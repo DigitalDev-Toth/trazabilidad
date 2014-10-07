@@ -24,6 +24,25 @@ $zone=$results['zone'];
 $subModule=$results['submodule'];
 $module=$results['module'];
 
+
+if($action=='lv'){
+	$ticketid =$_REQUEST['ticketid'];
+	$sqlTicket="UPDATE tickets SET attention='no_serve' WHERE id=$ticketid";
+
+	$db1=NEW DB();
+	$db1->doSql($sqlTicket);
+
+	$sqlModule="SELECT l.module AS module
+		  FROM tickets t
+		  LEFT JOIN logs l ON l.id=t.logs 
+		  WHERE t.id=$ticketid";
+
+	$db3=NEW DB();
+	$resultsModule=$db3->doSql($sqlModule);
+	$module=$resultsModule['module'];
+}
+
+
 $db = NEW DB();
 $sql = "INSERT INTO logs(rut,datetime,description,zone,action,sub_module,module) VALUES('$rut','$datetime','$description',$zone,'$action',$subModule,$module)";
 

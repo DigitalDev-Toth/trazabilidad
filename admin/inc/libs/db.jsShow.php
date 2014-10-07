@@ -94,6 +94,14 @@ function PopupCenter(pageURL, title,w,h) {
   win = window.open (pageURL, title, 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=no, copyhistory=no, width='+w+', height='+h+', top='+top+', left='+left);
 	//if(title!="selectOne" || title!="selectMany"){ isOpen(); }
 }
+function PopupCenter2(pageURL, f, title,w,h) {
+	var marked = data(f);
+	toLink = "&id="+marked;
+	var left = (screen.width/2)-(w/2);
+	var top = (screen.height/2)-(h/2);
+  win = window.open (pageURL+toLink, title, 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=no, copyhistory=no, width='+w+', height='+h+', top='+top+', left='+left);
+	//if(title!="selectOne" || title!="selectMany"){ isOpen(); }
+}
 function isOpen(){
 	if (win && win.open && !win.closed) { setTimeout("isOpen(win)",500); }
 	else { //this.window.location.reload(); 

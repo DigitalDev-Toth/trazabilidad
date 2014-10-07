@@ -63,7 +63,7 @@ MAKER.prototype.patient = function (rut, ticket, datetime, attention, idModule, 
     var p = new PATIENT(rut, ticket, datetime, idModule, true);
     PATIENTS[rut] = p;
     
-    if (attention === 'waiting') {
+    if (attention === 'waiting' || attention === 'derived') {
         PATIENTS[rut].shape = MODULES[idModule].shape;
         PATIENTS[rut].seat = this.findSeat();
         PATIENTS[rut].goToWaitingRoom(rut, true);

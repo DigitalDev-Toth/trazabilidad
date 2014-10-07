@@ -18,18 +18,18 @@
     <script src="js/bootstrap.js"></script>
 
 <style type="text/css">
-body {
-    overflow:hidden;
-    -webkit-user-select: none;
-    -moz-user-select: -moz-none;
-    -ms-user-select: none;
-    user-select: none;
-       
-}
-.modal .modal-body {
-    max-height: 300px;
-    overflow-y: auto;
-}
+    body {
+        overflow:hidden;
+        -webkit-user-select: none;
+        -moz-user-select: -moz-none;
+        -ms-user-select: none;
+        user-select: none;
+           
+    }
+    .modal .modal-body {
+        max-height: 300px;
+        overflow-y: auto;
+    }
 </style>
 <!-- cursor: none;-->
 </head>
@@ -44,10 +44,6 @@ body {
 <div id="espera" class="header">
 <img src="img/logoToth.png" style="position: fixed;width: 200px;opacity: 0.2;">
     <div class="vert-text" align="center">
-		<!--
-		<iframe id="ytplayer" type="text/html" width="640" height="360"
-		src="https://www.youtube.com/embed/7QiBfOeWHn8?autoplay=1&controls=0&loop=1&rel=0&showinfo=0&color=white&theme=light"
-		frameborder="0" allowfullscreen></iframe>-->
 
         <img src="img/logoFalp.png" style="width: 400px;">
         <br>
@@ -58,12 +54,27 @@ body {
             <a href="#login-menu" onclick="foco();" id="startB" class="btn btn-default btn-lg" style="display:none">Toque para comenzar<br>
             <span class="glyphicon glyphicon-hand-up"></span></a></h3>
 
+
+         
+
+           
             <div id="enableTothtem" >
-                <span id="glypHand" class="glyphicon glyphicon-hand-right"></span><label id="labelStart" style="font-size:22pt;">  Toque para comenzar</label>    
+                <label id="labelStart" style="font-size:22pt;">  Seleccione una opcion para comenzar</label>    
             </div>
             <div id="disableTothtem" >
                <label style="font-size:22pt;">  <span class="glyphicon glyphicon-ban-circle"></span>  FUERA DE SERVICIO</label>    
             </div>
+            <br>
+
+               <a id="rutOption" href="#login-menu" type="button" style="padding:12px 25px;font-size: 25px;border-radius: 33px;width: 300px;" class="btn btn-primary"  onclick="foco();">
+            	<span class="glyphicon glyphicon-home"></span> Rut Normal
+            </a> 
+
+            <br><br>
+
+            <a id="dniOption" type="button" href="#login-menu" style="padding:12px 25px;font-size: 25px;border-radius: 33px;width: 300px;" class="btn btn-primary" onclick="foco();">
+            	<span class="glyphicon glyphicon-globe"></span> DNI Extranjeros
+            </a> 
 
             
 
@@ -73,12 +84,13 @@ body {
 <!-- fin pantalla principal-->
 <!-- Login rut -->
 <div id="login-menu" class="header">
-    <div class="vert-text">
+
+
+
+    <div class="vert-text" id="OnlyRut">
     <h1 id="bigText">Ingrese Su Rut</h1>
 		<div id="loadingLogo" class="loader">
 		    <span></span> <span></span> <span></span> <span></span>
-		    
-
 		</div>
 	             
 		<div id="inputText">    
@@ -95,32 +107,79 @@ body {
 		<div id="buttonsGrid">
 			<div  style="width:155px;margin: 0 auto" align="center">
 			    <div id="row1">
-				    <input type="button" name="number" value="1" id="_1" class="btn btn-default btn-lg" onclick="teclado()">
-				    <input type="button" name="number" value="2" id="_2" class="btn btn-default btn-lg"  onclick="teclado()">
-				    <input type="button" name="number" value="3" id="_3" class="btn btn-default btn-lg" onclick="teclado()">
+				    <input type="button" name="number" value="1" id="_1" class="btn btn-default btn-lg" onclick="teclado('number')"/>
+				    <input type="button" name="number" value="2" id="_2" class="btn btn-default btn-lg" onclick="teclado('number')"/>
+				    <input type="button" name="number" value="3" id="_3" class="btn btn-default btn-lg" onclick="teclado('number')"/>
 			    </div>
 			    <div id="row2">
-				    <input type="button" name="number" value="4" id="_4" class="btn btn-default btn-lg" onclick="teclado()">
-				    <input type="button" name="number" value="5" id="_5" class="btn btn-default btn-lg" onclick="teclado()">
-				    <input type="button" name="number" value="6" id="_6" class="btn btn-default btn-lg">
+				    <input type="button" name="number" value="4" id="_4" class="btn btn-default btn-lg" onclick="teclado('number')"/>
+				    <input type="button" name="number" value="5" id="_5" class="btn btn-default btn-lg" onclick="teclado('number')"/>
+				    <input type="button" name="number" value="6" id="_6" class="btn btn-default btn-lg" onclick="teclado('number')">
 			    </div>
 			    <div id="row3">
-				    <input type="button" name="number" value="7" id="_7" class="btn btn-default btn-lg" onclick="teclado()">
-				    <input type="button" name="number" value="8" id="_8" class="btn btn-default btn-lg" onclick="teclado()">
-				    <input type="button" name="number" value="9" id="_9" class="btn btn-default btn-lg" onclick="teclado()">
+				    <input type="button" name="number" value="7" id="_7" class="btn btn-default btn-lg" onclick="teclado('number')">
+				    <input type="button" name="number" value="8" id="_8" class="btn btn-default btn-lg" onclick="teclado('number')">
+				    <input type="button" name="number" value="9" id="_9" class="btn btn-default btn-lg" onclick="teclado('number')">
 			    </div>
 			    <div id="row4">
-				    <!--<input type="button" name="number" value="." id="_dot" class="btn btn-default btn-lg" onclick="teclado()">
-				    <input type="button" name="number" value="-" id="_g" class="btn btn-default btn-lg" onclick="teclado()">-->
-				    <input type="button" name="number" value="0" id="_0" class="btn btn-default btn-lg" onclick="teclado()">
-				    <input type="button" name="number" value="K" id="ka" class="btn btn-default btn-lg" onclick="teclado()">
-                    <button class="btn btn-default btn-lg" onclick="deleteString()"><span class="glyphicon glyphicon-arrow-left"></span> </button>
+				    <input type="button" name="number" value="0" id="_0" class="btn btn-default btn-lg" onclick="teclado('number')"/>
+				    <input type="button" name="number" value="K" id="ka" class="btn btn-default btn-lg" onclick="teclado('number')" style="width: 44px;"/>
+                    <button class="btn btn-default btn-lg" onclick="deleteString()" style="width: 44px;"><span class="glyphicon glyphicon-arrow-left"></span> </button>
+                    <!--<button class="btn btn-default btn-lg" onclick="deleteString()"><span class="glyphicon glyphicon-arrow-left"></span> </button>-->
 				    <input type="button" id="Borrar" value="Borrar"class="btn btn-default btn-lg" >
 			    </div>
 			</div><br>
 	    <button class="btn btn-default btn-lg" id="login">Aceptar</button>
 		</div>
 	</div>
+
+<div class="vert-text" id="OnlyDni">
+
+    <h1 id="bigText">Ingrese Su DNI</h1>
+
+       
+			<form class="form-inline" role="form">
+			
+					<label class="control-label" for="dniDiv"></label>
+					<input type="text" class="form-control"  placeholder="Ej.12345679" style="margin: 0 auto;text-align:center;"  maxlength="9"  />
+			
+			</form>   
+		
+
+		<div id="buttonsGrid">
+			<div  style="width:155px;margin: 0 auto" align="center">
+			    <div id="row1">
+				    <input type="button" name="numberDni" value="1" id="_1" class="btn btn-default btn-lg" onclick="teclado('dni')"/>
+				    <input type="button" name="numberDni" value="2" id="_2" class="btn btn-default btn-lg" onclick="teclado('dni')"/>
+				    <input type="button" name="numberDni" value="3" id="_3" class="btn btn-default btn-lg" onclick="teclado('dni')"/>
+			    </div>
+			    <div id="row2">
+				    <input type="button" name="numberDni" value="4" id="_4" class="btn btn-default btn-lg" onclick="teclado('dni')"/>
+				    <input type="button" name="numberDni" value="5" id="_5" class="btn btn-default btn-lg" onclick="teclado('dni')"/>
+				    <input type="button" name="numberDni" value="6" id="_6" class="btn btn-default btn-lg">
+			    </div>
+			    <div id="row3">
+				    <input type="button" name="numberDni" value="7" id="_7" class="btn btn-default btn-lg" onclick="teclado('dni')">
+				    <input type="button" name="numberDni" value="8" id="_8" class="btn btn-default btn-lg" onclick="teclado('dni')">
+				    <input type="button" name="numberDni" value="9" id="_9" class="btn btn-default btn-lg" onclick="teclado('dni')">
+			    </div>
+			    <div id="row4">
+				    <input type="button" name="numberDni" value="0" id="_0" class="btn btn-default btn-lg" onclick="teclado('dni')"/>
+                    <button class="btn btn-default btn-lg" onclick="deleteString()" style="width: 44px;"><span class="glyphicon glyphicon-arrow-left"></span> </button>
+                    <!--<button class="btn btn-default btn-lg" onclick="deleteString()"><span class="glyphicon glyphicon-arrow-left"></span> </button>-->
+				    <input type="button" id="Borrar" value="Borrar"class="btn btn-default btn-lg" >
+			    </div>
+			</div><br>
+	    <button class="btn btn-default btn-lg" id="login">Aceptar</button>
+		</div>
+
+
+	</div>
+
+
+
+
+
 </div>
 
 <!-- fin Login rut -->
@@ -226,12 +285,13 @@ var cantidad=0;
 var maxtime=maxMin;
 var modulesOk=0;
 var tothemIp='';
+var selAttention=false;
 setup();
 
 //***********************************************************
 $("#espera").click(function(event) {
     if(modulesOk==1){
-        $( "#startB" ).click();
+        //$( "#startB" ).click();
     }else{
         bootbox.alert("<span class='glyphicon glyphicon-warning-sign'></span> Tothtem Fuera De Servicio <br><br> Favor de consultar otro ToThtem", function() {
         window.setTimeout(setNull, 5000);
@@ -240,6 +300,14 @@ $("#espera").click(function(event) {
     
 });
 
+$("#rutOption").click(function(event) {
+	$("#OnlyRut").show('fast');
+	$("#OnlyDni").hide('fast');
+});
+$("#dniOption").click(function(event) {
+	$("#OnlyRut").hide('fast');
+	$("#OnlyDni").show('fast');
+});
 
 $(document).click(function(e) { 
     if (e.button == 0 && click==0) {
@@ -259,7 +327,8 @@ $(document).ready(function() {
     $("#inputColor").addClass("form-group has-warning has-feedback");
     $("#inputIcon").addClass("glyphicon glyphicon-user form-control-feedback");
     $("#menu-toggle").hide();
-    teclado();
+    teclado('number');
+    teclado('dni');
     swap();
 });
 
@@ -361,8 +430,8 @@ function PrintTicket(ticketOption){
     });
     $("#BootboxButton").css({display:"none"});
     window.setTimeout(function(){
-    bootbox.hideAll();
-    $("#BootboxButton").css({display:"display"});
+        bootbox.hideAll();
+        $("#BootboxButton").css({display:"display"});
     }, 3000);
     window.setTimeout(function(){
         bootbox.dialog({
@@ -482,13 +551,26 @@ function showInfo(){
     $("#showInfo").css({display:"block"});
 }
 //registra el numeros del teclado virtual
-function teclado(){
-    var numeros = document.getElementsByName("number");
-    for (var i=0; i < numeros.length; i++) { 
-        numeros[i].onclick=Nentradas;
-     
-    }
+function teclado(type){
+	if(type!='dni'){
+		var numeros = document.getElementsByName("number");
+		for (var i=0; i < numeros.length; i++) { 
+        	numeros[i].onclick=Nentradas;
+   		}
+	}else{
+		var numeros = document.getElementsByName("numberDni");
+		for (var i=0; i < numeros.length; i++) { 
+        	numeros[i].onclick=dniNumbers;
+   		}
+	}
+  
+    
 }
+
+function dniNumbers(){
+	console.log(this.value);
+}
+
 //resetea variables para cuando sale el usuario
 function resetInput(ind){
     $( "#login" ).animate({fontSize: "18px"}, {queue: false,duration: 500}).prop( "disabled", true );
@@ -585,49 +667,109 @@ function loginPatient(){
         maxtime=maxMax;
         rut=verRut(rut,1);
 
-        //desde aqui!!
-        
-        $.post('scripts/insertLogs.php',{ rut: rut, description: 'Ingreso de RUT Totem', ip: tothemIp, action: 'in', cometType: 'tothtem' }, function(data, textStatus, xhr) {
-            console.log(data);
-
-            //BACKEND PARA EL COMET, SE INTEGRA CON LOS MÓDULOS DE GESTIÓN, HABILITAR UNA VEZ ESTÉ EN GIT
-            $.post('../../../visor/comet/backend.php',{msg: data},function(data, textStatus, xhr){
-                console.log("comet->"+data);
-            });
-        });
-        
-
-
-        document.getElementById('rut').value = rut;
-        /*
-        $.post('scripts/findRut.php', {rut: rut}, function(data, textStatus, xhr) {
-            //console.log(data);
-            $('#WelcomeLabel').text(Welcome());
-            if(data ==0) {
-                document.getElementById('_menu').click();
-                $("#MyExams").css({display:"none"});
-            }
-            else{ 
-                var url = 'scripts/searchCalendar.php?patient='+data;
-                $.ajax({
-                        type: "POST",
-                        url:url,
-                        async: true,
-                        success: function(datos){
-                            SearchOnLogin(datos);
-                        },
-                        error: function (obj, error, objError){
-                            console.log(error);
-                        }
+        //Se consulta si el rut ya tiene algún ticket
+        $.post('scripts/findLogsRut.php',{ rut: rut}, function(data, textStatus, xhr) {
+            if(data==0){
+                $.post('scripts/insertLogs.php',{ rut: rut, description: 'Ingreso de RUT Totem', ip: tothemIp, action: 'in', cometType: 'tothtem' }, function(data, textStatus, xhr) {
+                    //BACKEND PARA EL COMET
+                    $.post('../../../visor/comet/backend.php',{msg: data},function(data, textStatus, xhr){
+                    });
                 });
-                document.getElementById('_menu').click();
+
+
+                document.getElementById('rut').value = rut;
+                /*
+                $.post('scripts/findRut.php', {rut: rut}, function(data, textStatus, xhr) {
+                    $('#WelcomeLabel').text(Welcome());
+                    if(data ==0) {
+                        document.getElementById('_menu').click();
+                        $("#MyExams").css({display:"none"});
+                    }
+                    else{ 
+                        var url = 'scripts/searchCalendar.php?patient='+data;
+                        $.ajax({
+                                type: "POST",
+                                url:url,
+                                async: true,
+                                success: function(datos){
+                                    SearchOnLogin(datos);
+                                },
+                                error: function (obj, error, objError){
+                                    console.log(error);
+                                }
+                        });
+                        document.getElementById('_menu').click();
+                    }
+                });
+                */
+                //solo falp
+                tothtemConfig();
+                $("#_menu").click();
+                SearchOnLogin("null");
+            }else{
+                var jsonData = JSON.parse(data);
+                bootbox.dialog({
+                    message: "Ud ya posee ticket de atención",
+                    title: "",
+                    buttons: {
+                        success: {
+                            label: "Re-imprimir Ticket",
+                            className: "btn-success",
+                            callback: function() {
+                                var rut= $("#rut").val().toUpperCase();
+
+                                var chain = "scripts/returnTicketRePrint.php?rut="+rut+"&newticket="+jsonData.ticket;
+
+                                //imprime el ticket
+                                document.getElementById("printIframe").src = chain;
+                                bootbox.alert("Imprimiendo ticket...", function() {
+                                    goInactive();
+                                });
+                            }
+                        },
+                        main: {
+                            label: "Nuevo Ticket",
+                            className: "btn-primary",
+                            callback: function() {
+
+                                $.ajax({type :"post",url : "scripts/insertLogs.php",data : "rut="+rut+"&description=Vuelve a sacar ticket Totem&ip="+tothemIp+"&action=lv&cometType=tothtem&ticketid="+jsonData.ticketid,
+                                    success:function(data){
+                                        /*$.ajax({type :"post",url : "../../../visor/comet/backend.php",data : "msg="+data,//Se envía comet indicando que el paciente ha vuelto al tótem
+                                            success:function(data){*/
+                                        window.setTimeout(function(){
+                                            $.ajax({type :"post",url : "scripts/insertLogs.php",data : "rut="+rut+"&description=Ingreso de RUT Totem&ip="+tothemIp+"&action=in&cometType=tothtem",
+                                                success:function(data){
+                                                    $.ajax({type :"post",url : "../../../visor/comet/backend.php",data : "msg="+data,//
+                                                        success:function(){
+                                                            document.getElementById('rut').value = rut;
+                                                            tothtemConfig();
+                                                            $("#_menu").click();
+                                                            SearchOnLogin("null");
+                                                            selAttention=false;
+                                                        }
+                                                    });
+                                                }
+                                            });
+                                        }, 1000);
+                                            //}
+                                        //});
+                                    }
+                                });
+
+                            }
+                        },
+                        danger: {
+                            label: "Cancelar",
+                            className: "btn-danger",
+                            callback: function() {
+                                goInactive();
+                            }
+                        }
+                    }
+                });
             }
         });
-		*/
-		//solo falp
-        tothtemConfig();
-		$("#_menu").click();
-		SearchOnLogin("null");
+
     }
 }
 
@@ -673,16 +815,12 @@ function getActivesModules(){
             console.log("error tothtem config");
         }
     });
-    //console.log("modulos activos:\n"+result);
-    var count = Object.keys(JSON.parse(result)).length;
-
 
     var jsonModules=JSON.parse(result);
 
-
     $("#menuButtons").html('');
-    for (var i = 0; i < count; i++) {
-        $("#menuButtons").append('<div class="modal-body"><button type="button" style="padding:12px 25px;font-size: 25px;border-radius: 33px;width: 300px;"" class="btn btn-primary" onclick="PrintTicket('+jsonModules[i]['id']+')"><span class="glyphicon glyphicon-time"></span> '+jsonModules[i]['moduleName'] +'</button>   </div>' );
+    for (var i = 0; i < jsonModules.length; i++) {
+        $("#menuButtons").append('<div class="modal-body"><button type="button" style="padding:12px 25px;font-size: 25px;border-radius: 33px;width: 300px;"" class="btn btn-primary" onclick="PrintTicket('+jsonModules[i]['id']+'); selAttention=true;"><span class="glyphicon glyphicon-time"></span> '+jsonModules[i]['moduleName'] +'</button>   </div>' );
     };
     //jsonModules[i]['moduleName']
 }
@@ -716,15 +854,20 @@ function SearchOnLogin(datos){
     */
     //FALP
     //solo mostrar el rut , nombre ficticio
-    $('#WelcomeLabel').text(Welcome()+" (return patientName_webservice)");
-    $('#patientName').text($("#rut").val().toUpperCase());
 
+    $('#patientName').text($("#rut").val().toUpperCase());
+    var namePatient = ' (return patientName_webservice)';
+    $.post('scripts/getPatientName.php',{rut: $('#patientName').html()},function(data, textStatus, xhr){
+        namePatient = data;
+        $('#WelcomeLabel').text(Welcome()+' '+namePatient);
+
+    });
+
+    $('#WelcomeLabel').text(Welcome()+' '+namePatient);
     /*
     for(var i in dataJson){
         datos += dataJson[i];
-        console.log(dataJson[i]['date_c']);
         if(FechaF==dataJson[i]['date_c']){
-            console.log("AGENDAMIENTO!");
             Agendamientos(msg,dataJson[i]);
         }else{
             var dateExam=new Date(dataJson[i]['date_c']);
@@ -739,7 +882,6 @@ function SearchOnLogin(datos){
         }
         if(dataJson[i]['state']=='validado'){
             //examenes sin despachar
-            console.log("examen "+j+" -> "+dataJson[i]['state']);
             exams[j]=i;
             j++;
         }
@@ -772,7 +914,7 @@ function changeLogin(){
         $('#loadingLogo').fadeOut('slow');
         $('#bigText').fadeOut('slow'); 
         $('#rut').attr("disabled", true);
-         loginPatient();
+        loginPatient();
     }, 3000);
 }
 //normaliza las animaciones del login
@@ -994,6 +1136,16 @@ function resetTimer(e) {
 }
 //cuando pasa a inactivo
 function goInactive() {
+    if(selAttention==false){
+        // AGREGAR COMET QUE ENVÍE AL LIMBO EN CASO DE QUE NO HAGA NADA
+        $.post('scripts/insertLogs.php',{ rut: $("#patientName").html(), description: 'No seleccionó atención', ip: tothemIp, action: 'lb', cometType: 'tothtem' }, function(data, textStatus, xhr) {
+
+            //BACKEND PARA EL COMET
+            $.post('../../../visor/comet/backend.php',{msg: data},function(data, textStatus, xhr){
+            });
+        });
+    }
+
     resetInput(1);
     //$("#menu-toggle").css({display:"none"});
     $( "#menu-toggle" ).fadeOut( 1000 );
@@ -1003,6 +1155,8 @@ function goInactive() {
     cantidad=0;
     maxtime=maxMin;
     document.getElementById('wait').click();
+
+
 }
  //activo
 function goActive() {

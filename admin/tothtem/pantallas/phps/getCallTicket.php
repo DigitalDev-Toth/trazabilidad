@@ -6,10 +6,10 @@ $submodule = $_REQUEST['submodule'];
 
 //get last ticket
 $db = NEW DB();
-$sql = "SELECT * 
+$sql = "SELECT *, t.id AS ticketid 
 		FROM tickets t
 		LEFT JOIN logs l ON l.id=t.logs
-		WHERE l.sub_module=$submodule AND t.attention='call'";
+		WHERE l.sub_module=$submodule AND t.attention IN('call','on_serve')";
 
 //echo $sql;
 $lastRecord = $db->doSql($sql);
@@ -26,10 +26,8 @@ if($lastRecord){
 	} while($lastRecord=pg_fetch_assoc($db->actualResults));
 	echo json_encode($tickets);
 }else{
-	return 0;
+	echo 0;
 }
-
-
 
 ?>
 
