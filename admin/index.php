@@ -1,17 +1,19 @@
 <?php
 session_start();
-if(!isset($_SESSION['Username'])) { header("location: login.php"); header('Content-Type: text/html; charset=utf8');  }
+if (!isset($_SESSION['Username'])) {header("location: login.php");
+	header('Content-Type: text/html; charset=utf8');}
 ?>
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"> 
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es-es">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=latin1" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Trazabilidad :: Home</title>
-<link href="style/index.css" rel="stylesheet" type="text/css" /> 
-<link href="style/menuTop.css" rel="stylesheet" type="text/css" />
-<link rel="SHORTCUT ICON" href="images/favicon.ico"> 
-<script src="inc/js/jquery-1.2.6.js" type="text/javascript"></script>
+<link href="style/index.css" rel="stylesheet" type="text/css" />
+<link href="inc/js/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css" />
+<link href="inc/js/bootstrap/css/navbar.css" rel="stylesheet" type="text/css" />
+<link rel="SHORTCUT ICON" href="images/favicon.ico">
+<script src="inc/js/jquery-1.8.1.min.js" type="text/javascript"></script>
+<script src="inc/js/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
 <script src="inc/js/menu.js" type="text/javascript"></script>
 <script src="inc/js/jdMenu.js" type="text/javascript"></script>
 <script src="inc/js/jd-name.js" type="text/javascript"></script>
@@ -28,13 +30,13 @@ if(!isset($_SESSION['Username'])) { header("location: login.php"); header('Conte
 				},function(){
 				$(this).find('ul:first').css({visibility: "hidden"});
 				});
-		$("#header").fadeIn("600");		
+		$("#header").fadeIn("600");
 	});
-	
+
 </script>
 </head>
 <body>
-<? include("inc/menuTop.php");?>
+<?include ("inc/menuTop.php");?>
 <iframe id= "contentMain" name="contentMain" src="inc/contentMain.php?module='supervision'" height= "100%" frameborder="0" transparency marginheight="0" marginwidth="0">
 				<p>Tu navegador no puede usar BioRis!</p>
 </iframe>
