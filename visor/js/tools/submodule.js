@@ -7,7 +7,16 @@ var SUBMODULE = function (name, id, idModule, posModule, countSubmodules, state)
     this.state = state;
     this.el = null; // element in DOM
     this.text = null;
-    this.setElem();
+    this.elInfo = null;
+    this.executive = null;
+    this.activeTime = null;
+    this.patientsAttended = null;
+    this.average = null;
+    this.max = null;
+    this.min = null;
+    this.timeOn = null;
+    this.interval = null;
+    this.setElem();    
 };
 SUBMODULE.prototype.textAttrs = function (color) {
     return {
@@ -326,4 +335,125 @@ SUBMODULE.prototype.setElem = function () {
             }    
             break;
     }    
+};
+SUBMODULE.prototype.info = function (executive, activeTime, patientsAttended, average, max, min) {
+    this.elInfo = $('<div></div>');
+    this.executive = executive;
+    this.activeTime = new Date(activeTime).getTime();
+    this.patientsAttended = patientsAttended;
+    this.average = new Date(average).getTime() - new Date().setHours(0, 0, 0);
+    this.max = new Date(max).getTime() - new Date().setHours(0, 0, 0);
+    this.min = new Date(min).getTime() - new Date().setHours(0, 0, 0);
+    
+    var elInfo = this.elInfo;
+    $(this.el.node).popover({
+        'container': 'body',
+        'trigger': 'click',
+        'html': true,
+        'placement': 'auto',
+        'content': elInfo
+    });
+};
+SUBMODULE.prototype.popoverInfo = function () {
+    this.interval = setInterval((function (t) {
+        return function () {
+            var activeTimeTime = new Date().getTime() - t.activeTime;  
+            
+            if (Math.floor(((activeTimeTime / 1000) / 60) / 60) < 10) {
+                var activeTimeHours = '0'+ Math.floor(((activeTimeTime / 1000) / 60) / 60);
+            } else {
+                var activeTimeHours = Math.floor(((activeTimeTime / 1000) / 60) / 60);
+            }       
+            
+            if (new Date(activeTimeTime).getMinutes() < 10) {
+                var activeTimeMinutes = '0'+ new Date(activeTimeTime).getMinutes();
+            } else {
+                var activeTimeMinutes = new Date(activeTimeTime).getMinutes();
+            }
+            
+            if (new Date(activeTimeTime).getSeconds() < 10) {
+                var activeTimeSeconds = '0'+ new Date(activeTimeTime).getSeconds();
+            } else {
+                var activeTimeSeconds = new Date(activeTimeTime).getSeconds();
+            }
+            
+            if (Math.floor(((t.average / 1000) / 60) / 60) < 10) {
+                var averageHours = '0'+ Math.floor(((t.average / 1000) / 60) / 60);
+            } else {
+                var averageHours = Math.floor(((t.average / 1000) / 60) / 60);
+            }
+            
+            if (new Date(t.average).getMinutes() < 10) {
+                var averageMinutes = '0'+ new Date(t.average).getMinutes();
+            } else {
+                var averageMinutes = new Date(t.average).getMinutes();
+            }
+            
+            if (new Date(t.average).getSeconds() < 10) {
+                var averageSeconds = '0'+ new Date(t.average).getSeconds();
+            } else {
+                var averageSeconds = new Date(t.average).getSeconds();
+            }
+            
+            if (Math.floor(((t.max / 1000) / 60) / 60) < 10) {
+                var maxHours = '0'+ Math.floor(((t.max / 1000) / 60) / 60);
+            } else {
+                var maxHours = Math.floor(((t.max / 1000) / 60) / 60);
+            }
+            
+            if (new Date(t.max).getMinutes() < 10) {
+                var maxMinutes = '0'+ new Date(t.max).getMinutes();
+            } else {
+                var maxMinutes = new Date(t.max).getMinutes();
+            }
+            
+            if (new Date(t.max).getSeconds() < 10) {
+                var maxSeconds = '0'+ new Date(t.max).getSeconds();
+            } else {
+                var maxSeconds = new Date(t.max).getSeconds();
+            }
+            
+            if (Math.floor(((t.min / 1000) / 60) / 60) < 10) {
+                var minHours = '0'+ Math.floor(((t.min / 1000) / 60) / 60);
+            } else {
+                var minHours = Math.floor(((t.min / 1000) / 60) / 60);
+            }
+            
+            if (new Date(t.min).getMinutes() < 10) {
+                var minMinutes = '0'+ new Date(t.min).getMinutes();
+            } else {
+                var minMinutes = new Date(t.min).getMinutes();
+            }
+            
+            if (new Date(t.min).getSeconds() < 10) {
+                var minSeconds = '0'+ new Date(t.min).getSeconds();
+            } else {
+                var minSeconds = new Date(t.min).getSeconds();
+            }
+            
+            var activeTime = activeTimeHours +':'+ activeTimeMinutes +':'+ activeTimeSeconds;
+            var average = averageHours +':'+ averageMinutes +':'+ averageSeconds;
+            var max = maxHours +':'+ maxMinutes +':'+ maxSeconds;
+            var min = minHours +':'+ minMinutes +':'+ minSeconds;
+            
+            var content = '<u>Ejecutivo</u>: '+ t.executive +'<br />'
+                            +'<u>Tiempo activo</u>: '+ activeTime +'<br />'
+                            +'<u>Pacientes atendidos</u>: '+ t.patientsAttended +'<br />'
+                            +'<u>Promedio</u>: '+ average +'<br />'                    
+                            +'<u>Máximo</u>: '+ max +'<br />'
+                            +'<u>Mínimo</u>: '+ min;
+            t.elInfo.html(content);
+        };        
+    })(this), 1000);
+};
+SUBMODULE.prototype.setTimeOn = function (timeOn) {
+    this.timeOn = timeOn;
+    
+    if (this.timeOn > this.max) {
+        this.max = this.timeOn;
+    } else if (this.timeOn < this.min) {
+        this.min = this.timeOn;
+    }
+    
+    this.average = (this.average * (this.patientsAttended - 1) + this.timeOn) / this.patientsAttended;
 };

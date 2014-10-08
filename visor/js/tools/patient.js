@@ -3,10 +3,15 @@ var PATIENT = function (id, name, ticket, datetime, idModule, storage) {
     this.name = name;
     this.shape = 'circulo';
     this.idModule = idModule;
+    this.lastIdModule = null;
+    this.lastIdSubmodule = null;
     this.seat = null; // seat for waiting room
     this.place = null; // place for limb
     this.ticket = ticket;
     this.datetime = new Date(datetime).getTime();
+    this.timeOn = null;
+    this.initTimeOn = null;
+    this.endTimeOn = null;
     this.interval = null;
     this.el = null; // element DOM for patient
     this.text = null; // text DOM for patient
@@ -90,6 +95,12 @@ PATIENT.prototype.setElem = function (idModule) {
 };
 PATIENT.prototype.goToWaitingRoom = function (idPatient, storage) {   
     MODULES['wr'].seatsPos[this.seat].patient = idPatient;
+    if (this.lastIdModule !== null) {
+        this.endTimeOn = new Date().getTime();
+        this.timeOn = new Date(this.endTimeOn - this.initTimeOn).getTime();
+        MODULES[this.lastIdModule].submodules[this.lastIdSubmodule].patientsAttended++;
+        MODULES[this.lastIdModule].submodules[this.lastIdSubmodule].setTimeOn(this.timeOn);
+    }    
     if (storage) {
         var x = MODULES['wr'].seatsPos[this.seat].x,
             y = MODULES['wr'].seatsPos[this.seat].y;
@@ -234,6 +245,9 @@ PATIENT.prototype.goToLimb = function (idPatient, storage) {
 };
 PATIENT.prototype.goTo = function (idModule, idSubmodule, storage) {
     clearInterval(this.interval);
+    this.initTimeOn = new Date().getTime();
+    this.lastIdModule = idModule;
+    this.lastIdSubmodule = idSubmodule;
     switch (MODULES[idModule].el.type) {
         case 'rect':
             if (MODULES[idModule].pos === 'superior' || MODULES[idModule].pos === 'izquierda') {

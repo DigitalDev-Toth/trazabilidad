@@ -18,8 +18,8 @@
 }
 
 body {
-    background-color: #478AC8;
-    /*background-color: #33d5ff;*/
+	/*background-color: #478AC8;*/
+    background-color: #f6921f;
     color: #FFF;
     font-family: webToth-BookItalic;
 }
@@ -65,12 +65,10 @@ input {
     .v-center {
         display: table;
     }
-    .loginForm {
+    #loginForm {
         display: table-cell;
         vertical-align: middle;
         z-index: 999999;
-        height: 500px;
-        width: 500px;
     }
     #logo {
         display: none;
@@ -95,15 +93,11 @@ input {
         width: 200px;
         height: 150px;
         float: left;
-        display: table;
-    }
-    .clientLogo div {
-        display: table-cell;
-        vertical-align: middle;
     }
     .clientLogo img {
         display: none;
-        width: 150px;
+        width: 180px;
+        margin: 20px 10px;
     }
     .username {
         width: 270px;
@@ -161,7 +155,7 @@ input {
     .v-center {
         display: table;
     }
-    .loginForm {
+    #loginForm {
         display: table-cell;
         vertical-align: middle;
         z-index: 999999;

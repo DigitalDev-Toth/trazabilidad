@@ -54,6 +54,10 @@ MAKER.prototype.submodule = function (name, id, idModule, posModule, state) {
     SUBMODULES[id] = idModule;
     this.countSubmodules++;
 };
+MAKER.prototype.submoduleInfo = function (idModule, idSubmodule, executive, activeTime, patientsAttended, average, max, min) {
+    MODULES[idModule].submodules[idSubmodule].info(executive, activeTime, patientsAttended, average, max, min);
+    MODULES[idModule].submodules[idSubmodule].popoverInfo();
+};
 MAKER.prototype.patient = function (rut, name, ticket, datetime, attention, idModule, idSubmodule) {
     var p = new PATIENT(rut, name, ticket, datetime, idModule, true);
     PATIENTS[rut] = p;

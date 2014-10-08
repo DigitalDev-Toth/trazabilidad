@@ -61,7 +61,8 @@ if(isset($_GET['idZone'])){
                             MAKE.module('Limbo', info.id, 'limb', 'center', '#A24A4A', null, null, null, null);
                             for (var i = 0; i < info.modules.length; i++) {   
                                 MAKE.module(info.modules[i].name, info.modules[i].id, 'module', info.modules[i].position, '#'+ info.modules[i].color, info.modules[i].shape, info.modules[i].max_wait, info.modules[i].submodules);
-                            }    
+                            }  
+                            MAKE.submoduleInfo(34, 49, 'Juanita Melo', '2014-10-06 17:30:10', 2, '2014-10-06 00:02:23', '2014-10-06 00:10:02', '2014-10-06 00:05:01');
                             $.get('../services/getPatients.php?zone='+idZone, function (data, status) {
 //                                console.log(data);
                                 var jsonData = JSON.parse(data);
@@ -70,10 +71,10 @@ if(isset($_GET['idZone'])){
                                 }
                             });
                             message('Objetos creados');
-//                            console.log(MODULES);
+                            console.log(MODULES);
                         }
                     }
-                });                
+                }); 
             });
             message = function (message) {
                 $('#message').fadeOut(500, function () {
@@ -86,7 +87,7 @@ if(isset($_GET['idZone'])){
             };
         </script>
     </head>
-    <body>
+    <body>        
         <div id="workspace"></div>
         <div id="message">Mensaje de estados...</div>
     </body>
