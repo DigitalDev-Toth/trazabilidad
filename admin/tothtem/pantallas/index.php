@@ -275,6 +275,7 @@ function insertLog(description,action,cometType,attentionNew,ticketId,module){//
                     getPatientData(dataComet.idticket);
                 }
             }
+            refreshTable();
 
 		});
 	}
@@ -390,7 +391,7 @@ function derive(moduleTo){//Deriva el ticket al módulo seleccionado
 	insertLog('Ticket Derivado','to','module','derived',ticketAttention,moduleTo);//En este caso, insertlog recibirá el módulo al que se deriva
 	$('#modalDerived').modal('hide');
 	$('#content').css('color','black');
-    refreshTable();
+    //refreshTable();
          $('#patientPicture').html('');
         $('#patientData').html('');
 }
