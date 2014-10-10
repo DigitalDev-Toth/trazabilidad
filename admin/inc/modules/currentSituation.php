@@ -10,7 +10,14 @@ include 'libs/bootstrapStyle.php';
 <head>
 	<title></title>
 
-
+<style type="text/css">
+	
+.popover {
+	min-width: 650px ! important;
+	max-width: 800px;
+	width: auto;
+}
+</style>
 
 </head>
 <body>
@@ -34,7 +41,11 @@ include 'libs/bootstrapStyle.php';
 			  <button type="button" class="btn btn-default" id="tableButton">Tablas</button>
 			</div>
 		</div>
-		<div class="col-md-2 col-md-offset-6">
+		<div class="col-md-1 col-md-offset-2">
+			    <button id="popoverData" class="btn" href="#" data-content="" rel="popover" data-placement="bottom" data-original-title="Leyenda" data-trigger="hover" data-html="true"  disable><span class="glyphicon glyphicon-info-sign"></span> Leyenda</button>
+			
+		</div>
+		<div class="col-md-2 col-md-offset-3">
 			<h3 id="loading"><i class="fa fa-spinner fa-spin"></i></h3>
 			<select class="form-control" id="selectorZone" style="display:none">
 			</select>
@@ -42,8 +53,9 @@ include 'libs/bootstrapStyle.php';
 	</div>
 </div>
 
-<div class="row"> 
-	<iframe src="" id="actualIframe" frameborder="0" allowfullscreen></iframe>
+<div class="row text-center"> 
+
+	<iframe src="" id="actualIframe" frameborder="0"  allowfullscreen></iframe>
 </div>
 
 
@@ -55,7 +67,7 @@ include 'libs/bootstrapStyle.php';
 
 var switchZone = 0;
 var currentZone = 1;
-
+var popotito='';
 $(document).ready(function() {
 	
 	$.ajax({
@@ -83,7 +95,19 @@ $(document).ready(function() {
 		console.log("complete");
 	});
 
+	
 
+
+    $('#popoverData').popover({
+   		title: 'Leyenda',
+    	content: '' ,
+  	});
+		
+
+
+
+
+  
 
 
 });
@@ -91,7 +115,17 @@ $(document).ready(function() {
 
 
 function changeZone (idZone,sw) {
-
+	popotito='';
+	if(switchZone == 0){
+		popotito +=	'<p><span class="glyphicon glyphicon-pushpin" ></span><b> Posición de la ficha:</b> Lugar actual del paciente</p><hr>';
+		popotito +=  '<p><span class="glyphicon glyphicon-map-marker" style="color:red"></span><b> Ficha Roja:</b> Paciente lleva esperando Sobre el limite de la sala</p>';
+		popotito +=	'<p><span class="glyphicon glyphicon-map-marker" style="color:yellow"></span><b> Ficha Amarilla:</b> Paciente lleva esperando la mitad del limite de espera de la sala</p>';
+		popotito +=	'<p><span class="glyphicon glyphicon-map-marker" style="color:green"></span><b> Ficha Verde:</b> Paciente en espera </p><hr>';
+	}
+	popotito +=	'<p><span class="glyphicon glyphicon-book" style="color:red"></span><b> Sub Modulo Rojo:</b> No activo </p>';
+	popotito +=	'<p><span class="glyphicon glyphicon-book" style="color:yellow"></span><b> Sub Modulo Amarillo:</b> En pausa</p>';
+	popotito +=	'<p><span class="glyphicon glyphicon-book" style="color:green"></span><b> Sub Modulo Verde:</b> Activo</p><hr>';
+    $("#popoverData").attr('data-content', popotito);
 	if(sw==0){
 		idZone="../../visor/index.php?idZone="+idZone;
 		$( document ).width();

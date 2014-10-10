@@ -71,7 +71,7 @@
 			break;
 
 			case 'trace':
-			include("modules/trace.php");
+			include("modules/currentSituation.php");
 			break;
 
 			case 'supervision':

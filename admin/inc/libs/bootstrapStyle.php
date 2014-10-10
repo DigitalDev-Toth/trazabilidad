@@ -8,3 +8,4 @@
 <script src="js/datatables2/js/jquery.dataTables.min.js"></script>
 <script src="js/datatables2/js/dataTables.tableTools.js"></script>
 <script src="js/datatables2/js/dataTables.bootstrap.js"></script>
+<script src="js/bootstrap/js/bootstrap.min.js"></script>
