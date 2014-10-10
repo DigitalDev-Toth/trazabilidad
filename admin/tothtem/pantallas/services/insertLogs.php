@@ -2,6 +2,7 @@
 include ('../../../inc/libs/db.class.php');
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
+session_start();
 
 $rut = $_REQUEST['rut'];
 $description =$_REQUEST['description'];
@@ -11,6 +12,7 @@ $subModule=$_REQUEST['subModule'];
 $datetime = date("Y-m-d H:i:s");
 $attentionNew = $_REQUEST['attentionNew'];
 $idTicket = $_REQUEST['ticketId'];
+$users = $_SESSION['UserId'];
 
 $goComet = true; //Para los casos en que no queden tickets al llamar de manera simultánea
 
@@ -90,7 +92,7 @@ if($attentionNew=='on_serve'){
 
 if($goComet == true){
 	$db = NEW DB();
-	$sql = "INSERT INTO logs(rut,datetime,description,zone,action,sub_module,module) VALUES('$rut','$datetime','$description',$zone,'$action',$subModule,$module)";
+	$sql = "INSERT INTO logs(rut,datetime,description,zone,action,sub_module,module,users) VALUES('$rut','$datetime','$description',$zone,'$action',$subModule,$module,$users)";
 
 	$db->doSql($sql);
 

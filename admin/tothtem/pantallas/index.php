@@ -70,6 +70,10 @@ if(!isset($_SESSION['Username'])) { header("location: ../../login.php"); header(
                                         <button type="button" class="btn btn-default btn-lg" onclick="sendComet('redirect')" id="redirectButton" title="Derivar"><span class="glyphicon glyphicon-share"></span></button>
                                             
                                         </div>
+                                        <div class="col-md-2">
+                                        <button type="button" class="btn btn-default btn-lg" onclick="refreshTable()" id="redirectButton" title="Rechargar Tabla"><span class="glyphicon glyphicon-refresh"></span></button>
+                                            
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-md-4">

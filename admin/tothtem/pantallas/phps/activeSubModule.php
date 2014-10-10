@@ -32,7 +32,7 @@ if($type == 'activo'){
 $datetime = date("Y-m-d H:i:s");
 
 $db = NEW DB();
-$sql = "INSERT INTO logs(rut,datetime,description,zone,action,sub_module,module) VALUES('$rut','$datetime','$description',$zone,'$action',$subModule,$module)";
+$sql = "INSERT INTO logs(rut,datetime,description,zone,action,sub_module,module,users) VALUES('$rut','$datetime','$description',$zone,'$action',$subModule,$module,$userId)";
 $db->doSql($sql);
 
 $submoduleData = array('comet' => 'submodule', 'state' => $type, 'id' => $subModule);
