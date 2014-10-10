@@ -48,7 +48,11 @@ echo 'PROMEDIO: '.date('Y-m-d').' '.getTimeString($waitingTimeTotal/count($data)
 $waitingCount = count($data);
 $maxtime = date('Y-m-d').' '.getTimeString($waitingMaxTime);
 $mintime = date('Y-m-d').' '.getTimeString($waitingMinTime);
-$average = date('Y-m-d').' '.getTimeString($waitingTimeTotal/count($data));
+if($waitingCount==0){
+	$average = date('Y-m-d').' '.getTimeString($waitingTimeTotal);
+}else{
+	$average = date('Y-m-d').' '.getTimeString($waitingTimeTotal/$waitingCount);
+}
 
 $returnData = array('dbtype' => 0,'waiting' => $waitingCount, 'maxtime' => $maxtime,'mintime' => $mintime,'average' => $average);
 echo json_encode($returnData);

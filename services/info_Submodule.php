@@ -72,7 +72,12 @@ echo 'INICIO SESI&Oacute;N: '.$userLogin['datetime'].'<br/>';
 echo 'PACIENTES ATENDIDOS: '.count($data).'<br/>';
 echo 'TIEMPO M&Aacute;XIMO: '.date('Y-m-d').' '.getTimeString($servedMaxTime).'<br/>';
 echo 'TIEMPO M&Iacute;NIMO: '.date('Y-m-d').' '.getTimeString($servedMinTime).'<br/>';
-echo 'PROMEDIO: '.date('Y-m-d').' '.getTimeString($servedTimeTotal/$servedCount).'<br/>';
+if($servedCount==0){
+	echo 'PROMEDIO: '.date('Y-m-d').' '.getTimeString($servedTimeTotal).'<br/>';
+}else{
+	echo 'PROMEDIO: '.date('Y-m-d').' '.getTimeString($servedTimeTotal/$servedCount).'<br/>';
+}
+
 
 $module=$userData['id_module'];
 $username=$userData['username'];
@@ -80,8 +85,11 @@ $usertime=$userLogin['datetime'];
 $patients=count($data);
 $maxtime=date('Y-m-d').' '.getTimeString($servedMaxTime);
 $mintime=date('Y-m-d').' '.getTimeString($servedMinTime);
-$average=date('Y-m-d').' '.getTimeString($servedTimeTotal/$servedCount);
-
+if($servedCount==0){
+	$average=date('Y-m-d').' '.getTimeString($servedTimeTotal);
+}else{
+	$average=date('Y-m-d').' '.getTimeString($servedTimeTotal/$servedCount);
+}
 $returnData = array('dbtype' => '0','module' => $module, 'submodule' => $submodule, 'user' => $username, 'session' => $usertime, 'patients' => $patients, 'maxtime' => $maxtime, 'mintime' => $mintime, 'average' => $average);
 echo json_encode($returnData);
 ?>
