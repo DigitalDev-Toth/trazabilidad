@@ -5,6 +5,7 @@ var PATIENT = function (id, name, ticket, datetime, idModule, storage) {
     this.idModule = idModule;
     this.lastIdModule = null;
     this.lastIdSubmodule = null;
+    this.nextIdModule = null;
     this.seat = null; // seat for waiting room
     this.place = null; // place for limb
     this.ticket = ticket;
@@ -100,6 +101,17 @@ PATIENT.prototype.goToWaitingRoom = function (idPatient, storage) {
         this.timeOn = new Date(this.endTimeOn - this.initTimeOn).getTime();
         MODULES[this.lastIdModule].submodules[this.lastIdSubmodule].patientsAttended++;
         MODULES[this.lastIdModule].submodules[this.lastIdSubmodule].setTimeOn(this.timeOn);
+        if (MODULES[this.lastIdModule].dbType === 1) {
+            MODULES[this.lastIdModule].totalTicketsIssued++;
+            MODULES[this.lastIdModule].ticketsTo[this.nextIdModule]++;
+            var timeLastTicket = new Date().getTime();
+            if (timeLastTicket > MODULES[this.lastIdModule].timeLastTicket) {
+                MODULES[this.lastIdModule].timeLastTicket = timeLastTicket;
+            }            
+        } else {
+            MODULES[this.lastIdModule].attended++;
+            MODULES[this.lastIdModule].setTimeOn(this.timeOn);
+        }
     }    
     if (storage) {
         var x = MODULES['wr'].seatsPos[this.seat].x,

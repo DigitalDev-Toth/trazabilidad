@@ -1,6 +1,21 @@
-var MODULE = function (name, id, type, pos, color, shape, waitingTime, submodules, seats) {
+var MODULE = function (name, id, type, dbType, pos, color, shape, waitingTime, submodules, seats) {
     this.id = id;    
     if (type === 'module') {
+        this.dbType = parseInt(dbType);
+        if (this.dbType === 1) {
+            this.elTothtemInfo = null;
+            this.totalTicketsIssued = null;
+            this.ticketsTo = null;
+            this.timeFirstTicket = null;
+            this.timeLastTicket = null;
+        } else {
+            this.elInfo = null;
+            this.attended = null;
+            this.average = null;
+            this.max = null;
+            this.min = null;
+            this.timeOn = null;
+        }
         this.submodules = {};
         this.totalSubmodules = submodules.length;
         this.maxWaitingTime = waitingTime;
@@ -11,6 +26,7 @@ var MODULE = function (name, id, type, pos, color, shape, waitingTime, submodule
         this.submoduleHeight = 90;
         this.moduleRound = 5;   
     } else if (type === 'waiting-room') {
+        this.elwrInfo = null;
         this.maxSeats = seats; // max seats per module 
         this.seats = 60; // total seats per module
         this.seatsPos = [];
@@ -25,7 +41,10 @@ var MODULE = function (name, id, type, pos, color, shape, waitingTime, submodule
     this.el = null; // element in DOM for module
     this.text = null; // element in DOM for text module
     this.type = type;
-    this.name = name;     
+    this.name = name; 
+    this.ivTothtemInfo = null;
+    this.ivInfo = null; 
+    this.ivwrInfo = null;
     this.setElem();
 };
 // attributes for modules except waiting room and limb
@@ -299,4 +318,235 @@ MODULE.prototype.setPlacesPos = function () {
             i--;
         }    
     }
+};
+MODULE.prototype.tothtemInfo = function (totalTicketsIssued, ticketsTo, timeFirstTicket, timeLastTicket) {
+    this.elTothtemInfo = $('<div></div>');
+    this.totalTicketsIssued = totalTicketsIssued;
+    this.ticketsTo = ticketsTo;
+    this.timeFirstTicket = new Date(timeFirstTicket).getTime();
+    this.timeLastTicket = new Date(timeLastTicket).getTime();
+    
+    var elTothtemInfo = this.elTothtemInfo;
+    $(this.el.node).popover({
+        'container': 'body',
+        'trigger': 'click',
+        'html': true,
+        'placement': 'auto',
+        'content': elTothtemInfo
+    });
+};
+MODULE.prototype.popoverTothtemInfo = function () {
+    this.ivTothtemInfo = setInterval((function (t) {
+        return function () {
+            if (new Date(t.timeFirstTicket).getHours() < 10) {
+                var timeFirstTicketHours = '0'+ new Date(t.timeFirstTicket).getHours();
+            } else {
+                var timeFirstTicketHours = new Date(t.timeFirstTicket).getHours();
+            }
+            if (new Date(t.timeFirstTicket).getMinutes() < 10) {
+                var timeFirstTicketMinutes = '0'+ new Date(t.timeFirstTicket).getMinutes();
+            } else {
+                var timeFirstTicketMinutes = new Date(t.timeFirstTicket).getMinutes();
+            }
+            if (new Date(t.timeFirstTicket).getSeconds() < 10) {
+                var timeFirstTicketSeconds = '0'+ new Date(t.timeFirstTicket).getSeconds();
+            } else {
+                var timeFirstTicketSeconds = new Date(t.timeFirstTicket).getSeconds();
+            }
+            
+            if (new Date(t.timeLastTicket).getHours() < 10) {
+                var timeLastTicketHours = '0'+ new Date(t.timeLastTicket).getHours();
+            } else {
+                var timeLastTicketHours = new Date(t.timeLastTicket).getHours();
+            }
+            if (new Date(t.timeLastTicket).getMinutes() < 10) {
+                var timeLastTicketMinutes = '0'+ new Date(t.timeLastTicket).getMinutes();
+            } else {
+                var timeLastTicketMinutes = new Date(t.timeLastTicket).getMinutes();
+            }
+            if (new Date(t.timeLastTicket).getSeconds() < 10) {
+                var timeLastTicketSeconds = '0'+ new Date(t.timeLastTicket).getSeconds();
+            } else {
+                var timeLastTicketSeconds = new Date(t.timeLastTicket).getSeconds();
+            }
+            
+            var timeFirstTicket = timeFirstTicketHours +':'+ timeFirstTicketMinutes +':'+ timeFirstTicketSeconds;
+            var timeLastTicket = timeLastTicketHours +':'+ timeLastTicketMinutes +':'+ timeLastTicketSeconds;
+            
+            var content = '<u>Total tickets atendidos</u>: '+ t.totalTicketsIssued +'<br />';
+            var ticketsTo = t.ticketsTo;
+            $.each(ticketsTo, function(index, value) {
+                content += '<u>Tickets a '+ MODULES[parseInt(index)].name +'</u>: '+ value +'<br />';
+            });            
+            content += '<u>Hora primer ticket</u>: '+ timeFirstTicket +'<br />';
+            content += '<u>Hora último ticket</u>: '+ timeLastTicket +'<br />';                    
+            t.elTothtemInfo.html(content);
+        };
+    })(this), 1000);
+};
+MODULE.prototype.info = function (attended, average, max, min) {
+    this.elInfo = $('<div></div>');
+    this.attended = attended;
+    this.average = new Date(average).getTime() - new Date(average).setHours(0, 0, 0);
+    this.max = new Date(max).getTime() - new Date(max).setHours(0, 0, 0);
+    this.min = new Date(min).getTime() - new Date(min).setHours(0, 0, 0);
+    
+    var elInfo = this.elInfo;
+    $(this.el.node).popover({
+        'container': 'body',
+        'trigger': 'click',
+        'html': true,
+        'placement': 'auto',
+        'content': elInfo
+    });
+};
+MODULE.prototype.popoverInfo = function () {
+    this.ivInfo = setInterval((function (t) {
+        return function () {
+            if (Math.floor(((t.average / 1000) / 60) / 60) < 10) {
+                var averageHours = '0'+ Math.floor(((t.average / 1000) / 60) / 60);
+            } else {
+                var averageHours = Math.floor(((t.average / 1000) / 60) / 60);
+            }
+            
+            if (new Date(t.average).getMinutes() < 10) {
+                var averageMinutes = '0'+ new Date(t.average).getMinutes();
+            } else {
+                var averageMinutes = new Date(t.average).getMinutes();
+            }
+            
+            if (new Date(t.average).getSeconds() < 10) {
+                var averageSeconds = '0'+ new Date(t.average).getSeconds();
+            } else {
+                var averageSeconds = new Date(t.average).getSeconds();
+            }
+            
+            if (Math.floor(((t.max / 1000) / 60) / 60) < 10) {
+                var maxHours = '0'+ Math.floor(((t.max / 1000) / 60) / 60);
+            } else {
+                var maxHours = Math.floor(((t.max / 1000) / 60) / 60);
+            }            
+            if (new Date(t.max).getMinutes() < 10) {
+                var maxMinutes = '0'+ new Date(t.max).getMinutes();
+            } else {
+                var maxMinutes = new Date(t.max).getMinutes();
+            }            
+            if (new Date(t.max).getSeconds() < 10) {
+                var maxSeconds = '0'+ new Date(t.max).getSeconds();
+            } else {
+                var maxSeconds = new Date(t.max).getSeconds();
+            }
+            
+            if (Math.floor(((t.min / 1000) / 60) / 60) < 10) {
+                var minHours = '0'+ Math.floor(((t.min / 1000) / 60) / 60);
+            } else {
+                var minHours = Math.floor(((t.min / 1000) / 60) / 60);
+            }            
+            if (new Date(t.min).getMinutes() < 10) {
+                var minMinutes = '0'+ new Date(t.min).getMinutes();
+            } else {
+                var minMinutes = new Date(t.min).getMinutes();
+            }            
+            if (new Date(t.min).getSeconds() < 10) {
+                var minSeconds = '0'+ new Date(t.min).getSeconds();
+            } else {
+                var minSeconds = new Date(t.min).getSeconds();
+            }
+            
+            var average = averageHours +':'+ averageMinutes +':'+ averageSeconds;
+            var max = maxHours +':'+ maxMinutes +':'+ maxSeconds;
+            var min = minHours +':'+ minMinutes +':'+ minSeconds;
+            
+            var content = '<u>Pacientes atendidos</u>: '+ t.attended +'<br />'
+                            +'<u>Promedio</u>: '+ average +'<br />'                    
+                            +'<u>Máximo</u>: '+ max +'<br />'
+                            +'<u>Mínimo</u>: '+ min;
+            t.elInfo.html(content);
+        };
+    })(this), 1000);
+};
+MODULE.prototype.setTimeOn = function (timeOn) {
+    this.timeOn = timeOn;
+    
+    if (this.timeOn > this.max) {
+        this.max = this.timeOn;
+    } else if (this.timeOn < this.min) {
+        this.min = this.timeOn;
+    }
+    
+    this.average = ((this.average * (this.attended - 1)) + this.timeOn) / this.attended;
+};
+MODULE.prototype.wrInfo = function (total, average, max, min) {
+    this.elwrInfo = new Infobox(PAPER, {x: this.el.attrs.x + 10, y: this.el.attrs.y - 15, width: this.el.attrs.width, height: 20});
+    this.wrTotal = total;
+    this.wrAverage = new Date(average).getTime() - new Date(average).setHours(0, 0, 0);
+    this.wrMax = new Date(max).getTime() - new Date(max).setHours(0, 0, 0);
+    this.wrMin = new Date(min).getTime() - new Date(min).setHours(0, 0, 0);
+
+};
+MODULE.prototype.wrElem = function () {
+    this.ivwrInfo = setInterval((function (t) {
+        return function () {
+            if (Math.floor(((t.wrAverage / 1000) / 60) / 60) < 10) {
+                var averageHours = '0'+ Math.floor(((t.wrAverage / 1000) / 60) / 60);
+            } else {
+                var averageHours = Math.floor(((t.wrAverage / 1000) / 60) / 60);
+            }
+            
+            if (new Date(t.wrAverage).getMinutes() < 10) {
+                var averageMinutes = '0'+ new Date(t.wrAverage).getMinutes();
+            } else {
+                var averageMinutes = new Date(t.wrAverage).getMinutes();
+            }
+            
+            if (new Date(t.wrAverage).getSeconds() < 10) {
+                var averageSeconds = '0'+ new Date(t.wrAverage).getSeconds();
+            } else {
+                var averageSeconds = new Date(t.wrAverage).getSeconds();
+            }
+            
+            if (Math.floor(((t.wrMax / 1000) / 60) / 60) < 10) {
+                var maxHours = '0'+ Math.floor(((t.wrMax / 1000) / 60) / 60);
+            } else {
+                var maxHours = Math.floor(((t.wrMax / 1000) / 60) / 60);
+            }            
+            if (new Date(t.wrMax).getMinutes() < 10) {
+                var maxMinutes = '0'+ new Date(t.wrMax).getMinutes();
+            } else {
+                var maxMinutes = new Date(t.wrMax).getMinutes();
+            }            
+            if (new Date(t.wrMax).getSeconds() < 10) {
+                var maxSeconds = '0'+ new Date(t.wrMax).getSeconds();
+            } else {
+                var maxSeconds = new Date(t.wrMax).getSeconds();
+            }
+            
+            if (Math.floor(((t.wrMin / 1000) / 60) / 60) < 10) {
+                var minHours = '0'+ Math.floor(((t.wrMin / 1000) / 60) / 60);
+            } else {
+                var minHours = Math.floor(((t.wrMin / 1000) / 60) / 60);
+            }            
+            if (new Date(t.wrMin).getMinutes() < 10) {
+                var minMinutes = '0'+ new Date(t.wrMin).getMinutes();
+            } else {
+                var minMinutes = new Date(t.wrMin).getMinutes();
+            }            
+            if (new Date(t.wrMin).getSeconds() < 10) {
+                var minSeconds = '0'+ new Date(t.wrMin).getSeconds();
+            } else {
+                var minSeconds = new Date(t.wrMin).getSeconds();
+            }
+            
+            var average = averageHours +':'+ averageMinutes +':'+ averageSeconds;
+            var max = maxHours +':'+ maxMinutes +':'+ maxSeconds;
+            var min = minHours +':'+ minMinutes +':'+ minSeconds;
+            
+            var content = '<u>Total</u>: '+ t.wrTotal +' - '
+                            +'<u>Promedio</u>: '+ average +' - '
+                            +'<u>Máximo</u>: '+ max +' - '
+                            +'<u>Mínimo</u>: '+ min;
+            t.elwrInfo.div.html(content);
+            t.elwrInfo.update();
+        };
+    })(this), 1000);
 };
