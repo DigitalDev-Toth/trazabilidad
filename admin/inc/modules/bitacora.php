@@ -32,7 +32,7 @@ include("controls.php");
 					<div class="row">
 				
 						<div class="col-md-2">
-							<label for="rutSearch" class="col-sm-2 control-label pull-right">Rut: </label>
+							<label for="rutSearch" class="col-sm-2 control-label pull-right">RUT/DNI:&nbsp;&nbsp;</label>
 						</div>
 						<div class="col-md-3">
 							<input type="text" class="form-control" id="rutSearch" name="rutSearch" placeholder="Ingrese rut">
@@ -52,7 +52,7 @@ include("controls.php");
 			</form>
 		</div>
 
-		<div class="row col-lg-9">	
+		<!--<div class="row col-lg-9">	-->
 		<?php
 
 
@@ -76,7 +76,9 @@ include("controls.php");
 				$rows = $bitacora->select($where);
 				if($rows){
 					echo "<div class='well well-sm text-center' id='data'></div>";
+					echo "<div class='row col-lg-9'>";
 					echo "<div class='well well-sm text-center'>";
+					
 					echo $bitacora->showData($rows, TRUE);
 					echo "</div>";
 				}else{
@@ -87,7 +89,7 @@ include("controls.php");
 		?>
 
 		</div>
-		<div id="rowDetail" class="col-lg-3">HOLA</div>
+		<div id="rowDetail" class="col-lg-3"></div><!--Descripción de Log-->
 	</div>
 </body>
 </html>
@@ -121,8 +123,14 @@ $("#showData").hide();
 			    success: function(data1) {
 			    	var json = JSON.parse(data1);
 					if(json.length == 1){
+						console.log(json);
+						var patientHtml = '<table>';
+							patientHtml += '<tr><td>RUT/DNI: </td><td>&nbsp;&nbsp;</td><td>'+json[0]["rut"]+'</td></tr>';
+							patientHtml += '<tr><td>Nombre: </td><td>&nbsp;&nbsp;</td><td>'+json[0]["name"]+' '+json[0]["lastname"]+'</td></tr>';
+							patientHtml += '<tr><td>Fecha de Nacimiento: </td><td>&nbsp;&nbsp;</td><td>'+json[0]["birthdate"]+'</td></tr>';
+							patientHtml += '</table>';
 						$("#data").html("");
-						$("#data").text(data1);
+						$("#data").html(patientHtml);
 						
 					}else{
 						$("#data").text('Sin registros');
@@ -133,7 +141,8 @@ $("#showData").hide();
 			    },
 			    complete: function() {
 
-			    	$('#showData').addClass('table table-striped table-bordered');
+			    	//$('#showData').addClass('table table-striped table-bordered');
+			    	$('#showData').addClass('table table-bordered');
 				    $('#showData').dataTable( {
 				        "dom": 'T<"clear">lfrtip',
 				        "tableTools": {
@@ -144,7 +153,7 @@ $("#showData").hide();
 				        }
 				    } );
 
-				    var table = $('#example').DataTable();
+				    var table = $('#showData').DataTable();
 				    $('#showData tbody').on( 'click', 'tr', function () {
 				        if ($(this).hasClass('selected')){
 				            $(this).removeClass('selected');
@@ -221,34 +230,37 @@ $("#showData").hide();
 		if(idLog!=0){
 			$.post('services/getLogData.php', {idLog: idLog}, function(data, textStatus, xhr) {
 				var jsonData = JSON.parse(data);
-				console.log(jsonData);
-				var htmlDetail = '<table>';
-				htmlDetail += '<tr><td>ID: </td><td>  </td><td>'+idLog+'</td></tr>';
-				htmlDetail += '<tr><td>RUT/DNI: </td>  <td></td><td>'+jsonData.rut+'</td></tr>';
-				htmlDetail += '<tr><td>Descripción: </td>  <td></td><td>'+jsonData.description+'</td></tr>';
-				htmlDetail += '<tr><td>Zona: </td><td></td>  <td>'+jsonData.zone+'</td></tr>';
-				htmlDetail += '<tr><td>Módulo: </td><td>  </td><td>'+jsonData.module+'</td></tr>';
-				htmlDetail += '<tr><td>Sub-Módulo: </td><td>  </td><td>'+jsonData.submodule+'</td></tr>';
-				htmlDetail += '<tr><td>Usuario: </td><td>  </td><td>'+jsonData.username+'</td></tr>';
-				htmlDetail += '<tr><td>---------</td><td>  </td><td>----------</td></tr>';
+				var htmlDetail = '<div style="position: fixed;" class="well"><table>';
+				htmlDetail += '<tr><td>ID: </td><td>&nbsp;&nbsp;</td><td>'+idLog+'</td></tr>';
+				htmlDetail += '<tr><td>RUT/DNI: </td>&nbsp;&nbsp;<td></td><td>'+jsonData.rut+'</td></tr>';
+				htmlDetail += '<tr><td>Descripción: </td>&nbsp;&nbsp;<td></td><td>'+jsonData.description+'</td></tr>';
+				htmlDetail += '<tr><td>Zona: </td><td></td>&nbsp;&nbsp;<td>'+jsonData.zone+'</td></tr>';
+				htmlDetail += '<tr><td>Módulo: </td><td>&nbsp;&nbsp;</td><td>'+jsonData.module+'</td></tr>';
+				htmlDetail += '<tr><td>Sub-Módulo: </td><td>&nbsp;&nbsp;</td><td>'+jsonData.submodule+'</td></tr>';
+				htmlDetail += '<tr><td>Usuario: </td><td>&nbsp;&nbsp;</td><td>'+jsonData.username+'</td></tr>';
+				htmlDetail += '<tr><td>---------</td><td>&nbsp;&nbsp;</td><td>----------</td></tr>';
 				
-				htmlDetail += '<tr><td>Fecha: </td><td>  </td><td>'+jsonData.datetime.split(' ')[0]+'</td></tr>';
+				htmlDetail += '<tr><td>Fecha: </td><td>&nbsp;&nbsp;</td><td>'+jsonData.datetime.split(' ')[0]+'</td></tr>';
 				
 				if(jsonData.description!='Ingreso de RUT Totem' && jsonData.description!='No seleccionó atención'){
-					htmlDetail += '<tr><td>Inicio de espera: </td><td></td><td>'+jsonData.waitingStart.split(' ')[1]+'</td></tr>';
+					htmlDetail += '<tr><td>Inicio de espera: </td><td>&nbsp;&nbsp;</td><td>'+jsonData.waitingStart.split(' ')[1]+'</td></tr>';
 					if(jsonData.secondDescription==null){
-						htmlDetail += '<tr><td>Inicio de atención: </td><td></td><td>'+jsonData.attentionStart.split(' ')[1]+'</td></tr>';
-						htmlDetail += '<tr><td>Fin de atención: </td><td></td><td>'+jsonData.attentionFinish.split(' ')[1]+'</td></tr>';
-						htmlDetail += '<tr><td>Tiempo de espera: </td><td></td><td>'+jsonData.waitingTime+'</td></tr>';
-						htmlDetail += '<tr><td>Tiempo de atención: </td><td></td><td>'+jsonData.attentionTime+'</td></tr>';
+						if(jsonData.attentionStart!=null){
+							htmlDetail += '<tr><td>Inicio de atención: </td><td>&nbsp;&nbsp;</td><td>'+jsonData.attentionStart.split(' ')[1]+'</td></tr>';
+						}
+						if(jsonData.attentionFinish!=null){
+							htmlDetail += '<tr><td>Fin de atención: </td><td>&nbsp;&nbsp;</td><td>'+jsonData.attentionFinish.split(' ')[1]+'</td></tr>';
+						}
+						htmlDetail += '<tr><td>Tiempo de espera: </td><td>&nbsp;&nbsp;</td><td>'+jsonData.waitingTime+'</td></tr>';
+						htmlDetail += '<tr><td>Tiempo de atención: </td><td>&nbsp;&nbsp;</td><td>'+jsonData.attentionTime+'</td></tr>';
 					}else{
-						htmlDetail += '<tr><td>Fin de espera: </td><td></td><td>'+jsonData.attentionStart.split(' ')[1]+'</td></tr>';
+						htmlDetail += '<tr><td>Fin de espera: </td><td>&nbsp;&nbsp;</td><td>'+jsonData.attentionStart.split(' ')[1]+'</td></tr>';
 					}
 				}else{
-					htmlDetail += '<tr><td>Hora ingreso: </td><td></td><td>'+jsonData.datetime.split(' ')[1]+'</td></tr>';
+					htmlDetail += '<tr><td>Hora ingreso: </td><td>&nbsp;&nbsp;</td><td>'+jsonData.datetime.split(' ')[1]+'</td></tr>';
 				}
 
-				htmlDetail += '</table>';
+				htmlDetail += '</table></div>';
 				$("#rowDetail").html(htmlDetail);
 			});
 

@@ -81,6 +81,10 @@
 			case 'bitacora':
 			include("modules/bitacora.php");
 			break;
+
+			case 'visor':
+			include("../../visor/index.php");
+			break;
 		
 
 			default:

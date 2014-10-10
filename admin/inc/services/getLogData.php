@@ -25,12 +25,12 @@ if($logs){
 		$waitingStart = $logs['datetime'];
 		$sql = "SELECT datetime, description FROM logs WHERE rut='".$logs['rut']."' AND datetime>'".$logs['datetime']."' AND (description='Ticket ha venido' OR description='Ingreso de RUT Totem') ORDER BY id ASC LIMIT 1";
 		$attentionStart = $dbDetail->doSql($sql);
-		if($attentionStart['description']=='Ticket ha venido'){
+		if($attentionStart['description']=='Ticket ha venido'){//Si el próximo log es de inicio de atención, se procederá a obtener sus datos
 			$attentionStart = $attentionStart['datetime'];
 			$sql = "SELECT datetime FROM logs WHERE rut='".$logs['rut']."' AND datetime>'".$logs['datetime']."' AND description IN('Ticket Finalizado','Ticket Ausente') ORDER BY id ASC LIMIT 1";
 			$attentionFinish = $dbDetail->doSql($sql);
 			$attentionFinish = $attentionFinish['datetime'];
-		}else{
+		}else{//Si no es inicio de atención, significa que se fue o sacó otro número
 			$secondDescription = $attentionStart['description'];
 			$attentionStart = $attentionStart['datetime'];
 			$attentionFinish = null;
@@ -62,10 +62,10 @@ if($logs){
 		$waitingTime = getTimeString(strtotime($attentionStart)-strtotime($waitingStart));
 		if($attentionFinish!=null){
 			$attentionTime = getTimeString(strtotime($attentionFinish)-strtotime($attentionStart));
-		}else{
+		}else{//En caso de que no haya finalizado la atención, se calcula el tiempo de atención hasta la hora actual
 			$attentionTime = getTimeString(strtotime(date('Y-m-d H:i:s'))-strtotime($attentionStart));
 		}
-	}else{
+	}else{//En caso de que no haya inicio de atención, se calcula el tiempo de espera hasta la hora actual
 		$waitingTime = getTimeString(strtotime(date('Y-m-d H:i:s'))-strtotime($waitingStart));
 		$attentionTime = '-';
 	}
