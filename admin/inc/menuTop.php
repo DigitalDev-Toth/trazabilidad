@@ -33,7 +33,7 @@ echo '
 echo '<div class="collapse navbar-collapse navbar-ex1-collapse">';
 //Menu Left Static
 echo '<ul class="nav navbar-nav">';
-echo '<li>' . itemMenu("visor", "Situación Actual", 'enable', true) . '</li>';
+echo '<li>' . itemMenu("trace", "Situación Actual", 'enable', true) . '</li>';
 echo '<li>' . itemMenu("bitacora", "Bitácora", 'enable', true) . '</li>';
 echo '<li>' . itemMenu("supervision", "Supervisión", 'enable', true) . '</li>';
 echo '<li>' . itemMenu("trace", "Estadísticas", 'enable', true) . '</li>';
