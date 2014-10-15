@@ -1,1 +1,0 @@
-{"comet":"module","rut":"9.791.062-6","datetime":"2014-10-10 13:06:40","description":"Retiro de ticket N\u00ba 153 , M\u00f3dulo 34","zone":"1","action":"to","submodule":"47","module":"34","newticket":"153B"}

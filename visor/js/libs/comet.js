@@ -38,7 +38,7 @@ var Comet = function (data_url) {
         if (indexComet !== 0) {
             var data = $.parseJSON(response.msg);
         	console.log(response.msg);
-            if ((data.comet === 'tothtem' || data.comet === 'module') && SUBMODULES[data.submodule] != undefined ) {
+            if ((data.comet === 'tothtem' || data.comet === 'module') && SUBMODULES[data.submodule] !== undefined ) {
                 MAKE.goTo(data.comet, data.rut, 'Juan Perez', data.action, data.newticket, data.datetime, data.module, data.submodule);
             } else if (data.comet === 'submodule') {
                 if (SUBMODULES[data.id] !== undefined) {

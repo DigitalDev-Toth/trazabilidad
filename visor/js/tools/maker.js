@@ -1,8 +1,8 @@
 var MAKER = function () {
     this.countSubmodules = 0;
 };
-MAKER.prototype.module = function (name, id, type, pos, color, shape, waitingTime, submodules, seats) {
-    var m = new MODULE(name, id, type, pos, color, shape, waitingTime, submodules, seats); 
+MAKER.prototype.module = function (name, id, type, dbType, pos, color, shape, waitingTime, submodules, seats) {
+    var m = new MODULE(name, id, type, dbType, pos, color, shape, waitingTime, submodules, seats); 
     if (type === 'waiting-room') {
         MODULES['wr'] = m;
         MODULES['wr'].setSeatsPos();        
@@ -48,6 +48,18 @@ MAKER.prototype.module = function (name, id, type, pos, color, shape, waitingTim
         this.countSubmodules = 0;
     }    
 };
+MAKER.prototype.wrInfo = function (total, average, max, min) {
+    MODULES['wr'].wrInfo(total, average, max, min);
+    MODULES['wr'].wrElem();
+};
+MAKER.prototype.tothtemInfo = function (idModule, totalTicketsIssued, ticketsTo, timeFirstTicket, timeLastTicket) {
+    MODULES[idModule].tothtemInfo(totalTicketsIssued, ticketsTo, timeFirstTicket, timeLastTicket);
+    MODULES[idModule].popoverTothtemInfo();
+};
+MAKER.prototype.moduleInfo = function (idModule, attended, average, max, min) {
+    MODULES[idModule].info(attended, average, max, min);
+    MODULES[idModule].popoverInfo();
+};
 MAKER.prototype.submodule = function (name, id, idModule, posModule, state) {    
     var sm = new SUBMODULE(name, id, idModule, posModule, this.countSubmodules, state);
     MODULES[idModule].submodules[id] = sm;
@@ -64,6 +76,7 @@ MAKER.prototype.patient = function (rut, name, ticket, datetime, attention, idMo
     
     if (attention === 'waiting' || attention === 'derived') {
         PATIENTS[rut].shape = MODULES[idModule].shape;
+        PATIENTS[rut].nextIdModule = idModule;
         PATIENTS[rut].seat = this.findSeat();
         PATIENTS[rut].goToWaitingRoom(rut, true);
     } else if (attention === 'limb') { 
@@ -93,6 +106,7 @@ MAKER.prototype.goTo = function (comet, rut, name, action, ticket, datetime, idM
             PATIENTS[rut].shape = MODULES[idModule].shape;
             PATIENTS[rut].seat = this.findSeat();
             PATIENTS[rut].datetime = datetime;
+            PATIENTS[rut].nextIdModule = idModule;
             PATIENTS[rut].goToWaitingRoom(rut, false);
             break;
         case 'lb':

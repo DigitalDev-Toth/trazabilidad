@@ -27,7 +27,7 @@ session_start();
 
         $j = 0;
 
-        $sql = "SELECT m.id, m.name, m.max_wait, m.position, t.color, t.shape "
+        $sql = "SELECT m.id, m.name, m.max_wait, m.position, t.color, t.shape, t.id AS type "
                 . "FROM module AS m "
                 . "LEFT JOIN module_type AS t ON t.id = m.type "
                 . "WHERE m.zone = $zoneId "
@@ -44,7 +44,8 @@ session_start();
                     "position" => $mRows['position'], 
                     "max_wait" => $mRows['max_wait'], 
                     "color" => $mRows['color'], 
-                    "shape" => $mRows['shape']
+                    "shape" => $mRows['shape'],
+                    "type" => $mRows['type']
                 );
 
                 $sql = "SELECT s.id, s.name, s.state AS submodule_state, u.username, u.state AS user_state "

@@ -341,9 +341,9 @@ SUBMODULE.prototype.info = function (executive, activeTime, patientsAttended, av
     this.executive = executive;
     this.activeTime = new Date(activeTime).getTime();
     this.patientsAttended = patientsAttended;
-    this.average = new Date(average).getTime() - new Date().setHours(0, 0, 0);
-    this.max = new Date(max).getTime() - new Date().setHours(0, 0, 0);
-    this.min = new Date(min).getTime() - new Date().setHours(0, 0, 0);
+    this.average = new Date(average).getTime() - new Date(average).setHours(0, 0, 0);
+    this.max = new Date(max).getTime() - new Date(max).setHours(0, 0, 0);
+    this.min = new Date(min).getTime() - new Date(min).setHours(0, 0, 0);
     
     var elInfo = this.elInfo;
     $(this.el.node).popover({
