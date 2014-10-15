@@ -22,30 +22,32 @@ include("controls.php");
 
 <body>
 	<div class="container">
-		<br>
+		
 		<div class="row">
-			<div class="well well-sm text-center">
-				Bitacora
-			</div>
+
 			<form class="form-horizontal" id="toSearch" role="form" name="between" method="POST">
 
-					<div class="row">
-				
+					<div class="row text-center well well-sm ">
 						<div class="col-md-2">
-							<label for="rutSearch" class="col-sm-2 control-label pull-right">RUT/DNI:&nbsp;&nbsp;</label>
+							<label style="margin-top: 8px;"><span class="glyphicon glyphicon-th-list"></span> Bitacora</label>
 						</div>
-						<div class="col-md-3">
-							<input type="text" class="form-control" id="rutSearch" name="rutSearch" placeholder="Ingrese rut">
+
+						<div class="col-md-1 ">
+							<label for="rutSearch" class="col-sm-2 control-label">RUT/DNI:</label>
 						</div>
-						<div class="col-md-1">
-							<label for="nameSearch" class="col-sm-2 control-label ">Nombre: </label>
+						<div class="col-md-2">
+							<input type="text" class="form-control" id="rutSearch" name="rutSearch" placeholder="Ingrese RUT/DNI">
+						</div>
+						<div class="col-md-1 ">
+							<label for="nameSearch" class="col-sm-2 control-label ">Nombres: </label>
 
 						</div>
 						<div class="col-md-3">
-							<input type="text" class="form-control" id="nameSearch" name="nameSearch" placeholder="Ingrese nombre">
+							<input type="text" class="form-control" id="nameSearch" name="nameSearch" placeholder="Ingrese nombre y/o apellido">
 						</div>
-						<div class="col-md-2">
-							<input id="button" name="beetween"  class="btn btn-default" type="submit" value="Buscar" onclick="submit();">
+						<div class="col-md-1">
+							
+							<button id="button" name="beetween"  class="btn btn-default" type="submit" onclick="submit();"><span class="glyphicon glyphicon-search"></span> Buscar</button>
 						</div>
 					
 					</div>
@@ -75,8 +77,8 @@ include("controls.php");
 				//$where=array(""=>" module.id NOT IN (SELECT module FROM users_roles WHERE users=$rol)");
 				$rows = $bitacora->select($where);
 				if($rows){
-					echo "<div class='well well-sm text-center' id='data'></div>";
-					echo "<div class='row col-lg-9'>";
+					echo "<div class=' text-center' id='data'></div>";
+					echo "<div class='row col-md-9'>";
 					echo "<div class='well well-sm text-center'>";
 					
 					echo $bitacora->showData($rows, TRUE);
@@ -89,7 +91,7 @@ include("controls.php");
 		?>
 
 		</div>
-		<div id="rowDetail" class="col-lg-3"></div><!--Descripción de Log-->
+		<div id="rowDetail" class="col-md-3"></div><!--Descripción de Log-->
 	</div>
 </body>
 </html>
@@ -112,7 +114,7 @@ $("#showData").hide();
 		var rut = "<?php echo $rut; ?>";
 		var name = '<?php echo $name; ?>';
 		//show only log of patient
-		if(rut != ''){
+		if(rut != '' || rut.length){
 			$.ajax({
 			    type: 'POST',
 			    url: "services/getBitacora.php",
@@ -124,14 +126,35 @@ $("#showData").hide();
 			    	var json = JSON.parse(data1);
 					if(json.length == 1){
 						console.log(json);
-						var patientHtml = '<table>';
-							patientHtml += '<tr><td>RUT/DNI: </td><td>&nbsp;&nbsp;</td><td>'+json[0]["rut"]+'</td></tr>';
-							patientHtml += '<tr><td>Nombre: </td><td>&nbsp;&nbsp;</td><td>'+json[0]["name"]+' '+json[0]["lastname"]+'</td></tr>';
-							patientHtml += '<tr><td>Fecha de Nacimiento: </td><td>&nbsp;&nbsp;</td><td>'+json[0]["birthdate"]+'</td></tr>';
+						var patientHtml = '<table class="table table-bordered">';
+							patientHtml += '<tr> <th colspan="6" class="text-center">Resultados </th></tr>';
+							patientHtml += '<tr><th>RUT/DNI: </th><td>'+json[0]["rut"]+'</td>  <th>N° Ficha:</td><td>1</td>    <th>Estado Actual</td><td>1</td>  </tr>';
+							patientHtml += '<tr><th>Nombre: </th><td>'+json[0]["name"]+' '+json[0]["lastname"]+' <th>N° P. Tratamiento:</td><td>1</td>    <th>Maximo T. de espera:</td><td>1</td></tr>';
+							patientHtml += '<tr><th>Fecha de Nacimiento: </th><td>'+json[0]["birthdate"]+'</td> <th>N° Presupuesto:</td><td>1</td>  <th>T. espera cumulado</td><td>1</td> </tr>';
 							patientHtml += '</table>';
+
+							/*
+
+			
+												
+	
+
+
+
+
+- N° Ficha:
+- N° P. Tratamiento
+- N° Presupuesto:
+
+- T° espera actual:
+- Máx. T° espera: 
+- T° espera acumulado: 
+*/
+
+
+
 						$("#data").html("");
 						$("#data").html(patientHtml);
-						
 					}else{
 						$("#data").text('Sin registros');
 					}
@@ -142,7 +165,7 @@ $("#showData").hide();
 			    complete: function() {
 
 			    	//$('#showData').addClass('table table-striped table-bordered');
-			    	$('#showData').addClass('table table-bordered');
+			    	$('#showData').addClass('table table-bordered table-hover');
 				    $('#showData').dataTable( {
 				        "dom": 'T<"clear">lfrtip',
 				        "tableTools": {
@@ -154,6 +177,16 @@ $("#showData").hide();
 				    } );
 
 				    var table = $('#showData').DataTable();
+
+				 	$('#showData tr').hover(function() {
+					   getRowDetail(this.childNodes[1].innerHTML);
+					}, function() {
+					    if ($(this).hasClass('selected')==false){
+				            getRowDetail(0);
+				        }
+					});
+
+
 				    $('#showData tbody').on( 'click', 'tr', function () {
 				        if ($(this).hasClass('selected')){
 				            $(this).removeClass('selected');
@@ -220,49 +253,70 @@ $("#showData").hide();
 	});
 
 
+
 	function search(rut){
-		console.log(rut);
 		$("#rutSearch").val(rut);
 		$("#toSearch").submit();
 	}
 
 	function getRowDetail(idLog){
 		if(idLog!=0){
-			$.post('services/getLogData.php', {idLog: idLog}, function(data, textStatus, xhr) {
+
+
+
+			$.ajax({
+				url: 'services/getLogData.php',
+				type: 'GET',
+				data: {idLog: idLog}  ,
+				beforeSend: function() {
+					var loading ='<div style="position: fixed;" ><br><h1 ><i class="fa fa-spinner fa-spin" style="margin-left: 150px;margin-top: 150px;"></i></h1></div>';
+				   	$("#rowDetail").html(loading);
+				},
+			})
+			.done(function(data) {
 				var jsonData = JSON.parse(data);
-				var htmlDetail = '<div style="position: fixed;" class="well"><table>';
-				htmlDetail += '<tr><td>ID: </td><td>&nbsp;&nbsp;</td><td>'+idLog+'</td></tr>';
-				htmlDetail += '<tr><td>RUT/DNI: </td>&nbsp;&nbsp;<td></td><td>'+jsonData.rut+'</td></tr>';
-				htmlDetail += '<tr><td>Descripción: </td>&nbsp;&nbsp;<td></td><td>'+jsonData.description+'</td></tr>';
-				htmlDetail += '<tr><td>Zona: </td><td></td>&nbsp;&nbsp;<td>'+jsonData.zone+'</td></tr>';
-				htmlDetail += '<tr><td>Módulo: </td><td>&nbsp;&nbsp;</td><td>'+jsonData.module+'</td></tr>';
-				htmlDetail += '<tr><td>Sub-Módulo: </td><td>&nbsp;&nbsp;</td><td>'+jsonData.submodule+'</td></tr>';
-				htmlDetail += '<tr><td>Usuario: </td><td>&nbsp;&nbsp;</td><td>'+jsonData.username+'</td></tr>';
-				htmlDetail += '<tr><td>---------</td><td>&nbsp;&nbsp;</td><td>----------</td></tr>';
+				var htmlDetail = '<div style="position: fixed;" class="panel panel-default">';
+				htmlDetail += '<div class="panel-heading text-center">Resumen</div>  <div class="panel-body"><table class="table table-bordered">';
+				htmlDetail += '<tr><th>ID: </th><td>'+idLog+'</td></tr>';
+				htmlDetail += '<tr><th>RUT/DNI: </th> <td>'+jsonData.rut+'</td></tr>';
+				htmlDetail += '<tr><th>Descripción: </th> <td>'+jsonData.description+'</td></tr>';
+				htmlDetail += '<tr><th>Zona: </th><td>'+jsonData.zone+'</td></tr>';
+				htmlDetail += '<tr><th>Módulo: </th><td>'+jsonData.module+'</td></tr>';
+				htmlDetail += '<tr><th>Sub-Módulo: </th><td>'+jsonData.submodule+'</td></tr>';
+				htmlDetail += '<tr><th>Usuario: </th><td>'+jsonData.username+'</td></tr>';
+				htmlDetail += '<tr><th colspan="3"> </th></tr>';
 				
-				htmlDetail += '<tr><td>Fecha: </td><td>&nbsp;&nbsp;</td><td>'+jsonData.datetime.split(' ')[0]+'</td></tr>';
+				htmlDetail += '<tr><th>Fecha: </th><td>'+jsonData.datetime.split(' ')[0]+'</td></tr>';
 				
 				if(jsonData.description!='Ingreso de RUT Totem' && jsonData.description!='No seleccionó atención'){
-					htmlDetail += '<tr><td>Inicio de espera: </td><td>&nbsp;&nbsp;</td><td>'+jsonData.waitingStart.split(' ')[1]+'</td></tr>';
+					htmlDetail += '<tr><th>Inicio de espera: </th><td>'+jsonData.waitingStart.split(' ')[1]+'</td></tr>';
 					if(jsonData.secondDescription==null){
 						if(jsonData.attentionStart!=null){
-							htmlDetail += '<tr><td>Inicio de atención: </td><td>&nbsp;&nbsp;</td><td>'+jsonData.attentionStart.split(' ')[1]+'</td></tr>';
+							htmlDetail += '<tr><th>Inicio de atención: </th><td>'+jsonData.attentionStart.split(' ')[1]+'</td></tr>';
 						}
 						if(jsonData.attentionFinish!=null){
-							htmlDetail += '<tr><td>Fin de atención: </td><td>&nbsp;&nbsp;</td><td>'+jsonData.attentionFinish.split(' ')[1]+'</td></tr>';
+							htmlDetail += '<tr><th>Fin de atención: </th><td>'+jsonData.attentionFinish.split(' ')[1]+'</td></tr>';
 						}
-						htmlDetail += '<tr><td>Tiempo de espera: </td><td>&nbsp;&nbsp;</td><td>'+jsonData.waitingTime+'</td></tr>';
-						htmlDetail += '<tr><td>Tiempo de atención: </td><td>&nbsp;&nbsp;</td><td>'+jsonData.attentionTime+'</td></tr>';
+						htmlDetail += '<tr><th>Tiempo de espera: </th><td>'+jsonData.waitingTime+'</td></tr>';
+						htmlDetail += '<tr><th>Tiempo de atención: </th><td>'+jsonData.attentionTime+'</td></tr>';
 					}else{
-						htmlDetail += '<tr><td>Fin de espera: </td><td>&nbsp;&nbsp;</td><td>'+jsonData.attentionStart.split(' ')[1]+'</td></tr>';
+						htmlDetail += '<tr><th>Fin de espera: </th><td>'+jsonData.attentionStart.split(' ')[1]+'</td></tr>';
 					}
 				}else{
-					htmlDetail += '<tr><td>Hora ingreso: </td><td>&nbsp;&nbsp;</td><td>'+jsonData.datetime.split(' ')[1]+'</td></tr>';
+					htmlDetail += '<tr><th>Hora ingreso: </th><td>'+jsonData.datetime.split(' ')[1]+'</td></tr>';
 				}
 
-				htmlDetail += '</table></div>';
-				$("#rowDetail").html(htmlDetail);
+				htmlDetail += '</table></div></div></div>';
+			
+					$("#rowDetail").html(htmlDetail);
+				
+				
+
+
 			});
+			
+
+		
 
 
 			

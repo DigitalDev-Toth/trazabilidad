@@ -1,0 +1,1 @@
+{"comet":"module","rut":"17.171.121-2","datetime":"2014-10-06 15:46:33","description":"Ingreso de RUT Totem","zone":"1","action":"to","submodule":"49","module":"34"}

@@ -22,36 +22,48 @@ include 'libs/bootstrapStyle.php';
 </head>
 <body>
 
-<div class="row well">
-
-	<div class="row text-center">
-		<div class="col-md-3 col-md-offset-0">
-			<p class="">Visualizacion</p>	
-		</div>
-		<div class="col-md-2 col-md-offset-6">
-			<p class="">Zona</p>	
-		</div>
-	</div>
-           
+   
 	<div class="row text-center">
 
-		<div class="col-md-3 col-md-offset-0">
-			<div class="btn-group">
-			  <button type="button" class="btn btn-default" id="visorButton">Visor</button>
-			  <button type="button" class="btn btn-default" id="tableButton">Tablas</button>
+
+	    <div class="row text-center well well-sm ">
+			<div class="col-md-2">
+				<label style="margin-top: 8px;" class="pull-right"><span class="glyphicon glyphicon-th-list"></span> Situacion Actual</label>
 			</div>
-		</div>
-		<div class="col-md-1 col-md-offset-2">
+			<div class="col-md-3">
+				<div class="btn-group">
+			 		<button type="button" class="btn btn-default" id="visorButton">Visualizacion</button>
+					<button type="button" class="btn btn-default" id="tableButton">Resumen</button>
+				</div>
+			</div>
+
+
+			<div class="col-md-1">
+				<label style="margin-top: 8px;" class="pull-right">Zonas: </label>	
+			</div>
+
+			<div class="col-md-2">
+				<h4 id="loading"><i class="fa fa-spinner fa-spin"></i></h4>
+				<select class="form-control" id="selectorZone" style="display:none">
+				</select>
+			</div>
+			<div class="col-md-1 ">
 			    <button id="popoverData" class="btn" href="#" data-content="" rel="popover" data-placement="bottom" data-original-title="Leyenda" data-trigger="hover" data-html="true"  disable><span class="glyphicon glyphicon-info-sign"></span> Leyenda</button>
+			</div>
+
 			
+
 		</div>
-		<div class="col-md-2 col-md-offset-3">
-			<h3 id="loading"><i class="fa fa-spinner fa-spin"></i></h3>
-			<select class="form-control" id="selectorZone" style="display:none">
-			</select>
-		</div>
+
+
+	
+
+
+
+		
+	
 	</div>
-</div>
+
 
 <div class="row text-center"> 
 

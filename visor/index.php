@@ -22,7 +22,6 @@ if(isset($_GET['idZone'])){
         <script src="js/libs/raphael-min.js"></script>
         <script src="js/libs/raphaeljs-infobox.js"></script>
         <script src="js/libs/comet.js"></script>
-        <script src="js/libs/nodeComet.js"></script>
         <script src="js/tools/module.js"></script>
         <script src="js/tools/submodule.js"></script>
         <script src="js/tools/patient.js"></script>

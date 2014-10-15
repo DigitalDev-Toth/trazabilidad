@@ -27,16 +27,16 @@ echo '
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="#">FALP</a>
+        <a class="navbar-brand" href="#"><span class="glyphicon glyphicon-home"></span> Trazabilidad</a>
     </div>';
 
 echo '<div class="collapse navbar-collapse navbar-ex1-collapse">';
 //Menu Left Static
 echo '<ul class="nav navbar-nav">';
-echo '<li>' . itemMenu("trace", "Situación Actual", 'enable', true) . '</li>';
-echo '<li>' . itemMenu("bitacora", "Bitácora", 'enable', true) . '</li>';
-echo '<li>' . itemMenu("supervision", "Supervisión", 'enable', true) . '</li>';
-echo '<li>' . itemMenu("trace", "Estadísticas", 'enable', true) . '</li>';
+echo '<li> ' . itemMenu("trace", "<span class='glyphicon glyphicon-time'></span> Situación Actual", 'enable', true) . '</li>';
+echo '<li> ' . itemMenu("bitacora", " <span class='glyphicon glyphicon-list-alt'></span> Bitácora", 'enable', true) . '</li>';
+echo '<li> ' . itemMenu("supervision", "<span class='glyphicon glyphicon-search'></span>  Supervisión", 'enable', true) . '</li>';
+echo '<li>  ' . itemMenu("trace", "<span class='glyphicon glyphicon-calendar'></span> Estadísticas", 'enable', true) . '</li>';
 echo '</ul>';
 
 //Menu Right
@@ -44,7 +44,7 @@ echo '<ul id="nav" class="nav navbar-nav navbar-right">';
 
 //Dropdown
 echo '<li class="dropdown">' . itemMenu("admin", "Configuracion", 'enable', false) . '</li>';
-echo '<li>' . $_SESSION['Realname'] . '<a href="exit.php" >Salir</a></li>';
+echo '<li>' . $_SESSION['Realname'] . '<a href="exit.php" >Salir <span class="glyphicon glyphicon-log-out"></span></a></li>';
 /*
 if (findRole("users", "show")) {$state = 'enable';} else { $state = 'disable';}
 echo '<li>' . itemMenu("users", "Personas", $state, false) . '</li>';

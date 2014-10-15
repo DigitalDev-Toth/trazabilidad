@@ -650,9 +650,6 @@ function loginPatient(){
                     //BACKEND PARA EL COMET
                     $.post('../../../visor/comet/backend.php',{msg: data},function(data, textStatus, xhr){
                     });
-                    /*$.get('/push?m='+data, function(result) {
-                        console.log(data);
-                    });*/
                 });
 
 

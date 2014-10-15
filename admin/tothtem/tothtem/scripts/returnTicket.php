@@ -97,7 +97,6 @@ function ticketInfo(module,special,newTicket){
   //code39 code93 code128 codabar Datamatrix->qr datamatrix
 
   //BACKEND PARA EL COMET, SE INTEGRA CON LOS MÓDULOS DE GESTIÓN, HABILITAR UNA VEZ ESTÉ EN GIT
-  console.log(jsonData);
   $.post('../../../../visor/comet/backend.php',{msg: jsonData},function(data, textStatus, xhr){
       //console.log("comet->"+data);
   });

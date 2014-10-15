@@ -23,7 +23,11 @@ function getSubMenu($content) {
 			$subMenu .= getItemMenu("module", "Modulos");
 			$subMenu .= getItemMenu("submodule", "Sub Modulos");
 			$subMenu .= getItemMenu("module_special", "Modulos Especiales");
-			$subMenu .= '<li class = "round_corner_menu_top"></li>';
+			$subMenu .= getItemMenu("changePass", "Cambiar Password");
+			$subMenu .= getItemMenu("role", "Roles");
+			$subMenu .= getItemMenu("roles", "Tipo de Roles");
+			$subMenu .= getItemMenu("users", "Usuarios");
+			
 			$subMenu .= '</ul>';
 			break;
 
