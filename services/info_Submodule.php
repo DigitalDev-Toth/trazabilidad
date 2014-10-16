@@ -27,9 +27,15 @@ do{
 	$userLogin = $db->doSql($sql);
 
 
-	$sql = "SELECT *, T.id AS id_ticket, l.id AS id_log FROM tickets T
+	/*$sql = "SELECT *, T.id AS id_ticket, l.id AS id_log FROM tickets T
 			LEFT JOIN logs l ON l.id=t.logs
 			WHERE sub_module=$submodule AND attention IN ('on_serve','served') AND datetime >= '$date' AND datetime < ('$date'::date + '1 day'::interval)";
+	*/
+	$sql = "SELECT * FROM logs 
+			WHERE sub_module=$submodule AND datetime >= '$date' 
+			AND description IN ('Ticket Finalizado','Ticket Derivado','Ticket ha venido') 
+			AND datetime < ('$date'::date + '1 day'::interval) ORDER BY rut,id";
+			echo $sql;
 	$logs = $db->doSql($sql);
 
 
@@ -42,19 +48,18 @@ do{
 	$servedTimeTotal = 0;
 	$servedMaxTime = 0;
 	$servedMinTime = 0;
-	$data='';
 
 	do{
 	    $data[] = array(
-	        "id" => $logs['id_ticket'],
-	        "id_log" => $logs['id_log'],
+	        "id" => $logs['id'],
+	        //"id_log" => $logs['id_log'],
 	        "rut" => $logs['rut'],
 	        "datetime" => $logs['datetime'],
-	        "description" => $logs['description'],
-	        "attention" => $logs['attention']
+	        "description" => $logs['description']/*,
+	        "attention" => $logs['attention']*/
 	    );
 	} while($logs=pg_fetch_assoc($db->actualResults));
-
+	echo '<br/>';
 	if($data[0]['id']!=null){
 		$patients=count($data);
 	}else{
@@ -62,8 +67,8 @@ do{
 	}
 
 
-	for($i=0;$i<$patients;$i++){
-		if($data[$i]['attention']=='on_serve'){
+	for($i=0;$i<$patients;$i++){/*
+		if($data[$i]['description']=='on_serve'){
 			//ATENCIÓN
 			$servedTime = strtotime(date('Y-m-d H:i:s')) - strtotime($data[$i]['datetime']);
 			if($servedCount==0)$servedMinTime = $servedTime;
@@ -84,39 +89,62 @@ do{
 			if($servedMaxTime<$servedTime) $servedMaxTime = $servedTime;
 			if($servedMinTime>$servedTime) $servedMinTime = $servedTime;
 			$servedCount++;
-		}
+		}*/
 
 		//REVISAR Y AGREGAR LOS CASOS DERIVADOS
+		//for($i=0;$i<$patients;$i++){
+			if($data[$i]['description']=='Ticket ha venido' && $i+1<count($data)){
+				if($data[$i]['rut']==$data[$i+1]['rut'] && ($data[$i+1]['description']=='Ticket Derivado' || $data[$i+1]['description']=='Ticket Finalizado')){
+					$servedTime = strtotime($data[$i+1]['datetime']) - strtotime($data[$i]['datetime']);
+					if($servedCount==0)$servedMinTime = $servedTime;
+					$servedTimeTotal =  $servedTimeTotal + $servedTime;
+					if($servedMaxTime<$servedTime) $servedMaxTime = $servedTime;
+					if($servedMinTime>$servedTime) $servedMinTime = $servedTime;
+					$servedCount++;
+				}else{
+					$servedTime = strtotime(date('Y-m-d H:i:s')) - strtotime($data[$i]['datetime']);
+					if($servedCount==0)$servedMinTime = $servedTime;
+					$servedTimeTotal =  $servedTimeTotal + $servedTime;
+					if($servedMaxTime<$servedTime) $servedMaxTime = $servedTime;
+					if($servedMinTime>$servedTime) $servedMinTime = $servedTime;
+					$servedCount++;
+				}
+			}
+
+		//}
 	}
 
 
-	/*echo 'ID_MODULE: '.$userData['id_module'].'<br/>';
+	echo 'ID_MODULE: '.$userData['id_module'].'<br/>';
 	echo 'ID_SUBMODULE: '.$submodule.'<br/>';
 	echo 'USUARIO: '.$userData['username'].'<br/>';
 	echo 'INICIO SESI&Oacute;N: '.$userLogin['datetime'].'<br/>';
-	echo 'PACIENTES ATENDIDOS: '.$patients.'<br/>';
-	echo 'TIEMPO M&Aacute;XIMO: '.date('Y-m-d').' '.getTimeString($servedMaxTime).'<br/>';
-	echo 'TIEMPO M&Iacute;NIMO: '.date('Y-m-d').' '.getTimeString($servedMinTime).'<br/>';
+	echo 'PACIENTES ATENDIDOS: '.$servedCount.'<br/>';
+	echo 'TIEMPO M&Aacute;XIMO: '.$date.' '.getTimeString($servedMaxTime).'<br/>';
+	echo 'TIEMPO M&Iacute;NIMO: '.$date.' '.getTimeString($servedMinTime).'<br/>';
 	if($servedCount==0){
-		echo 'PROMEDIO: '.date('Y-m-d').' '.getTimeString($servedTimeTotal).'<br/>';
+		echo 'PROMEDIO: '.$date.' '.getTimeString($servedTimeTotal).'<br/>';
 	}else{
-		echo 'PROMEDIO: '.date('Y-m-d').' '.getTimeString($servedTimeTotal/$servedCount).'<br/>';
-	}*/
+		echo 'PROMEDIO: '.$date.' '.getTimeString($servedTimeTotal/$servedCount).'<br/>';
+	}
+	echo '<br/>';
 
 
 	$module=$userData['id_module'];
 	$usernameX=$userData['username'];
 	$usertime=$userLogin['datetime'];
 	
-	$maxtime=date('Y-m-d').' '.getTimeString($servedMaxTime);
-	$mintime=date('Y-m-d').' '.getTimeString($servedMinTime);
+	$maxtime=$date.' '.getTimeString($servedMaxTime);
+	$mintime=$date.' '.getTimeString($servedMinTime);
 	if($servedCount==0){
-		$average=date('Y-m-d').' '.getTimeString($servedTimeTotal);
+		$average=$date.' '.getTimeString($servedTimeTotal);
 	}else{
-		$average=date('Y-m-d').' '.getTimeString($servedTimeTotal/$servedCount);
+		$average=$date.' '.getTimeString($servedTimeTotal/$servedCount);
 	}
-$returnData[] = array('dbtype' => '0','module' => $module, 'submodule' => $submodule, 'user' => $usernameX, 'session' => $usertime, 'patients' => $patients, 'maxtime' => $maxtime, 'mintime' => $mintime, 'average' => $average);
-
+	
+	$returnData[] = array('dbtype' => '0','module' => $module, 'submodule' => $submodule, 'user' => $usernameX, 'session' => $usertime, 'patients' => $patients, 'maxtime' => $maxtime, 'mintime' => $mintime, 'average' => $average);
+	
+	$data = null;
 } while($userData=pg_fetch_assoc($db1->actualResults));
 
 //$returnData = array('dbtype' => '0','module' => $module, 'submodule' => $submodule, 'user' => $usernameX, 'session' => $usertime, 'patients' => $patients, 'maxtime' => $maxtime, 'mintime' => $mintime, 'average' => $average);

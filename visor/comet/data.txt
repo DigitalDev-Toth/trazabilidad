@@ -1,1 +1,1 @@
-{"comet":"submodule","state":"inactivo","id":"48"}
+{"comet":"module","rut":"17.443.625-8","datetime":"2014-10-16 12:16:05","description":"Ticket Derivado","zone":"1","action":"to","submodule":"52","module":"35","newticket":"161B","idticket":"565"}

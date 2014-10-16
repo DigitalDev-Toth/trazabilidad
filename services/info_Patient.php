@@ -37,10 +37,10 @@ if($row){
 
 ////////////////////////////////////////////////
 
-echo '<br/>NOMBRE: '.$name.'<br/>';
+/*echo '<br/>NOMBRE: '.$name.'<br/>';
 echo 'RUT/DNI: '.$rut.'<br/>';
 echo 'MOTIVO VISITA: '.$data[0]["modulename"].'<br/>';
-echo 'INICIO DE ESPERA: '.$data[0]["datetime"].'<br/>';
+echo 'INICIO DE ESPERA: '.$data[0]["datetime"].'<br/>';*/
 
 $modulename = $data[0]["modulename"];
 $datetime = $data[0]["datetime"];
