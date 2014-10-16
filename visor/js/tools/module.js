@@ -8,6 +8,7 @@ var MODULE = function (name, id, type, dbType, pos, color, shape, waitingTime, s
             this.ticketsTo = null;
             this.timeFirstTicket = null;
             this.timeLastTicket = null;
+            this.ivTothtemInfo = null;
         } else {
             this.elInfo = null;
             this.attended = null;
@@ -15,6 +16,7 @@ var MODULE = function (name, id, type, dbType, pos, color, shape, waitingTime, s
             this.max = null;
             this.min = null;
             this.timeOn = null;
+            this.ivInfo = null; 
         }
         this.submodules = {};
         this.totalSubmodules = submodules.length;
@@ -27,11 +29,17 @@ var MODULE = function (name, id, type, dbType, pos, color, shape, waitingTime, s
         this.moduleRound = 5;   
     } else if (type === 'waiting-room') {
         this.elwrInfo = null;
+        this.wrAverage = null;
+        this.wrMax = null;
+        this.wrMin = null;
         this.maxSeats = seats; // max seats per module 
         this.seats = 60; // total seats per module
+        this.seatsCount = 0;
         this.seatsPos = [];
         this.textMaxSeats = null;
         this.textMsgMaxSeats = null;
+        this.timeOn = null;
+        this.ivwrInfo = null;
     } else if (type === 'limb') {
         this.places = 24;
         this.placesPos = [];
@@ -40,11 +48,9 @@ var MODULE = function (name, id, type, dbType, pos, color, shape, waitingTime, s
     this.pos = pos;
     this.el = null; // element in DOM for module
     this.text = null; // element in DOM for text module
+    this.elTop = null;
     this.type = type;
-    this.name = name; 
-    this.ivTothtemInfo = null;
-    this.ivInfo = null; 
-    this.ivwrInfo = null;
+    this.name = name;  
     this.setElem();
 };
 // attributes for modules except waiting room and limb
@@ -59,7 +65,8 @@ MODULE.prototype.attrs = function (color) {
 MODULE.prototype.textAttrs = function (color) {
     return {
         'fill': this.setColor(color, -0.3),
-        'font-size': '14px'        
+        'font-size': '14px',
+        'font-weight': 'bold'
     };
 };
 MODULE.prototype.setColor = function (hex, lum) {
@@ -101,6 +108,7 @@ MODULE.prototype.setElem = function () { // element in DOM for module
                     x = ($(window).width() / 2) - (w / 2) ;
                 this.el = PAPER.rect(x, 5, w, this.submoduleHeight, this.moduleRound).attr(this.attrs(this.color));
                 this.text = PAPER.text(x + (w / 2), this.submoduleHeight + 15, this.name).attr(this.textAttrs(this.color));
+                this.elTop = PAPER.rect(x, 5, w, this.submoduleHeight, this.moduleRound).attr({'fill': 'red', 'fill-opacity': '0', 'stroke-width': '0'});
                 break;
             case 'izquierda':
                 var h = (this.totalSubmodules * this.submoduleWidth) + 20,
@@ -108,6 +116,7 @@ MODULE.prototype.setElem = function () { // element in DOM for module
                 this.el = PAPER.rect(5, y, this.submoduleHeight, h, this.moduleRound).attr(this.attrs(this.color));
                 this.text = PAPER.text(this.submoduleHeight + 15, y + (h / 2), this.name).attr(this.textAttrs(this.color));
                 this.text.rotate(-90);
+                this.elTop = PAPER.rect(5, y, this.submoduleHeight, h, this.moduleRound).attr({'fill': 'red', 'fill-opacity': '0', 'stroke-width': '0'});
                 break;
             case 'inferior':
                 var w = (this.totalSubmodules * this.submoduleWidth) + 20,
@@ -115,6 +124,7 @@ MODULE.prototype.setElem = function () { // element in DOM for module
                     y = $(window).height() - 95;
                 this.el = PAPER.rect(x, y, w, this.submoduleHeight, this.moduleRound).attr(this.attrs(this.color));
                 this.text = PAPER.text(x + (w / 2), y - 10, this.name).attr(this.textAttrs(this.color));
+                this.elTop = PAPER.rect(x, y, w, this.submoduleHeight, this.moduleRound).attr({'fill': 'red', 'fill-opacity': '0', 'stroke-width': '0'});
                 break;
             case 'derecha':
                 var h = (this.totalSubmodules * this.submoduleWidth) + 20,
@@ -123,6 +133,7 @@ MODULE.prototype.setElem = function () { // element in DOM for module
                 this.el = PAPER.rect(x, y, this.submoduleHeight, h, this.moduleRound).attr(this.attrs(this.color));
                 this.text = PAPER.text(x - 10, y + (h / 2), this.name).attr(this.textAttrs(this.color));
                 this.text.rotate(90);
+                this.elTop = PAPER.rect(x, y, this.submoduleHeight, h, this.moduleRound).attr({'fill': 'red', 'fill-opacity': '0', 'stroke-width': '0'});
                 break;
             case 'superior-izquierda':
                 if (this.totalSubmodules >= 4) {
@@ -156,6 +167,7 @@ MODULE.prototype.setElem = function () { // element in DOM for module
                 this.el = PAPER.path(p).attr(this.attrs(this.color));
                 this.text = PAPER.text(xt, yt, this.name).attr(textAttributes);
                 this.text.rotate(rt, xt, yt);
+                this.elTop = PAPER.path(p).attr({'fill': 'red', 'fill-opacity': '0', 'stroke-width': '0'});
                 break;
             case 'superior-derecha':                
                 if (this.totalSubmodules >= 4) {
@@ -194,6 +206,7 @@ MODULE.prototype.setElem = function () { // element in DOM for module
                 this.el = PAPER.path(p).attr(this.attrs(this.color));
                 this.text = PAPER.text(xt, yt, this.name).attr(textAttributes);
                 this.text.rotate(rt, xt, yt);
+                this.elTop = PAPER.path(p).attr({'fill': 'red', 'fill-opacity': '0', 'stroke-width': '0'});
                 break;
             case 'inferior-izquierda':
                 if (this.totalSubmodules >= 4) {
@@ -231,6 +244,7 @@ MODULE.prototype.setElem = function () { // element in DOM for module
                 this.el = PAPER.path(p).attr(this.attrs(this.color));
                 this.text = PAPER.text(xt, yt, this.name).attr(textAttributes);
                 this.text.rotate(rt, xt, yt);
+                this.elTop = PAPER.path(p).attr({'fill': 'red', 'fill-opacity': '0', 'stroke-width': '0'});
                 break;
             case 'inferior-derecha':
                 if (this.totalSubmodules >= 4) {
@@ -259,6 +273,7 @@ MODULE.prototype.setElem = function () { // element in DOM for module
                     this.el = PAPER.path(p).attr(this.attrs(this.color));
                     this.text = PAPER.text(xt, yt, this.name).attr(textAttributes);
                     this.text.rotate(rt, xt, yt);
+                    this.elTop = PAPER.path(p).attr({'fill': 'red', 'fill-opacity': '0', 'stroke-width': '0'});
                 } else {
                     var w = 200,
                         h = 200,
@@ -274,6 +289,7 @@ MODULE.prototype.setElem = function () { // element in DOM for module
                     this.el = PAPER.path(p).attr(this.attrs(this.color));
                     this.text = PAPER.text(xt, yt, this.name).attr(textAttributes);
                     this.text.rotate(rt, xt, yt);
+                    this.elTop = PAPER.path(p).attr({'fill': 'red', 'fill-opacity': '0', 'stroke-width': '0'});
                 }         
                 break;
         }
@@ -319,6 +335,48 @@ MODULE.prototype.setPlacesPos = function () {
         }    
     }
 };
+MODULE.prototype.seatsCountAndTimeWaiting = function () {
+    setInterval((function (t) {
+        return function () {
+            var count = 0;
+            var array = [];
+            for (var i = 0; i < t.seats; i++) {
+                if (t.seatsPos[i].patient !== null) {                    
+                    if ((new Date().getTime() - PATIENTS[t.seatsPos[i].patient].datetime) >= MODULES[PATIENTS[t.seatsPos[i].patient].idModule].beginWaitingTime && 
+                        (new Date().getTime() - PATIENTS[t.seatsPos[i].patient].datetime) < MODULES[PATIENTS[t.seatsPos[i].patient].idModule].finalWaitingTime) {
+                        PATIENTS[t.seatsPos[i].patient].el.animate({
+                            'fill': 'yellow'
+                        }, 1000);
+                    } else if ((new Date().getTime() - PATIENTS[t.seatsPos[i].patient].datetime) >= MODULES[PATIENTS[t.seatsPos[i].patient].idModule].finalWaitingTime) {
+                        PATIENTS[t.seatsPos[i].patient].el.animate({
+                            'fill': 'red'
+                        }, 1000);
+                    }
+                    count++;
+                    array.push(new Date().getTime() - PATIENTS[t.seatsPos[i].patient].datetime);
+                }                
+            }
+            t.seatsCount = count;
+            t.wrMax = Math.max.apply(null, array);
+            t.wrMin = Math.min.apply(null, array);
+            var sum = 0;
+            for (var i = 0; i < t.seatsCount; i++) {
+                sum = sum + array[i];
+            }
+            t.wrAverage = sum / t.seatsCount;
+            
+            if (count >= t.maxSeats) {
+                t.textMsgMaxSeats.attr({
+                    'fill-opacity': 1
+                });
+            } else {
+                t.textMsgMaxSeats.attr({
+                    'fill-opacity': 0
+                });
+            }
+        };        
+    })(this), 1000);
+};
 MODULE.prototype.tothtemInfo = function (totalTicketsIssued, ticketsTo, timeFirstTicket, timeLastTicket) {
     this.elTothtemInfo = $('<div></div>');
     this.totalTicketsIssued = totalTicketsIssued;
@@ -327,15 +385,10 @@ MODULE.prototype.tothtemInfo = function (totalTicketsIssued, ticketsTo, timeFirs
     this.timeLastTicket = new Date(timeLastTicket).getTime();
     
     var elTothtemInfo = this.elTothtemInfo;
-    $(this.el.node).popover({
-        'container': 'body',
-        'trigger': 'click',
-        'html': true,
-        'placement': 'auto',
-        'content': elTothtemInfo
-    });
+    this.elTop.toFront();
+    $(this.elTop.node).tothtip(elTothtemInfo);
 };
-MODULE.prototype.popoverTothtemInfo = function () {
+MODULE.prototype.tooltipTothtemInfo = function () {
     this.ivTothtemInfo = setInterval((function (t) {
         return function () {
             if (new Date(t.timeFirstTicket).getHours() < 10) {
@@ -392,15 +445,9 @@ MODULE.prototype.info = function (attended, average, max, min) {
     this.min = new Date(min).getTime() - new Date(min).setHours(0, 0, 0);
     
     var elInfo = this.elInfo;
-    $(this.el.node).popover({
-        'container': 'body',
-        'trigger': 'click',
-        'html': true,
-        'placement': 'auto',
-        'content': elInfo
-    });
+    $(this.elTop.node).tothtip(elInfo);
 };
-MODULE.prototype.popoverInfo = function () {
+MODULE.prototype.tooltipInfo = function () {
     this.ivInfo = setInterval((function (t) {
         return function () {
             if (Math.floor(((t.average / 1000) / 60) / 60) < 10) {
@@ -476,72 +523,73 @@ MODULE.prototype.setTimeOn = function (timeOn) {
     
     this.average = ((this.average * (this.attended - 1)) + this.timeOn) / this.attended;
 };
-MODULE.prototype.wrInfo = function (total, average, max, min) {
+MODULE.prototype.wrInfo = function () {
     this.elwrInfo = new Infobox(PAPER, {x: this.el.attrs.x + 10, y: this.el.attrs.y - 15, width: this.el.attrs.width, height: 20});
-    this.wrTotal = total;
-    this.wrAverage = new Date(average).getTime() - new Date(average).setHours(0, 0, 0);
-    this.wrMax = new Date(max).getTime() - new Date(max).setHours(0, 0, 0);
-    this.wrMin = new Date(min).getTime() - new Date(min).setHours(0, 0, 0);
-
 };
 MODULE.prototype.wrElem = function () {
     this.ivwrInfo = setInterval((function (t) {
         return function () {
-            if (Math.floor(((t.wrAverage / 1000) / 60) / 60) < 10) {
-                var averageHours = '0'+ Math.floor(((t.wrAverage / 1000) / 60) / 60);
+            if (t.seatsCount > 0) {
+                if (Math.floor(((t.wrAverage / 1000) / 60) / 60) < 10) {
+                    var averageHours = '0'+ Math.floor(((t.wrAverage / 1000) / 60) / 60);
+                } else {
+                    var averageHours = Math.floor(((t.wrAverage / 1000) / 60) / 60);
+                }
+
+                if (new Date(t.wrAverage).getMinutes() < 10) {
+                    var averageMinutes = '0'+ new Date(t.wrAverage).getMinutes();
+                } else {
+                    var averageMinutes = new Date(t.wrAverage).getMinutes();
+                }
+
+                if (new Date(t.wrAverage).getSeconds() < 10) {
+                    var averageSeconds = '0'+ new Date(t.wrAverage).getSeconds();
+                } else {
+                    var averageSeconds = new Date(t.wrAverage).getSeconds();
+                }
+
+                if (Math.floor(((t.wrMax / 1000) / 60) / 60) < 10) {
+                    var maxHours = '0'+ Math.floor(((t.wrMax / 1000) / 60) / 60);
+                } else {
+                    var maxHours = Math.floor(((t.wrMax / 1000) / 60) / 60);
+                }            
+                if (new Date(t.wrMax).getMinutes() < 10) {
+                    var maxMinutes = '0'+ new Date(t.wrMax).getMinutes();
+                } else {
+                    var maxMinutes = new Date(t.wrMax).getMinutes();
+                }            
+                if (new Date(t.wrMax).getSeconds() < 10) {
+                    var maxSeconds = '0'+ new Date(t.wrMax).getSeconds();
+                } else {
+                    var maxSeconds = new Date(t.wrMax).getSeconds();
+                }
+
+                if (Math.floor(((t.wrMin / 1000) / 60) / 60) < 10) {
+                    var minHours = '0'+ Math.floor(((t.wrMin / 1000) / 60) / 60);
+                } else {
+                    var minHours = Math.floor(((t.wrMin / 1000) / 60) / 60);
+                }            
+                if (new Date(t.wrMin).getMinutes() < 10) {
+                    var minMinutes = '0'+ new Date(t.wrMin).getMinutes();
+                } else {
+                    var minMinutes = new Date(t.wrMin).getMinutes();
+                }            
+                if (new Date(t.wrMin).getSeconds() < 10) {
+                    var minSeconds = '0'+ new Date(t.wrMin).getSeconds();
+                } else {
+                    var minSeconds = new Date(t.wrMin).getSeconds();
+                }
+                
+                var average = averageHours +':'+ averageMinutes +':'+ averageSeconds;
+                var max = maxHours +':'+ maxMinutes +':'+ maxSeconds;
+                var min = minHours +':'+ minMinutes +':'+ minSeconds;
             } else {
-                var averageHours = Math.floor(((t.wrAverage / 1000) / 60) / 60);
-            }
+                var average = '00:00:00';
+                var max = '00:00:00';
+                var min = '00:00:00';
+            }     
             
-            if (new Date(t.wrAverage).getMinutes() < 10) {
-                var averageMinutes = '0'+ new Date(t.wrAverage).getMinutes();
-            } else {
-                var averageMinutes = new Date(t.wrAverage).getMinutes();
-            }
-            
-            if (new Date(t.wrAverage).getSeconds() < 10) {
-                var averageSeconds = '0'+ new Date(t.wrAverage).getSeconds();
-            } else {
-                var averageSeconds = new Date(t.wrAverage).getSeconds();
-            }
-            
-            if (Math.floor(((t.wrMax / 1000) / 60) / 60) < 10) {
-                var maxHours = '0'+ Math.floor(((t.wrMax / 1000) / 60) / 60);
-            } else {
-                var maxHours = Math.floor(((t.wrMax / 1000) / 60) / 60);
-            }            
-            if (new Date(t.wrMax).getMinutes() < 10) {
-                var maxMinutes = '0'+ new Date(t.wrMax).getMinutes();
-            } else {
-                var maxMinutes = new Date(t.wrMax).getMinutes();
-            }            
-            if (new Date(t.wrMax).getSeconds() < 10) {
-                var maxSeconds = '0'+ new Date(t.wrMax).getSeconds();
-            } else {
-                var maxSeconds = new Date(t.wrMax).getSeconds();
-            }
-            
-            if (Math.floor(((t.wrMin / 1000) / 60) / 60) < 10) {
-                var minHours = '0'+ Math.floor(((t.wrMin / 1000) / 60) / 60);
-            } else {
-                var minHours = Math.floor(((t.wrMin / 1000) / 60) / 60);
-            }            
-            if (new Date(t.wrMin).getMinutes() < 10) {
-                var minMinutes = '0'+ new Date(t.wrMin).getMinutes();
-            } else {
-                var minMinutes = new Date(t.wrMin).getMinutes();
-            }            
-            if (new Date(t.wrMin).getSeconds() < 10) {
-                var minSeconds = '0'+ new Date(t.wrMin).getSeconds();
-            } else {
-                var minSeconds = new Date(t.wrMin).getSeconds();
-            }
-            
-            var average = averageHours +':'+ averageMinutes +':'+ averageSeconds;
-            var max = maxHours +':'+ maxMinutes +':'+ maxSeconds;
-            var min = minHours +':'+ minMinutes +':'+ minSeconds;
-            
-            var content = '<u>Total</u>: '+ t.wrTotal +' - '
+            var content = '<u>Total</u>: '+ t.seatsCount +' - '
                             +'<u>Promedio</u>: '+ average +' - '
                             +'<u>Máximo</u>: '+ max +' - '
                             +'<u>Mínimo</u>: '+ min;

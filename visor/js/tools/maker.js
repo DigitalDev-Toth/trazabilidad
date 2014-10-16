@@ -6,33 +6,7 @@ MAKER.prototype.module = function (name, id, type, dbType, pos, color, shape, wa
     if (type === 'waiting-room') {
         MODULES['wr'] = m;
         MODULES['wr'].setSeatsPos();        
-        setInterval(function () {
-            var count = 0;
-            for (var i = 0; i < MODULES['wr'].seats; i++) {
-                if (MODULES['wr'].seatsPos[i].patient !== null) {                    
-                    if ((new Date().getTime() - PATIENTS[MODULES['wr'].seatsPos[i].patient].datetime) >= MODULES[PATIENTS[MODULES['wr'].seatsPos[i].patient].idModule].beginWaitingTime && 
-                        (new Date().getTime() - PATIENTS[MODULES['wr'].seatsPos[i].patient].datetime) < MODULES[PATIENTS[MODULES['wr'].seatsPos[i].patient].idModule].finalWaitingTime) {
-                        PATIENTS[MODULES['wr'].seatsPos[i].patient].el.animate({
-                            'fill': 'yellow'
-                        }, 1000);
-                    } else if ((new Date().getTime() - PATIENTS[MODULES['wr'].seatsPos[i].patient].datetime) >= MODULES[PATIENTS[MODULES['wr'].seatsPos[i].patient].idModule].finalWaitingTime) {
-                        PATIENTS[MODULES['wr'].seatsPos[i].patient].el.animate({
-                            'fill': 'red'
-                        }, 1000);
-                    }
-                    count++;
-                }                
-            }
-            if (count >= MODULES['wr'].maxSeats) {
-                MODULES['wr'].textMsgMaxSeats.attr({
-                    'fill-opacity': 1
-                });
-            } else {
-                MODULES['wr'].textMsgMaxSeats.attr({
-                    'fill-opacity': 0
-                });
-            }
-        }, 1000);
+        MODULES['wr'].seatsCountAndTimeWaiting();
     } else if (type === 'limb') { 
         MODULES['lb'] = m;
         MODULES['lb'].setPlacesPos();
@@ -48,17 +22,17 @@ MAKER.prototype.module = function (name, id, type, dbType, pos, color, shape, wa
         this.countSubmodules = 0;
     }    
 };
-MAKER.prototype.wrInfo = function (total, average, max, min) {
-    MODULES['wr'].wrInfo(total, average, max, min);
+MAKER.prototype.wrInfo = function () {
+    MODULES['wr'].wrInfo();
     MODULES['wr'].wrElem();
 };
 MAKER.prototype.tothtemInfo = function (idModule, totalTicketsIssued, ticketsTo, timeFirstTicket, timeLastTicket) {
     MODULES[idModule].tothtemInfo(totalTicketsIssued, ticketsTo, timeFirstTicket, timeLastTicket);
-    MODULES[idModule].popoverTothtemInfo();
+    MODULES[idModule].tooltipTothtemInfo();
 };
 MAKER.prototype.moduleInfo = function (idModule, attended, average, max, min) {
     MODULES[idModule].info(attended, average, max, min);
-    MODULES[idModule].popoverInfo();
+    MODULES[idModule].tooltipInfo();
 };
 MAKER.prototype.submodule = function (name, id, idModule, posModule, state) {    
     var sm = new SUBMODULE(name, id, idModule, posModule, this.countSubmodules, state);
@@ -68,7 +42,7 @@ MAKER.prototype.submodule = function (name, id, idModule, posModule, state) {
 };
 MAKER.prototype.submoduleInfo = function (idModule, idSubmodule, executive, activeTime, patientsAttended, average, max, min) {
     MODULES[idModule].submodules[idSubmodule].info(executive, activeTime, patientsAttended, average, max, min);
-    MODULES[idModule].submodules[idSubmodule].popoverInfo();
+    MODULES[idModule].submodules[idSubmodule].tooltipInfo();
 };
 MAKER.prototype.patient = function (rut, name, ticket, datetime, attention, idModule, idSubmodule) {
     var p = new PATIENT(rut, name, ticket, datetime, idModule, true);
@@ -105,7 +79,8 @@ MAKER.prototype.goTo = function (comet, rut, name, action, ticket, datetime, idM
             PATIENTS[rut].ticket = ticket;
             PATIENTS[rut].shape = MODULES[idModule].shape;
             PATIENTS[rut].seat = this.findSeat();
-            PATIENTS[rut].datetime = datetime;
+            PATIENTS[rut].datetime = new Date(datetime).getTime();
+            PATIENTS[rut].idModule = idModule;
             PATIENTS[rut].nextIdModule = idModule;
             PATIENTS[rut].goToWaitingRoom(rut, false);
             break;

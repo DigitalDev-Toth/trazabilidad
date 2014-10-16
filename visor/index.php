@@ -1,15 +1,11 @@
 <?php
-if(isset($_GET['idZone'])){
-    $zone=$_GET['idZone'];
-}else{
+if (isset($_GET['idZone'])) {
+    $zone = $_GET['idZone'];
+} else {
     echo 'Falta Id Zona!';
     exit();
 }
-
-
 ?>
-
-
 <!DOCTYPE html>
 <html>
     <head>
@@ -18,6 +14,7 @@ if(isset($_GET['idZone'])){
         <title>FALP - Trazabilidad</title>
         <link rel="stylesheet" type="text/css" href="css/style.css" />
         <script src="js/libs/jquery-2.1.1.min.js"></script>
+        <script src="js/libs/jquery.tothtip.js"></script>
         <script src="js/libs/bootstrap.min.js"></script>
         <script src="js/libs/raphael-min.js"></script>
         <script src="js/libs/raphaeljs-infobox.js"></script>
@@ -47,7 +44,7 @@ if(isset($_GET['idZone'])){
                 MAKE = new MAKER();
 
                 message('Conectando al servidor...');
-                $.get('../services/zoneInfo.php?zone='+idZone,function (data, status) {
+                $.get('../services/zoneInfo.php?zone='+ idZone, function (data, status) {
                     message('Servidor conectado!. Esperando los datos...');
                     if (status === 'success') {
                         if (data === 'error') {
@@ -56,18 +53,24 @@ if(isset($_GET['idZone'])){
                             window.location.href = '../admin';
                         } else {                            
                             var info = JSON.parse(data);
-                            console.log(info);
+//                            console.log(info);
                             
                             MAKE.module(info.name, info.id, 'waiting-room', null, 'center', '#818878', null, null, null, info.seats);
                             MAKE.module('Limbo', info.id, 'limb', null, 'center', '#A24A4A', null, null, null, null);
                             for (var i = 0; i < info.modules.length; i++) {   
                                 MAKE.module(info.modules[i].name, info.modules[i].id, 'module', info.modules[i].type, info.modules[i].position, '#'+ info.modules[i].color, info.modules[i].shape, info.modules[i].max_wait, info.modules[i].submodules);
                             }  
-                            MAKE.wrInfo(10, '2014-10-06 00:15:00', '2014-10-06 00:22:00', '2014-10-06 00:07:00');
+                            MAKE.wrInfo();
                             MAKE.tothtemInfo(33, 25, {34: 12, 35: 13}, '2014-10-06 08:30:00', '2014-10-06 19:28:10');
                             MAKE.moduleInfo(34, 77, '2014-10-06 00:15:00', '2014-10-06 00:45:00', '2014-10-06 00:05:00');
-                            MAKE.submoduleInfo(34, 49, 'Juanita Melo', '2014-10-06 17:30:10', 2, '2014-10-06 00:02:23', '2014-10-06 00:10:02', '2014-10-06 00:05:01');
-                            $.get('../services/getPatients.php?zone='+idZone, function (data, status) {
+                            $.get('../services/info_Submodule.php?zone='+ idZone, function (data, status) {
+                                var dsm = $.parseJSON(data);
+                                for (var i = 0; i < dsm.length; i++) {
+                                    MAKE.submoduleInfo(dsm[i].module, dsm[i].submodule, dsm[i].user, dsm[i].session, dsm[i].patients, dsm[i].average, dsm[i].maxtime, dsm[i].mintime);
+                                }
+                            });
+//                            MAKE.submoduleInfo(34, 49, 'Juanita Melo', '2014-10-06 17:30:10', 2, '2014-10-06 00:02:23', '2014-10-06 00:10:02', '2014-10-06 00:05:01');
+                            $.get('../services/getPatients.php?zone='+ idZone, function (data, status) {
 //                                console.log(data);
                                 var jsonData = JSON.parse(data);
                                 for(i=0; i<jsonData.length;i++){
