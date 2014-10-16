@@ -35,7 +35,7 @@ do{
 			WHERE sub_module=$submodule AND datetime >= '$date' 
 			AND description IN ('Ticket Finalizado','Ticket Derivado','Ticket ha venido') 
 			AND datetime < ('$date'::date + '1 day'::interval) ORDER BY rut,id";
-			echo $sql;
+
 	$logs = $db->doSql($sql);
 
 
@@ -59,7 +59,7 @@ do{
 	        "attention" => $logs['attention']*/
 	    );
 	} while($logs=pg_fetch_assoc($db->actualResults));
-	echo '<br/>';
+	
 	if($data[0]['id']!=null){
 		$patients=count($data);
 	}else{
@@ -115,7 +115,7 @@ do{
 	}
 
 
-	echo 'ID_MODULE: '.$userData['id_module'].'<br/>';
+	/*echo 'ID_MODULE: '.$userData['id_module'].'<br/>';
 	echo 'ID_SUBMODULE: '.$submodule.'<br/>';
 	echo 'USUARIO: '.$userData['username'].'<br/>';
 	echo 'INICIO SESI&Oacute;N: '.$userLogin['datetime'].'<br/>';
@@ -128,7 +128,7 @@ do{
 		echo 'PROMEDIO: '.$date.' '.getTimeString($servedTimeTotal/$servedCount).'<br/>';
 	}
 	echo '<br/>';
-
+*/
 
 	$module=$userData['id_module'];
 	$usernameX=$userData['username'];
