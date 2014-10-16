@@ -15,7 +15,7 @@ $sql = "SELECT s.id AS id_submodule, s.module AS id_module,u.name AS username,u.
 		FROM submodule s 
 		LEFT JOIN users u ON u.id=s.users
 		LEFT JOIN module m ON m.id=s.module
-		WHERE m.zone=$zone";
+		WHERE m.zone=$zone AND NOT m.type=1";
 $userData = $db1->doSql($sql);
 
 do{
@@ -35,7 +35,7 @@ do{
 			WHERE sub_module=$submodule AND datetime >= '$date' 
 			AND description IN ('Ticket Finalizado','Ticket Derivado','Ticket ha venido') 
 			AND datetime < ('$date'::date + '1 day'::interval) ORDER BY rut,id";
-
+			//echo $sql;
 	$logs = $db->doSql($sql);
 
 
@@ -59,7 +59,7 @@ do{
 	        "attention" => $logs['attention']*/
 	    );
 	} while($logs=pg_fetch_assoc($db->actualResults));
-	
+	//echo '<br/>';
 	if($data[0]['id']!=null){
 		$patients=count($data);
 	}else{
@@ -127,8 +127,8 @@ do{
 	}else{
 		echo 'PROMEDIO: '.$date.' '.getTimeString($servedTimeTotal/$servedCount).'<br/>';
 	}
-	echo '<br/>';
-*/
+	echo '<br/>';*/
+
 
 	$module=$userData['id_module'];
 	$usernameX=$userData['username'];
