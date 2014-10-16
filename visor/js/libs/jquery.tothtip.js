@@ -1,4 +1,4 @@
-  /* Tooltip Tothtip - plugins for jQuery
+  /* Tooltip Tothtip - plugin for jQuery
  * --------  
  * Created by:
  * - Toth (http://www.toth.cl)

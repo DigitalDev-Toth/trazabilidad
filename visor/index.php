@@ -61,15 +61,23 @@ if (isset($_GET['idZone'])) {
                                 MAKE.module(info.modules[i].name, info.modules[i].id, 'module', info.modules[i].type, info.modules[i].position, '#'+ info.modules[i].color, info.modules[i].shape, info.modules[i].max_wait, info.modules[i].submodules);
                             }  
                             MAKE.wrInfo();
-                            MAKE.tothtemInfo(33, 25, {34: 12, 35: 13}, '2014-10-06 08:30:00', '2014-10-06 19:28:10');
-                            MAKE.moduleInfo(34, 77, '2014-10-06 00:15:00', '2014-10-06 00:45:00', '2014-10-06 00:05:00');
+                            $.get('../services/info_Module.php?zone='+ idZone, function (data, status) {
+                                var dm = $.parseJSON(data);
+                                for (var i = 0; i < dm.length; i++) {
+                                    if (parseInt(dm[i].dbtype) === 1) {
+                                        MAKE.tothtemInfo(dm[i].idModule, dm[i].total_tickets, dm[i].modules, dm[i].first_ticket, dm[i].last_ticket);
+                                    } else {
+                                        MAKE.moduleInfo(dm[i].idModule, dm[i].served_tickets, dm[i].average, dm[i].maxtime, dm[i].mintime);
+                                    }
+                                }
+                            });
                             $.get('../services/info_Submodule.php?zone='+ idZone, function (data, status) {
                                 var dsm = $.parseJSON(data);
                                 for (var i = 0; i < dsm.length; i++) {
                                     MAKE.submoduleInfo(dsm[i].module, dsm[i].submodule, dsm[i].user, dsm[i].session, dsm[i].patients, dsm[i].average, dsm[i].maxtime, dsm[i].mintime);
                                 }
+                                console.log(dsm);
                             });
-//                            MAKE.submoduleInfo(34, 49, 'Juanita Melo', '2014-10-06 17:30:10', 2, '2014-10-06 00:02:23', '2014-10-06 00:10:02', '2014-10-06 00:05:01');
                             $.get('../services/getPatients.php?zone='+ idZone, function (data, status) {
 //                                console.log(data);
                                 var jsonData = JSON.parse(data);
