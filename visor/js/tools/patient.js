@@ -13,9 +13,12 @@ var PATIENT = function (id, name, ticket, datetime, idModule, storage) {
     this.timeOn = null;
     this.initTimeOn = null;
     this.endTimeOn = null;
+    this.wt = null;
     this.interval = null;
     this.el = null; // element DOM for patient
     this.text = null; // text DOM for patient
+    this.elTop = null;
+    this.elInfo = $('<div></div>');
     if (!storage) {
         this.setElem(idModule);
     }    
@@ -78,24 +81,23 @@ PATIENT.prototype.setElem = function (idModule) {
     
     this.text = PAPER.text(x, y, '').attr({
         'fill': '#000',
-        'font-size': '10px'
+        'font-size': '9px'
     });
     
-    $(this.el.node).popover({
-        'container': 'body',
-        'trigger': 'click',
-        'html': true,
-        'placement': 'auto',
-        'content': this.id
-    });
+    this.elTop = PAPER.path(p).attr({
+        'fill': 'red',
+        'fill-opacity': '0',
+        'stroke-width': '0'        
+    }); 
     
-    var el = $(this.el.node);
-    $(this.text.node).on('click', function () {            
-        el.trigger('click');
-    });
+    var elInfo = this.elInfo;
+    $(this.elTop.node).tothtip(elInfo);
+    
+    this.tooltipInfo();
 };
 PATIENT.prototype.goToWaitingRoom = function (idPatient, storage) {   
     MODULES['wr'].seatsPos[this.seat].patient = idPatient;
+    this.wt = true;
     if (this.lastIdModule !== null) {
         this.endTimeOn = new Date().getTime();
         this.timeOn = new Date(this.endTimeOn - this.initTimeOn).getTime();
@@ -128,35 +130,19 @@ PATIENT.prototype.goToWaitingRoom = function (idPatient, storage) {
         
         this.text = PAPER.text(x, y, this.ticket).attr({
             'fill': '#000',
-            'font-size': '10px'
+            'font-size': '9px'
         });
         
-        $(this.el.node).popover({
-            'container': 'body',
-            'trigger': 'click',
-            'html': true,
-            'placement': 'auto'
-        });
+        this.elTop = PAPER.path(fp).attr({
+            'fill': 'red',
+            'fill-opacity': '0',
+            'stroke-width': '0'        
+        }); 
+    
+        var elInfo = this.elInfo;
+        $(this.elTop.node).tothtip(elInfo);
         
-        var datetime = this.datetime,
-            id = this.id,
-            name = this.name,
-            el = $(this.el.node),
-            idModule = this.idModule;
-        this.interval = setInterval(function () {            
-            var time = new Date().getTime() - datetime,
-                minutes = Math.floor((time / 1000) / 60),
-                content = id +'<br />'+
-                        name +'<br />'+
-                        'Esperando por: '+ MODULES[idModule].name +'<br />'+
-                        minutes +' minutos';
-            el.attr('data-content', content);
-        }, 1000);
-
-        var el = $(this.el.node);
-        $(this.text.node).on('click', function () {            
-            el.trigger('click');
-        });
+        this.tooltipInfo();
     } else {
         var bx = PATIENTS[idPatient].el.attrs.path[0][1],
             by = PATIENTS[idPatient].el.attrs.path[0][2],
@@ -165,37 +151,21 @@ PATIENT.prototype.goToWaitingRoom = function (idPatient, storage) {
         var s = this.shapePath(),
             bp = 'M'+ bx +','+ by + s;
 
-        this.text.attr({text: this.ticket});
+        this.text.attr({text: this.ticket});   
         
-        var datetime = this.datetime,
-            id = this.id,
-            name = this.name,
-            el = $(this.el.node),
-            idModule = this.idModule;
-        
-        this.interval = setInterval(function () {
-            var time = new Date().getTime() - datetime,
-                minutes = Math.floor((time / 1000) / 60),
-                content = id +'<br />'+
-                        name +'<br />'+
-                        'Esperando por: '+ MODULES[idModule].name +'<br />'+
-                        minutes +' minutos';
-            el.attr('data-content', content);
-        }, 1000);
-        
-        $(this.el.node).popover('hide');
         this.el.animate({path: bp}, 500, '>', (function (t) {
             return function () {
                 var fp = 'M'+ fx +','+ fy + s;
                 t.text.animate({x: fx, y: fy}, 1000);
                 t.el.animate({path: fp}, 1000);
+                t.elTop.animate({path: fp}, 1000);
             };        
         })(this)); 
     }
 };
 PATIENT.prototype.goToLimb = function (idPatient, storage) {
-    clearInterval(this.interval);
     MODULES['lb'].placesPos[this.place].patient = idPatient;
+    this.wt = false;
     if (storage) {        
         var x = MODULES['lb'].placesPos[this.place].x,
             y = MODULES['lb'].placesPos[this.place].y;
@@ -209,13 +179,11 @@ PATIENT.prototype.goToLimb = function (idPatient, storage) {
             'stroke-width': 1        
         }); 
         
-        $(this.el.node).popover({
-            'container': 'body',
-            'trigger': 'click',
-            'html': true,
-            'placement': 'auto',
-            'content': this.id
-        });
+        this.elTop = PAPER.path(fp).attr({
+            'fill': 'red',
+            'fill-opacity': '0',
+            'stroke-width': '0'        
+        }); 
         
         this.el.animate({'fill-opacity': 0}, 5000, '>', (function (t) {
             return function () {
@@ -235,7 +203,7 @@ PATIENT.prototype.goToLimb = function (idPatient, storage) {
             bp = 'M'+ bx +','+ by + s;
         
         this.text.remove();
-        $(this.el.node).popover('hide');
+
         this.el.animate({path: bp}, 500, '>', (function (t) {
             return function () {
                 var fp = 'M'+ fx +','+ fy + s;
@@ -243,8 +211,8 @@ PATIENT.prototype.goToLimb = function (idPatient, storage) {
                     return function () {
                         s.el.animate({'fill-opacity': 0}, 5000, '>', (function (r) {
                             return function () {
-                                $(r.el.node).popover('destroy');
-                                r.el.remove();                                
+                                r.el.remove();  
+                                r.elTop.remove();      
                                 MODULES['lb'].placesPos[r.place].patient = null;
                                 delete PATIENTS[idPatient];
                             };
@@ -256,7 +224,7 @@ PATIENT.prototype.goToLimb = function (idPatient, storage) {
     }
 };
 PATIENT.prototype.goTo = function (idModule, idSubmodule, storage) {
-    clearInterval(this.interval);
+    this.wt = false;
     this.initTimeOn = new Date().getTime();
     this.lastIdModule = idModule;
     this.lastIdSubmodule = idSubmodule;
@@ -289,29 +257,23 @@ PATIENT.prototype.goTo = function (idModule, idSubmodule, storage) {
                     'font-size': '10px'
                 });
                 
-                $(this.el.node).popover({
-                    'container': 'body',
-                    'trigger': 'click',
-                    'html': true,
-                    'placement': 'auto',
-                    'content': content
-                });
-                
-                var el = $(this.el.node);
-                $(this.text.node).on('click', function () {            
-                    el.trigger('click');
-                });
+                this.elTop = PAPER.path(p).attr({
+                    'fill': 'red',
+                    'fill-opacity': '0',
+                    'stroke-width': '0'        
+                }); 
+    
+                var elInfo = this.elInfo;
+                $(this.elTop.node).tothtip(elInfo);
+        
+                this.tooltipInfo();
             } else {
                 var s = this.shapePath(),
-                    p = 'M'+ x +','+ y + s,
-                    content = this.id +'<br />'+
-                                this.name;
+                    p = 'M'+ x +','+ y + s;               
                 
-                $(this.el.node).attr('data-content', content);
-                
-                $(this.el.node).popover('hide');
                 this.text.animate({x: x, y: y}, 1000);          
                 this.el.animate({path: p, 'fill': '#01DF01'}, 1000);
+                this.elTop.animate({path: p}, 1000);
             }                
             break;
         case 'path':
@@ -379,9 +341,7 @@ PATIENT.prototype.goTo = function (idModule, idSubmodule, storage) {
             
             if (storage) {
                 var s = this.shapePath(),
-                    p = 'M'+ x +','+ y + s,
-                    content = this.id +'<br />'+
-                                this.name;               
+                    p = 'M'+ x +','+ y + s;               
                 
                 this.el = PAPER.path(p).attr({
                     'fill': '#01DF01',
@@ -394,31 +354,25 @@ PATIENT.prototype.goTo = function (idModule, idSubmodule, storage) {
                     'font-size': '10px'
                 });  
                 
-                $(this.el.node).popover({
-                    'container': 'body',
-                    'trigger': 'click',
-                    'html': true,
-                    'placement': 'auto',
-                    'content': content
-                });
-                
-                var el = $(this.el.node);
-                $(this.text.node).on('click', function () {            
-                    el.trigger('click');
-                });
+                this.elTop = PAPER.path(p).attr({
+                    'fill': 'red',
+                    'fill-opacity': '0',
+                    'stroke-width': '0'        
+                }); 
+    
+                var elInfo = this.elInfo;
+                $(this.elTop.node).tothtip(elInfo);
+        
+                this.tooltipInfo();
             } else {
                 var s = this.shapePath(),
-                    p = 'M'+ x +','+ y + s,
-                    content = this.id +'<br />'+
-                                this.name;                
-                
-                $(this.el.node).attr('data-content', content);
+                    p = 'M'+ x +','+ y + s;
                 
                 var el = $(this.el.node);              
-                
-                $(this.el.node).popover('hide');                
+                              
                 this.text.animate({x: x, y: y}, 1000);
                 this.el.animate({path: p, 'fill': '#01DF01'}, 1000);
+                this.elTop.animate({path: p}, 1000);
             }              
             break;
     }
@@ -452,4 +406,39 @@ PATIENT.prototype.shapePath = function () {
         var s = 'm0,-12l3,6l9,0l-5,6l2,9l-9,-5 l-9,5l2,-9l-5,-6l9,0z';
         return s;
     }
+};
+PATIENT.prototype.tooltipInfo = function () {
+    this.interval = setInterval((function (t) {  
+        return function () {
+            var wt = new Date().getTime() - t.datetime;
+            if (Math.floor(((wt / 1000) / 60) / 60) < 10) {
+                var wtHours = '0'+ Math.floor(((wt / 1000) / 60) / 60);
+            } else {
+                var wtHours = Math.floor(((wt / 1000) / 60) / 60);
+            }
+
+            if (new Date(wt).getMinutes() < 10) {
+                var wtMinutes = '0'+ new Date(wt).getMinutes();
+            } else {
+                var wtMinutes = new Date(wt).getMinutes();
+            }
+
+            if (new Date(wt).getSeconds() < 10) {
+                var wtSeconds = '0'+ new Date(wt).getSeconds();
+            } else {
+                var wtSeconds = new Date(wt).getSeconds();
+            }
+
+            var waitingTime = wtHours +':'+ wtMinutes +':'+ wtSeconds;
+
+            var content = '<u>Nombre</u>: '+ t.name +'<br />';
+            content += '<u>Rut</u>: '+ t.id +'<br />';
+            content += '<u>Motivo visita</u>: '+ MODULES[t.idModule].name +'<br />';
+            if (t.wt) {
+                content += '<u>Tiempo de espera</u>: '+ waitingTime +'<br />';
+                content += '<u>Ticket</u>: '+ t.ticket;
+            }
+            t.elInfo.html(content);
+        };
+    })(this), 1000);
 };

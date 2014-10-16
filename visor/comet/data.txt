@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 {"comet":"module","rut":"17.443.625-8","datetime":"2014-10-16 12:16:05","description":"Ticket Derivado","zone":"1","action":"to","submodule":"52","module":"35","newticket":"161B","idticket":"565"}
+=======
+{"comet":"submodule","id":"49","state":"activo"}
+>>>>>>> 8266fb377d9027cd56efa24a912aac959c20092e

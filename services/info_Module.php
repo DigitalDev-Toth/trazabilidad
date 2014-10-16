@@ -69,7 +69,7 @@ do{
 		}
 		$data=null;
 		
-		$returnData[] = array('dbtype' => $moduleType,'served_tickets' => $servedCount, 'maxtime' => $maxtime,'mintime' => $mintime,'average' => $average);
+		$returnData[] = array('dbtype' => $moduleType,'served_tickets' => $servedCount, 'maxtime' => $maxtime,'mintime' => $mintime,'average' => $average,'idModule' => $module);
 	
 	}else{
 
@@ -110,7 +110,7 @@ do{
 		$firstissued=$date.' '.getTimeString($servedMinTime-strtotime($date));
 		$lastissued=$date.' '.getTimeString($servedMaxTime-strtotime($date));
 
-		$returnData[] = array('dbtype' => $moduleType,'total_tickets' => $totaltickets, 'modules' => $moduleCount,'first_ticket' => $firstissued,'last_ticket' => $lastissued);
+		$returnData[] = array('dbtype' => $moduleType,'total_tickets' => $totaltickets, 'modules' => $moduleCount,'first_ticket' => $firstissued,'last_ticket' => $lastissued,'idModule' => $module);
 	}
 
 } while($modulesData=pg_fetch_assoc($dbModules->actualResults));

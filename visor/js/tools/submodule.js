@@ -7,6 +7,7 @@ var SUBMODULE = function (name, id, idModule, posModule, countSubmodules, state)
     this.state = state;
     this.el = null; // element in DOM
     this.text = null;
+    this.elTop = null;
     this.elInfo = null;
     this.executive = null;
     this.activeTime = null;
@@ -80,6 +81,7 @@ SUBMODULE.prototype.setElem = function () {
             this.el = PAPER.rect(x, y, 40, 60, 5).attr(this.attrs());
             this.text = PAPER.text(x + 8, y + 30, this.name).attr(this.textAttrs(MODULES[this.idModule].color));
             this.text.rotate(-90);
+            this.elTop = PAPER.rect(x, y, 40, 60, 5).attr({'fill': 'red', 'fill-opacity': '0', 'stroke-width': '0'});
             break;
         case 'izquierda':
             var x = MODULES[this.idModule].el.attrs.x + 4,
@@ -87,6 +89,7 @@ SUBMODULE.prototype.setElem = function () {
             this.el = PAPER.rect(x, y, 60, 40, 5).attr(this.attrs());
             this.text = PAPER.text(x + 30, y + 8, this.name).attr(this.textAttrs(MODULES[this.idModule].color));
             //text.rotate(-90);
+            this.elTop = PAPER.rect(x, y, 60, 40, 5).attr({'fill': 'red', 'fill-opacity': '0', 'stroke-width': '0'});
             break;
         case 'inferior':
             var x = MODULES[this.idModule].el.attrs.x + (MODULES[this.idModule].submoduleWidth * this.countSubmodules) + 10,
@@ -94,6 +97,7 @@ SUBMODULE.prototype.setElem = function () {
             this.el = PAPER.rect(x, y, 40, 60, 5).attr(this.attrs());
             this.text = PAPER.text(x + 8, y + 30, this.name).attr(this.textAttrs(MODULES[this.idModule].color));
             this.text.rotate(-90);
+            this.elTop = PAPER.rect(x, y, 40, 60, 5).attr({'fill': 'red', 'fill-opacity': '0', 'stroke-width': '0'});
             break;
         case 'derecha':
             var x = MODULES[this.idModule].el.attrs.x + (MODULES[this.idModule].submoduleHeight - 60) - 4,
@@ -101,6 +105,7 @@ SUBMODULE.prototype.setElem = function () {
             this.el = PAPER.rect(x, y, 60, 40, 5).attr(this.attrs());
             this.text = PAPER.text(x + 30, y + 8, this.name).attr(this.textAttrs(MODULES[this.idModule].color));
                 //text.rotate(-90);
+            this.elTop = PAPER.rect(x, y, 60, 40, 5).attr({'fill': 'red', 'fill-opacity': '0', 'stroke-width': '0'});
             break;
         case 'superior-izquierda':
             if (MODULES[this.idModule].totalSubmodules >= 4) {
@@ -109,12 +114,14 @@ SUBMODULE.prototype.setElem = function () {
                         y = 90 + (40 * this.countSubmodules);
                     this.el = PAPER.rect(x, y, 60, 40, 5).attr(this.attrs());
                     this.text = PAPER.text(x + 30, y + 8, this.name).attr(this.textAttrs(MODULES[this.idModule].color));
+                    this.elTop = PAPER.rect(x, y, 60, 40, 5).attr({'fill': 'red', 'fill-opacity': '0', 'stroke-width': '0'});
                 } else {
                     var x = 90 + (40 * (this.countSubmodules - (parseInt((MODULES[this.idModule].totalSubmodules / 2).toFixed(0))))),
                         y = 10;
                     this.el = PAPER.rect(x, y, 40, 60, 5).attr(this.attrs());  
                     this.text = PAPER.text(x + 8, y + 30, this.name).attr(this.textAttrs(MODULES[this.idModule].color));
                     this.text.rotate(-90);
+                    this.elTop = PAPER.rect(x, y, 40, 60, 5).attr({'fill': 'red', 'fill-opacity': '0', 'stroke-width': '0'});
                 }
             } else if (MODULES[this.idModule].totalSubmodules === 3) {
                 var w = 5,
@@ -129,6 +136,8 @@ SUBMODULE.prototype.setElem = function () {
                 this.el.rotate(-45, 20, 30);
                 this.text = PAPER.text(xt, yt, this.name).attr(this.textAttrs(MODULES[this.idModule].color));
                 this.text.rotate(45, 20, 30);
+                this.elTop = PAPER.rect(x, y, 40, 60, 5).attr({'fill': 'red', 'fill-opacity': '0', 'stroke-width': '0'});
+                this.elTop.rotate(-45, 20, 30);
             } else if (MODULES[this.idModule].totalSubmodules === 2) {
                 var w = 5,
                     h = 5,
@@ -142,6 +151,8 @@ SUBMODULE.prototype.setElem = function () {
                 this.el.rotate(-45, 20, 30);
                 this.text = PAPER.text(xt, yt, this.name).attr(this.textAttrs(MODULES[this.idModule].color));
                 this.text.rotate(45, 20, 30);
+                this.elTop = PAPER.rect(x, y, 40, 60, 5).attr({'fill': 'red', 'fill-opacity': '0', 'stroke-width': '0'});
+                this.elTop.rotate(-45, 20, 30);
             } else if (MODULES[this.idModule].totalSubmodules === 1) {
                 var w = 5,
                     h = 5,
@@ -155,6 +166,8 @@ SUBMODULE.prototype.setElem = function () {
                 this.el.rotate(-45, 20, 30);
                 this.text = PAPER.text(xt, yt, this.name).attr(this.textAttrs(MODULES[this.idModule].color));
                 this.text.rotate(45, 20, 30);
+                this.elTop = PAPER.rect(x, y, 40, 60, 5).attr({'fill': 'red', 'fill-opacity': '0', 'stroke-width': '0'});
+                this.elTop.rotate(-45, 20, 30);
             }          
             break;   
         case 'superior-derecha':
@@ -166,12 +179,14 @@ SUBMODULE.prototype.setElem = function () {
                     this.el = PAPER.rect(x, y, 40, 60, 5).attr(this.attrs());
                     this.text = PAPER.text(x + 8, y + 30, this.name).attr(this.textAttrs(MODULES[this.idModule].color));
                     this.text.rotate(-90);
+                    this.elTop = PAPER.rect(x, y, 40, 60, 5).attr({'fill': 'red', 'fill-opacity': '0', 'stroke-width': '0'});
                 } else {
                     var w = $(window).width() - 10,
                         x = w - (100 - 40),
                         y = 90 + (40 * (this.countSubmodules - (parseInt((MODULES[this.idModule].totalSubmodules / 2).toFixed(0)))));
                     this.el = PAPER.rect(x, y, 60, 40, 5).attr(this.attrs()); 
                     this.text = PAPER.text(x + 30, y + 8, this.name).attr(this.textAttrs(MODULES[this.idModule].color));
+                    this.elTop = PAPER.rect(x, y, 60, 40, 5).attr({'fill': 'red', 'fill-opacity': '0', 'stroke-width': '0'});
                 }
             } else if (MODULES[this.idModule].totalSubmodules === 3) {
                 var w = $(window).width() - 5,
@@ -186,6 +201,8 @@ SUBMODULE.prototype.setElem = function () {
                 this.el.rotate(45, 20, 30);
                 this.text = PAPER.text(xt, yt, this.name).attr(this.textAttrs(MODULES[this.idModule].color));
                 this.text.rotate(-45, 20, 30);
+                this.elTop = PAPER.rect(x, y, 40, 60, 5).attr({'fill': 'red', 'fill-opacity': '0', 'stroke-width': '0'});
+                this.elTop.rotate(45, 20, 30);
             } else if (MODULES[this.idModule].totalSubmodules === 2) {
                 var w = $(window).width() - 5,
                     h = 5,
@@ -199,6 +216,8 @@ SUBMODULE.prototype.setElem = function () {
                 this.el.rotate(45, 20, 30);
                 this.text = PAPER.text(xt, yt, this.name).attr(this.textAttrs(MODULES[this.idModule].color));
                 this.text.rotate(-45, 20, 30);
+                this.elTop = PAPER.rect(x, y, 40, 60, 5).attr({'fill': 'red', 'fill-opacity': '0', 'stroke-width': '0'});
+                this.elTop.rotate(45, 20, 30);
             } else if (MODULES[this.idModule].totalSubmodules === 1) {
                 var w = $(window).width() - 5,
                     h = 5,
@@ -212,6 +231,8 @@ SUBMODULE.prototype.setElem = function () {
                 this.el.rotate(45, 20, 30);
                 this.text = PAPER.text(xt, yt, this.name).attr(this.textAttrs(MODULES[this.idModule].color));
                 this.text.rotate(-45, 20, 30);
+                this.elTop = PAPER.rect(x, y, 40, 60, 5).attr({'fill': 'red', 'fill-opacity': '0', 'stroke-width': '0'});
+                this.elTop.rotate(45, 20, 30);
             }     
             break;
         case 'inferior-izquierda':
@@ -222,6 +243,7 @@ SUBMODULE.prototype.setElem = function () {
                         y = h - 90 - (40 * parseInt((MODULES[this.idModule].totalSubmodules / 2).toFixed(0))) + (40 * this.countSubmodules);
                     this.el = PAPER.rect(x, y, 60, 40, 5).attr(this.attrs());
                     this.text = PAPER.text(x + 30, y + 8, this.name).attr(this.textAttrs(MODULES[this.idModule].color));
+                    this.elTop = PAPER.rect(x, y, 60, 40, 5).attr({'fill': 'red', 'fill-opacity': '0', 'stroke-width': '0'});
                 } else {
                     var h = $(window).height() - 10,
                         x = 90 + (40 * (this.countSubmodules - (parseInt((MODULES[this.idModule].totalSubmodules / 2).toFixed(0))))),
@@ -229,6 +251,7 @@ SUBMODULE.prototype.setElem = function () {
                     this.el = PAPER.rect(x, y, 40, 60, 5).attr(this.attrs()); 
                     this.text = PAPER.text(x + 8, y + 30, this.name).attr(this.textAttrs(MODULES[this.idModule].color));
                     this.text.rotate(-90);
+                    this.elTop = PAPER.rect(x, y, 40, 60, 5).attr({'fill': 'red', 'fill-opacity': '0', 'stroke-width': '0'});
                 }
             } else if (MODULES[this.idModule].totalSubmodules === 3) {
                 var w = 5,
@@ -243,6 +266,8 @@ SUBMODULE.prototype.setElem = function () {
                 this.el.rotate(-135, 20, 30);
                 this.text = PAPER.text(xt, yt, this.name).attr(this.textAttrs(MODULES[this.idModule].color));
                 this.text.rotate(-45, 20, 30);
+                this.elTop = PAPER.rect(x, y, 40, 60, 5).attr({'fill': 'red', 'fill-opacity': '0', 'stroke-width': '0'});
+                this.elTop.rotate(-135, 20, 30);
             } else if (MODULES[this.idModule].totalSubmodules === 2) {
                 var w = 5,
                     h = $(window).height() - 5,
@@ -256,6 +281,8 @@ SUBMODULE.prototype.setElem = function () {
                 this.el.rotate(-135, 20, 30);
                 this.text = PAPER.text(xt, yt, this.name).attr(this.textAttrs(MODULES[this.idModule].color));
                 this.text.rotate(-45, 20, 30);
+                this.elTop = PAPER.rect(x, y, 40, 60, 5).attr({'fill': 'red', 'fill-opacity': '0', 'stroke-width': '0'});
+                this.elTop.rotate(-135, 20, 30);
             } else if (MODULES[this.idModule].totalSubmodules === 1) {
                 var w = 5,
                     h = $(window).height() - 5,
@@ -269,6 +296,8 @@ SUBMODULE.prototype.setElem = function () {
                 this.el.rotate(-135, 20, 30);
                 this.text = PAPER.text(xt, yt, this.name).attr(this.textAttrs(MODULES[this.idModule].color));
                 this.text.rotate(-45, 20, 30);
+                this.elTop = PAPER.rect(x, y, 40, 60, 5).attr({'fill': 'red', 'fill-opacity': '0', 'stroke-width': '0'});
+                this.elTop.rotate(-135, 20, 30);
             }      
             break;
         case 'inferior-derecha':
@@ -281,6 +310,7 @@ SUBMODULE.prototype.setElem = function () {
                     this.el = PAPER.rect(x, y, 40, 60, 5).attr(this.attrs());
                     this.text = PAPER.text(x + 8, y + 30, this.name).attr(this.textAttrs(MODULES[this.idModule].color));
                     this.text.rotate(-90);
+                    this.elTop = PAPER.rect(x, y, 40, 60, 5).attr({'fill': 'red', 'fill-opacity': '0', 'stroke-width': '0'});
                 } else {
                     var w = $(window).width() - 10,
                         h = $(window).height(),
@@ -292,6 +322,7 @@ SUBMODULE.prototype.setElem = function () {
                     }                   
                     this.el = PAPER.rect(x, y, 60, 40, 5).attr(this.attrs()); 
                     this.text = PAPER.text(x + 30, y + 8, this.name).attr(this.textAttrs(MODULES[this.idModule].color));
+                    this.elTop = PAPER.rect(x, y, 60, 40, 5).attr({'fill': 'red', 'fill-opacity': '0', 'stroke-width': '0'});
                 }
             } else if (MODULES[this.idModule].totalSubmodules === 3) {
                 var w = $(window).width() - 5,
@@ -306,6 +337,8 @@ SUBMODULE.prototype.setElem = function () {
                 this.el.rotate(135, 20, 30);
                 this.text = PAPER.text(yt, xt, this.name).attr(this.textAttrs(MODULES[this.idModule].color));
                 this.text.rotate(45, 20, 30);
+                this.elTop = PAPER.rect(x, y, 40, 60, 5).attr({'fill': 'red', 'fill-opacity': '0', 'stroke-width': '0'});
+                this.elTop.rotate(135, 20, 30);
             } else if (MODULES[this.idModule].totalSubmodules === 2) {
                 var w = $(window).width() - 5,
                     h = $(window).height() - 5,
@@ -319,6 +352,8 @@ SUBMODULE.prototype.setElem = function () {
                 this.el.rotate(135, 20, 30);
                 this.text = PAPER.text(yt, xt, this.name).attr(this.textAttrs(MODULES[this.idModule].color));
                 this.text.rotate(45, 20, 30);
+                this.elTop = PAPER.rect(x, y, 40, 60, 5).attr({'fill': 'red', 'fill-opacity': '0', 'stroke-width': '0'});
+                this.elTop.rotate(135, 20, 30);
             } else if (MODULES[this.idModule].totalSubmodules === 1) {
                 var w = $(window).width() - 5,
                     h = $(window).height() - 5,
@@ -332,6 +367,8 @@ SUBMODULE.prototype.setElem = function () {
                 this.el.rotate(135, 20, 30);
                 this.text = PAPER.text(yt, xt, this.name).attr(this.textAttrs(MODULES[this.idModule].color));
                 this.text.rotate(45, 20, 30);
+                this.elTop = PAPER.rect(x, y, 40, 60, 5).attr({'fill': 'red', 'fill-opacity': '0', 'stroke-width': '0'});
+                this.elTop.rotate(135, 20, 30);
             }    
             break;
     }    
@@ -346,15 +383,9 @@ SUBMODULE.prototype.info = function (executive, activeTime, patientsAttended, av
     this.min = new Date(min).getTime() - new Date(min).setHours(0, 0, 0);
     
     var elInfo = this.elInfo;
-    $(this.el.node).popover({
-        'container': 'body',
-        'trigger': 'click',
-        'html': true,
-        'placement': 'auto',
-        'content': elInfo
-    });
+    $(this.elTop.node).tothtip(elInfo);
 };
-SUBMODULE.prototype.popoverInfo = function () {
+SUBMODULE.prototype.tooltipInfo = function () {
     this.interval = setInterval((function (t) {
         return function () {
             var activeTimeTime = new Date().getTime() - t.activeTime;  
