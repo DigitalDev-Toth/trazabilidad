@@ -52,7 +52,7 @@ if($type=='zone'){
         WHERE module=$module ORDER BY id";*/
         $sql="SELECT *
         FROM submodule
-        WHERE module=$module AND state='inactivo' ORDER BY id";
+        WHERE module=$module AND NOT state='activo' ORDER BY id";
     $submodules = $db->doSql($sql);
     do{
         $data[] = array(
