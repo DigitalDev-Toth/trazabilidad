@@ -72,10 +72,16 @@ do{
 		$returnData[] = array('dbtype' => $moduleType,'served_tickets' => $servedCount, 'maxtime' => $maxtime,'mintime' => $mintime,'average' => $average,'idModule' => $module);
 	
 	}else{
-
-
-
 		$db = NEW DB();
+		//Se obtienen los módulos que no son tótem
+		$sql = "SELECT * FROM module WHERE zone=$zone AND NOT type=1";
+		$modulesAll = $db->doSql($sql);
+
+		do{
+		    $moduleCount[$modulesAll['id']]= 0;
+		} while($modulesAll=pg_fetch_assoc($db->actualResults));
+
+		
 		$sql = "SELECT * FROM logs WHERE sub_module=(SELECT id FROM submodule WHERE module=$module) AND action='to' AND datetime >= '$date' AND datetime < ('$date'::date + '1 day'::interval) ORDER BY module";
 		$logs = $db->doSql($sql);
 
@@ -89,9 +95,14 @@ do{
 		    );
 		} while($logs=pg_fetch_assoc($db->actualResults));
 
+
+
+		$logQuantity=0;
+		if($data[0]['id']!=null)$logQuantity=count($data);
+
 		$servedMaxTime=0;
 		$servedMinTime=0;
-		for($i=0;$i<count($data);$i++){
+		for($i=0;$i<$logQuantity;$i++){
 
 			$moduleCount[$data[$i]['module']]++;
 			$servedTime = strtotime($data[$i]['datetime']);
@@ -106,11 +117,17 @@ do{
 		echo 'PRIMER EMITIDO: '.getTimeString($servedMinTime-strtotime($date)).'<br/>';
 		echo '&Uacute;LTIMO EMITIDO: '.getTimeString($servedMaxTime-strtotime($date)).'<br/>';*/
 
-		$totaltickets=count($data);
-		$firstissued=$date.' '.getTimeString($servedMinTime-strtotime($date));
-		$lastissued=$date.' '.getTimeString($servedMaxTime-strtotime($date));
+		$totaltickets=$logQuantity;
+		if($logQuantity!=0){
+			$firstissued=$date.' '.getTimeString($servedMinTime-strtotime($date));
+			$lastissued=$date.' '.getTimeString($servedMaxTime-strtotime($date));
+		}else{
+			$firstissued=$date.' '.getTimeString($servedMinTime);
+			$lastissued=$date.' '.getTimeString($servedMaxTime);
+		}
 
 		$returnData[] = array('dbtype' => $moduleType,'total_tickets' => $totaltickets, 'modules' => $moduleCount,'first_ticket' => $firstissued,'last_ticket' => $lastissued,'idModule' => $module);
+		$data=null;
 	}
 
 } while($modulesData=pg_fetch_assoc($dbModules->actualResults));
