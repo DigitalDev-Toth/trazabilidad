@@ -27,7 +27,7 @@ echo '
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="#"><span class="glyphicon glyphicon-home"></span> Trazabilidad</a>
+        <span class="navbar-brand" href="#"> Trazabilidad</span>
     </div>';
 
 echo '<div class="collapse navbar-collapse navbar-ex1-collapse">';

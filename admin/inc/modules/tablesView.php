@@ -100,16 +100,15 @@ function ajax1(zoneId,type,order){
 	
 }
 
-
-
 //fill waiting table (right div under tothem table)
 
 function fillWaiting(data){
 	var json = JSON.parse(data);	
 	var cont = '';
-	cont  = '<table class="table table-bordered table-striped "><tr><th></th><th>Espera</th><tr>';
+	cont  = '<table class="table table-bordered table-striped "><tr><th colspan="2" class="text-center">Tiempos y pacientes en espera</th></tr>';
 	if(data != 0){
-		cont += '<tr><td>Total de pacientes en espera: </td><td>'+ json.length +'</td></tr>';
+		cont += '<tr><td>Cantidad de pacientes en espera: </td><td>'+ json.length +'</td></tr>';
+
 		var date2 = new Date();
 		var x=0,y=0,z=0;
 		for (var i = 0; i < json.length; i++) {
@@ -160,13 +159,15 @@ function fillRtable (data) {
         prev = modules[i];
     }
     onlyModules.sort();
-    cont  = '<table class="table table-bordered table-striped "><tr><th></th><th>Tothtem</th><tr>';
+
+    cont  = '<table class="table table-bordered table-striped "><tr><th colspan="2" class="text-center">Tothtem</th><tr>';
     if(data != 0){
-    	cont += '<tr><td>Total Tickets:</td><td>'+json.length+'</td> </tr>';
+    	cont += '<tr><th align="right">Total tickets retirados:</th><th>'+json.length+'</th> </tr>';
 	    for (var i = 0; i < onlyModules.length; i++) {
-	    	cont += '<tr><td>Tickets '+onlyModules[i]+'</td><td>'+b[i]+'</td> </tr>';
+	    	cont += '<tr><td>Tickets retirados de '+onlyModules[i]+':</td><td>'+b[i]+'</td> </tr>';
 	    };
-    	cont += '<tr><td>Primer Ticket emitido:</td><td>'+json[0].datetime+'</td><tr><td>Ultimo Ticket emitido</td><td>'+json[json.length-1].datetime+'</td> </tr></table>';	
+    	cont += '<tr><td>Hora del primer ticket retirado:</td><td>'+json[0].datetime+'</td><tr><td>Hora del ultimo ticket retirado</td><td>'+json[json.length-1].datetime+'</td> </tr></table>';	
+
     }else{
     	cont += '<tr><td>Total Tickets:</td><td>0</td> </tr>';
     }
@@ -194,7 +195,9 @@ function fillTable (data) {
 	    if($.inArray(el, onlyModulesID) === -1) onlyModulesID.push(el);
 	});
 	var totalPatient = 0;
-	var tableText="",cols = 0,X=0,datas = ["Nombre ejecutiva:","Total Pacientes atendidos","Promedio de atencion","Minimo","Maximo"];
+
+	var tableText="",cols = 0,X=0,datas = ["Nombre ejecutiva:","Cantidad de Pacientes atendidos","Promedio de atencion","Minimo","Maximo"];
+
 	for (var i = 0; i < onlyModules.length; i++) {
 		for (var j = 0; j < json.length; j++) {
 			if(onlyModules[i] == json[j].modulename){
@@ -227,15 +230,17 @@ function fillTable (data) {
 			        break;
 			        case 2:
 			        var d = new Date(json[j].others.average);
-			        tableText += "<td class='text-center'>"+d.getSeconds()+"</td>";
+
+			        tableText += "<td class='text-center'>"+d.getSeconds()+" Segundos</td>";
 			        break;
 			        case 3:
 			        var d = new Date(json[j].others.mintime);
-			        tableText += "<td class='text-center'>"+d.getSeconds()+"</td>";
+			        tableText += "<td class='text-center'>"+d.getSeconds()+" Segundos</td>";
 			        break;
 			        case 4:
 			        var d = new Date(json[j].others.maxtime);
-					tableText += "<td class='text-center'>"+d.getSeconds()+"</td>";			       
+					tableText += "<td class='text-center'>"+d.getSeconds()+" Segundos</td>";			       
+
 			        break
 				}
 
@@ -248,10 +253,11 @@ function fillTable (data) {
 
 		//var totalHours = getPd(onlyModulesID[i],"pd");
 
+		//productividad
 		$.post('../services/getInfoTables.php',  {data: onlyModulesID[i],type:"pd"}, function(data, textStatus, xhr) {
 			var totalHours = JSON.parse(data);
-			
-			var initialHour = totalHours[0].datetime;
+			if(totalHours != 0){
+							var initialHour = totalHours[0].datetime;
 			var finalHour = totalHours[totalHours.length-1].description;
 			if(finalHour.indexOf("Cierre") !=-1){
 				finalHour = new Date();
@@ -261,9 +267,14 @@ function fillTable (data) {
 			
 			finalHour = new Date(finalHour);
 			initialHour = new Date(initialHour);
-			console.log(finalHour,initialHour);
+			
+			}
+
+
 
 		});
+
+
 
 
 		
@@ -273,7 +284,15 @@ function fillTable (data) {
 	//console.log(json[1].others.maxtime);
 	$("#leftDiv").html(tableText);
 
+		
+		tableText += "<tr><td align='right'>Productividad del modulo: </td><td colspan='"+cols+"'> </td></tr>"
+		tableText+="</table><br>";
+	//console.log(json[1].others.maxtime);
+	$("#leftDiv").html(tableText);
+
+
 }
+
 
 function getPd (module,type) {
 	$.ajax({

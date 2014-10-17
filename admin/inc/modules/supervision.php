@@ -69,7 +69,11 @@ include 'libs/bootstrapStyle.php';
 
 
 var currentZone = 1;
+
 var currentOptiion=0;
+
+
+
 
 
 
@@ -91,7 +95,10 @@ $(document).ready(function() {
 	    	});
 	    });
 	    //changeZone(currentZone,switchZone);
-	    while(ajax1(currentZone,"wtg",currentOptiion));
+
+	    while(ajax1(currentZone,"wtg",0));
+	    //while(ajax1(currentZone,"tt",1));
+
 	})
 	.fail(function() {
 		window.setTimeout('location.reload()', 100);
@@ -115,16 +122,17 @@ $("#selectorZone").change(function() {
 function fillWaiting(data){
 	var json = JSON.parse(data);	
 	var cont = '';
-	console.log(data);
+
 	cont  = '<table class="table table-bordered table-striped "><tr><th></th><th>Espera</th><tr>';
 	if(data != 0){
 		cont += '<tr><td>Total de pacientes en espera: </td><td>'+ json.length +'</td></tr>';
 		var date2 = new Date();
 		var x=0,maxTime=-1,minTime=1000;
 		for (var i = 0; i < json.length; i++) {
-			var date1 = new Date(json[0].datetime);
+
+			var date1 = new Date(json[i].datetime);
 			var minutes = Math.round(Math.abs(date1.getTime() - date2.getTime()) / 60000);
-			console.log(minutes);
+
 			if(maxTime<minutes){
 				maxTime=minutes;
 			}
@@ -135,19 +143,29 @@ function fillWaiting(data){
 			
 
 		};
-		cont += '<tr><td>Pacientes con espera menor a 10 </td><td>'+x+'</td></tr>';
-		cont += '<tr><td>Pacientes con espera entre 10 y 20 minutos </td><td>'+minTime+'</td></tr>';
-		cont += '<tr><td>Pacientes con espera mayor a 20 minutos </td><td>'+maxTime+'</td></tr>';
+
+		x=x/json.length;
+		cont += '<tr><td>Tiempo maximo de espera </td><td>'+maxTime+'</td></tr>';
+		cont += '<tr><td>Tiempo minimo de espera </td><td>'+minTime+'</td></tr>';
+		cont += '<tr><td>Tiempo promedio de espera</td><td>'+x+'</td></tr>';
 	}else{
 		cont += '<tr><td>Total de pacientes en espera: </td><td>0</td></tr>';
 	}
-	cont +="</table>";
+
+	$.post('services/getInfoTables.php', {data: currentZone,type:"tt"}, function(data, textStatus, xhr) {
+		var json = JSON.parse(data);
+		cont += '<tr><td>Total de tickets emitidos</td><td>'+json.length+'</td></tr>';
+		cont += '<tr><td>Productividad</td><td>---</td></tr>';
+		cont +="</table>";
+		$("#waitingDiv").html(cont);
+
+	});
 
 
-
-	$("#waitingDiv").html(cont);
 	//console.log(json);
 }
+
+
 function ajax1(zoneId,type,order){
 	$.ajax({
 		async:false, 
@@ -160,6 +178,11 @@ function ajax1(zoneId,type,order){
 	        case 0:
 	        fillWaiting(e);
 	        break;
+
+	        case 1:
+	        filltt(e);
+	        break;
+
 		}
 		return false;	
 	})

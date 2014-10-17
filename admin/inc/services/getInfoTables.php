@@ -18,11 +18,11 @@ if(isset($typeRequest) && isset($data) ){
   }
   if($typeRequest == 'wtg'){ //Waiting
     
-    //$date1 = date("Y-m-d"); 
+
+    $date1 = date("Y-m-d"); 
     //$date1 = date("2014-10-10");
-    $date1 = date("Y-m-d");
     $date2 = date("Y-m-d");
-    //$date2 = date('Y-m-d', strtotime($date1 . ' + 5 day'));// dejar en '+ 1 day'
+
     $date2 = date('Y-m-d', strtotime($date1 . ' + 1 day'));// dejar en '+ 1 day'
 
     $sql = "SELECT logs.datetime

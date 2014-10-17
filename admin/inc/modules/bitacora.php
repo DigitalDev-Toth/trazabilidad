@@ -74,6 +74,18 @@ include("controls.php");
 				$where = array(""=>"rut='$rut'");
 				$bitacora = new DB("logs", "id");
 				makeControls($bitacora, NULL , NULL , NULL , $_SERVER['HTTP_REFERER']);
+				$bitacora->exceptions(array("action","users","module","sub_module","zone"));
+
+				$bitacora->relation("zone", "zone", "id", "name");
+				$bitacora->additions("zone",array("name"=>"Zona"));
+				$bitacora->relation("module", "module", "id", "name");
+				$bitacora->additions("module", array("name"=>"Modulo"));
+				$bitacora->relation("submodule", "sub_module", "id", "name");
+				$bitacora->additions("submodule",array("name"=>"Submodulo"));
+				
+
+
+
 				//$where=array(""=>" module.id NOT IN (SELECT module FROM users_roles WHERE users=$rol)");
 				$rows = $bitacora->select($where);
 				if($rows){
@@ -247,9 +259,6 @@ $("#showData").hide();
 
 	
 
-	    
-
-
 	});
 
 
@@ -261,8 +270,6 @@ $("#showData").hide();
 
 	function getRowDetail(idLog){
 		if(idLog!=0){
-
-
 
 			$.ajax({
 				url: 'services/getLogData.php',
