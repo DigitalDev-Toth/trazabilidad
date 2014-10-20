@@ -73,7 +73,7 @@ if(!isset($_SESSION['Username'])) { header("location: ../../login.php"); header(
                                             
                                         </div>
                                         <div class="col-md-2">
-                                        <button type="button" class="btn btn-default btn-lg" onclick="refreshTable()" id="redirectButton" title="Rechargar Tabla"><span class="glyphicon glyphicon-refresh"></span></button>
+                                        <button type="button" class="btn btn-default btn-lg" onclick="refreshTable()" id="refreshButton" title="Rechargar Tabla"><span class="glyphicon glyphicon-refresh"></span></button>
                                             
                                         </div>
                                     </div>
@@ -172,6 +172,7 @@ var firstTicketIdDerived = '';
 var ticketAttention = 0; //Indica qué número se está atendiendo (id del ticket)
 var myState = false; //Indica si el submódulo está atendiendo y/o llamando
 var subModuleType ='';
+var noRedirect = false; //Evita que se puedan derivar pacientes en caso de que el módulo no tenga asociada derivación
 
 //se extrae la modalidad , el ultimo numero y se rellena la tabla
 
@@ -196,9 +197,9 @@ $(document).ready(function() {
             initNumber = dataModality['modalityTicket'];
             refreshTable();
             setCurrentNumber();
-
+            getActivesModules();
         });
-
+        
         
     }else{
         alert("Falta Modalidad!");
@@ -261,7 +262,8 @@ function getModule(idSubModule){//Obtiene el ID del submódulo actual
 
 function getActivesModules(){
     var result = null;
-    var scriptUrl = "phps/getActivesModules.php?module=" + moduleInCourse;
+    //var scriptUrl = "phps/getActivesModules.php?module=" + moduleInCourse;
+    var scriptUrl = "phps/getDerivationModules.php?module=" + moduleInCourse;
     $.ajax({
         url: scriptUrl,
         type: 'get',
@@ -274,27 +276,32 @@ function getActivesModules(){
            
         }
     });
-
-    var jsonModules=JSON.parse(result);
-    $("#menuButtons").html('');
-    for (var i = 0; i < jsonModules.length; i++) {
-        if(jsonModules[i]['moduleType']!='Especial'){
-            $("#menuButtons").append('<div class="modal-body"><button type="button" style="padding:12px 25px;font-size: 25px;border-radius: 33px;width: 300px;"" class="btn btn-primary" onclick="derive('+jsonModules[i]['id']+');"><span class="glyphicon glyphicon-time"></span> '+jsonModules[i]['moduleName'] +'</button>   </div>' );
-        }else{
-            var moduleId = jsonModules[i]['id'];
-            $.post('phps/getActivesModulesSpecial.php', {module: moduleId}, function(data, textStatus, xhr) {
-                if(data!='nan'){
-                    var jsonData = JSON.parse(data);
-                    for(j=0; j < jsonData.length;j++){
-                        var widthButton = '';
-                        if(jsonData[j]['name'].length<17) widthButton='width: 300px;';
-                        else widthButton='';
-                        $("#menuButtons").append('<div class="modal-body"><button type="button" style="padding:12px 25px;font-size: 25px;border-radius: 33px;'+widthButton+'" class="btn btn-primary" onclick="derive('+moduleId+');"><span class="glyphicon glyphicon-time"></span> '+jsonData[j]['name'] +'</button>   </div>' );
+    console.log(result);
+    if(result!=0){
+        var jsonModules=JSON.parse(result);
+        $("#menuButtons").html('');
+        for (var i = 0; i < jsonModules.length; i++) {
+            if(jsonModules[i]['moduleType']!='Especial'){
+                $("#menuButtons").append('<div class="modal-body"><button type="button" style="padding:12px 25px;font-size: 25px;border-radius: 33px;width: 300px;"" class="btn btn-primary" onclick="derive('+jsonModules[i]['id']+');"><span class="glyphicon glyphicon-time"></span> '+jsonModules[i]['moduleName'] +'</button>   </div>' );
+            }else{
+                var moduleId = jsonModules[i]['id'];
+                $.post('phps/getActivesModulesSpecial.php', {module: moduleId}, function(data, textStatus, xhr) {
+                    if(data!='nan'){
+                        var jsonData = JSON.parse(data);
+                        for(j=0; j < jsonData.length;j++){
+                            var widthButton = '';
+                            if(jsonData[j]['name'].length<17) widthButton='width: 300px;';
+                            else widthButton='';
+                            $("#menuButtons").append('<div class="modal-body"><button type="button" style="padding:12px 25px;font-size: 25px;border-radius: 33px;'+widthButton+'" class="btn btn-primary" onclick="derive('+moduleId+');"><span class="glyphicon glyphicon-time"></span> '+jsonData[j]['name'] +'</button>   </div>' );
+                        }
                     }
-                }
-            });
-        }
-    };
+                });
+            }
+        };
+    }else{
+        noRedirect=true;
+        $('#redirectButton').attr('disabled', true);
+    }
 
 }
 
@@ -581,7 +588,7 @@ function sendComet(type){//Genera la acción de los distintos botones a través 
         $('#patientData').html('');
     }
     if(type==='redirect'){
-        getActivesModules();
+        //getActivesModules();
         $('#modalDerived').modal('show');
     }
     if(type==='exception'){
@@ -626,7 +633,7 @@ function activeButtons(type){//Activa o inactiva botones
         $('#minusButton').attr('disabled', true);
         $('#notHereButton').attr('disabled', false);
         $('#finishedButton').attr('disabled', false);
-        $('#redirectButton').attr('disabled', false);
+        if(noRedirect==false) $('#redirectButton').attr('disabled', false);
         $('#exceptionButton').attr('disabled', true);
         $('#plusDerivedButton').attr('disabled', true);
         $('.getout').attr('disabled', true);

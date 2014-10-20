@@ -25,6 +25,14 @@
 			case 'modules':
 			include("modules/modules.php");
 			break;
+
+			case 'module_derivation':
+			include("modules/module_derivation.php");
+			break;
+
+			case 'derivations':
+			include("modules/derivations.php");
+			break;
 			
 			case 'role':
 			include("modules/role.php");
