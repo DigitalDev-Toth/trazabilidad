@@ -38,10 +38,11 @@ include 'libs/bootstrapStyle.php';
 			</div>
 
 			<div class="col-md-2">
-				<select class="form-control" id="selectorZone" >
+				<select class="form-control" id="selectorFilter" >
 					<option value="0">Zona</option>
 					<option value="1">Modulos</option>
 					<option value="2">SubModulo</option>
+					<option value="3">Totem</option>
 				</select>
 			</div>
 
@@ -51,7 +52,7 @@ include 'libs/bootstrapStyle.php';
 
 	<div class="row">
 
-	<div id="waitingDiv">
+	<div id="supervision">
 		
 	</div>
 
@@ -69,14 +70,7 @@ include 'libs/bootstrapStyle.php';
 
 
 var currentZone = 1;
-
-var currentOptiion=0;
-
-
-
-
-
-
+var currentOptiion = 0;
 $(document).ready(function() {
 	
 	$.ajax({
@@ -110,19 +104,38 @@ $(document).ready(function() {
 
 
 
-
-//change current zone
-$("#selectorZone").change(function() {
+$("#selectorZone").change(function(event) {
 	currentZone=this.value;
-	//changeZone(this.value,switchZone);
-	ajax1(currentZone,"wtg",currentOptiion);
+	if(currentOptiion == 0){
+		ajax1(currentZone,"wtg",parseInt(currentOptiion));
+	}
+	if(currentOptiion == 1){
+		ajax1(currentZone,"mSm",parseInt(currentOptiion));
+	}
+});
+
+$("#selectorFilter").change(function(event) {
+	currentOptiion=this.value;
+	if(currentOptiion == 0){
+		ajax1(currentZone,"wtg",parseInt(currentOptiion));
+	}
+	if(currentOptiion == 1){
+		ajax1(currentZone,"mSm",parseInt(currentOptiion));
+	}
+	if(currentOptiion == 2){
+		ajax1(currentZone,"mSm",parseInt(currentOptiion));
+	}
+	if(currentOptiion == 3){
+		ajax1(currentZone,"tt",parseInt(currentOptiion));
+	}
+	
 });
 
 
-function fillWaiting(data){
+function zoneData(data){
 	var json = JSON.parse(data);	
 	var cont = '';
-
+	console.log(json);
 	cont  = '<table class="table table-bordered table-striped "><tr><th></th><th>Espera</th><tr>';
 	if(data != 0){
 		cont += '<tr><td>Total de pacientes en espera: </td><td>'+ json.length +'</td></tr>';
@@ -140,33 +153,159 @@ function fillWaiting(data){
 				minTime=minutes;
 			}
 			x += minutes;
-			
-
 		};
-
 		x=x/json.length;
 		cont += '<tr><td>Tiempo maximo de espera </td><td>'+maxTime+'</td></tr>';
 		cont += '<tr><td>Tiempo minimo de espera </td><td>'+minTime+'</td></tr>';
 		cont += '<tr><td>Tiempo promedio de espera</td><td>'+x+'</td></tr>';
 	}else{
 		cont += '<tr><td>Total de pacientes en espera: </td><td>0</td></tr>';
+		cont += '<tr><td>Tiempo maximo de espera </td><td>0</td></tr>';
+		cont += '<tr><td>Tiempo minimo de espera </td><td>0</td></tr>';
+		cont += '<tr><td>Tiempo promedio de espera</td><td>0</td></tr>';
 	}
 
 	$.post('services/getInfoTables.php', {data: currentZone,type:"tt"}, function(data, textStatus, xhr) {
 		var json = JSON.parse(data);
-		cont += '<tr><td>Total de tickets emitidos</td><td>'+json.length+'</td></tr>';
+		if(json != 0 ){
+				cont += '<tr><td>Total de tickets emitidos</td><td>'+json.length+'</td></tr>';
+		}else{
+				cont += '<tr><td>Total de tickets emitidos</td><td>0</td></tr>';
+		}
+	
 		cont += '<tr><td>Productividad</td><td>---</td></tr>';
 		cont +="</table>";
-		$("#waitingDiv").html(cont);
+
+		$("#supervision").fadeOut('fast', function() {
+			$("#supervision").html(cont);
+			$("#supervision").fadeIn();
+		});	
+		
 
 	});
-
-
-	//console.log(json);
 }
 
+function moduleData (data) {
+	var cont=''
+	var json = JSON.parse(data);
+	var modules = [];
+	var json = JSON.parse(data);
+	for (var i = 0; i < json.length; i++) {
+		modules.push(json[i].module);	
+	};
+	var idModules = [];
+	for (var i = 0; i < json.length; i++) {
+		idModules.push(json[i].modulename);	
+	};
+	var onlyModules = [];
+	$.each(idModules, function(i, el){
+	    if($.inArray(el, onlyModules) === -1) onlyModules.push(el);
+	});
+	var onlyModulesID = [];
+	$.each(modules, function(i, el){
+	    if($.inArray(el, onlyModulesID) === -1) onlyModulesID.push(el);
+	});
+
+	for (var i = 0; i < onlyModulesID.length; i++) {
+		var served = 0, q=0;
+		for (var j = 0; j < json.length; j++) {
+			var minT=0,maxT=0,aver=0;
+			if(onlyModulesID[i] == json[j].module){
+				served += json[j].others.served_tickets;
+    			var MX = new Date(json[j].others.maxtime);
+    			var MN = new Date(json[j].others.mintime);
+    			var AV = new Date(json[j].others.average);
+				minT += MN.getSeconds();
+				maxT += MX.getSeconds();
+				aver += AV.getSeconds(); 
+				q++;
+			}	
+		};
+		if(minT != 0){
+			minT = minT/q;
+		}
+		if(maxT != 0){
+			maxT = maxT/q;	
+		}
+		if(aver != 0){
+			aver = aver/q;
+		}
+		cont += '<table class="table table-bordered table-striped " id="T'+onlyModulesID[i]+'" ><tr><th></th><th>'+onlyModules[i]+'</th><tr>';
+		cont += '<tr> <th>Numero de pacientes atendidos:</th> <td> '+served+' </td> </tr>';
+		cont += '<tr> <th>Promedio maximo de atencion </th> <td> '+maxT+' </td> </tr>';
+		cont += '<tr> <th>Promedio minimo de atencion </th> <td> '+minT+' </td> </tr>';
+		cont += '<tr> <th>Promedio de atencion </th> <td> '+aver+' </td> </tr>';
+		served = 0; maxT = 0; minT = 0; aver = 0;
+		$.ajax({
+			url: 'services/getInfoTables.php',
+			type: 'GET',
+			async: false,
+			data: {data: onlyModulesID[i],type:"os"},
+		})
+		.done(function(dataA) {
+			if(dataA!=0){
+				var jsonAttention = JSON.parse(dataA);
+				cont += '<tr> <th>Numero de pacientes en atencion: </th> <td> '+jsonAttention.length+' </td> </tr>';
+				cont += '<tr><td>Productividad</td><td>---</td></tr>';
+				
+			}else{
+				cont += '<tr> <th>Numero de pacientes en atencion: </th> <td> 0 </td> </tr>';
+				cont += '<tr><td>Productividad</td><td>---</td></tr>';
+			}
+		})
+		.fail(function() {
+			console.log("error");
+		});
+		cont +="</table>";
+	};
+	$("#supervision").fadeOut('fast', function() {
+		$("#supervision").html(cont);
+		$("#supervision").fadeIn();
+	});	
+}
+
+function totemData (data) {
+	var json = JSON.parse(data);
+	var cont = '';
+	var modules = [];
+	for (var i = 0; i < json.length; i++) {
+		modules.push(json[i].name);	
+	};
+	var onlyModules = [];
+	$.each(modules, function(i, elements){
+	    if($.inArray(elements, onlyModules) === -1) onlyModules.push(elements);
+	});
+	var b = [], prev;
+    modules.sort();
+    for ( var i = 0; i < modules.length; i++ ) {
+        if ( modules[i] !== prev ) {
+            b.push(1);
+        } else {
+            b[b.length-1]++;
+        }
+        prev = modules[i];
+    }
+    onlyModules.sort();
+
+    cont  = '<table class="table table-bordered table-striped "><tr><th colspan="2" class="text-center">Tothtem</th><tr>';
+    if(data != 0){
+    	cont += '<tr><th align="right">Total tickets retirados:</th><th>'+json.length+'</th> </tr>';
+	    for (var i = 0; i < onlyModules.length; i++) {
+	    	cont += '<tr><td>Tickets retirados de '+onlyModules[i]+':</td><td>'+b[i]+'</td> </tr>';
+	    };
+    	cont += '<tr><td>Hora del primer ticket retirado:</td><td>'+json[0].datetime+'</td><tr><td>Hora del ultimo ticket retirado</td><td>'+json[json.length-1].datetime+'</td> </tr></table>';	
+
+    }else{
+    	cont += '<tr><td>No se han solicitado tickets para ningun modulo...</td></tr>';
+    }
+    $("#supervision").fadeOut('fast', function() {
+		$("#supervision").html(cont);
+		$("#supervision").fadeIn();
+	});	
+}
 
 function ajax1(zoneId,type,order){
+	console.log(zoneId,type,order);
 	$.ajax({
 		async:false, 
 		url: 'services/getInfoTables.php',
@@ -176,11 +315,19 @@ function ajax1(zoneId,type,order){
 	.done(function(e) {
 		switch(order) {
 	        case 0:
-	        fillWaiting(e);
+	        zoneData(e);
 	        break;
 
 	        case 1:
-	        filltt(e);
+	        moduleData(e);
+	        break;
+
+	        case 2:
+	        subModuleData(e);
+	        break;
+
+	        case 3:
+	        totemData(e);
 	        break;
 
 		}
@@ -189,6 +336,164 @@ function ajax1(zoneId,type,order){
 	.fail(function() {
 		return true;
 	})
+	
+}
+
+
+function subModuleData(data) {
+	var modules = [];
+	var json = JSON.parse(data);
+	for (var i = 0; i < json.length; i++) {
+		modules.push(json[i].module);	
+	};
+	var idModules = [];
+	for (var i = 0; i < json.length; i++) {
+		idModules.push(json[i].modulename);	
+	};
+	var onlyModules = [];
+	$.each(idModules, function(i, el){
+	    if($.inArray(el, onlyModules) === -1) onlyModules.push(el);
+	});
+	var onlyModulesID = [];
+	$.each(modules, function(i, el){
+	    if($.inArray(el, onlyModulesID) === -1) onlyModulesID.push(el);
+	});
+	var totalPatient = 0;
+
+	var tableText="",cols = 0,X=0,datas = ["Nombre ejecutiva:","Cantidad de Pacientes atendidos","Promedio de atencion","Promedio Minimo de atencion","Promedio maximo de atencion","Tiempo de actividad"];
+
+	for (var i = 0; i < onlyModules.length; i++) {
+		for (var j = 0; j < json.length; j++) {
+			if(onlyModules[i] == json[j].modulename){
+				cols++;
+			}
+		};
+		//console.log(cols);
+		tableText += "<table class='table table-bordered table-striped '>";
+		tableText += "<tr><td></td>"; 
+		tableText += "<td colspan='"+(cols)+"' class='text-center'><b>"+ onlyModules[i] +"</b></td></tr>";
+		tableText += "<tr><td></td>";
+		for (var j = X; j < cols; j++) {
+			
+				tableText += "<th class='text-center'>"+json[j].submodulename+"</th>";	
+			
+			
+			
+		};
+		
+		var totalHours = '';
+		console.log(onlyModulesID[i]);
+		$.ajax({
+			url: 'services/getInfoTables.php',
+			type: 'GET',
+			async : false,
+			data: {data: onlyModulesID[i],type:"pd"},
+		})
+		.done(function(data) {
+			totalHours = JSON.parse(data);
+		})
+		.fail(function() {
+			console.log("error");
+		});
+		
+
+
+
+
+		for (var k = 0; k < datas.length ; k++) {
+			tableText +="<tr><td align='right'>"+datas[k]+"</td>";
+			for (var j = X; j < cols; j++) {
+
+				switch(k) {
+			    	case 0:
+			        tableText += "<td class='text-center'>"+json[j].user+"</td>";
+			        break;
+			    	case 1:
+			    	tableText += "<td class='text-center'>"+json[j].others.served_tickets+"</td>";
+			    	totalPatient += json[j].others.served_tickets;
+			        break;
+			        case 2:
+			        var d = new Date(json[j].others.average);
+
+			        tableText += "<td class='text-center'>"+d.getSeconds()+" Segundos</td>";
+			        break;
+			        case 3:
+			        var d = new Date(json[j].others.mintime);
+			        tableText += "<td class='text-center'>"+d.getSeconds()+" Segundos</td>";
+			        break;
+			        case 4:
+			        var d = new Date(json[j].others.maxtime);
+					tableText += "<td class='text-center'>"+d.getSeconds()+" Segundos</td>";			       
+			        break;
+
+			        case 5:
+			        var lastLogin = '',lastClose = '';
+			        for (var l = 0; l < totalHours.length; l++) {
+			        	if(totalHours[l].users == json[j].username ){
+			        		if(totalHours[l].description.search("Inicio") != -1 || totalHours[l].description.search("inicio") != -1) {
+   								lastLogin = totalHours[l].datetime;
+							}
+							if(totalHours[l].description.search("Cierre") != -1) {
+   								lastClose = totalHours[l].datetime;
+							} 
+			        	}
+			        };
+
+			        if(lastLogin != ''){
+
+			        	var date1 = new Date(lastLogin);
+			        	var date2 = new Date();
+			        	var diff = date2.getTime() - date1.getTime();
+			        	var diffHrs = Math.round((diff % 86400000) / 3600000); // hours
+						var diffMins = Math.round(((diff % 86400000) % 3600000) / 60000); // minutes
+
+			        	tableText += "<td class='text-center'>"+diffHrs+" Horas con "+diffMins+" minutos</td>";
+			        }else{
+			        	tableText += "<td class='text-center'>Sin hora de sesion</td>";
+			        }
+
+			
+
+			        break;
+
+
+				}
+
+				//tableText += "<td class='text-center'>"+json[j].user+"</td>";
+			};
+			tableText +="</tr>";	
+		};
+		X=cols;
+		tableText += "</tr>";
+
+		//var totalHours = getPd(onlyModulesID[i],"pd");
+
+		//productividad
+	/*	$.post('services/getInfoTables.php',  {data: onlyModulesID[i],type:"pd"}, function(data, textStatus, xhr) {
+			var totalHours = JSON.parse(data);
+			console.log(totalHours);
+			if(totalHours != 0){
+							var initialHour = totalHours[0].datetime;
+			var finalHour = totalHours[totalHours.length-1].description;
+			if(finalHour.indexOf("Cierre") !=-1){
+				finalHour = new Date();
+			}else{
+				finalHour = totalHours[totalHours.length-1].datetime;
+			}
+			
+			finalHour = new Date(finalHour);
+			initialHour = new Date(initialHour);
+			
+			}
+
+
+
+		});*/
+		tableText+="</table><br>";
+	};
+	//console.log(json[1].others.maxtime);
+	$("#supervision").html(tableText);
+
 	
 }
 

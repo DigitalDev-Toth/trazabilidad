@@ -30,15 +30,23 @@ if(isset($typeRequest) && isset($data) ){
             WHERE tickets.logs = logs.id AND  (attention = 'waiting' or attention = 'derived')  and logs.zone=".$data." and logs.datetime between '$date1' AND '$date2'";
   }
 
-  if($typeRequest == 'pd'){
+  if($typeRequest == 'pd'){// productividad
     $date1 = date("Y-m-d"); 
     $date2 = date('Y-m-d', strtotime($date1 . ' + 1 day'));
-    $sql = "SELECT datetime,description from logs where logs.datetime between '$date1' AND '$date2' AND description like '%Usuario%' and module=$data order by datetime";
+    $sql = "SELECT datetime,description,users from logs where logs.datetime between '$date1' AND '$date2' AND description like '%Usuario%' and module=$data order by datetime";
   }
 
+
+  if($typeRequest == 'os'){// on server
+    $date1 = date("Y-m-d");
+    $date2 = date('Y-m-d', strtotime($date1 . ' + 1 day'));
+    $sql="SELECT tickets.attention,logs.module,logs.datetime
+          FROM logs, tickets
+          WHERE tickets.logs = logs.id and tickets.attention = 'on_serve' and logs.datetime between '$date1' and '$date2'";
+  }
+
+
   if($typeRequest == 'tt'){//totem
-  
-    
     $date1 = date("Y-m-d"); 
     //$date1 = date("2014-10-09");
     $date2 = date("Y-m-d");
@@ -46,7 +54,6 @@ if(isset($typeRequest) && isset($data) ){
     $sql = "SELECT module.name,logs.module as id ,logs.datetime
             FROM public.logs, public.module
             WHERE module.id = logs.module AND logs.datetime between '$date1' AND '$date2' AND logs.zone=".$data." AND logs.description LIKE '%Retiro%'  order by logs.datetime ASC" ;
-    
   }
 
   if($sql != ''){

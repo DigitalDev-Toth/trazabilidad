@@ -29,8 +29,8 @@ if(!isset($_SESSION['Username'])) { header("location: ../../login.php"); header(
                     <small id="modalityTitle"></small>
                         <button class="btn btn-default getout pull-right" onclick="inactiveSubModule('logout')"><span class="glyphicon glyphicon-log-out"></span> SALIR</button>  
                         <p class="pull-right">&nbsp;</p>
-                        <button class="btn btn-primary getout pull-right" onclick="inactiveSubModule('change')"> <span class="glyphicon glyphicon-transfer"></span> CAMBIAR SUBMÓDULO</button>
-                        <p class="pull-right">&nbsp;</p>
+                        <!--<button class="btn btn-primary getout pull-right" onclick="inactiveSubModule('change')"> <span class="glyphicon glyphicon-transfer"></span> CAMBIAR SUBMÓDULO</button>
+                        <p class="pull-right">&nbsp;</p>-->
                         <button class="btn btn-primary getout pull-right" id="pause" onclick="inactiveSubModule('pause')"> <span class="glyphicon glyphicon-pause"></span> PAUSAR ATENCIÓN</button>
 
                 </h1>

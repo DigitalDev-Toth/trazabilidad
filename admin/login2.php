@@ -21,11 +21,11 @@ $systemImages .= '<img src="images/'.strtolower($system).'.png" />';
 	<title>Login TOTH :: Trazabilidad <?php
 echo $info['client'];?></title>
 	<link rel="SHORTCUT ICON" href="images/favicon.ico" />
-	<link rel="stylesheet" type="text/css" href="login/css/login.css">
-	<script src="login/js/jquery-2.0.3.js"></script>
-	<script src="login/js/bootstrap.min.js"></script>
-  	<script src="login/js/jquery-ui.js"></script>
-  	<script src='login/js/jquery.base64.js'></script>
+	<link rel="stylesheet" type="text/css" href="login2/css/login.css">
+	<script src="login2/js/jquery-2.0.3.js"></script>
+	<script src="login2/js/bootstrap.min.js"></script>
+  	<script src="login2/js/jquery-ui.js"></script>
+  	<script src='login2/js/jquery.base64.js'></script>
   	<script src="login2/js/rotate3Di.js" type="text/javascript"></script>
     <script src="login2/js/3d-falling-leaves.js" type="text/javascript"></script>
 </head>

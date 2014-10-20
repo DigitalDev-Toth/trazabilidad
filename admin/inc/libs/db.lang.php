@@ -94,4 +94,14 @@ $languaje['users_modules'] = array (
 		"id" => "ID",
 		"module" => "Modulo"
 		);
+
+$languaje['bitacora'] = array (
+		"id" => "ID",
+		"rut" => "RUT/DNI",
+		"bitacora.id" => "ID",
+		"bitacora.rut" => "RUT/DNI",
+		);
+
+
+
 ?>

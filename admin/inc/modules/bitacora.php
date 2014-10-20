@@ -27,11 +27,10 @@ include("controls.php");
 
 			<form class="form-horizontal" id="toSearch" role="form" name="between" method="POST">
 
-					<div class="row text-center well well-sm ">
+					<div class="row text-center well well-sm text-primary">
 						<div class="col-md-2">
 							<label style="margin-top: 8px;"><span class="glyphicon glyphicon-th-list"></span> Bitacora</label>
 						</div>
-
 						<div class="col-md-1 ">
 							<label for="rutSearch" class="col-sm-2 control-label">RUT/DNI:</label>
 						</div>
@@ -40,14 +39,12 @@ include("controls.php");
 						</div>
 						<div class="col-md-1 ">
 							<label for="nameSearch" class="col-sm-2 control-label ">Nombres: </label>
-
 						</div>
 						<div class="col-md-3">
 							<input type="text" class="form-control" id="nameSearch" name="nameSearch" placeholder="Ingrese nombre y/o apellido">
 						</div>
 						<div class="col-md-1">
-							
-							<button id="button" name="beetween"  class="btn btn-default" type="submit" onclick="submit();"><span class="glyphicon glyphicon-search"></span> Buscar</button>
+							<button id="button" name="beetween"  class="btn btn-primary" type="submit" onclick="submit();"><span class="glyphicon glyphicon-search"></span> Buscar</button>
 						</div>
 					
 					</div>
@@ -137,9 +134,8 @@ $("#showData").hide();
 			    success: function(data1) {
 			    	var json = JSON.parse(data1);
 					if(json.length == 1){
-						console.log(json);
 						var patientHtml = '<table class="table table-bordered">';
-							patientHtml += '<tr> <th colspan="6" class="text-center">Resultados </th></tr>';
+							patientHtml += '<tr> <th colspan="6" class="text-center bg-primary">Resultados </th></tr>';
 							patientHtml += '<tr><th>RUT/DNI: </th><td>'+json[0]["rut"]+'</td>  <th>N° Ficha:</td><td>1</td>    <th>Estado Actual</td><td>1</td>  </tr>';
 							patientHtml += '<tr><th>Nombre: </th><td>'+json[0]["name"]+' '+json[0]["lastname"]+' <th>N° P. Tratamiento:</td><td>1</td>    <th>Maximo T. de espera:</td><td>1</td></tr>';
 							patientHtml += '<tr><th>Fecha de Nacimiento: </th><td>'+json[0]["birthdate"]+'</td> <th>N° Presupuesto:</td><td>1</td>  <th>T. espera cumulado</td><td>1</td> </tr>';
@@ -282,7 +278,7 @@ $("#showData").hide();
 			})
 			.done(function(data) {
 				var jsonData = JSON.parse(data);
-				var htmlDetail = '<div style="position: fixed;" class="panel panel-default">';
+				var htmlDetail = '<div style="position: fixed;" class="panel panel-primary">';
 				htmlDetail += '<div class="panel-heading text-center">Resumen</div>  <div class="panel-body"><table class="table table-bordered">';
 				htmlDetail += '<tr><th>ID: </th><td>'+idLog+'</td></tr>';
 				htmlDetail += '<tr><th>RUT/DNI: </th> <td>'+jsonData.rut+'</td></tr>';
@@ -290,7 +286,7 @@ $("#showData").hide();
 				htmlDetail += '<tr><th>Zona: </th><td>'+jsonData.zone+'</td></tr>';
 				htmlDetail += '<tr><th>Módulo: </th><td>'+jsonData.module+'</td></tr>';
 				htmlDetail += '<tr><th>Sub-Módulo: </th><td>'+jsonData.submodule+'</td></tr>';
-				htmlDetail += '<tr><th>Usuario: </th><td>'+jsonData.username+'</td></tr>';
+				if(jsonData.username!=null)	htmlDetail += '<tr><th>Usuario: </th><td>'+jsonData.username+'</td></tr>';
 				htmlDetail += '<tr><th colspan="3"> </th></tr>';
 				
 				htmlDetail += '<tr><th>Fecha: </th><td>'+jsonData.datetime.split(' ')[0]+'</td></tr>';
@@ -317,15 +313,7 @@ $("#showData").hide();
 			
 					$("#rowDetail").html(htmlDetail);
 				
-				
-
-
 			});
-			
-
-		
-
-
 			
 		}else{
 			$("#rowDetail").html('');

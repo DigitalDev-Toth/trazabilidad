@@ -30,10 +30,12 @@ include 'libs/bootstrapStyle.php';
 			<div class="col-md-2">
 				<label style="margin-top: 8px;" class="pull-right"><span class="glyphicon glyphicon-th-list"></span> Situacion Actual</label>
 			</div>
+
 			<div class="col-md-3">
 				<div class="btn-group">
 			 		<button type="button" class="btn btn-default" id="visorButton">Visualizacion</button>
 					<button type="button" class="btn btn-default" id="tableButton">Resumen</button>
+
 				</div>
 			</div>
 
@@ -47,7 +49,11 @@ include 'libs/bootstrapStyle.php';
 				<select class="form-control" id="selectorZone" style="display:none">
 				</select>
 			</div>
+
 			<div class="col-md-1 ">
+
+		
+
 			    <button id="popoverData" class="btn" href="#" data-content="" rel="popover" data-placement="bottom" data-original-title="Leyenda" data-trigger="hover" data-html="true"  disable><span class="glyphicon glyphicon-info-sign"></span> Leyenda</button>
 			</div>
 
