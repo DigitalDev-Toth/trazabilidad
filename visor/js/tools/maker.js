@@ -18,6 +18,9 @@ MAKER.prototype.module = function (name, id, type, dbType, pos, color, shape, wa
         for (var i = 0; i < totalSubmodules; i++) {
             var sub = submodules[i];
             this.submodule(sub.name, sub.id, id, pos, sub.submodule_state);
+            if (sub.submodule_state === 'inactivo') {
+                MODULES[id].totalSubmodulesInactive++;
+            }            
         }
         this.countSubmodules = 0;
     }    

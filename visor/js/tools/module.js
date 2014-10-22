@@ -20,6 +20,7 @@ var MODULE = function (name, id, type, dbType, pos, color, shape, waitingTime, s
         }
         this.submodules = {};
         this.totalSubmodules = submodules.length;
+        this.totalSubmodulesInactive = 0;
         this.maxWaitingTime = waitingTime;
         this.beginWaitingTime = waitingTime * 60000 * 1.2;
         this.finalWaitingTime = waitingTime * 60000 * 1.5;
@@ -52,6 +53,9 @@ var MODULE = function (name, id, type, dbType, pos, color, shape, waitingTime, s
     this.type = type;
     this.name = name;  
     this.setElem();
+    if (type === 'module') {
+        this.elTop.node.id = 'm'+ this.id;
+    }
 };
 // attributes for modules except waiting room and limb
 MODULE.prototype.attrs = function (color) {
@@ -449,25 +453,25 @@ MODULE.prototype.info = function (attended, average, max, min) {
 };
 MODULE.prototype.tooltipInfo = function () {
     this.ivInfo = setInterval((function (t) {
-        return function () {
+        return function () {            
             if (Math.floor(((t.average / 1000) / 60) / 60) < 10) {
                 var averageHours = '0'+ Math.floor(((t.average / 1000) / 60) / 60);
             } else {
                 var averageHours = Math.floor(((t.average / 1000) / 60) / 60);
             }
-            
+
             if (new Date(t.average).getMinutes() < 10) {
                 var averageMinutes = '0'+ new Date(t.average).getMinutes();
             } else {
                 var averageMinutes = new Date(t.average).getMinutes();
             }
-            
+
             if (new Date(t.average).getSeconds() < 10) {
                 var averageSeconds = '0'+ new Date(t.average).getSeconds();
             } else {
                 var averageSeconds = new Date(t.average).getSeconds();
             }
-            
+
             if (Math.floor(((t.max / 1000) / 60) / 60) < 10) {
                 var maxHours = '0'+ Math.floor(((t.max / 1000) / 60) / 60);
             } else {
@@ -483,7 +487,7 @@ MODULE.prototype.tooltipInfo = function () {
             } else {
                 var maxSeconds = new Date(t.max).getSeconds();
             }
-            
+
             if (Math.floor(((t.min / 1000) / 60) / 60) < 10) {
                 var minHours = '0'+ Math.floor(((t.min / 1000) / 60) / 60);
             } else {
@@ -499,16 +503,16 @@ MODULE.prototype.tooltipInfo = function () {
             } else {
                 var minSeconds = new Date(t.min).getSeconds();
             }
-            
+
             var average = averageHours +':'+ averageMinutes +':'+ averageSeconds;
             var max = maxHours +':'+ maxMinutes +':'+ maxSeconds;
             var min = minHours +':'+ minMinutes +':'+ minSeconds;
-            
+
             var content = '<u>Pacientes atendidos</u>: '+ t.attended +'<br />'
                             +'<u>Promedio</u>: '+ average +'<br />'                    
                             +'<u>Máximo</u>: '+ max +'<br />'
                             +'<u>Mínimo</u>: '+ min;
-            t.elInfo.html(content);
+            t.elInfo.html(content);           
         };
     })(this), 1000);
 };

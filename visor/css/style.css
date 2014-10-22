@@ -1,4 +1,6 @@
 @import url('bootstrap.css');
+@import url('jquery.dataTables.css');
+@import url('dataTables.tableTools.css');
 
 html {
     overflow: hidden;
@@ -18,4 +20,7 @@ body {
     right: 5px;
     text-align: right;
     display: none;
+}
+.modal-viewer {
+    width: 90%;
 }

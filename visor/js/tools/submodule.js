@@ -15,9 +15,15 @@ var SUBMODULE = function (name, id, idModule, posModule, countSubmodules, state)
     this.average = null;
     this.max = null;
     this.min = null;
+    this.pauseTime = 0;
+    this.initPauseTime = 0;
+    this.endPauseTime = 0;
     this.timeOn = null;
+    this.inPause = false;
     this.interval = null;
-    this.setElem();    
+    this.ivPauseTime = null;
+    this.setElem();  
+    this.elTop.node.id = 'sm'+ this.id;
 };
 SUBMODULE.prototype.textAttrs = function (color) {
     return {
@@ -40,12 +46,15 @@ SUBMODULE.prototype.setColor = function (hex, lum) {
     return rgb;
 };
 SUBMODULE.prototype.attrs = function () {
-    if(this.state === 'activo') {
+    if (this.state === 'activo') {
         var stroke = this.setColor(MODULES[this.idModule].color, -0.3);
         var fill = this.setColor(MODULES[this.idModule].color, -0.2);
-    } else {
-        var fill = '#aaa';
+    } else if (this.state === 'inactivo') {
+        var fill = '#AAA';
         var stroke = '#777';
+    } else if (this.state === 'pausado') {
+        var fill = '#CCD490';
+        var stroke = '#A4AB73';
     }
     return {
         'fill': fill,
@@ -55,12 +64,28 @@ SUBMODULE.prototype.attrs = function () {
     };
 };
 SUBMODULE.prototype.setActive = function () {
+    if (this.state === 'pausado') {
+        this.endPauseTime = new Date().getTime();
+        this.pauseTime = this.pauseTime + (this.endPauseTime - this.initPauseTime);
+        this.tooltipInfo();
+    } else if (this.state === 'inactivo') {
+        var elInfo = this.elInfo;
+        $(this.elTop.node).tothtip(elInfo);
+        MODULES[this.idModule].totalSubmodulesInactive--;
+        var moduleElInfo = MODULES[this.idModule].elInfo;
+        $(MODULES[this.idModule].elTop.node).tothtip(moduleElInfo);
+    }
     this.state = 'activo';
-    this.el.animate(this.attrs(), 500);
+    this.el.animate(this.attrs(), 500);   
 };
 SUBMODULE.prototype.setInactive = function () {
     this.state = 'inactivo';
     this.el.animate(this.attrs(), 500);
+    $(this.elTop.node).tothtip('hide');
+    MODULES[this.idModule].totalSubmodulesInactive++;
+    if (MODULES[this.idModule].totalSubmodulesInactive === MODULES[this.idModule].totalSubmodules) {
+        $(MODULES[this.idModule].elTop.node).tothtip('hide');
+    }
 };
 SUBMODULE.prototype.blink = function (i) {
     if (i < 7) {
@@ -73,7 +98,13 @@ SUBMODULE.prototype.blink = function (i) {
         })(this, i));
     }
 };
-SUBMODULE.prototype.setElem = function () {
+SUBMODULE.prototype.setPause = function () {
+    this.state = 'pausado';
+    this.el.animate(this.attrs(), 500);    
+    clearInterval(this.interval);    
+    this.initPauseTime = new Date().getTime();
+};
+SUBMODULE.prototype.setElem = function () {    
     switch (this.posModule) {
         case 'superior':
             var x = MODULES[this.idModule].el.attrs.x + (MODULES[this.idModule].submoduleWidth * this.countSubmodules) + 10,
@@ -388,7 +419,7 @@ SUBMODULE.prototype.info = function (executive, activeTime, patientsAttended, av
 SUBMODULE.prototype.tooltipInfo = function () {
     this.interval = setInterval((function (t) {
         return function () {
-            var activeTimeTime = new Date().getTime() - t.activeTime;  
+            var activeTimeTime = new Date().getTime() - (t.activeTime + t.pauseTime);  
             
             if (Math.floor(((activeTimeTime / 1000) / 60) / 60) < 10) {
                 var activeTimeHours = '0'+ Math.floor(((activeTimeTime / 1000) / 60) / 60);
