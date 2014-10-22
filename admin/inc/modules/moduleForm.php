@@ -23,7 +23,22 @@ $module->changeFormObject('module.position', 'menu', null, array("superior-izqui
 																"derecha"=>"derecha", "inferior-derecha"=>"inferior-derecha",
 																"inferior"=>"inferior", "inferior-izquierda"=>"inferior-izquierda",
 																"izquierda"=>"izquierda"));
-$module->changeFormObject('module.alias', 'menu', null, array("A"=>"A","B"=>"B","C"=>"C","D"=>"D","E"=>"E","F"=>"F"));
+$dbAlias = new DB();
+$sqlAlias = "SELECT alias FROM module WHERE zone=1 AND NOT alias=''";
+$resultAlias = $dbAlias->doSql($sqlAlias);
+
+
+$alias = array("A"=>"A","B"=>"B","C"=>"C","D"=>"D","E"=>"E","F"=>"F","G"=>"G","H"=>"H","I"=>"I","J"=>"J","K"=>"K","L"=>"L","M"=>"M","N"=>"N","O"=>"O","P"=>"P","Q"=>"Q");
+
+do{
+	//$alias[$resultAlias['alias']] = $resultAlias['alias'];
+	unset($alias[$resultAlias['alias']]);
+
+}while($resultAlias=pg_fetch_assoc($dbAlias->actualResults));
+
+
+$module->changeFormObject('module.alias', 'menu', null, $alias);
+//$module->changeFormObject('module.alias', 'menu', null, array("A"=>"A","B"=>"B","C"=>"C","D"=>"D","E"=>"E","F"=>"F"));
 $module->toolTipInFormObject('module.max_wait', ' - tiempo maximo en minutos que un paciente puede esperar');
 $module->toolTipInFormObject('module.position', ' - Posicion en la pantalla de visualizacion de las zonas');
 

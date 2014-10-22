@@ -39,10 +39,10 @@ $languaje['zone'] = array (
 		"id" => "ID",
 		"name" => "Nombre",
 		"description" => "Descripcion",
-		"seats" => "Asientos",
+		"seats" => "Capacidad pacientes",
 		"zone.name" => "Nombre",
 		"zone.description" => "Descripcion",
-		"zone.seats" => "Asientos"
+		"zone.seats" => "Capacidad pacientes"
 );
 
 $languaje['module'] = array (
@@ -50,7 +50,7 @@ $languaje['module'] = array (
 		"name" => "Nombre",
 		"max_wait" => "Max T. Espera",
 		"position" => "Posicion",
-		"alias" => "Alias",
+		"alias" => "Letra Ticket",
 		"zone" => "Zona",
 		"zonename" => "Zona",
 		"type" => "Tipo",
@@ -58,7 +58,7 @@ $languaje['module'] = array (
 		"module.name" => "Nombre",
 		"module.max_wait" => "Max T. Espera",
 		"module.position" => "Posicion",
-		"module.alias" => "Alias",
+		"module.alias" => "Letra Ticket",
 		"module.zone" => "Zona",
 		"module.type" => "Tipo"
 		);
@@ -82,11 +82,11 @@ $languaje['module_special'] = array (
 		"id" => "ID",
 		"module" => "Modulo",
 		"name" => "Nombre",
-		"alias" => "Sufijo",
+		"alias" => "Letra Ticket",
 		"last_ticket" => "Ultimo Ticket",
 		"module_special.module" => "Modulo",
 		"module_special.name" => "Nombre",
-		"module_special.alias" => "Sufijo",
+		"module_special.alias" => "Letra Ticket",
 		"module_special.last_ticket" => "Ultimo Ticket",
 		);
 

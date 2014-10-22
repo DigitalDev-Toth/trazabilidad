@@ -53,7 +53,7 @@ if(isset($typeRequest) && isset($data) ){
     $date2 = date('Y-m-d', strtotime($date1 . ' + 1 day'));// dejar en '+ 1 day'
     $sql = "SELECT module.name,logs.module as id ,logs.datetime
             FROM public.logs, public.module
-            WHERE module.id = logs.module AND logs.datetime between '$date1' AND '$date2' AND logs.zone=".$data." AND logs.description LIKE '%Retiro%'  order by logs.datetime ASC" ;
+            WHERE module.id = logs.module AND logs.datetime between '$date1' AND '$date2' AND logs.zone=".$data." AND logs.description LIKE '%Retiro%'  order by logs.datetime, logs.module ASC" ;
   }
 
   if($sql != ''){
@@ -137,9 +137,9 @@ $servedTimeTotal=0;
 $servedMaxTime=0;
 $servedMinTime=0;
 
-
+//Ticket Finalizado','Ticket Derivado','Ticket ha venido'
 for($i=0;$i<count($data);$i++){
-  if($data[$i]['description']=='Ticket ha venido' || $data[$i]['description']=='Ticket Derivado' && $i+1<count($data)){
+  if($data[$i]['description']=='Ticket ha venido' || $data[$i]['description']=='Ticket Derivado'  && $i+1<count($data)){
     if($data[$i]['rut']==$data[$i+1]['rut'] && ($data[$i+1]['description']=='Ticket Derivado' || $data[$i+1]['description']=='Ticket Finalizado')){
       $servedTime = strtotime($data[$i+1]['datetime']) - strtotime($data[$i]['datetime']);
       if($servedCount==0)$servedMinTime = $servedTime;

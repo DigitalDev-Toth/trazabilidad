@@ -23,12 +23,11 @@ if(isset($_GET['data']))
 			$db->doSql($sql);
 			$num++;
 		}
-		$msg="Se insertaron ".$num." Registros";
+		$msg="Se insertaron ".$num." registros";
 	}
 	else
 	{
-		$msg="No se ha insertado nada aun!...";
-		//header("location: main.php?module=exam_mod&users_exam=".$id_user."&msg=".$msg);
+		$msg="No se ha insertado nada aun";
 	}
 	echo '<script>window.location.href="main.php?modulo=module_derivation&module='.$module.'&msg='.$msg.'";</script>';
 }
@@ -36,14 +35,7 @@ if(isset($_GET['data']))
 $module_derivation = new DB("module_derivation", "id");
 $module_derivation->relation("module", "module_derivation", "id");
 $module_derivation->additions("module", array("name"=>"module_derivation"));
-//$module_derivation->relation("module", "module_derivation", "id","name");
-//$module_derivation->additions("module", array("name"=>"module_derivation") );
-//$module_derivation->additions("module", array("obs"=>"Descripcion"));
-//$module_derivation->exceptions(array("users"));
 
-/*$module->relation("zone", "zone", "id", "name");
-$module->additions("zone", array("name"=>"zonename"));
-*/
 $module_derivation->exceptions(array("module"));
 
 makeControls($module_derivation, NULL, "modules/module_derivationDelete.php", NULL, $_SERVER['HTTP_REFERER']);
@@ -54,9 +46,6 @@ $module_derivation->showControls();
 
 echo '<div algin="center" id="showTitle">Modulos a derivar: '.$nameModule['name'].'</div>';
 
-//echo '<td align="right"><div align="center"><p><img src="../images/control/excel.png" id="excel" class="botonExcel" onclick="envia();" /></p>';
-//echo '<form action="/newbioris/inc/modules/payment/archivoExcel.php" method="post" target="_blank" id="FormularioExportacion">';
-//echo '<a href=”/modules/payment/archivoExcel.php”>Exportar</a>';
 $rows = $module_derivation->select(array("module"=>$module));
 echo $module_derivation->showData($rows, TRUE);
 ?>

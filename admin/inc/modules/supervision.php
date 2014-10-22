@@ -11,6 +11,16 @@ include 'libs/bootstrapStyle.php';
 <html>
 <head>
 	<title></title>
+
+	<!-- La del flojo... cuando este listo bajo las librerias xD-->
+	<link rel="stylesheet" href="http://cdn.oesmith.co.uk/morris-0.5.1.css">
+	<script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+ 	<script src="http://cdn.oesmith.co.uk/morris-0.5.1.min.js"></script>
+
+
+
+
+
 </head>
 <body>
 
@@ -23,28 +33,65 @@ include 'libs/bootstrapStyle.php';
 				<label style="margin-top: 8px;"><span class="glyphicon glyphicon-th-list"></span> Supervision</label>
 			</div>
 
-			<div class="col-md-1 ">
-					<label style="margin-top: 8px;">Zona: </label>	
-			</div>
 
 			<div class="col-md-2">
+				
+		
+
+
+				<div class="input-group">
+				<div class="input-group-addon"><span class="glyphicon glyphicon-map-marker"></span> Zona</div>
 				<h4 id="loading"><i class="fa fa-spinner fa-spin"></i></h4>
-				<select class="form-control" id="selectorZone" style="display:none">
+			<select class="form-control" id="selectorZone" style="display:none">
+
+
 				</select>
+				</div>
+
+
 			</div>
 
-			<div class="col-md-1 ">
-					<label style="margin-top: 8px;">Filtro: </label>	
-			</div>
+
 
 			<div class="col-md-2">
+	
+
+				<div class="input-group">
+				<div class="input-group-addon"><span class="glyphicon glyphicon-align-justify"></span> Tipo</div>
 				<select class="form-control" id="selectorFilter" >
 					<option value="0">Zona</option>
 					<option value="1">Modulos</option>
 					<option value="2">SubModulo</option>
 					<option value="3">Totem</option>
 				</select>
+				</div>
+
+
 			</div>
+
+
+			<div class="col-md-3">
+				<div class="input-group">
+				<div class="input-group-addon"><span class="glyphicon glyphicon-filter"></span> Filtro</div>
+				<select class="form-control" id="intervale" >
+					<option value="hour">Hora</option>
+					<option value="minute">Minutos</option>
+					<option value="second">Segundos</option>
+				</select>
+				</div>
+			</div>
+
+			<div class="col-md-3">
+				<div class="input-group">
+				<div class="input-group-addon"><span class="glyphicon glyphicon-stats"></span> Grafico</div>
+				<select class="form-control" id="grType" >
+					<option value="bar">Barras</option>
+					<option value="area">Lineas</option>
+					
+				</select>
+				</div>
+			</div>
+
 
 		</div>
 	
@@ -52,9 +99,24 @@ include 'libs/bootstrapStyle.php';
 
 	<div class="row">
 
-	<div id="supervision">
+
+
+
+	
+		<div class="col-md-6">
+			<div id="supervision"></div>	
+		</div>
+
+	
+
+		<div class="col-md-6" id ='grapZone'>
+
 		
-	</div>
+
+
+		</div>
+
+	
 
 		
 	</div>
@@ -71,6 +133,8 @@ include 'libs/bootstrapStyle.php';
 
 var currentZone = 1;
 var currentOptiion = 0;
+var currenInterval ='hour';
+var currentType = 'bar';
 $(document).ready(function() {
 	
 	$.ajax({
@@ -135,7 +199,6 @@ $("#selectorFilter").change(function(event) {
 function zoneData(data){
 	var json = JSON.parse(data);	
 	var cont = '';
-	console.log(json);
 	cont  = '<table class="table table-bordered table-striped "><tr><th></th><th>Espera</th><tr>';
 	if(data != 0){
 		cont += '<tr><td>Total de pacientes en espera: </td><td>'+ json.length +'</td></tr>';
@@ -176,18 +239,72 @@ function zoneData(data){
 		cont += '<tr><td>Productividad</td><td>---</td></tr>';
 		cont +="</table>";
 
-		$("#supervision").fadeOut('fast', function() {
+
 			$("#supervision").html(cont);
-			$("#supervision").fadeIn();
-		});	
+	
+		
+
+
+
+
+		createGraphic('hour');
+	});
+}
+
+$("#intervale").change(function(event) {
+		currenInterval = this.value;
+		if(currentOptiion == 0){
+			createGraphic(currenInterval);	
+		}
+		if(currentOptiion == 3){
+			ajax1(currentZone,"tt",parseInt(currentOptiion));
+		}
 		
 
 	});
+
+$("#grType").change(function(event) {
+		currentType = this.value;
+		if(currentOptiion == 0){
+			createGraphic(currenInterval);	
+		}
+		if(currentOptiion == 3){
+			ajax1(currentZone,"tt",parseInt(currentOptiion));
+		}
+		
+
+	});
+
+
+function createGraphic(interval){
+	$('#grapZone').html('');
+	
+	var data = '';
+	var cont = '<h4 class="text-center">Cantidad de tickets del dia</h4><div id="graphic" style="height: 200px;" class="well"></div>'
+	$.ajax({
+		url: 'services/grap.php',
+		type: 'GET',
+		async: false,
+		data: {data: currentZone, type:'zn', interval:interval},
+	})
+	.done(function(e) {
+		data = e; 
+	})
+	.fail(function() {
+		console.log("error");
+	});
+	
+	var json = JSON.parse(data);
+	$("#grapZone").html(cont);
+	showGraph('graphic',currentType,json);
+
+
+	
 }
 
 function moduleData (data) {
 	var cont=''
-	var json = JSON.parse(data);
+	
 	var modules = [];
 	var json = JSON.parse(data);
 	for (var i = 0; i < json.length; i++) {
@@ -208,8 +325,9 @@ function moduleData (data) {
 
 	for (var i = 0; i < onlyModulesID.length; i++) {
 		var served = 0, q=0;
+		var minT=0,maxT=0,aver=0;
 		for (var j = 0; j < json.length; j++) {
-			var minT=0,maxT=0,aver=0;
+			
 			if(onlyModulesID[i] == json[j].module){
 				served += json[j].others.served_tickets;
     			var MX = new Date(json[j].others.maxtime);
@@ -219,7 +337,9 @@ function moduleData (data) {
 				maxT += MX.getSeconds();
 				aver += AV.getSeconds(); 
 				q++;
+
 			}	
+
 		};
 		if(minT != 0){
 			minT = minT/q;
@@ -258,23 +378,39 @@ function moduleData (data) {
 		});
 		cont +="</table>";
 	};
-	$("#supervision").fadeOut('fast', function() {
+
 		$("#supervision").html(cont);
-		$("#supervision").fadeIn();
-	});	
+		
+	
+		//createGraphic('hour');
 }
 
 function totemData (data) {
 	var json = JSON.parse(data);
 	var cont = '';
+	
 	var modules = [];
+	var json = JSON.parse(data);
 	for (var i = 0; i < json.length; i++) {
-		modules.push(json[i].name);	
+		modules.push(json[i].id);	
+	};
+	var idModules = [];
+	for (var i = 0; i < json.length; i++) {
+		idModules.push(json[i].name);	
 	};
 	var onlyModules = [];
-	$.each(modules, function(i, elements){
-	    if($.inArray(elements, onlyModules) === -1) onlyModules.push(elements);
+	$.each(idModules, function(i, el){
+	    if($.inArray(el, onlyModules) === -1) onlyModules.push(el);
 	});
+	var onlyModulesID = [];
+	$.each(modules, function(i, el){
+	    if($.inArray(el, onlyModulesID) === -1) onlyModulesID.push(el);
+	});
+
+
+
+
+
 	var b = [], prev;
     modules.sort();
     for ( var i = 0; i < modules.length; i++ ) {
@@ -285,7 +421,7 @@ function totemData (data) {
         }
         prev = modules[i];
     }
-    onlyModules.sort();
+    //onlyModules.sort();
 
     cont  = '<table class="table table-bordered table-striped "><tr><th colspan="2" class="text-center">Tothtem</th><tr>';
     if(data != 0){
@@ -298,10 +434,67 @@ function totemData (data) {
     }else{
     	cont += '<tr><td>No se han solicitado tickets para ningun modulo...</td></tr>';
     }
-    $("#supervision").fadeOut('fast', function() {
+  
 		$("#supervision").html(cont);
-		$("#supervision").fadeIn();
-	});	
+	
+	
+    totemGraph(currenInterval,onlyModulesID,onlyModules);
+
+}
+
+function totemGraph (interval,ids,names) {
+	var data = '';
+	$("#grapZone").html('');
+
+	var contents = '';
+	for (var i = 0; i < ids.length; i++) {
+		$.ajax({
+			url: 'services/grap.php',
+			type: 'GET',
+			async: false,
+			data: {data: currentZone, type:'tt', interval:interval, module:ids[i] },
+		})
+		.done(function(e) {
+			var json = JSON.parse(e);
+			console.log(json);
+			contents = '<h4 class="text-center">'+names[i] +'</h4><div id=G'+i+' style="height: 200px;" class="well"></div>';
+			$('#grapZone').append(contents);
+			var idDiv = 'G'+i;
+			showGraph(idDiv,currentType,json);
+		
+		})
+		.fail(function() {
+			console.log("error");
+		});
+	
+	};
+
+	
+}
+
+
+function showGraph(idDiv,type,json){
+	if(type == 'bar'){
+		Morris.Bar({
+		  element: idDiv,
+		  data: json,
+		  hideHover: 'auto',
+		  xkey: 'hora',
+		  ykeys: ['cantidad'],
+		  labels: ['cantidad'],
+		  xLabels:'hour'
+		});
+	}else{
+		Morris.Area({
+		  element: idDiv,
+		  data: json,
+		  hideHover: 'auto',
+		  xkey: 'hora',
+		  ykeys: ['cantidad'],
+		  labels: ['cantidad'],
+		  xLabels:'hour'
+		});
+	}
 }
 
 function ajax1(zoneId,type,order){
@@ -382,7 +575,7 @@ function subModuleData(data) {
 		};
 		
 		var totalHours = '';
-		console.log(onlyModulesID[i]);
+		
 		$.ajax({
 			url: 'services/getInfoTables.php',
 			type: 'GET',
