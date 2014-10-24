@@ -58,7 +58,7 @@ if (isset($_POST['username'])) {
 		$_SESSION['alive'] = TRUE;
 		if ($_SESSION['idRole'] != 1) {
 			if ($data) {
-				echo $data['id'] . "-sub";
+				echo $data['id'] . "-sub".$id;
 			} else {
 				echo 10;
 			}

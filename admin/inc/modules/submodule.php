@@ -29,7 +29,7 @@ $submodule->relation("module", "module", "id", "name");
 $submodule->additions("module", array("name"=>"modulename"));
 
 $submodule->relation("users", "users", "id", "name");
-//$submodule->additions("users", array("name"=>"usersname"));
+$submodule->additions("users", array("name"=>"usersname"));
 $submodule->insertExternalInShow('Zona', 'http://localhost/traza_enzo/admin/inc/services/showZones.php?module=%id%');
 /*$submodule->insertExternalInShow('Usuario actual', 'http://localhost/new_traza/admin/inc/modules/subModuleTime.php?submodule=%id%&type=user');
 $submodule->insertExternalInShow('Hora inicio', 'http://localhost/new_traza/admin/inc/modules/subModuleTime.php?submodule=%id%&type=ini');

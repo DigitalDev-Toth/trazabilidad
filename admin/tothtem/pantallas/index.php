@@ -27,7 +27,8 @@ if(!isset($_SESSION['Username'])) { header("location: ../../login.php"); header(
                
                 <h1 class="page-header"><div id="ModuleHeader">...</div>
                     <small id="modalityTitle"></small>
-                        <button class="btn btn-default getout pull-right" onclick="inactiveSubModule('logout')"><span class="glyphicon glyphicon-log-out"></span> SALIR</button>  
+                        <button class="btn btn-default getout pull-right" onclick="inactiveSubModule('logout',false)"><span class="glyphicon glyphicon-log-out"></span> SALIR</button>  
+                        <!--<button class="btn btn-default getout pull-right" onclick="$(location).attr('href','../../exit.php');"><span class="glyphicon glyphicon-log-out"></span> SALIR</button>  -->
                         <p class="pull-right">&nbsp;</p>
                         <!--<button class="btn btn-primary getout pull-right" onclick="inactiveSubModule('change')"> <span class="glyphicon glyphicon-transfer"></span> CAMBIAR SUBMÓDULO</button>
                         <p class="pull-right">&nbsp;</p>-->
@@ -173,6 +174,7 @@ var ticketAttention = 0; //Indica qué número se está atendiendo (id del ticke
 var myState = false; //Indica si el submódulo está atendiendo y/o llamando
 var subModuleType ='';
 var noRedirect = false; //Evita que se puedan derivar pacientes en caso de que el módulo no tenga asociada derivación
+var exitLog = true;
 
 //se extrae la modalidad , el ultimo numero y se rellena la tabla
 
@@ -213,11 +215,13 @@ function closeWindow(){
 } 
 
 $(window).on('beforeunload', function(e) {
-    return 'Se cerrara su sesion';
+    if(exitLog==true){
+        return 'Se cerrara su sesion';
+    }
 });
 $(window).on('unload', function(e) {
     
-    return inactiveSubModule('logout');
+    return inactiveSubModule('logout',true);
 });
 
 ///////////////OBTENCIÓN REGISTROS///////////////////////////////////////
@@ -306,7 +310,7 @@ function getActivesModules(){
 }
 
 
-function inactiveSubModule(typeButton){//Desactiva el submódulo y genera log de cierre de sesión
+function inactiveSubModule(typeButton,doLog){//Desactiva el submódulo y genera log de cierre de sesión
     var actionType = 'inactivo'
     if(typeButton=='pause'){ 
         actionType='pausado';
@@ -324,19 +328,32 @@ function inactiveSubModule(typeButton){//Desactiva el submódulo y genera log de
         refreshTable();
         $('#content').text('Esperando...');
     }
-    $.post('phps/activeSubModule.php', {type: actionType, user: "<?php echo $_SESSION['UserId']; ?>", submodule: submodule}, function(data, textStatus, xhr) {
-        $.ajax({
-            url: '../../../visor/comet/backend.php',
-            type: 'GET',
-            dataType: 'default',
-            data: {msg: data},
+    console.log(actionType, typeButton);
+    if(typeButton!='logout'){
+        $.post('phps/activeSubModule.php', {type: actionType, user: "<?php echo $_SESSION['UserId']; ?>", submodule: submodule}, function(data, textStatus, xhr) {
+            $.post('../../../visor/comet/backend.php', {msg: data}, function(data, textStatus, xhr) {
+            });
         });
-        if(typeButton=='logout'){
-            $(location).attr('href','../../exit.php');
-        }else if(typeButton=='change'){
-            $(location).attr('href','selector.php');
-        }
-    });
+
+
+
+    }else if(typeButton=='logout' && doLog==false){
+        exitLog=false;
+        $.post('phps/activeSubModule.php', {type: actionType, user: "<?php echo $_SESSION['UserId']; ?>", submodule: submodule}, function(data, textStatus, xhr) {
+            $.post('../../../visor/comet/backend.php', {msg: data}, function(data, textStatus, xhr) {
+                $(location).attr('href','../../exit.php');
+            });
+        });
+        
+    }else if(typeButton=='logout' && doLog==true){
+        if(exitLog==true){
+            $.post('phps/activeSubModule.php', {type: actionType, user: "<?php echo $_SESSION['UserId']; ?>", submodule: submodule}, function(data, textStatus, xhr) {
+       
+                $.post('../../../visor/comet/backend.php', {msg: data}, function(data, textStatus, xhr) {
+                });
+            });
+        }    
+    }
 }
 
 

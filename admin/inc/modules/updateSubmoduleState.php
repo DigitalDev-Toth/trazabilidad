@@ -7,7 +7,7 @@ if(isset($_GET['state'])) {
 	$db = new DB();
 	$id = $_GET['id'];
 	$state = $_GET['state'];
-	if($state=='activo') {
+	if($state=='activo' || $state=='pausado') {
 		$state = 'inactivo';
 	} else {
 		$state = 'activo';

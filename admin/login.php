@@ -77,7 +77,17 @@
                     }else{
                         data = data.split('-sub');
                         submodule = data[0];
-                        $(location).attr('href','tothtem/pantallas/index.php?id='+submodule);
+                        var userId = data[1];
+                        $.post('tothtem/pantallas/phps/activeSubModule.php', {type: 'activo', user: userId, submodule: submodule}, function(data, textStatus, xhr) {
+                            $.ajax({
+                                url: '../visor/comet/backend.php',
+                                type: 'GET',
+                                dataType: 'default',
+                                data: {msg: data},
+                            });
+                            $(location).attr('href','tothtem/pantallas/index.php?id='+submodule);
+                        });
+                        
                     }
 
                 });

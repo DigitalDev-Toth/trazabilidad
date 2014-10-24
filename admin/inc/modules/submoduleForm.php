@@ -25,6 +25,7 @@ function setState($id, $state){
 
 $submodule = new DB("submodule", "id");
 $submodule->exceptions(array("id"));
+$submodule->exceptions(array("state"));
 
 $submodule->relation("module", "module", "id", "name");
 $submodule->relation("users", "users", "id", "name", array("null"=>"no aplica"));
