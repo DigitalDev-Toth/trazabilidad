@@ -35,27 +35,14 @@ include 'libs/bootstrapStyle.php';
 
 
 			<div class="col-md-2">
-				
-		
-
-
 				<div class="input-group">
-				<div class="input-group-addon"><span class="glyphicon glyphicon-map-marker"></span> Zona</div>
-				<h4 id="loading"><i class="fa fa-spinner fa-spin"></i></h4>
-			<select class="form-control" id="selectorZone" style="display:none">
-
-
-				</select>
+					<div class="input-group-addon"><span class="glyphicon glyphicon-map-marker"></span> Zona</div>
+					<h4 id="loading"><i class="fa fa-spinner fa-spin"></i></h4>
+						<select class="form-control" id="selectorZone" style="display:none">
+						</select>
 				</div>
-
-
 			</div>
-
-
-
 			<div class="col-md-2">
-	
-
 				<div class="input-group">
 				<div class="input-group-addon"><span class="glyphicon glyphicon-align-justify"></span> Tipo</div>
 				<select class="form-control" id="selectorFilter" >
@@ -65,11 +52,7 @@ include 'libs/bootstrapStyle.php';
 					<option value="3">Totem</option>
 				</select>
 				</div>
-
-
 			</div>
-
-
 			<div class="col-md-3">
 				<div class="input-group">
 				<div class="input-group-addon"><span class="glyphicon glyphicon-filter"></span> Filtro</div>
@@ -80,44 +63,27 @@ include 'libs/bootstrapStyle.php';
 				</select>
 				</div>
 			</div>
-
 			<div class="col-md-3">
 				<div class="input-group">
 				<div class="input-group-addon"><span class="glyphicon glyphicon-stats"></span> Grafico</div>
 				<select class="form-control" id="grType" >
 					<option value="bar">Barras</option>
 					<option value="area">Lineas</option>
-					
 				</select>
 				</div>
 			</div>
-
-
 		</div>
-	
 	</div>
 
-	<div class="row">
+	<div class="row" id='principalRow' >
 
-
-
-
-	
 		<div class="col-md-6">
 			<div id="supervision"></div>	
 		</div>
 
-	
 
 		<div class="col-md-6" id ='grapZone'>
-
-		
-
-
 		</div>
-
-	
-
 		
 	</div>
 
@@ -239,15 +205,22 @@ function zoneData(data){
 		cont += '<tr><td>Productividad</td><td>---</td></tr>';
 		cont +="</table>";
 
-
-			$("#supervision").html(cont);
-	
+		/*
 		
+		<div class="col-md-6">
+			<div id="supervision"></div>	
+		</div>
 
 
+		<div id ='grapZone'>
+		</div>
+	
+		*/
+		$("#principalRow").html('<div class="row">'+cont+'</div><div class="row" id="createGraphic"><div id ="grapZone"></div></div>');
 
-
+		//$("#supervision").html(cont);
 		createGraphic('hour');
+
 	});
 }
 
@@ -379,8 +352,9 @@ function moduleData (data) {
 		cont +="</table>";
 	};
 
-		$("#supervision").html(cont);
-		
+		//$("#supervision").html(cont);
+		$("#principalRow").html('<div class="col-md-6">'+cont+'</div><div class="col-md-6" id="graphic"></div>');
+
 	
 		//createGraphic('hour');
 }
@@ -435,9 +409,10 @@ function totemData (data) {
     	cont += '<tr><td>No se han solicitado tickets para ningun modulo...</td></tr>';
     }
   
-		$("#supervision").html(cont);
+//		$("#supervision").html(cont);
 	
-	
+		$("#principalRow").html('<div class="row">'+cont+'</div> <div class="row" id="grapZone">  </div>');
+
     totemGraph(currenInterval,onlyModulesID,onlyModules);
 
 }
@@ -447,6 +422,10 @@ function totemGraph (interval,ids,names) {
 	$("#grapZone").html('');
 
 	var contents = '';
+	var colmd=12;
+	if(ids.length > 0 ){
+		colmd = parseInt(colmd / ids.length) ;
+	}
 	for (var i = 0; i < ids.length; i++) {
 		$.ajax({
 			url: 'services/grap.php',
@@ -457,7 +436,7 @@ function totemGraph (interval,ids,names) {
 		.done(function(e) {
 			var json = JSON.parse(e);
 			console.log(json);
-			contents = '<h4 class="text-center">'+names[i] +'</h4><div id=G'+i+' style="height: 200px;" class="well"></div>';
+			contents = '<div class="col-md-'+colmd+'"><h4 class="text-center">'+names[i] +'</h4><div id=G'+i+' style="height: 200px;" class="well"></div></div>';
 			$('#grapZone').append(contents);
 			var idDiv = 'G'+i;
 			showGraph(idDiv,currentType,json);
@@ -492,7 +471,7 @@ function showGraph(idDiv,type,json){
 		  xkey: 'hora',
 		  ykeys: ['cantidad'],
 		  labels: ['cantidad'],
-		  xLabels:'hour'
+		  
 		});
 	}
 }
@@ -685,7 +664,7 @@ function subModuleData(data) {
 		tableText+="</table><br>";
 	};
 	//console.log(json[1].others.maxtime);
-	$("#supervision").html(tableText);
+	$("#principalRow").html('<div class="row">'+tableText+'</div> ');
 
 	
 }

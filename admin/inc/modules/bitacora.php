@@ -27,7 +27,7 @@ include("controls.php");
 
 			<form class="form-horizontal" id="toSearch" role="form" name="between" method="POST">
 
-					<div class="row text-center well well-sm ">
+					<div class="row well well-sm ">
 						<div class="col-md-2">
 							<label style="margin-top: 8px;"><span class="glyphicon glyphicon-th-list"></span> Bitacora</label>
 						</div>

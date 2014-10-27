@@ -46,7 +46,7 @@ $sql=("SELECT id from users  where id=$roles");
 $nameUsers = $db->doSql($sql);
 $users_roles->showControls();
 
-echo '<div algin="center" id="showTitle">Roles del Usuario: '.$nameUsers['name'].' '.$nameUsers['lastname'].'</div>';
+echo '<div algin="center" id="showTitle">Permisos del Usuario: '.$nameUsers['name'].' '.$nameUsers['lastname'].'</div>';
 
 //echo '<td align="right"><div align="center"><p><img src="../images/control/excel.png" id="excel" class="botonExcel" onclick="envia();" /></p>';
 //echo '<form action="/newbioris/inc/modules/payment/archivoExcel.php" method="post" target="_blank" id="FormularioExportacion">';

@@ -74,8 +74,8 @@
 			include("modules/show_displays.php");
 			break;
 
-			case 'statistical':
-			include("modules/statistical.php");
+			case 'estadistica':
+			include("modules/estadistica.php");
 			break;
 
 			case 'trace':

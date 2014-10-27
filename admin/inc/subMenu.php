@@ -23,15 +23,15 @@ function getSubMenu($content) {
 			$subMenu .= getItemMenu("module", "Modulos");
 			$subMenu .= getItemMenu("submodule", "Sub Modulos");
 			$subMenu .= getItemMenu("module_special", "Modulos Especiales");
-			$subMenu .= getItemMenu("changePass", "Cambiar Password");
-			$subMenu .= getItemMenu("role", "Roles");
-			$subMenu .= getItemMenu("roles", "Tipo de Roles");
 			$subMenu .= getItemMenu("users", "Usuarios");
+			$subMenu .= getItemMenu("changePass", "Cambiar Password");
+			$subMenu .= getItemMenu("role", "Roles de Usuario");
+			$subMenu .= getItemMenu("roles", "Permisos de Usuario");
 			
 			$subMenu .= '</ul>';
 			break;
 
-		case 'users':
+		/*case 'users':
 			$subMenu .= '<ul>';
 			$subMenu .= getItemMenu("changePass", "Cambiar Password");
 			$subMenu .= getItemMenu("role", "Roles");
@@ -39,7 +39,7 @@ function getSubMenu($content) {
 			$subMenu .= getItemMenu("users", "Usuarios");
 			$subMenu .= '<li class = "round_corner_menu_top"></li>';
 			$subMenu .= '</ul>';
-			break;
+			break;*/
 
 		case 'visor':
 			$subMenu .= '<ul>';

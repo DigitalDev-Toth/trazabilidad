@@ -45,7 +45,7 @@ body {
     <br/>
     <br/>
     <span>Sistema de Trazabilidad de Pacientes</span>
-    <span>Versión 0.4</span>
+    <span>Versión 0.6</span>
 </div>
 
 <br/>

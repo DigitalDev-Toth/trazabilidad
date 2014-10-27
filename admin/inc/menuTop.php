@@ -36,14 +36,14 @@ echo '<ul class="nav navbar-nav">';
 echo '<li> ' . itemMenu("trace", "<span class='glyphicon glyphicon-time'></span> Situación Actual", 'enable', true) . '</li>';
 echo '<li> ' . itemMenu("bitacora", " <span class='glyphicon glyphicon-list-alt'></span> Bitácora", 'enable', true) . '</li>';
 echo '<li> ' . itemMenu("supervision", "<span class='glyphicon glyphicon-search'></span>  Supervisión", 'enable', true) . '</li>';
-echo '<li>  ' . itemMenu("trace", "<span class='glyphicon glyphicon-calendar'></span> Estadísticas", 'enable', true) . '</li>';
+echo '<li>  ' . itemMenu("estadistica", "<span class='glyphicon glyphicon-calendar'></span> Estadísticas", 'enable', true) . '</li>';
 echo '</ul>';
 
 //Menu Right
 echo '<ul id="nav" class="nav navbar-nav navbar-right">';
 
 //Dropdown
-echo '<li class="dropdown">' . itemMenu("admin", "Configuracion", 'enable', false) . '</li>';
+echo '<li class="dropdown">' . itemMenu("admin", "Configuración", 'enable', false) . '</li>';
 echo '<li>' . $_SESSION['Realname'] . '<a href="exit.php" >Salir <span class="glyphicon glyphicon-log-out"></span></a></li>';
 /*
 if (findRole("users", "show")) {$state = 'enable';} else { $state = 'disable';}

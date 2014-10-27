@@ -16,7 +16,7 @@ else makeControls($roles, "modules/rolesForm.php", "modules/rolesDelete.php", "m
 
 
 $roles->showControls();
-echo '<div algin="center" id="showTitle">ROLES</div>';
+echo '<div algin="center" id="showTitle">PERMISOS DE USUARIO</div>';
 
 if(isset($_GET['roles']))
 {
