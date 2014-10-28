@@ -115,9 +115,23 @@ if($goComet == true){
 	$resultTicket = $dbTicket->doSql($sqlTicket2);
 	$newticket=$resultTicket['ticket'];
 
+
+	//////////////////WEBSERVICE//////////////////////////////
+		$con = pg_connect("host=biopacs.com port=5432 dbname=es14b_hrt2 user=postgres password=justgoon") or die('NO HAY CONEXION: ' . pg_last_error());
+
+		$sql="SELECT * FROM patient WHERE rut='$rut'";
+		$resultado = pg_query($con, $sql);
+		$row = pg_numrows($resultado);
+		if($row){
+		    $patientName = pg_result($resultado,0,2).' '.pg_result($resultado,0,3);
+		}else{
+			$patientName = 'Paciente Nuevo';
+		}
+	//////////////////////////////////////////////////////////
+
 	//Comet es el encabezado que corresponde al tipo de comet a entregar: ejemplo : comet tipo tothtem , comet tipo gestion
 
-	$returnComet = array('comet' => $cometType,'rut' => $rut, 'datetime' => $datetime, 'description' => $description, 'zone' => $zone, 'action' => $action, 'submodule' => $subModule, 'module' => $module, 'newticket' => $newticket, 'idticket' => $idTicket);
+	$returnComet = array('comet' => $cometType,'rut' => $rut, 'datetime' => $datetime, 'description' => $description, 'zone' => $zone, 'action' => $action, 'submodule' => $subModule, 'module' => $module, 'newticket' => $newticket, 'idticket' => $idTicket, 'name' => $patientName);
 	//$returnComet = array('comet' => $cometType,'rut' => $rut, 'datetime' => $datetime, 'description' => $description, 'zone' => $zone, 'action' => $action, 'submodule' => $subModule, 'module' => $module);
 	echo json_encode($returnComet);
 }else{

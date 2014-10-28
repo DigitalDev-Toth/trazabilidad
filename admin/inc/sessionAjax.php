@@ -34,7 +34,8 @@ if (isset($_POST['username'])) {
 		$name = $row['realname'];
 		$role = $row['role'];
 		$permission = $row['permission'];//colocar en SM
-		$queryModules = "SELECT * FROM submodule WHERE module IN (SELECT module FROM users_modules WHERE users=$id) AND ip='$ip'";
+		//$queryModules = "SELECT * FROM submodule WHERE module IN (SELECT module FROM users_modules WHERE users=$id) AND ip='$ip'";
+		$queryModules = "SELECT * FROM submodule WHERE ip='$ip' AND users=$id";
 
 		$dataModule = pg_query($localhost, $queryModules);
 		$data = pg_fetch_assoc($dataModule);
