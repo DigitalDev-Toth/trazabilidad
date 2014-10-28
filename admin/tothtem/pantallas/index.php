@@ -63,20 +63,16 @@ if(!isset($_SESSION['Username'])) { header("location: ../../login.php"); header(
                                         </div>
                                         <div class="col-md-2">
                                             <button type="button" class="btn btn-default btn-lg" onclick="sendComet('notHere')" id="notHereButton" title="No llegó paciente" style="color: red;"><span class="glyphicon glyphicon-remove-circle"></span></button>
-                                        
                                         </div>
                                         <div class="col-md-2">
-                                        <button type="button" class="btn btn-default btn-lg" onclick="sendComet('finished')" id="finishedButton" title="Finalizar Atención" ><span class="glyphicon glyphicon-thumbs-up"></span></button>
-                                            
+                                            <button type="button" class="btn btn-default btn-lg" onclick="sendComet('finished')" id="finishedButton" title="Finalizar Atención" ><span class="glyphicon glyphicon-thumbs-up"></span></button>                                         
                                         </div>
                                         <div class="col-md-2">
-                                        <button type="button" class="btn btn-default btn-lg" onclick="sendComet('redirect')" id="redirectButton" title="Derivar"><span class="glyphicon glyphicon-share"></span></button>
-                                            
+                                            <button type="button" class="btn btn-default btn-lg" onclick="sendComet('redirect')" id="redirectButton" title="Derivar"><span class="glyphicon glyphicon-share"></span></button>                                        
                                         </div>
-                                        <div class="col-md-2">
-                                        <button type="button" class="btn btn-default btn-lg" onclick="refreshTable()" id="refreshButton" title="Rechargar Tabla"><span class="glyphicon glyphicon-refresh"></span></button>
-                                            
-                                        </div>
+                                        <!--<div class="col-md-2">
+                                            <button type="button" class="btn btn-default btn-lg" onclick="refreshTable()" id="refreshButton" title="Rechargar Tabla"><span class="glyphicon glyphicon-refresh"></span></button>
+                                        </div>-->
                                     </div>
                                 </div>
                                 <div class="col-md-4">
@@ -92,7 +88,7 @@ if(!isset($_SESSION['Username'])) { header("location: ../../login.php"); header(
 							<div class="modal-dialog">
 								<div class="modal-content">
 									<div class="row">
-										<h4 class="text-center">Pacientes No Atendidos...<h4>
+										<h4 id="noServeTitle" class="text-center">Pacientes No Atendidos...<h4>
 									</div>
 
 									<table id="modalNoServeContent" class="table table-striped text-center">
@@ -109,11 +105,11 @@ if(!isset($_SESSION['Username'])) { header("location: ../../login.php"); header(
 									<div id="menuButtons">
 					                    
 				                	</div>
-									<div class="row">
+									<!--<div class="row">
 										
 									</div>
 									<table id="modalNoServeContent" class="table table-striped text-center">
-									</table>
+									</table>-->
 								</div>
 							</div>
 						</div>
@@ -140,7 +136,7 @@ if(!isset($_SESSION['Username'])) { header("location: ../../login.php"); header(
                                 <div class="col-md-4 text-center">
                                     <div id="patientPicture"></div>
                                 </div>
-                                 <div class="col-md-7">
+                                <div class="col-md-7">
                                 <div id="patientData"></div>    
                             </div>
                             </div>
@@ -161,6 +157,16 @@ if(!isset($_SESSION['Username'])) { header("location: ../../login.php"); header(
             </div>
         </footer>
     </div>
+
+
+<div id="standBy" class="container">
+    <div class="row">
+        <div class="col-lg-12 text-center">
+          <b> <h4><span class="glyphicon glyphicon-fullscreen"></span> <p>Expandir</p></h4></b>
+
+        </div>
+    </div>
+</div>
 <script type="text/javascript">
 
 var submodule="";
@@ -182,14 +188,22 @@ var exitLog = true;
 /////////////////////EVENTOS//////////////////////////////////
 
 $(document).ready(function() {
+    $("#standBy").hide();
+
     submodule=decodeURIComponent("<?php echo rawurlencode($_GET['id']); ?>");
     if(submodule != ""){
         $.post('phps/getModuleType.php', { submodule: submodule}, function(data, textStatus, xhr) {
             subModuleType=data;
-            if(data != 12){
+            if(data != 12){//Módulo especial
                 $("#contentTicket").html('<th class="text-center">Numero de atencion</th><th class="text-center">RUT</th><th class="text-center">Hora Retiro de Ticket</th><th class="text-center">Tiempo de espera</th>')
             }else{
                 $("#contentTicket").html('<th class="text-center">Numero de atencion</th><th class="text-center">RUT</th><th class="text-center">Motivo</th><th class="text-center">Hora Retiro de Ticket</th><th class="text-center">Tiempo de espera</th>')    
+            ////////////CARGA DE PACIENTES////////////
+
+            $("#buttons").append('<div class="col-md-2"><button type="button" class="btn btn-default btn-lg" onclick="getExceptions();" id="patientsButton" title="Pacientes..."><span class="glyphicon glyphicon-user"></span></button></div>');
+
+
+            //////////////////////////////////////
             }
 
             var dataModality = JSON.parse(getModule(submodule));
@@ -223,6 +237,21 @@ $(window).on('unload', function(e) {
     
     return inactiveSubModule('logout',true);
 });
+
+
+
+window.onresize = function(event) {
+    var widthP = $(window).width();  
+    var heightP = $(window).height(); 
+    if(widthP <= 300 && heightP < 300){
+        $("#AllPage").hide();
+        $("#standBy").show();
+    }else{
+        $("#AllPage").show();
+        $("#standBy").hide();
+    }
+
+};
 
 ///////////////OBTENCIÓN REGISTROS///////////////////////////////////////
 function getPatientData(ticketId){
@@ -280,7 +309,6 @@ function getActivesModules(){
            
         }
     });
-    console.log(result);
     if(result!=0){
         var jsonModules=JSON.parse(result);
         $("#menuButtons").html('');
@@ -328,7 +356,7 @@ function inactiveSubModule(typeButton,doLog){//Desactiva el submódulo y genera 
         refreshTable();
         $('#content').text('Esperando...');
     }
-    console.log(actionType, typeButton);
+
     if(typeButton!='logout'){
         $.post('phps/activeSubModule.php', {type: actionType, user: "<?php echo $_SESSION['UserId']; ?>", submodule: submodule}, function(data, textStatus, xhr) {
             $.post('../../../visor/comet/backend.php', {msg: data}, function(data, textStatus, xhr) {
@@ -374,6 +402,21 @@ function getLast5Tickets(idModule,last){//Devuelve los últimos 5 pacientes en e
     return result;
 }
 
+/*function getAllTicketsSpecial(){//Devuelve todos los pacientes en espera de módulos especiales
+    var result = null;
+    var scriptUrl = "phps/lastTicketsAll.php?submodule="+submodule;
+    $.ajax({
+        url: scriptUrl,
+        type: 'get',
+        dataType: 'html',
+        async: false,
+        success: function(data) {
+            result = data;
+        } 
+    });
+    return result;
+}*/
+
 function getNoServeTickets(){//Devuelve y muestra los últimos 10 tickets que no fueron atendidos
     var scriptUrl = "phps/noServeLastTickets.php?submodule="+submodule+"&type=no_serve";
     $.ajax({
@@ -393,7 +436,7 @@ function getNoServeTickets(){//Devuelve y muestra los últimos 10 tickets que no
                 $('#modalNoServeContent').append('<tr ><th class="text-center">No hay pacientes </th></tr>');
             }
 
-    
+            $('#noServeTitle').html('Pacientes rezagados...');
             $('#modalNoServe').modal('show');
         } 
     });
@@ -411,15 +454,15 @@ function getExceptions(){//Obtiene el total de los pacientes en espera del módu
             var jsonData = JSON.parse(data);
 
             if(jsonData.length!=0){
-                $('#modalNoServeContent').append('<tr><th>Ticket</th><th>Paciente</th><th>Tiempo</th><th></th></tr>');
+                $('#modalNoServeContent').append('<tr><th>Ticket</th><th>Paciente</th><th>Motivo</th><th>Tiempo</th><th></th></tr>');
                 for(i=0;i<jsonData.length;i++){
-                    $('#modalNoServeContent').append('<tr><td>'+jsonData[i]['ticket']+'</td><td>'+jsonData[i]['rut']+'</td><td>'+jsonData[i]['datetime']+'</td><td><button type="button" class="btn btn-primary" onclick="firstTicketId='+jsonData[i]['ticketid']+'; sendComet(&quot;plus&quot;); $(&quot;#modalNoServe&quot;).modal(&quot;hide&quot;);">Usar</button></td></div>');
+                    $('#modalNoServeContent').append('<tr><td>'+jsonData[i]['ticket']+'</td><td>'+jsonData[i]['rut']+'</td><td>'+jsonData[i]['name']+'</td><td>'+jsonData[i]['datetime']+'</td><td><button type="button" class="btn btn-primary" onclick="firstTicketId='+jsonData[i]['ticketid']+'; sendComet(&quot;plus&quot;); $(&quot;#modalNoServe&quot;).modal(&quot;hide&quot;);">Usar</button></td></div>');
                 }
             }else{
                 $('#modalNoServeContent').append('<tr><th>No hay pacientes </th></tr>');
             }
 
-    
+            $('#noServeTitle').html('Pacientes en espera...');
             $('#modalNoServe').modal('show');
         } 
     });
@@ -643,6 +686,7 @@ function activeButtons(type){//Activa o inactiva botones
         $('#exceptionButton').attr('disabled', false);
         $('#plusDerivedButton').attr('disabled', true);
         $('.getout').attr('disabled', false);
+        if(subModuleType==12)$('#patientButton').attr('disabled', false);
     }
 
     if(type=='on_serve'){
@@ -654,6 +698,7 @@ function activeButtons(type){//Activa o inactiva botones
         $('#exceptionButton').attr('disabled', true);
         $('#plusDerivedButton').attr('disabled', true);
         $('.getout').attr('disabled', true);
+        if(subModuleType==12)$('#patientButton').attr('disabled', false);
     }
 
     if(type=='pause'){
@@ -665,6 +710,7 @@ function activeButtons(type){//Activa o inactiva botones
         $('#exceptionButton').attr('disabled', true);
         $('#plusDerivedButton').attr('disabled', true);
         $('.getout').attr('disabled', false);
+        if(subModuleType==12)$('#patientButton').attr('disabled', false);
     }
 
 }
@@ -684,11 +730,13 @@ function hourDiff(initialHour){
 }
 
 //so doge, wow, much code
-/*$("#patientPicture").hover(function() {
-    $("#patientPicture").html('<img src="http://i0.kym-cdn.com/entries/icons/original/000/014/285/not.jpg">');
+$("#patientPicture").hover(function() {
+    //CHLOE$("#patientPicture").html('<img src="http://i0.kym-cdn.com/entries/icons/original/000/014/285/not.jpg" style="height: 200px; width: 200px;">');
+    //KERMIT
+    $("#patientPicture").html('<img src="http://media.giphy.com/media/DpB9NBjny7jF1pd0yt2/giphy.gif" style="height: 200px; width: 200px;">');
 }, function() {
   $("#patientPicture").html('<img src="http://placehold.it/200x200">');
-});*/
+});
 
 
 function gender(gen){
