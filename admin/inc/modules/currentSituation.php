@@ -71,7 +71,7 @@ include 'libs/bootstrapStyle.php';
 	</div>
 
 
-<div class="row text-center"> 
+<div class="text-center"> 
 
 	<iframe src="" id="actualIframe" frameborder="0"  allowfullscreen></iframe>
 </div>
@@ -148,7 +148,7 @@ function changeZone (idZone,sw) {
 		idZone="../../visor/index.php?idZone="+idZone;
 		$( document ).width();
 		$('#actualIframe').height($( document ).height()*0.8);
-		$('#actualIframe').width($( document ).width());
+		$('#actualIframe').width($( window ).width());
 		$('#actualIframe').fadeOut('500', function() {
 			$('#actualIframe').attr('src', idZone);	
 			$('#actualIframe').fadeIn('500', function() {

@@ -175,11 +175,13 @@ PATIENT.prototype.goToWaitingRoom = function (idPatient, storage) {
     }
 };
 PATIENT.prototype.goToLimb = function (idPatient, storage) {
-    MODULES['lb'].placesPos[this.place].patient = idPatient;
+//    MODULES['lb'].placesPos[this.place].patient = idPatient;
     this.wt = false;
     if (storage) {        
-        var x = MODULES['lb'].placesPos[this.place].x,
-            y = MODULES['lb'].placesPos[this.place].y;
+//        var x = MODULES['lb'].placesPos[this.place].x,
+//            y = MODULES['lb'].placesPos[this.place].y;
+        var x = MODULES['lb'].el.attrs.cx,
+            y = MODULES['lb'].el.attrs.cy;
         var s = this.shapePath(),
             fp = 'M'+ x +','+ y + s;
             
@@ -196,19 +198,22 @@ PATIENT.prototype.goToLimb = function (idPatient, storage) {
             'stroke-width': '0'        
         }); 
         
-        this.el.animate({'fill-opacity': 0}, 5000, '>', (function (t) {
+        this.el.animate({'fill-opacity': 0}, 2000, '>', (function (t) {
             return function () {
-                $(t.el.node).popover('destroy');
-                t.el.remove();                
-                MODULES['lb'].placesPos[t.place].patient = null;
+                t.el.remove();  
+                t.elTop.remove();
+                t.text.remove();  
+//                MODULES['lb'].placesPos[t.place].patient = null;
                 delete PATIENTS[idPatient];
             };
         })(this));
     } else {
         var bx = PATIENTS[idPatient].el.attrs.path[0][1],
             by = PATIENTS[idPatient].el.attrs.path[0][2],
-            fx = MODULES['lb'].placesPos[this.place].x,
-            fy = MODULES['lb'].placesPos[this.place].y;
+//            fx = MODULES['lb'].placesPos[this.place].x,
+//            fy = MODULES['lb'].placesPos[this.place].y;
+            fx = MODULES['lb'].el.attrs.cx,
+            fy = MODULES['lb'].el.attrs.cy;
     
         var s = this.shapePath(),
             bp = 'M'+ bx +','+ by + s;
@@ -220,11 +225,12 @@ PATIENT.prototype.goToLimb = function (idPatient, storage) {
                 var fp = 'M'+ fx +','+ fy + s;
                 t.el.animate({path: fp}, 1000, '>', (function (s) {
                     return function () {
-                        s.el.animate({'fill-opacity': 0}, 5000, '>', (function (r) {
+                        s.el.animate({'fill-opacity': 0}, 2000, '>', (function (r) {
                             return function () {
                                 r.el.remove();  
-                                r.elTop.remove();      
-                                MODULES['lb'].placesPos[r.place].patient = null;
+                                r.elTop.remove();  
+                                r.text.remove();     
+//                                MODULES['lb'].placesPos[r.place].patient = null;
                                 delete PATIENTS[idPatient];
                             };
                         })(s));

@@ -59,7 +59,7 @@ if (isset($_GET['idZone'])) {
 //                            console.log(info);
                             
                             MAKE.module(info.name, info.id, 'waiting-room', null, 'center', '#818878', null, null, null, info.seats);
-                            MAKE.module('Limbo', info.id, 'limb', null, 'center', '#A24A4A', null, null, null, null);
+                            MAKE.module('Salida', info.id, 'limb', null, 'center', '#A24A4A', null, null, null, null);
                             for (var i = 0; i < info.modules.length; i++) {   
                                 MAKE.module(info.modules[i].name, info.modules[i].id, 'module', info.modules[i].type, info.modules[i].position, '#'+ info.modules[i].color, info.modules[i].shape, info.modules[i].max_wait, info.modules[i].submodules);
                             }  

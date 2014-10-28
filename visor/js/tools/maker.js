@@ -9,7 +9,7 @@ MAKER.prototype.module = function (name, id, type, dbType, pos, color, shape, wa
         MODULES['wr'].seatsCountAndTimeWaiting();
     } else if (type === 'limb') { 
         MODULES['lb'] = m;
-        MODULES['lb'].setPlacesPos();
+//        MODULES['lb'].setPlacesPos();
     } else {
         MODULES[id] = m;
     }
@@ -89,7 +89,7 @@ MAKER.prototype.goTo = function (comet, rut, name, action, ticket, datetime, idM
             break;
         case 'lb':
             PATIENTS[rut].shape = 'circulo';
-            PATIENTS[rut].place = this.findPlace();
+//            PATIENTS[rut].place = this.findPlace();
             PATIENTS[rut].goToLimb(rut, false);
             break;
     }  

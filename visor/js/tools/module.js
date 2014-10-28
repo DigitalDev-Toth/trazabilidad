@@ -42,8 +42,8 @@ var MODULE = function (name, id, type, dbType, pos, color, shape, waitingTime, s
         this.timeOn = null;
         this.ivwrInfo = null;
     } else if (type === 'limb') {
-        this.places = 24;
-        this.placesPos = [];
+//        this.places = 24;
+//        this.placesPos = [];
     }
     this.color = color;
     this.pos = pos;
@@ -101,10 +101,10 @@ MODULE.prototype.setElem = function () { // element in DOM for module
         });
         this.text = PAPER.text(x + (400 / 2), y + (200 - 12), this.name).attr(this.textAttrs(this.color));        
     } else if (this.type === 'limb') {
-        var x = ($(window).width() / 2) - (400 / 2),
-            y = (($(window).height() + 200) / 2) - (100 / 2) + 3;
-        this.el = PAPER.rect(x, y, 400, 100, 10).attr(this.attrs(this.color));
-        this.text = PAPER.text(x + (400 / 2), y + (100 - 12), this.name).attr(this.textAttrs(this.color));     
+        var x = ($(window).width() / 2),
+            y = (($(window).height() + 200) / 2) + 3;
+        this.el = PAPER.circle(x, y, 30).attr(this.attrs(this.color));
+        this.text = PAPER.text(x, y, this.name).attr(this.textAttrs(this.color));     
     } else {
         switch (this.pos) {
             case 'superior':
@@ -319,26 +319,26 @@ MODULE.prototype.setSeatsPos = function () {
         }             
     }
 };
-MODULE.prototype.setPlacesPos = function () {
-    var max = 12, // max places per line
-        space = 30; // max places per zone
-    
-    for (var i = 0, j = 0, k = 0; i < this.places; i++) {
-        if (j < max) {
-            var data = {
-                x: MODULES['lb'].el.attrs.x + 35 + (space * j),
-                y: MODULES['lb'].el.attrs.y + 30 + (space * k),
-                patient: null
-            };
-            j++;
-            this.placesPos[i] = data;        
-        } else {
-            j = 0;
-            k++;
-            i--;
-        }    
-    }
-};
+//MODULE.prototype.setPlacesPos = function () {
+//    var max = 12, // max places per line
+//        space = 30; // max places per zone
+//    
+//    for (var i = 0, j = 0, k = 0; i < this.places; i++) {
+//        if (j < max) {
+//            var data = {
+//                x: MODULES['lb'].el.attrs.x + 35 + (space * j),
+//                y: MODULES['lb'].el.attrs.y + 30 + (space * k),
+//                patient: null
+//            };
+//            j++;
+//            this.placesPos[i] = data;        
+//        } else {
+//            j = 0;
+//            k++;
+//            i--;
+//        }    
+//    }
+//};
 MODULE.prototype.seatsCountAndTimeWaiting = function () {
     setInterval((function (t) {
         return function () {
