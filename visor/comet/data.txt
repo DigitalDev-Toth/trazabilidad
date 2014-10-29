@@ -1,1 +1,1 @@
-{"comet":"submodule","state":"inactivo","id":"103"}
+{"comet":"module","rut":"17.172.852-5","datetime":"2014-10-29 10:25:14","description":"Retiro de ticket N\u00ba 228 , M\u00f3dulo 34","zone":"1","action":"to","submodule":"47","module":"34","newticket":"228B","name":"ENZO LATORRE BARRA"}

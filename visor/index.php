@@ -90,7 +90,7 @@ if (isset($_GET['idZone'])) {
 //                                console.log(data);
                                 var jsonData = JSON.parse(data);
                                 for(i=0; i<jsonData.length;i++){
-                                    MAKE.patient(jsonData[i].rut, 'Juan Perez', jsonData[i].ticket, jsonData[i].datetime, jsonData[i].attention, jsonData[i].module, jsonData[i].sub_module);
+                                    MAKE.patient(jsonData[i].rut, jsonData[i].name, jsonData[i].ticket, jsonData[i].datetime, jsonData[i].attention, jsonData[i].module, jsonData[i].sub_module);
                                 }
                             });
                             message('Objetos creados');
