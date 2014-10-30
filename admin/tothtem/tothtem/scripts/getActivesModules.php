@@ -14,7 +14,7 @@ if(isset($_REQUEST['ip'])){
         5 Plataforma Oriente
     */
 	if($ip==1){
-		$ip='192.168.0.122';
+		$ip='192.168.0.197';
 	}else if($ip==3){
 		$ip='192.168.0.123';
 	}else if($ip==4){

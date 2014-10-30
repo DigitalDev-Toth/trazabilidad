@@ -27,6 +27,7 @@ function getSubMenu($content) {
 			$subMenu .= getItemMenu("changePass", "Cambiar Password");
 			$subMenu .= getItemMenu("role", "Roles de Usuario");
 			$subMenu .= getItemMenu("roles", "Permisos de Usuario");
+			$subMenu .= getItemMenu("multimedia", "Contenido Pantallas");
 			
 			$subMenu .= '</ul>';
 			break;

@@ -19,6 +19,7 @@ $datetime = '2014-10-29 15:30:00';*/
 /*$description = 'Inicio de atención';
 $action = 'in';
 $datetime = '2014-10-29 15:35:00';*/
+
 //Fin de atención
 $description = 'Fin de atención, plan de tratamientos: 0';
 $action = 'lb';

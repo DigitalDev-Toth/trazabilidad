@@ -2,6 +2,7 @@
   <head>
   <script src="../js/jquery-2.0.3.js" type="text/javascript"></script>
   <script src="../js/jquery-barcode.min.js" type="text/javascript" ></script>  
+  <script src="http://192.168.0.107:8000/socket.io/socket.io.js"></script>
   </head>
   <body>
     <div align="center"> 
@@ -21,7 +22,7 @@
 </html>
 <script type="text/javascript">
 
-
+var socket = io.connect('http://192.168.0.107:8000');
 var rut = decodeURIComponent("<?php echo rawurlencode($_GET['rut']); ?>");
 var module = decodeURIComponent("<?php echo rawurlencode($_GET['ticketOption']); ?>");
 var moduleSpecial = decodeURIComponent("<?php echo rawurlencode($_GET['moduleSpecial']); ?>");
@@ -97,9 +98,10 @@ function ticketInfo(module,special,newTicket){
   //code39 code93 code128 codabar Datamatrix->qr datamatrix
 
   //BACKEND PARA EL COMET, SE INTEGRA CON LOS MÓDULOS DE GESTIÓN, HABILITAR UNA VEZ ESTÉ EN GIT
-  $.post('../../../../visor/comet/backend.php',{msg: jsonData},function(data, textStatus, xhr){
+  socket.send(jsonData);
+  /*$.post('../../../../visor/comet/backend.php',{msg: jsonData},function(data, textStatus, xhr){
       //console.log("comet->"+data);
-  });
+  });*/
 
   
 }

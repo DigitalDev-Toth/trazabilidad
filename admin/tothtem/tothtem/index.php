@@ -13,6 +13,7 @@
     <link href="css/loader.css" rel="stylesheet">
     <link href="css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <script src="js/jquery-2.0.3.js" type="text/javascript"></script>
+    <script src="http://192.168.0.107:8000/socket.io/socket.io.js"></script>
     <script src="js/validarut.js" type="text/javascript"></script>
     <script src="js/bootbox.js"></script>
     <script src="js/bootstrap.js"></script>
@@ -242,8 +243,11 @@ var selAttention=false;
 var getAccept=false;//Consulta si presionó botón aceptar
 var inputTypeT='';
 setup();
+var socket = io.connect('http://192.168.0.107:8000');
 
 //***********************************************************
+
+
 $("#espera").click(function(event) {
     if(modulesOk==1){
         //$( "#startB" ).click();
@@ -648,8 +652,10 @@ function loginPatient(){
                 console.log(tothemIp);
                 $.post('scripts/insertLogs.php',{ rut: rut, description: descrip, ip: tothemIp, action: 'in', cometType: 'tothtem' }, function(data, textStatus, xhr) {
                     //BACKEND PARA EL COMET
-                    $.post('../../../visor/comet/backend.php',{msg: data},function(data, textStatus, xhr){
-                    });
+                    /*$.post('../../../visor/comet/backend.php',{msg: data},function(data, textStatus, xhr){
+                    });*/
+                    console.log(data);
+                    socket.send(data);
                 });
 
 
@@ -715,7 +721,13 @@ function loginPatient(){
                                         window.setTimeout(function(){
                                             $.ajax({type :"post",url : "scripts/insertLogs.php",data : "rut="+rut+"&description=Ingreso de RUT Totem&ip="+tothemIp+"&action=in&cometType=tothtem",
                                                 success:function(data){
-                                                    $.ajax({type :"post",url : "../../../visor/comet/backend.php",data : "msg="+data,//
+                                                    console.log(data);
+                                                    socket.send(data);
+                                                    tothtemConfig();
+                                                    $("#_menu").click();
+                                                    SearchOnLogin("null");
+                                                    selAttention=false;
+                                                    /*$.ajax({type :"post",url : "../../../visor/comet/backend.php",data : "msg="+data,//
                                                         success:function(){
                                                             document.getElementById('rut').value = rut;
                                                             tothtemConfig();
@@ -723,7 +735,7 @@ function loginPatient(){
                                                             SearchOnLogin("null");
                                                             selAttention=false;
                                                         }
-                                                    });
+                                                    });*/
                                                 }
                                             });
                                         }, 1000);
@@ -752,7 +764,7 @@ function loginPatient(){
 function tothtemConfig(){
     //tothemIp="<?php echo $_SERVER['REMOTE_ADDR'];?>";
     tothemIp="<?php echo $_REQUEST['tothtem'];?>";
-    //console.log(tothemIp);
+    console.log(tothemIp);
     var result = null;
     var scriptUrl = "scripts/tothtemConfig.php?ip=" + tothemIp;
     $.ajax({
@@ -1148,8 +1160,10 @@ function goInactive() {
         $.post('scripts/insertLogs.php',{ rut: $("#patientName").html(), description: 'No seleccionó atención', ip: tothemIp, action: 'lb', cometType: 'tothtem' }, function(data, textStatus, xhr) {
 
             //BACKEND PARA EL COMET
-            $.post('../../../visor/comet/backend.php',{msg: data},function(data, textStatus, xhr){
-            });
+            //$.post('../../../visor/comet/backend.php',{msg: data},function(data, textStatus, xhr){
+            //});
+            console.log(data);
+            socket.send(data);
         });
     }
 

@@ -94,6 +94,9 @@
 			include("../../visor/index.php");
 			break;
 		
+			case 'multimedia':
+			include("modules/multimedia/multimedia.php");
+			break;
 
 			default:
 			//include("modules/search.php");

@@ -13,6 +13,7 @@ if(!isset($_SESSION['Username'])) { header("location: ../../login.php"); header(
 
     <title>Pantalla</title>
   	<script src="js/jquery-1.10.2.js"></script>
+    <script src="http://192.168.0.107:8000/socket.io/socket.io.js"></script>
     <script src="js/bootstrap.js"></script>
     <script src="js/comet.js"></script>
 
@@ -181,13 +182,14 @@ var myState = false; //Indica si el submódulo está atendiendo y/o llamando
 var subModuleType ='';
 var noRedirect = false; //Evita que se puedan derivar pacientes en caso de que el módulo no tenga asociada derivación
 var exitLog = true;
-
+var socket = io.connect('http://192.168.0.107:8000');
 //se extrae la modalidad , el ultimo numero y se rellena la tabla
 
 
 /////////////////////EVENTOS//////////////////////////////////
 
 $(document).ready(function() {
+    socketComet();
     $("#standBy").hide();
 
     submodule=decodeURIComponent("<?php echo rawurlencode($_GET['id']); ?>");
@@ -267,7 +269,9 @@ function getPatientData(ticketId){
             namePatient +='<p>Genero:'+gender(dataJson[0]['gender'])+'</p>';
             namePatient +='<p>Direccion:'+dataJson[0]['address']+'</p>';
             $('#patientData').html(namePatient);
-            $('#patientPicture').html('<img src="http://placehold.it/200x200">');
+            //$('#patientPicture').html('<img src="http://placehold.it/200x200">');
+            $("#patientPicture").html('<img src="http://1.bp.blogspot.com/_jSIwJJQzdUU/TOIWjGmPkCI/AAAAAAAAAEo/GkjnGk1v76s/s1600/kermit4_Kermit_the_Frog-s1000x600-93067.jpg" style="width: 200px; height:200px;">');
+
         
         }else{
            
@@ -359,8 +363,9 @@ function inactiveSubModule(typeButton,doLog){//Desactiva el submódulo y genera 
 
     if(typeButton!='logout'){
         $.post('phps/activeSubModule.php', {type: actionType, user: "<?php echo $_SESSION['UserId']; ?>", submodule: submodule}, function(data, textStatus, xhr) {
-            $.post('../../../visor/comet/backend.php', {msg: data}, function(data, textStatus, xhr) {
-            });
+            socket.send(data);
+            /*$.post('../../../visor/comet/backend.php', {msg: data}, function(data, textStatus, xhr) {
+            });*/
         });
 
 
@@ -368,17 +373,18 @@ function inactiveSubModule(typeButton,doLog){//Desactiva el submódulo y genera 
     }else if(typeButton=='logout' && doLog==false){
         exitLog=false;
         $.post('phps/activeSubModule.php', {type: actionType, user: "<?php echo $_SESSION['UserId']; ?>", submodule: submodule}, function(data, textStatus, xhr) {
-            $.post('../../../visor/comet/backend.php', {msg: data}, function(data, textStatus, xhr) {
+            //$.post('../../../visor/comet/backend.php', {msg: data}, function(data, textStatus, xhr) {
+                socket.send(data);
                 $(location).attr('href','../../exit.php');
-            });
+            //});
         });
         
     }else if(typeButton=='logout' && doLog==true){
         if(exitLog==true){
             $.post('phps/activeSubModule.php', {type: actionType, user: "<?php echo $_SESSION['UserId']; ?>", submodule: submodule}, function(data, textStatus, xhr) {
-       
-                $.post('../../../visor/comet/backend.php', {msg: data}, function(data, textStatus, xhr) {
-                });
+                socket.send(data);
+                //$.post('../../../visor/comet/backend.php', {msg: data}, function(data, textStatus, xhr) {
+                //});
             });
         }    
     }
@@ -593,7 +599,9 @@ function insertLog(description,action,cometType,attentionNew,ticketId,module){//
 }
 
 function checkComet(data){
-    $.ajax({
+    console.log(data);
+    socket.send(data);
+    /*$.ajax({
         url: '../../../visor/comet/backend.php',
         type: 'GET',
         dataType: 'default',
@@ -605,9 +613,9 @@ function checkComet(data){
     .fail(function(e) {
         console.log(e);
     })
-    .always(function() {
+    .always(function() {*/
         setCurrentNumber();
-    });
+    //});
 }
 
 
@@ -735,7 +743,9 @@ $("#patientPicture").hover(function() {
     //KERMIT
     $("#patientPicture").html('<img src="http://media.giphy.com/media/DpB9NBjny7jF1pd0yt2/giphy.gif" style="height: 200px; width: 200px;">');
 }, function() {
-  $("#patientPicture").html('<img src="http://placehold.it/200x200">');
+    //KERMIT
+    $("#patientPicture").html('<img src="http://1.bp.blogspot.com/_jSIwJJQzdUU/TOIWjGmPkCI/AAAAAAAAAEo/GkjnGk1v76s/s1600/kermit4_Kermit_the_Frog-s1000x600-93067.jpg" style="width: 200px; height:200px;">');
+    //$("#patientPicture").html('<img src="http://placehold.it/200x200">');
 });
 
 

@@ -1,0 +1,62 @@
+/*
+EnVivo Social Functions Init Versión 1.0
+*/
+var user, type, reloader, dias = ["Dom","Lun","Mar","Mié","Jue","Vie","Sáb"], chatSwitch = true, lastDate = 0;
+var gigyaEnabledShareButtons = 'Facebook-Like,Twitter-Tweet,google-plusone';
+
+gigya.socialize.getUserInfo({ callback: renderUI });
+gigya.socialize.addEventHandlers({
+	context: { str: '' }
+	, onLogin: renderUI
+	, onLogout: renderUI
+	, onConnectionAdded: renderUI
+	, onConnectionRemoved: renderUI
+});
+function renderUI(res) {
+	$('#social-bar .social-loading-icon').hide();
+	if (res.user != null && res.user.isConnected) {
+		$.ajax('nocache/validate.php', {
+			data: {uid:res.user.UID},
+			complete: function(data){
+				if(data.status != 200 || data.responseText == "error"){
+					loadComments([{id:0,mensaje:"Ha ocurrido un problema al iniciar sesión. Por favor, inténtalo más tarde.",nombre:"Sistema",uid:"",imagen:"",link:"",source:"",fecha:"",sys:true}]);
+					animateLogout();
+				}else{
+					user = data.responseText;
+					$('#social-bar .profile-box .name span').html(res.user.firstName);
+					if(res.user.thumbnailURL.length > 0){
+						$('#social-bar .profile-box .photo').attr('src',res.user.thumbnailURL);
+					}else{
+						$('#social-bar .profile-box .photo').attr('src','http://cdn.gigya.com/site/images/bsAPI/Placeholder.gif');
+					}
+					$('#social-bar #social-functions').hide();
+					$('#social-bar .profile-box').show();
+					$('#user-info').slideDown();
+					$.cookie('segmentos13', (typeof(res.user.gender) !== 'undefined' ? res.user.gender : 'u')+'#'+res.user.age, {expires:30,domain:'13.cl'});
+				}
+			}
+		});
+	}else{
+		animateLogout();
+	}
+}
+function logoutFromGigya(){
+	$('#social-bar .social-loading-icon').show();
+	gigya.services.socialize.logout();
+}
+
+
+
+function animateLogout(){
+	$('#social-bar .profile-box').hide();
+	$('#social-bar #social-functions').show();
+	$('#user-info').slideUp();
+	$('#user-submit').unbind('click');
+	$('.user-comment').unbind('mouseenter');
+	$('.user-comment').unbind('mouseleave');
+	user = null;
+}
+
+
+
+

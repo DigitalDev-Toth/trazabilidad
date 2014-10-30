@@ -1,0 +1,162 @@
+/*
+EnVivo Social Functions Init Versión 1.0
+*/
+var user, type, reloader, dias = ["Dom","Lun","Mar","Mié","Jue","Vie","Sáb"], chatSwitch = true, lastDate = 0;
+var gigyaEnabledShareButtons = 'Facebook-Like,Twitter-Tweet,google-plusone';
+
+gigya.socialize.getUserInfo({ callback: renderUI });
+gigya.socialize.addEventHandlers({
+	context: { str: '' }
+	, onLogin: renderUI
+	, onLogout: renderUI
+	, onConnectionAdded: renderUI
+	, onConnectionRemoved: renderUI
+});
+function renderUI(res) {
+	$('#social-bar .social-loading-icon').hide();
+	if (res.user != null && res.user.isConnected) {
+		$.ajax('nocache/validate.php', {
+			data: {uid:res.user.UID},
+			complete: function(data){
+				if(data.status != 200 || data.responseText == "error"){
+					loadComments([{id:0,mensaje:"Ha ocurrido un problema al iniciar sesión. Por favor, inténtalo más tarde.",nombre:"Sistema",uid:"",imagen:"",link:"",source:"",fecha:"",sys:true}]);
+					animateLogout();
+				}else{
+					user = data.responseText;
+					$('#social-bar .profile-box .name span').html(res.user.firstName);
+					bindCommentButtons();
+					if(res.user.thumbnailURL.length > 0){
+						$('#social-bar .profile-box .photo').attr('src',res.user.thumbnailURL);
+					}else{
+						$('#social-bar .profile-box .photo').attr('src','http://cdn.gigya.com/site/images/bsAPI/Placeholder.gif');
+					}
+					$('#social-bar #social-functions').hide();
+					$('#social-bar .profile-box').show();
+					$('#user-info').slideDown();
+					$('#user-submit').click(post);
+					$.cookie('segmentos13', (typeof(res.user.gender) !== 'undefined' ? res.user.gender : 'u')+'#'+res.user.age, {expires:30,domain:'13.cl'});
+				}
+			}
+		});
+	}else{
+		animateLogout();
+	}
+}
+function logoutFromGigya(){
+	$('#social-bar .social-loading-icon').show();
+	gigya.services.socialize.logout();
+}
+
+
+
+function animateLogout(){
+	$('#social-bar .profile-box').hide();
+	$('#social-bar #social-functions').show();
+	$('#user-info').slideUp();
+	$('#user-submit').unbind('click');
+	$('.user-comment').unbind('mouseenter');
+	$('.user-comment').unbind('mouseleave');
+	user = null;
+}
+
+function post(){
+	var userMessage = ($.trim($('#user-message').val())).substr(0,108);
+	$('#user-message').val('');
+	if(userMessage.length > 0){
+		$.post('nocache/publish.php', {m:userMessage, c:canal, u:user}, function(data){
+			loadComments(data);
+			if(type=="fb"){
+				FB.api('/me/feed','post',{message:userMessage,link:"http://envivo.13.cl/",name:"En Vivo - Canal 13",picture:"http://envivo.13.cl/new/images/13.gif"}, function(response) {
+					if(!response || response.error){}
+				});
+			} else if(type=="tw"){
+				twttr.anywhere(function(T) {
+					T.Status.update(userMessage+" http://envivo.13.cl #canal13");
+				});
+			}
+			$('#message-counter').html(parseInt($('#message-counter').html())+1);
+		});
+	}
+}
+function replyTo(media, u){
+	if(media == "tw"){ u = "@"+u; }
+	$("#user-message").focus();
+	$("#user-message").val($("#user-message").val()+u+' ');
+}
+function reloadPosts(){
+	$.getJSON('5seg/posts.php?source='+canal+'&'+syncQStr, loadComments);
+}
+function loadComments(data){
+	var comments = '';
+	$.each(data, function(key, val) {
+		if(val.id != null){
+			if(((!$('#com-'+val.id).length > 0) && val.id > lastDate) || val.sys){
+				var d = new Date(val.fecha*1000);
+				if(val.sys){
+					comments += '<div id="com-'+val.id+'" class="user-comment" style="background-color:#d00;"><div class="user-comment-text"><p><strong>'+val.nombre+': </strong>'+val.mensaje+'</p></div><div class="user-comment-hour" style="color:#fff;">'+dias[d.getDay()]+' '+("0"+d.getHours()).slice(-2)+':'+("0"+d.getMinutes()).slice(-2)+'</div><div class="clear"></div></div>';
+				}else{
+					comments += '<div id="com-'+val.id+'" class="user-comment"><div class="user-comment-img"><img class="comment-img" src="'+val.imagen+'" alt="'+val.nombre+'"/><span class="comment-icon '+val.source+'"></span></div><div class="user-comment-text"><p><strong>'+val.nombre+': </strong>'+val.mensaje+'</p></div><a class="user-comment-profile" href="'+val.link+'" target="_blank">Ver Perfil</a><a class="user-comment-reply" onclick="replyTo(\''+val.source+'\', \''+val.nombre+'\')">Responder</a><div class="user-comment-hour">'+dias[d.getDay()]+' '+("0"+d.getHours()).slice(-2)+':'+("0"+d.getMinutes()).slice(-2)+'</div><div class="clear"></div></div>';
+				}
+				lastDate = val.id;
+			}
+		} else if(val.ahora != null) {
+			var syncProxima = parseInt(val.ahora)+30;
+			var syncRoundSeconds = ("0"+Math.floor(syncProxima.toString().substr(-2,2)/5)*5).slice(-2);
+			syncQStr = syncProxima.toString().substr(0,8)+syncRoundSeconds;
+		}
+	});
+	if(comments != ''){
+		$(comments).hide().prependTo('#comment-list .jspPane').slideDown(function(){
+			$('#comment-list .user-comment:gt(19)').remove();
+			$('#comment-list').data('jsp').reinitialise();
+			if(user != null){
+				bindCommentButtons();
+			}
+		});
+	}
+}
+function bindCommentButtons(){
+	$('.user-comment').mouseenter(function(e){
+		$(this).children('.user-comment-profile').fadeIn(300);
+		$(this).children('.user-comment-reply').fadeIn(300);
+	});
+	$('.user-comment').mouseleave(function(e){
+		$(this).children('.user-comment-profile').fadeOut(300);
+		$(this).children('.user-comment-reply').fadeOut(300);
+	});
+}
+$(document).ready(function() {
+	if(!chatSwitch){
+		$('#chat-switch').addClass('chat-off');
+		$('#comments').addClass('comments-off');
+	}
+	if($.cookie('chatenvivo') == 'false'){
+		$.cookie('chatenvivo', 'false', {expires:30});
+		chatSwitch = false;
+		$('#chat-switch').addClass('chat-off');
+		$('#comments').addClass('comments-off');
+	} else {
+		$.cookie('chatenvivo', 'true', {expires:30});
+	}
+	if(chatSwitch){
+		reloader = setInterval(reloadPosts,30000);
+	}
+	$('#chat-switch a').click(function(){
+		if(chatSwitch){
+			clearInterval(reloader);
+			$.cookie('chatenvivo', 'false', {expires:30});
+			chatSwitch = false;
+			$('#chat-switch').addClass('chat-off');
+			$('#comments').addClass('comments-off');
+		}else{
+			reloadPosts();
+			reloader = setInterval(reloadPosts,30000);
+			$.cookie('chatenvivo', 'true', {expires:30});
+			chatSwitch = true;
+			$('#chat-switch').removeClass('chat-off');
+			$('#comments').removeClass('comments-off');
+		}
+	});
+	$('#comment-list').jScrollPane({showArrows:false,verticalDragMinHeight:20});
+	$("#user-message").textLimiter({maxLength:108});
+});
