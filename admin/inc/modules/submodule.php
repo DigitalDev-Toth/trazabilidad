@@ -7,19 +7,30 @@ include("controls.php");
 
 ?>
 <script src="js/jquery-1.8.1.min.js"></script>
+<script src="http://192.168.0.104:8000/socket.io/socket.io.js"></script>
 <script>
-var setState = function(id, state) {
-	if(state!='blink') {
-		$.get("modules/updateSubmoduleState.php",{"id": id, "state": state},function(data, textStatus, xhr){
-			state=data;
-			$('#state_'+id).html('<img src="../images/'+state+'.png" onClick="setState('+id+', '+"'"+state+"'"+');">');
-			$.post("../../visor/comet/backend.php",{msg: JSON.stringify({"comet":"submodule", "id":id, "state":state})},function(data, textStatus, xhr){});
-		});
-	} else {
-		$.post("../../visor/comet/backend.php",{msg: JSON.stringify({"comet":"submodule", "id":id, "state":state})},function(data, textStatus, xhr){});
-	}
-	
-};
+console.log('asdad');
+    var socket = io.connect('http://192.168.0.104:8000');        
+	var setState = function(id, state) {
+		if(state!='blink') {
+			$.get("modules/updateSubmoduleState.php",{"id": id, "state": state},function(data, textStatus, xhr){
+				state=data;
+				$('#state_'+id).html('<img src="../images/'+state+'.png" onClick="setState('+id+', '+"'"+state+"'"+');">');
+				           console.log(JSON.stringify({"comet":"submodule", "id":id, "state":state}));
+
+                socket.send(JSON.stringify({"comet":"submodule", "id":''+id+'', "state":state}));
+
+				//$.post("../../visor/comet/backend.php",{msg: JSON.stringify({"comet":"submodule", "id":id, "state":state})},function(data, textStatus, xhr){});
+			});
+		} else {
+
+           console.log(JSON.stringify({"comet":"submodule", "id":id, "state":state}));
+            socket.send(JSON.stringify({"comet":"submodule", "id":''+id+'', "state":state}));
+
+			//$.post("../../visor/comet/backend.php",{msg: JSON.stringify({"comet":"submodule", "id":id, "state":state})},function(data, textStatus, xhr){});
+		}
+		
+	};
 </script>
 <?php
 

@@ -129,7 +129,8 @@ $(document).ready(function() {
       	return false;
    	});
 	$("#display").click(function() {
-      	window.open("admin/tothtem/pantallas/pantalla.php?zone="+$("#listZones").jqxDropDownList("getSelectedItem").value, '_blank');
+        window.open("admin/tothtem/pantallas/newPatientDisplay/pantalla.php?zone="+$("#listZones").jqxDropDownList("getSelectedItem").value, '_blank');
+      	//window.open("admin/tothtem/pantallas/pantalla.php?zone="+$("#listZones").jqxDropDownList("getSelectedItem").value, '_blank');
       	return false;
    	});
 	

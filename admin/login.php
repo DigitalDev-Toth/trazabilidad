@@ -24,8 +24,11 @@
 	<script src="login/js/jquery-2.0.3.js"></script>
 	<script src="login/js/bootstrap.min.js"></script>
   	<script src="login/js/jquery-ui.js"></script>
-        <script src='login/js/jquery.base64.js'></script>
-        <script type="text/javascript">             
+    <script src='login/js/jquery.base64.js'></script>
+    <script src="http://192.168.0.104:8000/socket.io/socket.io.js"></script>
+        <script type="text/javascript">     
+            var socket = io.connect('http://192.168.0.104:8000');        
+            
             $(document).ready(function () {
                $('#logo').fadeIn(500, function () {
                     $('#hr').animate({
@@ -80,12 +83,13 @@
                         submodule = data[0];
                         var userId = data[1];
                         $.post('tothtem/pantallas/phps/activeSubModule.php', {type: 'activo', user: userId, submodule: submodule}, function(data, textStatus, xhr) {
-                            $.ajax({
+                            /*$.ajax({
                                 url: '../visor/comet/backend.php',
                                 type: 'GET',
                                 dataType: 'default',
                                 data: {msg: data},
-                            });
+                            });*/
+                            socket.send(data);
                             $(location).attr('href','tothtem/pantallas/index.php?id='+submodule);
                         });
                         

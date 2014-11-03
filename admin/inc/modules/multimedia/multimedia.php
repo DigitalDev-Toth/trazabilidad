@@ -4,6 +4,10 @@ if(!isset($_SESSION['Username'])) { header("location: ../../login.php?error=hack
 
 include 'libs/bootstrapStyle.php';
 
+if($_SESSION['zone'] == NULL){
+	$_SESSION['zone']="1";
+}
+
 if (isset($_REQUEST['refreshZone'])) {
 	$_SESSION['zone']=$_REQUEST['refreshZone'];
 }

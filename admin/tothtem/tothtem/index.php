@@ -13,7 +13,7 @@
     <link href="css/loader.css" rel="stylesheet">
     <link href="css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <script src="js/jquery-2.0.3.js" type="text/javascript"></script>
-    <script src="http://192.168.0.107:8000/socket.io/socket.io.js"></script>
+    <script src="http://192.168.0.104:8000/socket.io/socket.io.js"></script>
     <script src="js/validarut.js" type="text/javascript"></script>
     <script src="js/bootbox.js"></script>
     <script src="js/bootstrap.js"></script>
@@ -243,7 +243,7 @@ var selAttention=false;
 var getAccept=false;//Consulta si presionó botón aceptar
 var inputTypeT='';
 setup();
-var socket = io.connect('http://192.168.0.107:8000');
+var socket = io.connect('http://192.168.0.104:8000');
 
 //***********************************************************
 

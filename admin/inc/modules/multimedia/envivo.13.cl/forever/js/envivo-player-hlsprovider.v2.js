@@ -14,7 +14,7 @@ $(document).ready(function() {
 				return this;
 			});
 			$f("preroll", {
-					src:"forever/swf/flowplayer.commercial-3.2.7.swf",
+					//src:"forever/swf/flowplayer.commercial-3.2.7.swf",
 					wmode: 'opaque'
 				}, {
 				key: '#@733891725da2e9a7514',
@@ -91,26 +91,7 @@ function initFPlayer(){
 			}
 		}catch(e){}
 		try{
-			$("#player").css('display','block');
-			$f.addPlugin("videoBanner", function() {
-				var bannerInterval, bannerIntervalCounter = 1, content = this.getPlugin("content");
-				if(content && (adImageUrl != null)){
-					this.onLoad(function() {
-						setTimeout(function(){
-							content.setHtml('<a href="'+adClickUrl+'" target="_blank"><img src="'+adImageUrl+'"/></a>');
-							content.show();
-							setTimeout(function(){content.hide();},8000);
-							bannerInterval = setInterval(function(){
-								if(bannerIntervalCounter++ < 7){
-									content.show();
-									setTimeout(function(){content.hide();},8000);
-								} else clearInterval(bannerInterval);
-							},360000);
-						},7000);
-					});
-				}
-				return this;
-			});
+		
 			$f("player", {
 					src:"forever/swf/flowplayer.commercial-3.2.16.swf",
 					wmode: 'opaque'
@@ -132,7 +113,7 @@ function initFPlayer(){
 				},
 				plugins: {
 					httpstreaming: {
-						url: '/forever/swf/HLSProviderFlowPlayer.swf'
+						url: 'forever/swf/HLSProviderFlowPlayer.swf'
 					},			
 					controls: {
 						width: 170,
@@ -162,10 +143,9 @@ function initFPlayer(){
 						border: 0,
 						padding: 0,
 						opacity: 1,
-						url: 'forever/swf/flowplayer.content-3.2.0.swf',
 						closeButton:true,
 						closeImage: 'forever/images/close.png',
-						display: 'none'
+				
 					}
 				},
 				canvas: {

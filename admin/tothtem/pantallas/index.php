@@ -13,7 +13,7 @@ if(!isset($_SESSION['Username'])) { header("location: ../../login.php"); header(
 
     <title>Pantalla</title>
   	<script src="js/jquery-1.10.2.js"></script>
-    <script src="http://192.168.0.107:8000/socket.io/socket.io.js"></script>
+    <script src="http://192.168.0.104:8000/socket.io/socket.io.js"></script>
     <script src="js/bootstrap.js"></script>
     <script src="js/comet.js"></script>
 
@@ -182,7 +182,7 @@ var myState = false; //Indica si el submódulo está atendiendo y/o llamando
 var subModuleType ='';
 var noRedirect = false; //Evita que se puedan derivar pacientes en caso de que el módulo no tenga asociada derivación
 var exitLog = true;
-var socket = io.connect('http://192.168.0.107:8000');
+var socket = io.connect('http://192.168.0.104:8000');
 //se extrae la modalidad , el ultimo numero y se rellena la tabla
 
 

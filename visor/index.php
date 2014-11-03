@@ -14,7 +14,7 @@ if (isset($_GET['idZone'])) {
         <title>FALP - Trazabilidad</title>
         <link rel="stylesheet" type="text/css" href="css/style.css" />
         <script src="js/libs/jquery-2.1.1.min.js"></script>
-        <script src="http://192.168.0.107:8000/socket.io/socket.io.js"></script>
+        <script src="http://192.168.0.104:8000/socket.io/socket.io.js"></script>
         <script src="js/libs/jquery.tothtip.js"></script>
         <script src="js/libs/bootstrap.min.js"></script>
         <script src="js/libs/raphael-min.js"></script>
@@ -34,7 +34,7 @@ if (isset($_GET['idZone'])) {
                 MAKE = null,
                 PAPER = null;
                 ZONE = '<?php echo $zone ?>'; 
-            var socket = io.connect('http://192.168.0.107:8000');
+            var socket = io.connect('http://192.168.0.104:8000');
             $(function () {                 
                 socketComet();
 
