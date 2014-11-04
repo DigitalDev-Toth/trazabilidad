@@ -23,18 +23,19 @@ $module_type = $modules['name'];
 //get last ticket
 $db = NEW DB();
 if($module_type!='Especial'){
-	$sql = "SELECT *, t.id AS ticketid 
+	$sql = "SELECT l.*, t.* , submodule.name 
 			FROM tickets t
 			LEFT JOIN logs l ON l.id=t.logs
 			LEFT JOIN module s ON s.id=l.module
-			WHERE s.id=$module AND t.attention IN ('no_serve','served') AND l.datetime>'".date('Y-m-d')."' ORDER BY l.datetime DESC LIMIT 3";
+			LEFT JOIN submodule on submodule.id=sub_module
+			WHERE s.id=$module AND t.attention IN ('no_serve','served','on_serve') AND l.datetime>'".date('Y-m-d')."' ORDER BY l.datetime DESC LIMIT 3";
 			//WHERE s.id=$submodule AND CAST(t.ticket AS INT)>=$last AND t.attention IN ('waiting','derived') ORDER BY l.datetime ASC LIMIT 5";
 }else{
 	$sql = "SELECT *, t.id AS ticketid 
 			FROM tickets t
 			LEFT JOIN logs l ON l.id=t.logs
 			LEFT JOIN submodule s ON s.module=l.module
-			WHERE s.id=$module AND t.attention IN ('no_serve','served') AND l.datetime>'".date('Y-m-d')."' ORDER BY SUBSTR (ticket, Length (ticket)) ,l.datetime ASC LIMIT 3";
+			WHERE s.id=$module AND t.attention IN ('no_serve','served','on_serve') AND l.datetime>'".date('Y-m-d')."' ORDER BY SUBSTR (ticket, Length (ticket)) ,l.datetime ASC LIMIT 3";
 	
 }
 

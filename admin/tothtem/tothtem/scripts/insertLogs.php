@@ -16,7 +16,7 @@ $datetime = date("Y-m-d H:i:s");
 }*/
 
 	if($sbIp==1){
-		$sbIp='192.168.0.197';
+		$sbIp='192.168.0.122';
 	}else if($sbIp==3){
 		$sbIp='192.168.0.123';
 	}else if($sbIp==4){

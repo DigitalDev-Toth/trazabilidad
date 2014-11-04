@@ -39,6 +39,8 @@ if(isset($_REQUEST['zone'])){
 	    <script src="js/jquery.zrssfeed.js" type="text/javascript"></script>
 	    <script src="js/jquery.vticker.js" type="text/javascript"></script>
 	    <script src="js/jquery.zweatherfeed.js" type="text/javascript"></script>
+	    <script src="http://192.168.0.104:8000/socket.io/socket.io.js"></script>
+	    <script src="js/comet.js"></script>
 	    <link href="css/bootstrap.css" rel="stylesheet">
 	    
 </head>
@@ -114,12 +116,20 @@ phps/getModuleDisplay.php
 phps/getActivesModulesSpecial.php
 */
 
+/*
+llamar a initConfig(zone);
+para el nuevo comet...
+*/
+
 
 //****************************************
 //document ready
 //****************************************
+
+var socket = io.connect('http://192.168.0.104:8000');
 var zone;
 $(document).ready(function() {
+	socketComet();
 	zone = decodeURIComponent("<?php echo rawurlencode($_GET['zone']); ?>");
 	getZoneName(zone);
 	initConfig(zone);
@@ -161,10 +171,10 @@ function initConfig(zone){
 //****************************************
 function getLastTickets(zone){
 	$.post('../phps/getModuleTicketsPatients.php', {zone: zone } , function(data, textStatus, xhr) {
-		//console.log(data);
+		console.log(data);
+
 		var jsonData= JSON.parse(data);
 		for (var i = 0; i < jsonData.length; i++) {
-
 			changeNumber(jsonData[i] ,1);
 		};
 
@@ -174,21 +184,21 @@ function getLastTickets(zone){
 //****************************************
 //get 3 last tickes called
 //****************************************
-function lastTicketsCalled(module , lc){
+function lastTicketsCalled(module , lc ){
 	console.log(module,lc);
-
 	if(module != null){
 		$.post('../phps/lastTicketsCalled.php', { module: module } , function(data, textStatus, xhr) {
 			var json = JSON.parse(data);
-			$(lc).html('');
-			var htmlC='';
+			console.log(json);
+			$('#LC'+module) .html('');
+			var htmlC='',moduleName='';
 			for (var i = 0; i < json.length; i++) {
-				
-				
-				htmlC += '<div class="row">'+fixNumber(json[i].ticket)+'  '+ fixHours(json[i].datetime) +'</div>'
+				htmlC += '<div class="row">'+fixNumber(json[i].ticket)+'  '+ fixHours(json[i].datetime) +'</div>';
+				moduleName += '<div class="row">'+json[i].name +'</div>';
 			};
-			
-			$(lc).html(htmlC);
+			$("#SM"+module).html(moduleName);
+			//$(lc).html(htmlC);
+			$('#LC'+module).html(htmlC);
 		});
 	}
 	
@@ -209,23 +219,16 @@ function fixHours(date){
 //****************************************
 function fillModules(name,id){
 	var content='';
-	content += "<div class='row' id='RW"+id+"'> " +
-					"<div class='col-md-6' style='padding-top: 55px;'>"+name+"</div>"+
-						"<div class='col-md-3' style='padding-top: 55px;'>" +
+	content += "<div class='row text-center' id='RW"+id+"' style='font-size: 50px;'> " +
+					"<div class='col-md-3' style='padding-top: 35px;font-size: 30px;'>"+name+"</div>"+
+						"<div class='col-md-4'  >" +
 							"<div class='row'>"+
 								"<div id='SM"+id+"'>"+
 							"</div></div>"+
 						"</div>"+
-						"<div class='col-md-3' > " +
-							"<div class='row' >"+
-								"<h1><div id='NM"+id+"' style='font-size: 90px;'></h1>"+
-							"</div>"+
-
-						"</div>"+
-						/*
-						"<div class='col-md-3'>" +
+						"<div class='col-md-4'>" +
 							"<div id='LC"+id+"'> </div>"+
-						"</div>"+*/
+						"</div>"+
 			    "</div><hr>";
 			    
 	$('#content').append(content);
@@ -237,7 +240,7 @@ function fillModules(name,id){
 function fillMultimedia() {
 
 	var MultimediaType = "<?php echo $option;?>";
-	console.log(MultimediaType);
+	
 	if(MultimediaType == "1"){
 		var T = '<iframe src="../../../inc/modules/multimedia/envivo.13.cl/index.html" frameBorder="0" scrolling="no" style="width:900px;height:600px"></iframe>';
 		$("#MultimediaType").html(T);
@@ -249,6 +252,7 @@ function fillMultimedia() {
 		imagesLoop(files);
 		$("#MultimediaTypeTittle").html("<b>Avisos</b>");
 	}
+	
 }
 
 function imagesLoop(files) {
@@ -284,91 +288,10 @@ function changeImage(path){
 var sm,nm,lc,rw = '';
 var toDelete ='';
 function changeNumber(data,type){
-	
+	console.log(data);
 	if(data.module != null){
-
-		//if is special or not
-		$.post('../phps/getSpecialSubModules.php', {module: data.module , ticket: (data.newticket).slice(-1) } , function(dataSpecial, textStatus, xhr) {
-			if(dataSpecial != 0){
-				sm = '#SM'+dataSpecial; //submodule name
-				nm = '#NM'+dataSpecial; // number/ticket
-				lc = '#LC'+dataSpecial; // last called
-				rw = '#RW'+dataSpecial; //row id
-				toDelete = dataSpecial;
-
-			}else{
-				sm = '#SM'+data.module; //submodule name
-				nm = '#NM'+data.module; // number/ticket
-				lc = '#LC'+data.module; // last called
-				rw = '#RW'+data.module; //row id
-			}
-	
-		var modulename,ticket;
 		lastTicketsCalled(data.module,lc);
-
-
-		if(data.action == 'in'){
-			if(type==1){
-				modulename=data['moduleName'];
-				ticket=data['moduleTicket'];		
-			}else{
-				$.post('../phps/getSubmoduleName.php', {sub_module: data.submodule} , function(dataR, textStatus, xhr) {
-					modulename=dataR;
-					ticket=data.newticket;
-				});
-			}	
-			$(sm).fadeOut('fast', function() {
-				$(sm).text(modulename);
-				$(sm).fadeIn('fast');
-			});
-			$(nm).fadeOut('fast', function() {
-					$(nm).text(fixNumber(ticket));
-					$(nm).fadeIn('fast');
-			});
-
-			$(rw).css('background-color', 'rgb(121, 175, 245)');
-			$(rw).css({
-			    transition : 'background-color 1s ease-in-out',
-			    "background-color": "rgb(121, 175, 245)'"
-			});
-			setTimeout(function() {
-				$(rw).css('background-color', 'white');
-				$(rw).css({
-				    transition : 'background-color 2s ease-in-out',
-				    "background-color": "white'"
-				});
-			}, 2000);
-		}
-
-		if(data.action == 'to'){
-
-		
-			$('#SM'+toDelete).fadeOut('fast', function() {
-					$('#SM'+toDelete).text('');
-					$('#SM'+toDelete).fadeIn('fast');
-			});
-			$('#NM'+toDelete).fadeOut('fast', function() {
-				$('#NM'+toDelete).text('');
-				$('#NM'+toDelete).fadeIn('fast');
-			});
-
-		}
-
-		if(data.action == 'lb'){
-			$(sm).fadeOut('fast', function() {
-					$(sm).text('');
-					$(sm).fadeIn('fast');
-			});
-			$(nm).fadeOut('fast', function() {
-				$(nm).text('');
-				$(nm).fadeIn('fast');
-			});
-		}
-		});
-	
-	
 	}else{
-		
 		lastTicketsCalled(data.moduleId,('#LC'+data.moduleId));
 	}
 	
@@ -427,9 +350,7 @@ function getActivesModules(zone){
     };
  
 }
-function reloadDisplay(data){
-	initConfig(zone);
-}
+
 
 
 

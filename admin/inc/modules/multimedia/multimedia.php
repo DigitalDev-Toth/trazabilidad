@@ -152,8 +152,10 @@ if(isset($_REQUEST['patientView'])){
 					<div class="panel-heading">Imagenes</div>	
 					
 							<div id="showImages"></div>
+
 				
 				</div>
+				<br><br>
 
 			</div>
 			<div class="col-md-6">
