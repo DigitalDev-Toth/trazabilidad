@@ -24,7 +24,7 @@ function getSubMenu($content) {
 			$subMenu .= getItemMenu("submodule", "Sub Modulos");
 			$subMenu .= getItemMenu("module_special", "Modulos Especiales");
 			$subMenu .= getItemMenu("users", "Usuarios");
-			$subMenu .= getItemMenu("changePass", "Cambiar Password");
+			$subMenu .= getItemMenu("changePass", "Cambiar Contraseña");
 			$subMenu .= getItemMenu("role", "Roles de Usuario");
 			$subMenu .= getItemMenu("roles", "Permisos de Usuario");
 			$subMenu .= getItemMenu("multimedia", "Contenido Pantallas");

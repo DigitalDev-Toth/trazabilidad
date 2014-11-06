@@ -269,8 +269,8 @@ function getPatientData(ticketId){
             namePatient +='<p>Genero:'+gender(dataJson[0]['gender'])+'</p>';
             namePatient +='<p>Direccion:'+dataJson[0]['address']+'</p>';
             $('#patientData').html(namePatient);
-            //$('#patientPicture').html('<img src="http://placehold.it/200x200">');
-            $("#patientPicture").html('<img src="http://1.bp.blogspot.com/_jSIwJJQzdUU/TOIWjGmPkCI/AAAAAAAAAEo/GkjnGk1v76s/s1600/kermit4_Kermit_the_Frog-s1000x600-93067.jpg" style="width: 200px; height:200px;">');
+            $('#patientPicture').html('<img src="http://placehold.it/200x200">');
+            //$("#patientPicture").html('<img src="http://1.bp.blogspot.com/_jSIwJJQzdUU/TOIWjGmPkCI/AAAAAAAAAEo/GkjnGk1v76s/s1600/kermit4_Kermit_the_Frog-s1000x600-93067.jpg" style="width: 200px; height:200px;">');
 
         
         }else{
@@ -683,6 +683,7 @@ function activeButtons(type){//Activa o inactiva botones
         $('#buttons :input').attr('disabled', true);
         $('#minusButton').attr('disabled', false);
         $('#exceptionButton').attr('disabled', false);
+        $('#patientsButton').attr('disabled', false);
         $('.getout').attr('disabled', false);
     }
     if(type=='next'){
@@ -693,6 +694,7 @@ function activeButtons(type){//Activa o inactiva botones
         $('#redirectButton').attr('disabled', true);
         $('#exceptionButton').attr('disabled', false);
         $('#plusDerivedButton').attr('disabled', true);
+        $('#patientsButton').attr('disabled', false);
         $('.getout').attr('disabled', false);
         if(subModuleType==12)$('#patientButton').attr('disabled', false);
     }
@@ -705,6 +707,7 @@ function activeButtons(type){//Activa o inactiva botones
         if(noRedirect==false) $('#redirectButton').attr('disabled', false);
         $('#exceptionButton').attr('disabled', true);
         $('#plusDerivedButton').attr('disabled', true);
+        $('#patientsButton').attr('disabled', true);
         $('.getout').attr('disabled', true);
         if(subModuleType==12)$('#patientButton').attr('disabled', false);
     }
@@ -717,6 +720,7 @@ function activeButtons(type){//Activa o inactiva botones
         $('#redirectButton').attr('disabled', true);
         $('#exceptionButton').attr('disabled', true);
         $('#plusDerivedButton').attr('disabled', true);
+        $('#patientsButton').attr('disabled', true);
         $('.getout').attr('disabled', false);
         if(subModuleType==12)$('#patientButton').attr('disabled', false);
     }
@@ -738,7 +742,7 @@ function hourDiff(initialHour){
 }
 
 //so doge, wow, much code
-$("#patientPicture").hover(function() {
+/*$("#patientPicture").hover(function() {
     //CHLOE$("#patientPicture").html('<img src="http://i0.kym-cdn.com/entries/icons/original/000/014/285/not.jpg" style="height: 200px; width: 200px;">');
     //KERMIT
     $("#patientPicture").html('<img src="http://media.giphy.com/media/DpB9NBjny7jF1pd0yt2/giphy.gif" style="height: 200px; width: 200px;">');
@@ -746,7 +750,7 @@ $("#patientPicture").hover(function() {
     //KERMIT
     $("#patientPicture").html('<img src="http://1.bp.blogspot.com/_jSIwJJQzdUU/TOIWjGmPkCI/AAAAAAAAAEo/GkjnGk1v76s/s1600/kermit4_Kermit_the_Frog-s1000x600-93067.jpg" style="width: 200px; height:200px;">');
     //$("#patientPicture").html('<img src="http://placehold.it/200x200">');
-});
+});*/
 
 
 function gender(gen){

@@ -1,6 +1,6 @@
 <?php
 session_start();
-if(!isset($_SESSION['Username'])) { header("location: ../../../login.php?error=hack"); header('Content-Type: text/html; charset=latin1');  }
+if(!isset($_SESSION['Username'])) { header("location: ../../../login.php?error=hack"); header('Content-Type: text/html; charset=utf-8');  }
 ?>
 
 <?
@@ -16,7 +16,7 @@ else makeControls($roles, "modules/rolesForm.php", "modules/rolesDelete.php", "m
 
 
 $roles->showControls();
-echo '<div algin="center" id="showTitle">PERMISOS DE USUARIO</div>';
+echo '<div algin="center" id="showTitle">Permisos de Usuario</div>';
 
 if(isset($_GET['roles']))
 {
