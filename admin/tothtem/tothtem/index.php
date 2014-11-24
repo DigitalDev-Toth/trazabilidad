@@ -403,8 +403,9 @@ function PrintTicket(ticketOption,moduleSpecial){
     window.setTimeout(function(){
         bootbox.hideAll();
         $("#BootboxButton").css({display:"display"});
+        goInactive();
     }, 3000);
-    window.setTimeout(function(){
+    /*window.setTimeout(function(){
         bootbox.dialog({
                 message: "¿Desea otra operacion?",
                 title: "Atencion",
@@ -424,7 +425,7 @@ function PrintTicket(ticketOption,moduleSpecial){
                     }
                 }
             });
-    }, 3200);
+    }, 3200);*/
     /*}else{
     	alert("no existe id totem!!");
     }*/

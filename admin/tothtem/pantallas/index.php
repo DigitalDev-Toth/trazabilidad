@@ -28,13 +28,14 @@ if(!isset($_SESSION['Username'])) { header("location: ../../login.php"); header(
                
                 <h1 class="page-header"><div id="ModuleHeader">...</div>
                     <small id="modalityTitle"></small>
-                        <button class="btn btn-default getout pull-right" onclick="inactiveSubModule('logout',false)"><span class="glyphicon glyphicon-log-out"></span> SALIR</button>  
-                        <!--<button class="btn btn-default getout pull-right" onclick="$(location).attr('href','../../exit.php');"><span class="glyphicon glyphicon-log-out"></span> SALIR</button>  -->
-                        <p class="pull-right">&nbsp;</p>
-                        <!--<button class="btn btn-primary getout pull-right" onclick="inactiveSubModule('change')"> <span class="glyphicon glyphicon-transfer"></span> CAMBIAR SUBMÓDULO</button>
-                        <p class="pull-right">&nbsp;</p>-->
-                        <button class="btn btn-primary getout pull-right" id="pause" onclick="inactiveSubModule('pause')"> <span class="glyphicon glyphicon-pause"></span> PAUSAR ATENCIÓN</button>
+                    <button class="btn btn-default getout pull-right" onclick="inactiveSubModule('logout',false)"><span class="glyphicon glyphicon-log-out"></span> SALIR</button>  
+                    <!--<button class="btn btn-default getout pull-right" onclick="$(location).attr('href','../../exit.php');"><span class="glyphicon glyphicon-log-out"></span> SALIR</button>  -->
+                    <p class="pull-right">&nbsp;</p>
+                    <!--<button class="btn btn-primary getout pull-right" onclick="inactiveSubModule('change')"> <span class="glyphicon glyphicon-transfer"></span> CAMBIAR SUBMÓDULO</button>
+                    <p class="pull-right">&nbsp;</p>-->
 
+                    <button class="btn btn-primary getout pull-right" id="pause" onclick="inactiveSubModule('pause')"> <span class="glyphicon glyphicon-pause"></span> PAUSAR ATENCIÓN</button>
+                    <span id="timeAttention" class="pull-right">-</span>
                 </h1>
 
             </div>
@@ -183,6 +184,8 @@ var subModuleType ='';
 var noRedirect = false; //Evita que se puedan derivar pacientes en caso de que el módulo no tenga asociada derivación
 var exitLog = true;
 var socket = io.connect('http://192.168.0.104:8000');
+var waitingInterval = setInterval(function(){},5000);
+var attentionInterval = '';
 //se extrae la modalidad , el ultimo numero y se rellena la tabla
 
 
@@ -222,7 +225,7 @@ $(document).ready(function() {
     }else{
         alert("Falta Modalidad!");
     }
-
+    attentionTime();
 });
 
 function closeWindow(){ 
@@ -351,6 +354,7 @@ function inactiveSubModule(typeButton,doLog){//Desactiva el submódulo y genera 
         $('#pause').attr('onclick', 'inactiveSubModule("replay")');
         activeButtons('pause');
         $('#content').text('En Pausa');
+        clearInterval(attentionInterval);
     }
     if(typeButton=='replay'){ 
         actionType='re-activo';
@@ -359,6 +363,7 @@ function inactiveSubModule(typeButton,doLog){//Desactiva el submódulo y genera 
         $('#pause').attr('onclick', 'inactiveSubModule("pause")');
         refreshTable();
         $('#content').text('Esperando...');
+        //attentionTime();
     }
 
     if(typeButton!='logout'){
@@ -366,6 +371,9 @@ function inactiveSubModule(typeButton,doLog){//Desactiva el submódulo y genera 
             socket.send(data);
             /*$.post('../../../visor/comet/backend.php', {msg: data}, function(data, textStatus, xhr) {
             });*/
+            if(typeButton=='replay'){
+                attentionTime();
+            }
         });
 
 
@@ -511,17 +519,17 @@ function refreshTable(){ //Actualiza la tabla de pacientes en espera
             $('#contentTicket tr').has('td').remove();
 
             for (var i=0;i<cant;i++) {
-                if(subModuleType != 12){
+                if(subModuleType != 12){//Módulo especial
                     if(i==0){
-                        $('#contentTicket').append('<tr class="info"><td>'+ticketsTable[i]['ticket']+'</td><td>'+ticketsTable[i]['rut']+'</td><td>'+ticketsTable[i]['datetime'].split(' ')[1]+'</td><td>'+hourDiff(ticketsTable[i]['datetime'])+'</td></tr>');
+                        $('#contentTicket').append('<tr class="info"><td>'+ticketsTable[i]['ticket']+'</td><td>'+ticketsTable[i]['rut']+'</td><td>'+ticketsTable[i]['datetime'].split(' ')[1]+'</td><td class="waitingTime"><span>'+hourDiff(ticketsTable[i]['datetime'])+'</span><span style="display: none;">'+ticketsTable[i]['datetime']+'</span></td></tr>');
                     }else{
-                        $('#contentTicket').append('<tr><td>'+ticketsTable[i]['ticket']+'</td><td>'+ticketsTable[i]['rut']+'</td><td>'+ticketsTable[i]['datetime'].split(' ')[1]+'</td><td>'+hourDiff(ticketsTable[i]['datetime'])+'</td></tr>');  
+                        $('#contentTicket').append('<tr><td>'+ticketsTable[i]['ticket']+'</td><td>'+ticketsTable[i]['rut']+'</td><td>'+ticketsTable[i]['datetime'].split(' ')[1]+'</td><td class="waitingTime"><span>'+hourDiff(ticketsTable[i]['datetime'])+'</span><span style="display: none;">'+ticketsTable[i]['datetime']+'</span></td></tr>');  
                     }    
                 }else{
                     if(i==0){
-                        $('#contentTicket').append('<tr class="info"><td>'+ticketsTable[i]['ticket']+'</td><td>'+ticketsTable[i]['rut']+'</td><td>'+ticketsTable[i]['name']+'</td><td>'+ticketsTable[i]['datetime'].split(' ')[1]+'</td><td>'+hourDiff(ticketsTable[i]['datetime'])+'</td></tr>');
+                        $('#contentTicket').append('<tr class="info"><td>'+ticketsTable[i]['ticket']+'</td><td>'+ticketsTable[i]['rut']+'</td><td>'+ticketsTable[i]['name']+'</td><td>'+ticketsTable[i]['datetime'].split(' ')[1]+'</td><td class="waitingTime"><span>'+hourDiff(ticketsTable[i]['datetime'])+'</span><span style="display: none;">'+ticketsTable[i]['datetime']+'</span></td></tr>');
                     }else{
-                        $('#contentTicket').append('<tr><td>'+ticketsTable[i]['ticket']+'</td><td>'+ticketsTable[i]['rut']+'</td><td>'+ticketsTable[i]['name']+'</td><td>'+ticketsTable[i]['datetime'].split(' ')[1]+'</td><td>'+hourDiff(ticketsTable[i]['datetime'])+'</td></tr>');  
+                        $('#contentTicket').append('<tr><td>'+ticketsTable[i]['ticket']+'</td><td>'+ticketsTable[i]['rut']+'</td><td>'+ticketsTable[i]['name']+'</td><td>'+ticketsTable[i]['datetime'].split(' ')[1]+'</td><td class="waitingTime"><span>'+hourDiff(ticketsTable[i]['datetime'])+'</span><span style="display: none;">'+ticketsTable[i]['datetime']+'</span></td></tr>');  
                     } 
                   
                 }
@@ -534,6 +542,8 @@ function refreshTable(){ //Actualiza la tabla de pacientes en espera
             }
         });
     }
+    clearInterval(waitingInterval);
+    waitingInterval = setInterval(function(){updateWaitingTime();},5000);
 }
 
 function setCurrentNumber(){//Muestra el número actual que se está atendiendo
@@ -599,7 +609,6 @@ function insertLog(description,action,cometType,attentionNew,ticketId,module){//
 }
 
 function checkComet(data){
-    console.log(data);
     socket.send(data);
     /*$.ajax({
         url: '../../../visor/comet/backend.php',
@@ -727,7 +736,7 @@ function activeButtons(type){//Activa o inactiva botones
 
 }
 
-function hourDiff(initialHour){
+function hourDiff(initialHour){//Calcula el tiempo de espera en minutos
     var initialHour = new Date(initialHour);
     var finishedHour = new Date();
     finishedHour.setSeconds(finishedHour.getSeconds() + 15);
@@ -739,7 +748,50 @@ function hourDiff(initialHour){
     var diff = finishedHour - initialHour;
 
     return Math.floor(diff / 1000 / 60)+' Minutos';
+    //return Math.floor(diff / 1000)+' Segundos';
+
 }
+
+function updateWaitingTime(){ //Actualiza tiempo de espera de cada paciente
+    var waitingPatients = document.getElementsByClassName('waitingTime').length;
+    for(var i=0;i<waitingPatients;i++){
+        document.getElementsByClassName('waitingTime')[i].childNodes[0].innerHTML = hourDiff(document.getElementsByClassName('waitingTime')[i].childNodes[1].innerHTML);
+    }
+}
+
+function attentionTime(){
+    var initTime;
+    $.post('phps/getAttentionTime.php', {user: "<?php echo $_SESSION['UserId']; ?>"}, function(data, textStatus, xhr) {
+        initTime = data;
+        $('#timeAttention').html(initTime);
+    });
+
+    //initTime = '16:59:50';
+    
+        
+    attentionInterval = setInterval(function(){
+        var time = $('#timeAttention').html().split(':');
+        time[2]++;
+        if(time[2]<10) time[2]='0'+time[2];
+        if(time[2]=='60'){
+           time[2]='00';
+           time[1]++;
+           if(time[1]<10) time[1]='0'+time[1];
+        }
+        
+        if(time[1]=='60'){
+           time[1]='00';
+           time[0]++;
+           if(time[0]<10) time[0]='0'+time[0];
+        }
+        
+
+
+
+        $('#timeAttention').html(time[0]+':'+time[1]+':'+time[2]);
+    },1000);
+}
+
 
 //so doge, wow, much code
 /*$("#patientPicture").hover(function() {

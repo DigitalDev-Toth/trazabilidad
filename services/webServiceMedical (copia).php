@@ -5,18 +5,17 @@ ini_set("display_errors", 1);
 header('Content-Type: text/html; charset=utf-8');
 
 
-if($_REQUEST['type']==null) $type = '-'; //Inicio atención, Fin atención, Presupuesto
-else $type = $_REQUEST['type']; //Inicio atención, Fin atención, Presupuesto
-if($_REQUEST['id']==null) $rut = '-';
-else $rut = $_REQUEST['id'];
-if($_REQUEST['medicalid']==null) $medicalrut = '--';
-else $medicalrut = $_REQUEST['medicalid'];
-if($_REQUEST['medicalname']==null) $medicalname = '--';
-else $medicalname = $_REQUEST['medicalname'];
-if($_REQUEST['origin']==null) $origin = '-';
-else $origin = $_REQUEST['origin'];
-if($_REQUEST['plan']==null) $plans = '';
-else $plans = $_REQUEST['plan']; //En caso de contener planes de tratamiento en un solo registro, indicar cada número con guiones de separación "120-500-423"
+$type = $_REQUEST['type']; //Inicio atención, Fin atención, Presupuesto
+$rut = $_REQUEST['id'];
+$medicalrut = $_REQUEST['medicalid'];
+$medicalname = $_REQUEST['medicalname'];
+$origin = $_REQUEST['origin'];
+$plans = $_REQUEST['plan']; //En caso de contener planes de tratamiento en un solo registro, indicar cada número con guiones de separación "120-500-423"
+
+//Fin de atención
+if(!isset($medicalname)) $medicalname = '--';
+if(!isset($medicalrut)) $medicalrut = '--';
+if(!isset($plans)) $plans = '';
 
 $datetime = date('Y-m-d H:i:s');
 
