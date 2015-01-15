@@ -127,6 +127,7 @@ para el nuevo comet...
 //****************************************
 
 var socket = io.connect('http://falp.biopacs.com:8000');
+
 var zone;
 $(document).ready(function() {
 	socketComet();
@@ -172,12 +173,20 @@ function initConfig(zone){
 function getLastTickets(zone){
 	$.post('../phps/getModuleTicketsPatients.php', {zone: zone } , function(data, textStatus, xhr) {
 		console.log(data);
+<<<<<<< HEAD
 		if(data!='null'){
 			var jsonData= JSON.parse(data);
 			for (var i = 0; i < jsonData.length; i++) {
 				changeNumber(jsonData[i] ,1);
 			};
 		}
+=======
+
+		var jsonData= JSON.parse(data);
+		for (var i = 0; i < jsonData.length; i++) {
+			changeNumber(jsonData[i] ,1);
+		};
+>>>>>>> 5ddba2202c75ba919fd7e2e0844682cac3febbef
 
 	});
 }
@@ -191,7 +200,11 @@ function lastTicketsCalled(module , lc ){
 		$.post('../phps/lastTicketsCalled.php', { module: module } , function(data, textStatus, xhr) {
 			var json = JSON.parse(data);
 			console.log(json);
+<<<<<<< HEAD
 			$('#LC'+module).html('');
+=======
+			$('#LC'+module) .html('');
+>>>>>>> 5ddba2202c75ba919fd7e2e0844682cac3febbef
 			var htmlC='',moduleName='';
 			for (var i = 0; i < json.length; i++) {
 				htmlC += '<div class="row">'+fixNumber(json[i].ticket)+'  '+ fixHours(json[i].datetime) +'</div>';

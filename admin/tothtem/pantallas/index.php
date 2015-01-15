@@ -184,8 +184,9 @@ var myState = false; //Indica si el submódulo está atendiendo y/o llamando
 var subModuleType ='';
 var noRedirect = false; //Evita que se puedan derivar pacientes en caso de que el módulo no tenga asociada derivación
 var exitLog = true;
-//var socket = io.connect('http://192.168.0.104:8000');
+
 var socket = io.connect('http://falp.biopacs.com:8000');
+
 var waitingInterval = setInterval(function(){},5000);
 var attentionInterval = '';
 //se extrae la modalidad , el ultimo numero y se rellena la tabla

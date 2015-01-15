@@ -1,6 +1,6 @@
 <?php
 session_start();
-if(!isset($_SESSION['Username'])) { header("location: ../../../login.php?error=hack"); header('Content-Type: text/html; charset=latin1');  }
+if(!isset($_SESSION['Username'])) { header("location: ../../../login.php?error=hack"); header('Content-Type: text/html; charset=utf-8');  }
 
 include("libs/db.class.php");
  
@@ -8,7 +8,7 @@ if(isset($_POST['my_pass']))
 {
 	$users = new DB("users", "id");
 	
-	$row = $users->doSql('select password from users WHERE id='.$_SESSION['UserId']);
+	$row = $users->doSql('SELECT password FROM users WHERE id='.$_SESSION['UserId']);
 	if(md5($_POST['my_pass'])==$row['password'])
 	{
 		if($_POST['new_pass'] == $_POST['renew_pass']){

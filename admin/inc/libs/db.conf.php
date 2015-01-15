@@ -1,6 +1,5 @@
 <?php
 
-//$hostname = "localhost";
 $hostname = "falp.biopacs.com";
 $username = "postgres";
 $password = "justgoon";
