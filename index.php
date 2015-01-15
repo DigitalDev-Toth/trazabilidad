@@ -173,6 +173,7 @@ function getZone(){
         async: false
     };
     var dataAdapter = new $.jqx.dataAdapter(source);
+    console.log(dataAdapter);
     $("#listZones").jqxDropDownList({selectedIndex: 0, source: dataAdapter, displayMember: "name", valueMember: "id", width: 200, height: 30});
 
 }

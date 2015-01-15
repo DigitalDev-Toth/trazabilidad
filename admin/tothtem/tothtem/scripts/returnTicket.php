@@ -2,7 +2,7 @@
   <head>
   <script src="../js/jquery-2.0.3.js" type="text/javascript"></script>
   <script src="../js/jquery-barcode.min.js" type="text/javascript" ></script>  
-  <script src="http://192.168.0.104:8000/socket.io/socket.io.js"></script>
+  <script src="http://falp.biopacs.com:8000/socket.io/socket.io.js"></script>
   </head>
   <body>
     <div align="center"> 
@@ -22,7 +22,7 @@
 </html>
 <script type="text/javascript">
 
-var socket = io.connect('http://192.168.0.104:8000');
+var socket = io.connect('http://falp.biopacs.com:8000');
 var rut = decodeURIComponent("<?php echo rawurlencode($_GET['rut']); ?>");
 var module = decodeURIComponent("<?php echo rawurlencode($_GET['ticketOption']); ?>");
 var moduleSpecial = decodeURIComponent("<?php echo rawurlencode($_GET['moduleSpecial']); ?>");

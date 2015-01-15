@@ -13,7 +13,8 @@ if(!isset($_SESSION['Username'])) { header("location: ../../login.php"); header(
 
     <title>Pantalla</title>
   	<script src="js/jquery-1.10.2.js"></script>
-    <script src="http://192.168.0.104:8000/socket.io/socket.io.js"></script>
+    <!--<script src="http://192.168.0.104:8000/socket.io/socket.io.js"></script>-->
+    <script src="http://falp.biopacs.com:8000/socket.io/socket.io.js"></script>
     <script src="js/bootstrap.js"></script>
     <script src="js/comet.js"></script>
 
@@ -28,13 +29,14 @@ if(!isset($_SESSION['Username'])) { header("location: ../../login.php"); header(
                
                 <h1 class="page-header"><div id="ModuleHeader">...</div>
                     <small id="modalityTitle"></small>
-                        <button class="btn btn-default getout pull-right" onclick="inactiveSubModule('logout',false)"><span class="glyphicon glyphicon-log-out"></span> SALIR</button>  
-                        <!--<button class="btn btn-default getout pull-right" onclick="$(location).attr('href','../../exit.php');"><span class="glyphicon glyphicon-log-out"></span> SALIR</button>  -->
-                        <p class="pull-right">&nbsp;</p>
-                        <!--<button class="btn btn-primary getout pull-right" onclick="inactiveSubModule('change')"> <span class="glyphicon glyphicon-transfer"></span> CAMBIAR SUBMÓDULO</button>
-                        <p class="pull-right">&nbsp;</p>-->
-                        <button class="btn btn-primary getout pull-right" id="pause" onclick="inactiveSubModule('pause')"> <span class="glyphicon glyphicon-pause"></span> PAUSAR ATENCIÓN</button>
+                    <button class="btn btn-default getout pull-right" onclick="inactiveSubModule('logout',false)"><span class="glyphicon glyphicon-log-out"></span> SALIR</button>  
+                    <!--<button class="btn btn-default getout pull-right" onclick="$(location).attr('href','../../exit.php');"><span class="glyphicon glyphicon-log-out"></span> SALIR</button>  -->
+                    <p class="pull-right">&nbsp;</p>
+                    <!--<button class="btn btn-primary getout pull-right" onclick="inactiveSubModule('change')"> <span class="glyphicon glyphicon-transfer"></span> CAMBIAR SUBMÓDULO</button>
+                    <p class="pull-right">&nbsp;</p>-->
 
+                    <button class="btn btn-primary getout pull-right" id="pause" onclick="inactiveSubModule('pause')"> <span class="glyphicon glyphicon-pause"></span> PAUSAR ATENCIÓN</button>
+                    <span id="timeAttention" class="pull-right">-</span>
                 </h1>
 
             </div>
@@ -182,7 +184,10 @@ var myState = false; //Indica si el submódulo está atendiendo y/o llamando
 var subModuleType ='';
 var noRedirect = false; //Evita que se puedan derivar pacientes en caso de que el módulo no tenga asociada derivación
 var exitLog = true;
-var socket = io.connect('http://192.168.0.104:8000');
+//var socket = io.connect('http://192.168.0.104:8000');
+var socket = io.connect('http://falp.biopacs.com:8000');
+var waitingInterval = setInterval(function(){},5000);
+var attentionInterval = '';
 //se extrae la modalidad , el ultimo numero y se rellena la tabla
 
 
@@ -222,7 +227,7 @@ $(document).ready(function() {
     }else{
         alert("Falta Modalidad!");
     }
-
+    attentionTime();
 });
 
 function closeWindow(){ 
@@ -269,8 +274,8 @@ function getPatientData(ticketId){
             namePatient +='<p>Genero:'+gender(dataJson[0]['gender'])+'</p>';
             namePatient +='<p>Direccion:'+dataJson[0]['address']+'</p>';
             $('#patientData').html(namePatient);
-            //$('#patientPicture').html('<img src="http://placehold.it/200x200">');
-            $("#patientPicture").html('<img src="http://1.bp.blogspot.com/_jSIwJJQzdUU/TOIWjGmPkCI/AAAAAAAAAEo/GkjnGk1v76s/s1600/kermit4_Kermit_the_Frog-s1000x600-93067.jpg" style="width: 200px; height:200px;">');
+            $('#patientPicture').html('<img src="http://placehold.it/200x200">');
+            //$("#patientPicture").html('<img src="http://1.bp.blogspot.com/_jSIwJJQzdUU/TOIWjGmPkCI/AAAAAAAAAEo/GkjnGk1v76s/s1600/kermit4_Kermit_the_Frog-s1000x600-93067.jpg" style="width: 200px; height:200px;">');
 
         
         }else{
@@ -351,6 +356,7 @@ function inactiveSubModule(typeButton,doLog){//Desactiva el submódulo y genera 
         $('#pause').attr('onclick', 'inactiveSubModule("replay")');
         activeButtons('pause');
         $('#content').text('En Pausa');
+        clearInterval(attentionInterval);
     }
     if(typeButton=='replay'){ 
         actionType='re-activo';
@@ -359,6 +365,7 @@ function inactiveSubModule(typeButton,doLog){//Desactiva el submódulo y genera 
         $('#pause').attr('onclick', 'inactiveSubModule("pause")');
         refreshTable();
         $('#content').text('Esperando...');
+        //attentionTime();
     }
 
     if(typeButton!='logout'){
@@ -366,6 +373,9 @@ function inactiveSubModule(typeButton,doLog){//Desactiva el submódulo y genera 
             socket.send(data);
             /*$.post('../../../visor/comet/backend.php', {msg: data}, function(data, textStatus, xhr) {
             });*/
+            if(typeButton=='replay'){
+                attentionTime();
+            }
         });
 
 
@@ -511,17 +521,17 @@ function refreshTable(){ //Actualiza la tabla de pacientes en espera
             $('#contentTicket tr').has('td').remove();
 
             for (var i=0;i<cant;i++) {
-                if(subModuleType != 12){
+                if(subModuleType != 12){//Módulo especial
                     if(i==0){
-                        $('#contentTicket').append('<tr class="info"><td>'+ticketsTable[i]['ticket']+'</td><td>'+ticketsTable[i]['rut']+'</td><td>'+ticketsTable[i]['datetime'].split(' ')[1]+'</td><td>'+hourDiff(ticketsTable[i]['datetime'])+'</td></tr>');
+                        $('#contentTicket').append('<tr class="info"><td>'+ticketsTable[i]['ticket']+'</td><td>'+ticketsTable[i]['rut']+'</td><td>'+ticketsTable[i]['datetime'].split(' ')[1]+'</td><td class="waitingTime"><span>'+hourDiff(ticketsTable[i]['datetime'])+'</span><span style="display: none;">'+ticketsTable[i]['datetime']+'</span></td></tr>');
                     }else{
-                        $('#contentTicket').append('<tr><td>'+ticketsTable[i]['ticket']+'</td><td>'+ticketsTable[i]['rut']+'</td><td>'+ticketsTable[i]['datetime'].split(' ')[1]+'</td><td>'+hourDiff(ticketsTable[i]['datetime'])+'</td></tr>');  
+                        $('#contentTicket').append('<tr><td>'+ticketsTable[i]['ticket']+'</td><td>'+ticketsTable[i]['rut']+'</td><td>'+ticketsTable[i]['datetime'].split(' ')[1]+'</td><td class="waitingTime"><span>'+hourDiff(ticketsTable[i]['datetime'])+'</span><span style="display: none;">'+ticketsTable[i]['datetime']+'</span></td></tr>');  
                     }    
                 }else{
                     if(i==0){
-                        $('#contentTicket').append('<tr class="info"><td>'+ticketsTable[i]['ticket']+'</td><td>'+ticketsTable[i]['rut']+'</td><td>'+ticketsTable[i]['name']+'</td><td>'+ticketsTable[i]['datetime'].split(' ')[1]+'</td><td>'+hourDiff(ticketsTable[i]['datetime'])+'</td></tr>');
+                        $('#contentTicket').append('<tr class="info"><td>'+ticketsTable[i]['ticket']+'</td><td>'+ticketsTable[i]['rut']+'</td><td>'+ticketsTable[i]['name']+'</td><td>'+ticketsTable[i]['datetime'].split(' ')[1]+'</td><td class="waitingTime"><span>'+hourDiff(ticketsTable[i]['datetime'])+'</span><span style="display: none;">'+ticketsTable[i]['datetime']+'</span></td></tr>');
                     }else{
-                        $('#contentTicket').append('<tr><td>'+ticketsTable[i]['ticket']+'</td><td>'+ticketsTable[i]['rut']+'</td><td>'+ticketsTable[i]['name']+'</td><td>'+ticketsTable[i]['datetime'].split(' ')[1]+'</td><td>'+hourDiff(ticketsTable[i]['datetime'])+'</td></tr>');  
+                        $('#contentTicket').append('<tr><td>'+ticketsTable[i]['ticket']+'</td><td>'+ticketsTable[i]['rut']+'</td><td>'+ticketsTable[i]['name']+'</td><td>'+ticketsTable[i]['datetime'].split(' ')[1]+'</td><td class="waitingTime"><span>'+hourDiff(ticketsTable[i]['datetime'])+'</span><span style="display: none;">'+ticketsTable[i]['datetime']+'</span></td></tr>');  
                     } 
                   
                 }
@@ -534,6 +544,8 @@ function refreshTable(){ //Actualiza la tabla de pacientes en espera
             }
         });
     }
+    clearInterval(waitingInterval);
+    waitingInterval = setInterval(function(){updateWaitingTime();},5000);
 }
 
 function setCurrentNumber(){//Muestra el número actual que se está atendiendo
@@ -599,7 +611,6 @@ function insertLog(description,action,cometType,attentionNew,ticketId,module){//
 }
 
 function checkComet(data){
-    console.log(data);
     socket.send(data);
     /*$.ajax({
         url: '../../../visor/comet/backend.php',
@@ -683,6 +694,7 @@ function activeButtons(type){//Activa o inactiva botones
         $('#buttons :input').attr('disabled', true);
         $('#minusButton').attr('disabled', false);
         $('#exceptionButton').attr('disabled', false);
+        $('#patientsButton').attr('disabled', false);
         $('.getout').attr('disabled', false);
     }
     if(type=='next'){
@@ -693,6 +705,7 @@ function activeButtons(type){//Activa o inactiva botones
         $('#redirectButton').attr('disabled', true);
         $('#exceptionButton').attr('disabled', false);
         $('#plusDerivedButton').attr('disabled', true);
+        $('#patientsButton').attr('disabled', false);
         $('.getout').attr('disabled', false);
         if(subModuleType==12)$('#patientButton').attr('disabled', false);
     }
@@ -705,6 +718,7 @@ function activeButtons(type){//Activa o inactiva botones
         if(noRedirect==false) $('#redirectButton').attr('disabled', false);
         $('#exceptionButton').attr('disabled', true);
         $('#plusDerivedButton').attr('disabled', true);
+        $('#patientsButton').attr('disabled', true);
         $('.getout').attr('disabled', true);
         if(subModuleType==12)$('#patientButton').attr('disabled', false);
     }
@@ -717,13 +731,14 @@ function activeButtons(type){//Activa o inactiva botones
         $('#redirectButton').attr('disabled', true);
         $('#exceptionButton').attr('disabled', true);
         $('#plusDerivedButton').attr('disabled', true);
+        $('#patientsButton').attr('disabled', true);
         $('.getout').attr('disabled', false);
         if(subModuleType==12)$('#patientButton').attr('disabled', false);
     }
 
 }
 
-function hourDiff(initialHour){
+function hourDiff(initialHour){//Calcula el tiempo de espera en minutos
     var initialHour = new Date(initialHour);
     var finishedHour = new Date();
     finishedHour.setSeconds(finishedHour.getSeconds() + 15);
@@ -735,10 +750,53 @@ function hourDiff(initialHour){
     var diff = finishedHour - initialHour;
 
     return Math.floor(diff / 1000 / 60)+' Minutos';
+    //return Math.floor(diff / 1000)+' Segundos';
+
 }
 
+function updateWaitingTime(){ //Actualiza tiempo de espera de cada paciente
+    var waitingPatients = document.getElementsByClassName('waitingTime').length;
+    for(var i=0;i<waitingPatients;i++){
+        document.getElementsByClassName('waitingTime')[i].childNodes[0].innerHTML = hourDiff(document.getElementsByClassName('waitingTime')[i].childNodes[1].innerHTML);
+    }
+}
+
+function attentionTime(){
+    var initTime;
+    $.post('phps/getAttentionTime.php', {user: "<?php echo $_SESSION['UserId']; ?>"}, function(data, textStatus, xhr) {
+        initTime = data;
+        $('#timeAttention').html(initTime);
+    });
+
+    //initTime = '16:59:50';
+    
+        
+    attentionInterval = setInterval(function(){
+        var time = $('#timeAttention').html().split(':');
+        time[2]++;
+        if(time[2]<10) time[2]='0'+time[2];
+        if(time[2]=='60'){
+           time[2]='00';
+           time[1]++;
+           if(time[1]<10) time[1]='0'+time[1];
+        }
+        
+        if(time[1]=='60'){
+           time[1]='00';
+           time[0]++;
+           if(time[0]<10) time[0]='0'+time[0];
+        }
+        
+
+
+
+        $('#timeAttention').html(time[0]+':'+time[1]+':'+time[2]);
+    },1000);
+}
+
+
 //so doge, wow, much code
-$("#patientPicture").hover(function() {
+/*$("#patientPicture").hover(function() {
     //CHLOE$("#patientPicture").html('<img src="http://i0.kym-cdn.com/entries/icons/original/000/014/285/not.jpg" style="height: 200px; width: 200px;">');
     //KERMIT
     $("#patientPicture").html('<img src="http://media.giphy.com/media/DpB9NBjny7jF1pd0yt2/giphy.gif" style="height: 200px; width: 200px;">');
@@ -746,7 +804,7 @@ $("#patientPicture").hover(function() {
     //KERMIT
     $("#patientPicture").html('<img src="http://1.bp.blogspot.com/_jSIwJJQzdUU/TOIWjGmPkCI/AAAAAAAAAEo/GkjnGk1v76s/s1600/kermit4_Kermit_the_Frog-s1000x600-93067.jpg" style="width: 200px; height:200px;">');
     //$("#patientPicture").html('<img src="http://placehold.it/200x200">');
-});
+});*/
 
 
 function gender(gen){

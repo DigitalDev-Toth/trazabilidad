@@ -19,7 +19,7 @@ $users->changeItemInShow("color", '<table align="center" border="0" width="40"><
 makeControls($users, "modules/usersForm.php", "modules/usersDelete.php", "modules/usersUpdate.php", $_SERVER['HTTP_REFERER']);
 
 $users->showControls();
-echo '<div algin="center" id="showTitle">USUARIOS</div>';
+echo '<div algin="center" id="showTitle">Usuarios</div>';
 
 //$where = array();
 $rows = $users->select();

@@ -1,0 +1,42 @@
+info it worked if it ends with ok
+verbose cli [ 'node', '/usr/bin/npm', 'install', 'socket.io' ]
+info using npm@1.1.4
+info using node@v0.6.12
+verbose config file /home/toth/.npmrc
+verbose config file /usr/etc/npmrc
+verbose config file /usr/share/npm/npmrc
+verbose caching /var/www/trazaNode/services/node_modules/socket.io/package.json
+verbose loadDefaults socket.io@1.2.0
+verbose cache add [ 'socket.io', null ]
+silly cache add: name, spec, args [ undefined, 'socket.io', [ 'socket.io', null ] ]
+verbose parsed url { pathname: 'socket.io', path: 'socket.io', href: 'socket.io' }
+verbose addNamed [ 'socket.io', '' ]
+verbose addNamed [ null, '' ]
+silly name, range, hasData [ 'socket.io', '', false ]
+verbose raw, before any munging socket.io
+verbose url resolving [ 'https://registry.npmjs.org/', './socket.io' ]
+verbose url resolved https://registry.npmjs.org/socket.io
+http GET https://registry.npmjs.org/socket.io
+ERR! Error: failed to fetch from registry: socket.io
+ERR!     at /usr/share/npm/lib/utils/npm-registry-client/get.js:139:12
+ERR!     at cb (/usr/share/npm/lib/utils/npm-registry-client/request.js:31:9)
+ERR!     at Request._callback (/usr/share/npm/lib/utils/npm-registry-client/request.js:136:18)
+ERR!     at Request.callback (/usr/lib/nodejs/request/main.js:119:22)
+ERR!     at Request.<anonymous> (/usr/lib/nodejs/request/main.js:212:58)
+ERR!     at Request.emit (events.js:88:20)
+ERR!     at ClientRequest.<anonymous> (/usr/lib/nodejs/request/main.js:412:12)
+ERR!     at ClientRequest.emit (events.js:67:17)
+ERR!     at HTTPParser.onIncoming (http.js:1261:11)
+ERR!     at HTTPParser.onHeadersComplete (http.js:102:31)
+ERR! You may report this log at:
+ERR!     <http://bugs.debian.org/npm>
+ERR! or use
+ERR!     reportbug --attach /var/www/trazaNode/services/npm-debug.log npm
+ERR! 
+ERR! System Linux 3.8.0-29-generic
+ERR! command "node" "/usr/bin/npm" "install" "socket.io"
+ERR! cwd /var/www/trazaNode/services
+ERR! node -v v0.6.12
+ERR! npm -v 1.1.4
+ERR! message failed to fetch from registry: socket.io
+verbose exit [ 1, true ]

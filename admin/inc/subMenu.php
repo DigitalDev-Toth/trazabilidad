@@ -24,11 +24,19 @@ function getSubMenu($content) {
 			$subMenu .= getItemMenu("submodule", "Sub Modulos");
 			$subMenu .= getItemMenu("module_special", "Modulos Especiales");
 			$subMenu .= getItemMenu("users", "Usuarios");
-			$subMenu .= getItemMenu("changePass", "Cambiar Password");
+			$subMenu .= getItemMenu("changePass", "Cambiar Contraseña");
 			$subMenu .= getItemMenu("role", "Roles de Usuario");
 			$subMenu .= getItemMenu("roles", "Permisos de Usuario");
 			$subMenu .= getItemMenu("multimedia", "Contenido Pantallas");
 			
+			$subMenu .= '</ul>';
+			break;
+
+
+		case 'bitacora':
+			$subMenu .= '<ul class="dropdown-menu">';
+			$subMenu .= getItemMenu("bitacora", "<span class='glyphicon glyphicon-user'> Pacientes");
+			$subMenu .= getItemMenu("bitacora_user", "<span class='glyphicon glyphicon-book'> Ejecutivos");
 			$subMenu .= '</ul>';
 			break;
 

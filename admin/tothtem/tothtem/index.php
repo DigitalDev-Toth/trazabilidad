@@ -13,7 +13,7 @@
     <link href="css/loader.css" rel="stylesheet">
     <link href="css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <script src="js/jquery-2.0.3.js" type="text/javascript"></script>
-    <script src="http://192.168.0.104:8000/socket.io/socket.io.js"></script>
+    <script src="http://falp.biopacs.com:8000/socket.io/socket.io.js"></script>
     <script src="js/validarut.js" type="text/javascript"></script>
     <script src="js/bootbox.js"></script>
     <script src="js/bootstrap.js"></script>
@@ -243,7 +243,7 @@ var selAttention=false;
 var getAccept=false;//Consulta si presionó botón aceptar
 var inputTypeT='';
 setup();
-var socket = io.connect('http://192.168.0.104:8000');
+var socket = io.connect('http://falp.biopacs.com:8000');
 
 //***********************************************************
 
@@ -403,8 +403,9 @@ function PrintTicket(ticketOption,moduleSpecial){
     window.setTimeout(function(){
         bootbox.hideAll();
         $("#BootboxButton").css({display:"display"});
+        goInactive();
     }, 3000);
-    window.setTimeout(function(){
+    /*window.setTimeout(function(){
         bootbox.dialog({
                 message: "¿Desea otra operacion?",
                 title: "Atencion",
@@ -424,7 +425,7 @@ function PrintTicket(ticketOption,moduleSpecial){
                     }
                 }
             });
-    }, 3200);
+    }, 3200);*/
     /*}else{
     	alert("no existe id totem!!");
     }*/
@@ -764,7 +765,7 @@ function loginPatient(){
 function tothtemConfig(){
     //tothemIp="<?php echo $_SERVER['REMOTE_ADDR'];?>";
     tothemIp="<?php echo $_REQUEST['tothtem'];?>";
-    console.log(tothemIp);
+
     var result = null;
     var scriptUrl = "scripts/tothtemConfig.php?ip=" + tothemIp;
     $.ajax({

@@ -23,6 +23,7 @@ if (isset($_POST['username'])) {
 
 	$LoginRS = pg_query($localhost, $LoginRS__query);
 	$row = pg_fetch_assoc($LoginRS);
+
 	if ($row) {
 
 		$id = $row['id'];
@@ -35,7 +36,9 @@ if (isset($_POST['username'])) {
 		$role = $row['role'];
 		$permission = $row['permission'];//colocar en SM
 		//$queryModules = "SELECT * FROM submodule WHERE module IN (SELECT module FROM users_modules WHERE users=$id) AND ip='$ip'";
-		$queryModules = "SELECT * FROM submodule WHERE ip='$ip' AND users=$id";
+		
+		//$queryModules = "SELECT * FROM submodule WHERE ip='$ip' AND users=$id"; ORIGINAL, evalúa IP
+		$queryModules = "SELECT * FROM submodule WHERE users=$id LIMIT 1";
 
 		$dataModule = pg_query($localhost, $queryModules);
 		$data = pg_fetch_assoc($dataModule);

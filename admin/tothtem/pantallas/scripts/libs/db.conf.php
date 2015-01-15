@@ -2,7 +2,7 @@
 $username = "postgres";
 $password = "justgoon";
 $dbname = "traza";
-$hostname = "digitaldev.org";
+$hostname = "falp.biopacs.com";
 $port = "5432";
 
 //relative directory

@@ -11,7 +11,7 @@ $module_type->changeItemInShow("color", '<table align="center" border="0" width=
 makeControls($module_type, "modules/module_typeForm.php", "modules/module_typeDelete.php", "modules/module_typeUpdate.php", $_SERVER['HTTP_REFERER']);
 
 $module_type->showControls();
-echo '<div algin="center" id="showTitle">Tipos de modulo</div>';
+echo '<div algin="center" id="showTitle">Tipo de modulo</div>';
 
 $module_type->changeItemInShowIf("shape", "==", "circulo", "replaceWithImage", "../images/geometrics/circulo.png");
 $module_type->changeItemInShowIf("shape", "==", "cuadrado", "replaceWithImage", "../images/geometrics/cuadrado.png");

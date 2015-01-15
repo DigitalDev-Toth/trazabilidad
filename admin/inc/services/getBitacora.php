@@ -1,5 +1,8 @@
 <?php
 //include("libs/db.class.php");
+
+
+
 $data = $_REQUEST['data'];
 
 $data = strtoupper($data);
@@ -9,13 +12,15 @@ if(count($data) == 2){
     $sql="SELECT * FROM patient WHERE (name LIKE '%$data[0]%' and lastname LIKE '%$data[1]%')";    
 }else{
     $sql="SELECT * FROM patient WHERE (rut = '$data' OR name LIKE '%$data%' OR lastname LIKE '%$data%')";
+
+
 }
 
-$con = pg_connect("host=biopacs.com port=5432 dbname=es14b_hrt2 user=postgres password=justgoon") or die('NO HAY CONEXION: ' . pg_last_error());
+$con1 = pg_connect("host=biopacs.com port=5432 dbname=es14b_hrt2 user=postgres password=justgoon") or die('NO HAY CONEXION: ' . pg_last_error());
 
 
 
-$resultado = pg_query($con, $sql);
+$resultado = pg_query($con1, $sql);
 $row = pg_numrows($resultado);
 if($row){
 

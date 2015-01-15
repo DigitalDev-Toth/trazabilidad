@@ -6,7 +6,7 @@ if(!isset($_SESSION['Username'])) { header("location: ../../login.php?error=hack
 <?
 if (isset($_GET['update']))
 {
-	echo '<div algin="center" id="showTitle">ACTUALIZAR ROL</div>';
+	echo '<div algin="center" id="showTitle">ACTUALIZAR TIPO DE MODULO</div>';
 	$data = $_REQUEST;
 	if (count($data) > 0)
 	{

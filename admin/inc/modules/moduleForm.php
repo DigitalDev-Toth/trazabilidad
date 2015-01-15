@@ -164,7 +164,9 @@ $(document).ready(function() {
 				index++;
 			}
 		});
-		if(index!=0){
+		var update = "<?php echo $_GET['update']; ?>";
+		console.log(update);
+		if(index!=0 || update!=''){
 			var form = $('#form_main');
 			verify(this.form); //ERA LA MISMA WEA!!! xD La weá forme
 		}else{

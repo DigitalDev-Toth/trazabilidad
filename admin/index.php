@@ -21,15 +21,30 @@ if (!isset($_SESSION['Username'])) {header("location: login.php");
 <script src="inc/js/tooltip/lib/jquery.bgiframe.js" type="text/javascript"></script>
 <script src="inc/js/tooltip/lib/jquery.dimensions.js" type="text/javascript"></script>
 <script src="inc/js/tooltip/jquery.tooltip.js" type="text/javascript"></script>
+
+<script src="http://falp.biopacs.com:8000/socket.io/socket.io.js"></script>
+<script src="inc/js/bitacora.js"></script>
+<script src="inc/js/datatablesN/js/jquery.dataTables.min.js"></script>
+<script src="inc/js/datatablesN/js/dataTables.tableTools.js"></script>
+<script src="inc/js/datatablesN/js/dataTables.bootstrap.js"></script>
+
 <script>
 	var show_menu_top = true;
 	$(document).ready(function(){
 		$(" #nav ul ").css({display: "none"}); // Opera Fix
 		$(" #nav li").hover(function(){
-				$(this).find('ul:first').css({visibility: "visible",display: "none"}).show(400);
-				},function(){
-				$(this).find('ul:first').css({visibility: "hidden"});
-				});
+			$(this).find('ul:first').css({visibility: "visible",display: "none"}).show(400);
+			},function(){
+			$(this).find('ul:first').css({visibility: "hidden"});
+			});
+
+		//$(" #bitacora_dropdown").css({display: "none"}); // Opera Fix
+		$(" #bitacora_dropdown").hover(function(){
+			console.log('here');
+			$(this).find('ul:first').css({visibility: "visible",display: "none"}).show(400);
+			},function(){
+			$(this).find('ul:first').css({visibility: "hidden"});
+			});
 		$("#header").fadeIn("600");
 	});
 

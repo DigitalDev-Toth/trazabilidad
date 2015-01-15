@@ -7,10 +7,10 @@ include("controls.php");
 
 ?>
 <script src="js/jquery-1.8.1.min.js"></script>
-<script src="http://192.168.0.104:8000/socket.io/socket.io.js"></script>
+<script src="http://falp.biopacs.com:8000/socket.io/socket.io.js"></script>
 <script>
 console.log('asdad');
-    var socket = io.connect('http://192.168.0.104:8000');        
+    var socket = io.connect('http://falp.biopacs.com:8000');        
 	var setState = function(id, state) {
 		if(state!='blink') {
 			$.get("modules/updateSubmoduleState.php",{"id": id, "state": state},function(data, textStatus, xhr){

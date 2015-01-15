@@ -25,11 +25,12 @@
 	<script src="login/js/bootstrap.min.js"></script>
   	<script src="login/js/jquery-ui.js"></script>
     <script src='login/js/jquery.base64.js'></script>
-    <script src="http://192.168.0.104:8000/socket.io/socket.io.js"></script>
+    <script src="http://falp.biopacs.com:8000/socket.io/socket.io.js"></script>
         <script type="text/javascript">     
-            var socket = io.connect('http://192.168.0.104:8000');        
+            var socket = io.connect('http://falp.biopacs.com:8000');        
             
             $(document).ready(function () {
+                console.log('<?php echo $_SERVER["REMOTE_ADDR"]; ?>');
                $('#logo').fadeIn(500, function () {
                     $('#hr').animate({
                         width: '100%'

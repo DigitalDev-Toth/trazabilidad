@@ -1,6 +1,7 @@
 <?php
 
-$hostname = "digitaldev.org";
+//$hostname = "localhost";
+$hostname = "falp.biopacs.com";
 $username = "postgres";
 $password = "justgoon";
 $dbname = "traza";

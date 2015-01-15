@@ -13,7 +13,7 @@ include("controls.php");
 <head>
 	<title></title>
 </head>
-
+<script src="js/validaRut.js" type="text/javascript"></script>
 <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="js/datatables2/css/jquery.dataTables.css">
 <link rel="stylesheet" type="text/css" href="js/datatables2/css/dataTables.tableTools.css">
@@ -35,7 +35,7 @@ include("controls.php");
 						<div class="col-md-3 ">
 								<div class="input-group">
 								<div class="input-group-addon"><span class="glyphicon glyphicon-bookmark"></span> RUT/DNI</div>
-										<input type="text" class="form-control" id="rutSearch" name="rutSearch" placeholder="Ingrese RUT/DNI">
+										<input type="text" class="form-control" id="rutSearch" name="rutSearch" onblur="Valida_Rut(this)" placeholder="Ingrese RUT/DNI">
 								</div>
 						</div>
 				
@@ -167,6 +167,7 @@ include("controls.php");
 			}
 		}
 
+
 	
 
 	});
@@ -183,21 +184,24 @@ include("controls.php");
 	function fillInfo(data) {
 	  	var json = JSON.parse(data);
 		if(json.length == 1){
-			console.log(json);
-			var patientHtml = '<table class="table table-bordered">';
+			$.post('services/getBitacora_plan.php', {rut: json[0]["rut"]}, function(data, textStatus, xhr) {
+				var infoPlans = JSON.parse(data);
+				console.log(infoPlans);
+				var patientHtml = '<table class="table table-bordered">';
 				patientHtml += '<tr> <th colspan="6" class="text-center">Resultados </th></tr>';
 				patientHtml += '<tr><th>RUT/DNI: </th><td>'+json[0]["rut"]+'</td>  <th>N° Ficha:</td><td>1</td>    <th>Estado Actual</td><td>1</td>  </tr>';
-				patientHtml += '<tr><th>Nombre: </th><td>'+json[0]["name"]+' '+json[0]["lastname"]+' <th>N° P. Tratamiento:</td><td>1</td>    <th>Maximo T. de espera:</td><td>1</td></tr>';
-				patientHtml += '<tr><th>Fecha de Nacimiento: </th><td>'+json[0]["birthdate"]+'</td> <th>N° Presupuesto:</td><td>1</td>  <th>T. espera cumulado</td><td>1</td> </tr>';
+				patientHtml += '<tr><th>Nombre: </th><td>'+json[0]["name"]+' '+json[0]["lastname"]+' <th>N° P. Tratamiento:</td><td>'+infoPlans["planes"]+'</td>    <th>Maximo T. de espera:</td><td>1</td></tr>';
+				patientHtml += '<tr><th>Fecha de Nacimiento: </th><td>'+json[0]["birthdate"]+'</td> <th>N° Presupuesto:</td><td>'+infoPlans["pres"]+'</td>  <th>T. espera cumulado</td><td>1</td> </tr>';
 				patientHtml += '</table>';
-			$("#info").html("");
-			$("#info").html(patientHtml);
+				$("#info").html("");
+				$("#info").html(patientHtml);
+			});
+			
 		}
 	}
 	function fillTable (data) {
 		if(data != 0){
 			var json = JSON.parse(data);
-			console.log(data);
 			var T = '<table class="table table-striped table-bordered" id="bitacora"><thead><tr> ';
 				T +="<th>Fecha</th>";
 				T +="<th>Hora</th>";

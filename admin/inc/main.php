@@ -74,8 +74,8 @@
 			include("modules/show_displays.php");
 			break;
 
-			case 'estadistica':
-			include("modules/estadistica.php");
+			case 'statistical':
+			include("modules/statistical/estadistica.php");
 			break;
 
 			case 'trace':
@@ -88,6 +88,10 @@
 
 			case 'bitacora':
 			include("modules/bitacora.php");
+			break;
+
+			case 'bitacora_user':
+			include("modules/bitacora_user/bitacora_user.php");
 			break;
 
 			case 'visor':
