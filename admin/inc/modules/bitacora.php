@@ -46,7 +46,7 @@ include("controls.php");
 								</div>
 						</div>
 						<div class="col-md-1">
-							<button id="button" name="beetween"  class="btn btn-default" type="submit" onclick="submit();"><span class="glyphicon glyphicon-search"></span> Buscar</button>
+							<button id="button" name="beetween"  class="btn btn-primary" type="submit" onclick="submit();"><span class="glyphicon glyphicon-search"></span> Buscar</button>
 						</div>
 					
 					</div>
@@ -186,17 +186,16 @@ include("controls.php");
 		if(json.length == 1){
 			$.post('services/getBitacora_plan.php', {rut: json[0]["rut"]}, function(data, textStatus, xhr) {
 				var infoPlans = JSON.parse(data);
-				console.log(infoPlans);
 				var patientHtml = '<table class="table table-bordered">';
 				patientHtml += '<tr> <th colspan="6" class="text-center">Resultados </th></tr>';
 				patientHtml += '<tr><th>RUT/DNI: </th><td>'+json[0]["rut"]+'</td>  <th>N° Ficha:</td><td>1</td>    <th>Estado Actual</td><td>1</td>  </tr>';
-				patientHtml += '<tr><th>Nombre: </th><td>'+json[0]["name"]+' '+json[0]["lastname"]+' <th>N° P. Tratamiento:</td><td>'+infoPlans["planes"]+'</td>    <th>Maximo T. de espera:</td><td>1</td></tr>';
+				patientHtml += '<tr><th>Nombre: </th><td>'+json[0]["name"]+' '+json[0]["lastname"]+' <th>N° Plan de Tratamiento:</td><td>'+infoPlans["planes"]+'</td>    <th>Maximo T. de espera:</td><td>1</td></tr>';
 				patientHtml += '<tr><th>Fecha de Nacimiento: </th><td>'+json[0]["birthdate"]+'</td> <th>N° Presupuesto:</td><td>'+infoPlans["pres"]+'</td>  <th>T. espera cumulado</td><td>1</td> </tr>';
 				patientHtml += '</table>';
+				patientHtml += '<button class="btn btn-primary" onclick="filterPlanPres(\''+json[0]["rut"]+'\');"><span class="glyphicon glyphicon-search"></span> Ver Planes de Tratamiento y Presupuesto</button>';
 				$("#info").html("");
 				$("#info").html(patientHtml);
-			});
-			
+			});	
 		}
 	}
 	function fillTable (data) {
@@ -257,6 +256,58 @@ include("controls.php");
 		$("#toSearch").submit();
 	}
 
+	function filterPlanPres(rut){
+		$.ajax({
+		    type: 'POST',
+		    url: "services/getBitacora_PlanBudgets.php",
+		    data: { rut:rut} ,
+		    beforeSend: function() {
+		    	$("#data").html('<h1><i class="fa fa-spinner fa-spin"></i></h1>');
+		    },
+		    success: function(data) {
+		    	//fillTable(data);
+		    	//console.log(data);
+				if(data != 0){
+					var json = JSON.parse(data);
+					var T = '<table class="table table-striped table-bordered" id="bitacora"><thead><tr> ';
+						T +="<th>Origen</th>";
+						T +="<th>Plan de Tratamiento Nº</th>";
+						T +="<th>Médico</th>";
+						T +="<th>Fecha y Hora Plan</th>";
+						T +="<th>Fecha y Hora Presupuesto</th>";
+						T +="</tr></thead><tbody>";
 
+					for (var i = 0; i < json.length; i++) {
+						T += '<tr><td>'+ ifNull(json[i].origin) +'</td>';
+						T += '<td>'+ ifNull(json[i].plan_number) +'</td>';
+						T += '<td>'+ ifNull(json[i].medical) +'</td>';
+						T += '<td>'+ ifNull(json[i].plan_time) +'</td>';
+						T += '<td>'+ ifNull(json[i].budget_time) +'</td></tr>';
+					};
+
+					T +='</tbody></table>';
+					$("#data").html(T);
+				  	$("#bitacora").dataTable( {
+				       		"dom": 'T<"clear">lfrtip',
+				        	"tableTools": {
+				            	"sSwfPath": "js/datatables2/swf/copy_csv_xls_pdf.swf"
+				        	},
+				        	"language": {
+				            	"url": "js/datatables2/languaje/languaje.lang"
+				        	}
+				    	} );
+				}else{
+					$("#data").html('<h2>Sin resultados</h2>');
+				}
+
+
+
+
+		    },
+		    error: function(xhr) {
+		    	//do a barrel roll
+		    }
+		});
+	}
 
 </script>

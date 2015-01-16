@@ -7,8 +7,9 @@ include ('getTimeString.php');
 
 $rut = $_REQUEST['rut'];
 
+
 $db1 = NEW DB();
-$sql = "SELECT id from logs where rut ='$rut' ";
+$sql = "SELECT id FROM logs WHERE rut ='$rut'";
 
 $ids = $db1->doSql($sql);
 

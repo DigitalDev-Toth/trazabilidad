@@ -112,7 +112,6 @@ echo '<div id="showBitacora" class="modal fade" tabindex="-1" role="dialog" aria
 	    socket.on('connect', function() {
 	            socket.on('message', function(message) {
 	           	var json = JSON.parse(message);
-	           	//console.log(json);
 	           	if(message.indexOf("Alert") > -1){
 	           		showAlert(json);
 	           	}else{

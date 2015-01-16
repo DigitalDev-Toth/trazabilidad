@@ -90,44 +90,51 @@
 		<div id="loadingLogo" class="loader">
 		    <span></span> <span></span> <span></span> <span></span>
 		</div>
-	             
+	    <br/>
 		<div id="inputText">    
 			<form class="form-inline" role="form">
 				<div class="" id="inputColor">
 					<label class="control-label" id="inputLabel" for="rut"></label>
-					<input type="text" class="form-control" name="rut" id="rut" placeholder="Ej.12.345.678-9" style="margin: 0 auto;text-align:center;"  maxlength="9"  />
+					<input type="text" class="form-control" name="rut" id="rut" placeholder="Ej.12.345.678-9" style="height: 50px; margin: 0 auto;text-align:center; font-size: 30px;"  maxlength="9"  />
 					<span class="" id="inputIcon"></span><br>
 					<label id="loadingLabel">Verificando Rut...</label>
 				</div>
 			</form>   
 		</div>
+        <div style="height: 4px;"></div>
 
 		<div id="buttonsGrid">
-			<div  style="width:155px;margin: 0 auto" align="center">
+            <div  style="width:350px;margin: 0 auto" align="center">
+			<!--<div  style="width:155px;margin: 0 auto" align="center">-->
 			    <div id="row1">
-				    <input type="button" name="number" value="1" id="_1" class="btn btn-default btn-lg" onclick="teclado('number')"/>
-				    <input type="button" name="number" value="2" id="_2" class="btn btn-default btn-lg" onclick="teclado('number')"/>
-				    <input type="button" name="number" value="3" id="_3" class="btn btn-default btn-lg" onclick="teclado('number')"/>
+				    <input type="button" name="number" value="1" id="_1" class="btn btn-default btn-lg" style="width: 70px; height: 70px; font-size: 30px;" onclick="teclado('number')"/>
+				    <input type="button" name="number" value="2" id="_2" class="btn btn-default btn-lg" style="width: 70px; height: 70px; font-size: 30px;" onclick="teclado('number')"/>
+				    <input type="button" name="number" value="3" id="_3" class="btn btn-default btn-lg" style="width: 70px; height: 70px; font-size: 30px;" onclick="teclado('number')"/>
 			    </div>
+                <div style="height: 4px;"></div>
 			    <div id="row2">
-				    <input type="button" name="number" value="4" id="_4" class="btn btn-default btn-lg" onclick="teclado('number')"/>
-				    <input type="button" name="number" value="5" id="_5" class="btn btn-default btn-lg" onclick="teclado('number')"/>
-				    <input type="button" name="number" value="6" id="_6" class="btn btn-default btn-lg" onclick="teclado('number')">
+				    <input type="button" name="number" value="4" id="_4" class="btn btn-default btn-lg" style="width: 70px; height: 70px; font-size: 30px;" onclick="teclado('number')"/>
+				    <input type="button" name="number" value="5" id="_5" class="btn btn-default btn-lg" style="width: 70px; height: 70px; font-size: 30px;" onclick="teclado('number')"/>
+				    <input type="button" name="number" value="6" id="_6" class="btn btn-default btn-lg" style="width: 70px; height: 70px; font-size: 30px;" onclick="teclado('number')">
 			    </div>
+                <div style="height: 4px;"></div>
 			    <div id="row3">
-				    <input type="button" name="number" value="7" id="_7" class="btn btn-default btn-lg" onclick="teclado('number')">
-				    <input type="button" name="number" value="8" id="_8" class="btn btn-default btn-lg" onclick="teclado('number')">
-				    <input type="button" name="number" value="9" id="_9" class="btn btn-default btn-lg" onclick="teclado('number')">
+				    <input type="button" name="number" value="7" id="_7" class="btn btn-default btn-lg" style="width: 70px; height: 70px; font-size: 30px;" onclick="teclado('number')">
+				    <input type="button" name="number" value="8" id="_8" class="btn btn-default btn-lg" style="width: 70px; height: 70px; font-size: 30px;" onclick="teclado('number')">
+				    <input type="button" name="number" value="9" id="_9" class="btn btn-default btn-lg" style="width: 70px; height: 70px; font-size: 30px;" onclick="teclado('number')">
 			    </div>
+                <div style="height: 4px;"></div>
 			    <div id="row4">
-				    <input type="button" name="number" value="0" id="_0" class="btn btn-default btn-lg" onclick="teclado('number')"/>
-				    <input type="button" name="number" value="K" id="ka" class="btn btn-default btn-lg" onclick="teclado('number')" style="width: 44px;"/>
-                    <button class="btn btn-default btn-lg" onclick="deleteString()" style="width: 44px;"><span class="glyphicon glyphicon-arrow-left"></span> </button>
+				    <input type="button" name="number" value="0" id="_0" class="btn btn-default btn-lg" style="width: 70px; height: 70px; font-size: 30px;" onclick="teclado('number')"/>
+				    <input type="button" name="number" value="K" id="ka" class="btn btn-default btn-lg" style="width: 70px; height: 70px; font-size: 30px;" onclick="teclado('number')"/>
+                    <button class="btn btn-default btn-lg" id="btn_delete" onclick="deleteString()" style="width: 70px; height: 70px; font-size: 30px;"><span class="glyphicon glyphicon-arrow-left"></span></button>
                     <!--<button class="btn btn-default btn-lg" onclick="deleteString()"><span class="glyphicon glyphicon-arrow-left"></span> </button>-->
-				    <input type="button" id="Borrar" value="Borrar"class="btn btn-default btn-lg" >
+				    <br/>
+                    <div style="height: 4px;"></div>
+                    <input type="button" id="Borrar" value="Borrar Todo"class="btn btn-default btn-lg" style="width: 130px; height: 70px;">
 			    </div>
 			</div><br>
-	    <button class="btn btn-default btn-lg" id="login">Aceptar</button>
+	    <button class="btn btn-primary btn-lg" id="login" style="width: 130px; height: 70px;font-size: 30px;">Aceptar</button>
 		</div>
 	</div>
 
@@ -289,6 +296,8 @@ $(document).click(function(e) {
 var totemId="";
 $(document).ready(function() {
 	//establece id totem
+
+    //$("#btn_delete").val('<span class="glyphicon glyphicon-arrow-left"></span>');
     activesModules();
     resetInput(1);
     $("#login").prop( "disabled", true );

@@ -68,7 +68,7 @@ include("controls.php");
                				</div>
 						</div>
 					</div>
-					<div class="row well well-sm " id='data'>
+					<div class="row well well-sm text-center" id='data'>
 						
 					</div>
 			</form>
@@ -254,6 +254,7 @@ include("controls.php");
 			startDate: moment(),
 			endDate: moment().add(1,'days'),
 			minDate: '01/01/2014',
+			//maxDate: moment().format('DD/MM/YYYY'),
 			maxDate: moment().add(1,'days').format('DD/MM/YYYY'),
 			
 			showDropdowns: true,

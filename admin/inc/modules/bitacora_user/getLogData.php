@@ -9,6 +9,7 @@ $user = $_REQUEST['user'];
 $date1 = $_REQUEST['date1'];
 $date2 = $_REQUEST['date2'];
 
+
 $db1 = NEW DB();
 $sql = "SELECT id FROM logs WHERE users = $user AND rut = '$user' AND datetime BETWEEN '$date1' AND '$date2'";
 

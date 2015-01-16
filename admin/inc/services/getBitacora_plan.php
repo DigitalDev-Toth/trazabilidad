@@ -23,11 +23,6 @@ $db = new DB();
 
 $result2 = $db->doSql($sql);
 
-
-/*echo 'Planes generados: '.$result['count'];
-echo '<br/>';
-echo 'Presupuestos generados: '.$result2['count'];*/
-
 $data=array(
     "planes" => $result['count'],
     "pres" => $result2['count']

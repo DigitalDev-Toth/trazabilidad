@@ -435,7 +435,6 @@ function totemGraph (interval,ids,names) {
 		})
 		.done(function(e) {
 			var json = JSON.parse(e);
-			console.log(json);
 			contents = '<div class="col-md-'+colmd+'"><h4 class="text-center">'+names[i] +'</h4><div id=G'+i+' style="height: 200px;" class="well"></div></div>';
 			$('#grapZone').append(contents);
 			var idDiv = 'G'+i;
@@ -477,7 +476,6 @@ function showGraph(idDiv,type,json){
 }
 
 function ajax1(zoneId,type,order){
-	console.log(zoneId,type,order);
 	$.ajax({
 		async:false, 
 		url: 'services/getInfoTables.php',
@@ -540,7 +538,6 @@ function subModuleData(data) {
 				cols++;
 			}
 		};
-		//console.log(cols);
 		tableText += "<table class='table table-bordered table-striped '>";
 		tableText += "<tr><td></td>"; 
 		tableText += "<td colspan='"+(cols)+"' class='text-center'><b>"+ onlyModules[i] +"</b></td></tr>";
@@ -643,7 +640,6 @@ function subModuleData(data) {
 		//productividad
 	/*	$.post('services/getInfoTables.php',  {data: onlyModulesID[i],type:"pd"}, function(data, textStatus, xhr) {
 			var totalHours = JSON.parse(data);
-			console.log(totalHours);
 			if(totalHours != 0){
 							var initialHour = totalHours[0].datetime;
 			var finalHour = totalHours[totalHours.length-1].description;
@@ -663,7 +659,7 @@ function subModuleData(data) {
 		});*/
 		tableText+="</table><br>";
 	};
-	//console.log(json[1].others.maxtime);
+
 	$("#principalRow").html('<div class="row">'+tableText+'</div> ');
 
 	
