@@ -17,11 +17,11 @@ if(isset($typeRequest) && isset($data) ){
     if($data2 == '0'){
       $sql = 'SELECT  module.name as modulename ,submodule.id as submoduleid, submodule.users as username ,submodule.module as module, submodule.name as submodulename,submodule.state as submodulestate,users.name as user
               FROM   public.zone,   public.module,   public.submodule , public.users
-              WHERE  zone.id = module.zone AND   submodule.module = module.id and users.id=submodule.users and zone.id = '.$data.' AND module.type != 1 order by module ASC,submodulename ASC';
+              WHERE  zone.id = module.zone AND submodule.module = module.id and users.id=submodule.users and zone.id = '.$data.' AND module.type != 1 order by module ASC,submodulename ASC';
     }else{
       $sql = 'SELECT  module.name as modulename ,submodule.id as submoduleid, submodule.users as username ,submodule.module as module, submodule.name as submodulename,submodule.state as submodulestate,users.name as user
               FROM   public.zone,   public.module,   public.submodule , public.users
-              WHERE  zone.id = module.zone AND   submodule.module = module.id and users.id=submodule.users and zone.id = '.$data.' AND module.type != 1  and module.id='.$data2.' order by module ASC,submodulename ASC';
+              WHERE  zone.id = module.zone AND submodule.module = module.id and users.id=submodule.users and zone.id = '.$data.' AND module.type != 1  and module.id='.$data2.' order by module ASC,submodulename ASC';
     }
     
   }
@@ -40,9 +40,10 @@ if(isset($typeRequest) && isset($data) ){
 
   if($typeRequest == 'pd'){// productividad
     if($data2 == '0'){
-        $sql = "SELECT datetime,description,users from logs where logs.datetime between '$date1' AND '$date2' AND description like '%Usuario%' and zone=$data order by datetime";
+        $sql = "SELECT datetime,description,users FROM logs WHERE logs.datetime BETWEEN '$date1' AND '$date2' AND description LIKE '%Usuario%' AND zone=$data ORDER BY users,datetime";
+        //echo $sql;
     }else{
-        $sql = "SELECT datetime,description,users from logs where logs.datetime between '$date1' AND '$date2' AND description like '%Usuario%' and zone=$data and logs.module=$data2 order by datetime";
+        $sql = "SELECT datetime,description,users FROM logs WHERE logs.datetime BETWEEN '$date1' AND '$date2' AND description LIKE '%Usuario%' AND zone=$data AND logs.module=$data2 ORDER BY users,datetime";
     }
   
   }
@@ -75,33 +76,71 @@ if(isset($typeRequest) && isset($data) ){
 
 
   if($sql != ''){
-    $row = $db->doSql($sql);
-    if($row){
-        $i=0;
-        do {
-          foreach ($row as $field=>$value) {
-            $dataContent[$i][$field] = $value;
+      $row = $db->doSql($sql);
+      if($row){
+          $i=0;
+          do {
+              foreach ($row as $field=>$value) {
+                $dataContent[$i][$field] = $value;
+              }
+              $i++;
+          } while($row=pg_fetch_assoc($db->actualResults));
+          if($typeRequest == 'mSm'){
+              for ($i=0; $i < count($dataContent); $i++) { 
+                $dataContent[$i]['others']= tableContent($dataContent[$i]['submoduleid'],$dataContent[$i]['username']);
+              }
           }
-          $i++;
-        } while($row=pg_fetch_assoc($db->actualResults));
-        if($typeRequest == 'mSm'){
-          for ($i=0; $i < count($dataContent); $i++) { 
-            $dataContent[$i]['others']= tableContent($dataContent[$i]['submoduleid'],$dataContent[$i]['username']);
-          }
-        }
-        
-        //
 
-        echo json_encode($dataContent);
-    }else{
-      echo 0;
-    }
+
+          if($typeRequest == 'pd'){
+              $ini = 0; //Variable indicará si es inicio o fin de tiempo
+              $lastuser = '';
+              $datetime = 0;
+
+              for ($i=0; $i < count($dataContent); $i++) { 
+
+                  if($lastuser!=$dataContent[$i]['users']) $datetime=0;
+                  if($ini==0){//Se consulta si ya hay un tiempo de inicio
+                      //Se indica inicio de tiempo y usuario actual
+                      $ini = strtotime($dataContent[$i]['datetime']);
+                      $lastuser = $dataContent[$i]['users'];
+
+                      if($i+1==count($dataContent)){
+                          $datetime = $datetime + strtotime(date("Y-m-d H:i:s"))-$ini;
+                          $ini = 0;
+                          $userTime[$lastuser] = getTimeString($datetime);
+                      }
+                  }else{
+                      if($lastuser==$dataContent[$i]['users']){
+                          //Cálculo de tiempo entre un log y otro. Se consulta si realmente es un log de fin/pausa de sesión, para evitar logs erróneos (doble inicio de sesión, por ejemplo)
+                          if($dataContent[$i]['description']=='Cierre de Sesión Usuario: '.$dataContent[$i]['users'] || $dataContent[$i]['description']=='Pausa de Sesión Usuario: '.$dataContent[$i]['users']){
+                              $datetime = $datetime + strtotime($dataContent[$i]['datetime'])-$ini;
+                              $ini = 0;
+                              $userTime[$lastuser] = getTimeString($datetime);
+                          }
+                      }else{
+                          $datetime = $datetime + strtotime(date("Y-m-d H:i:s"))-$ini;
+                          $ini = 0;
+                          $userTime[$lastuser] = getTimeString($datetime);
+                          $i--;
+                          $datetime = 0;
+                      }
+                  }
+              }
+              echo json_encode($userTime);
+          }else{
+              echo json_encode($dataContent);
+          }
+
+      }else{
+          echo 0;
+      }
   }else{
-    echo 0;
+     echo 0;
   }
 
 }else{
-  echo 0;  
+    echo 0;  
 }
 
 

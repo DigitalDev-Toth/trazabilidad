@@ -484,7 +484,8 @@ function subModuleData() {
 		console.log("error");
 	});
 
-	var TXT="",cols = 0,X=0,datas = ["Ejecutiva:","Pacientes atendidos","Promedio de atencion","Promedio Minimo de atencion","Promedio maximo de atencion","Tiempo de actividad"];
+	console.log(initialDate,finishDate);
+	var TXT="",cols = 0,X=0,datas = ["Ejecutiva:","Pacientes atendidos","Promedio de atencion","Promedio Minimo de atencion","Promedio maximo de atencion","Tiempo de actividad","Productividad"];
 	TXT += "<table class='table table-bordered table-striped table-condensed'>";
 	TXT +="<tr>";
 	for (var i = 0; i < datas.length; i++) {
@@ -494,14 +495,7 @@ function subModuleData() {
 
 
 	for (var i = 0; i < json.length; i++) {
-		var userTime = '00:00:00';
-
-		if(totalHours[json[i].id]!=undefined){
-			userTime=totalHours[json[i].id];
-		}
-
-		TXT +="<tr><td>"+json[i].name +"</td><td>"+json[i].others.served_tickets +"</td><td>"+json[i].others.average +"</td><td>"+json[i].others.mintime +"</td><td>"+json[i].others.maxtime +"</td><td>"+userTime+"</td></tr>"; 
-
+		TXT +="<tr><td>"+json[i].name +"</td><td>"+json[i].others.served_tickets +"</td><td>"+json[i].others.average +"</td><td>"+json[i].others.mintime +"</td><td>"+json[i].others.maxtime +"</td><td>"+ getPro(json[i].id,totalHours,false,1) +"</td><td>"+ getPro(json[i].id,totalHours,true,json[i].others.served_tickets)  +"</td></tr>"; 
 	};
 	
 	

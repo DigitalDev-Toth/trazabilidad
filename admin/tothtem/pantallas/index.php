@@ -13,7 +13,6 @@ if(!isset($_SESSION['Username'])) { header("location: ../../login.php"); header(
 
     <title>Pantalla</title>
   	<script src="js/jquery-1.10.2.js"></script>
-    <!--<script src="http://192.168.0.104:8000/socket.io/socket.io.js"></script>-->
     <script src="http://falp.biopacs.com:8000/socket.io/socket.io.js"></script>
     <script src="js/bootstrap.js"></script>
     <script src="js/comet.js"></script>
@@ -372,8 +371,6 @@ function inactiveSubModule(typeButton,doLog){//Desactiva el submódulo y genera 
     if(typeButton!='logout'){
         $.post('phps/activeSubModule.php', {type: actionType, user: "<?php echo $_SESSION['UserId']; ?>", submodule: submodule}, function(data, textStatus, xhr) {
             socket.send(data);
-            /*$.post('../../../visor/comet/backend.php', {msg: data}, function(data, textStatus, xhr) {
-            });*/
             if(typeButton=='replay'){
                 attentionTime();
             }
@@ -384,7 +381,6 @@ function inactiveSubModule(typeButton,doLog){//Desactiva el submódulo y genera 
     }else if(typeButton=='logout' && doLog==false){
         exitLog=false;
         $.post('phps/activeSubModule.php', {type: actionType, user: "<?php echo $_SESSION['UserId']; ?>", submodule: submodule}, function(data, textStatus, xhr) {
-            //$.post('../../../visor/comet/backend.php', {msg: data}, function(data, textStatus, xhr) {
                 socket.send(data);
                 $(location).attr('href','../../exit.php');
             //});
@@ -394,8 +390,6 @@ function inactiveSubModule(typeButton,doLog){//Desactiva el submódulo y genera 
         if(exitLog==true){
             $.post('phps/activeSubModule.php', {type: actionType, user: "<?php echo $_SESSION['UserId']; ?>", submodule: submodule}, function(data, textStatus, xhr) {
                 socket.send(data);
-                //$.post('../../../visor/comet/backend.php', {msg: data}, function(data, textStatus, xhr) {
-                //});
             });
         }    
     }
@@ -452,7 +446,6 @@ function getNoServeTickets(){//Devuelve y muestra los últimos 10 tickets que no
             }else{
                 $('#modalNoServeContent').append('<tr ><th class="text-center">No hay pacientes </th></tr>');
             }
-
             $('#noServeTitle').html('Pacientes rezagados...');
             $('#modalNoServe').modal('show');
         } 
@@ -613,21 +606,7 @@ function insertLog(description,action,cometType,attentionNew,ticketId,module){//
 
 function checkComet(data){
     socket.send(data);
-    /*$.ajax({
-        url: '../../../visor/comet/backend.php',
-        type: 'GET',
-        dataType: 'default',
-        data: {msg: data},
-    })
-    .done(function(e) {
-        console.log(e);
-    })
-    .fail(function(e) {
-        console.log(e);
-    })
-    .always(function() {*/
-        setCurrentNumber();
-    //});
+    setCurrentNumber();
 }
 
 

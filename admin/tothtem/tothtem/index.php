@@ -95,8 +95,8 @@
 			<form class="form-inline" role="form">
 				<div class="" id="inputColor">
 					<label class="control-label" id="inputLabel" for="rut"></label>
-					<input type="text" class="form-control" name="rut" id="rut" placeholder="Ej.12.345.678-9" style="height: 50px; margin: 0 auto;text-align:center; font-size: 30px;"  maxlength="9"  />
-					<span class="" id="inputIcon"></span><br>
+					<input type="text" class="form-control" name="rut" id="rut" placeholder="Ej.12.345.678-9" style="height: 50px; text-align:center; font-size: 30px;" maxlength="9"/>
+					<span id="inputIcon" style="top: 8px; right: 4px;font-size: 30px; text-align:center; margin: 0 auto;" ></span><br/>
 					<label id="loadingLabel">Verificando Rut...</label>
 				</div>
 			</form>   
