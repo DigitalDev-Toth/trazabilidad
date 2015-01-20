@@ -18,7 +18,6 @@ if (isset($_GET['idZone'])) {
         <script src="js/libs/jquery.tothtip.js"></script>
         <script src="js/libs/bootstrap.min.js"></script>
         <script src="js/libs/raphael-min.js"></script>
-        <script src="js/libs/raphaeljs-infobox.js"></script>
         <script src="js/libs/comet.js"></script>
         <script src="js/libs/jquery.dataTables.min.js"></script>
         <script src="js/libs/dataTables.tableTools.js"></script>
