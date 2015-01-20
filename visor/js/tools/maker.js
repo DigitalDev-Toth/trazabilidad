@@ -52,16 +52,18 @@ MAKER.prototype.patient = function (rut, name, ticket, datetime, attention, idMo
     PATIENTS[rut] = p;
     
     if (attention === 'waiting' || attention === 'derived') {
-        PATIENTS[rut].shape = MODULES[idModule].shape;
+//        PATIENTS[rut].shape = MODULES[idModule].shape;
+        PATIENTS[rut].shape = 'circulo';
         PATIENTS[rut].nextIdModule = idModule;
         PATIENTS[rut].seat = this.findSeat();
         PATIENTS[rut].goToWaitingRoom(rut, true);
     } else if (attention === 'limb') { 
         PATIENTS[rut].shape = 'circulo';
-        PATIENTS[rut].place = this.findPlace();
+//        PATIENTS[rut].place = this.findPlace();
         PATIENTS[rut].goToLimb(rut, true);
     } else if (attention === 'on_serve') {
-        PATIENTS[rut].shape = MODULES[idModule].shape;
+//        PATIENTS[rut].shape = MODULES[idModule].shape;
+        PATIENTS[rut].shape = 'circulo';
         PATIENTS[rut].goTo(idModule, idSubmodule, true);
     }
 };

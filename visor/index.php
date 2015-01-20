@@ -14,7 +14,7 @@ if (isset($_GET['idZone'])) {
         <title>FALP - Trazabilidad</title>
         <link rel="stylesheet" type="text/css" href="css/style.css" />
         <script src="js/libs/jquery-2.1.1.min.js"></script>
-        <script src="http://falp.biopacs.com:8000/socket.io/socket.io.js"></script>
+        <script src="http://192.168.0.105:8000/socket.io/socket.io.js"></script>
         <script src="js/libs/jquery.tothtip.js"></script>
         <script src="js/libs/bootstrap.min.js"></script>
         <script src="js/libs/raphael-min.js"></script>
@@ -34,7 +34,7 @@ if (isset($_GET['idZone'])) {
                 MAKE = null,
                 PAPER = null;
                 ZONE = '<?php echo $zone ?>'; 
-            var socket = io.connect('http://falp.biopacs.com:8000');
+            var socket = io.connect('http://192.168.0.105:8000');
             $(function () {                 
                 socketComet();
 
@@ -57,7 +57,6 @@ if (isset($_GET['idZone'])) {
                             window.location.href = '../admin';
                         } else {                            
                             var info = JSON.parse(data);
-//                            console.log(info);
                             
                             MAKE.module(info.name, info.id, 'waiting-room', null, 'center', '#818878', null, null, null, info.seats);
                             MAKE.module('Salida', info.id, 'limb', null, 'center', '#A24A4A', null, null, null, null);
@@ -76,7 +75,6 @@ if (isset($_GET['idZone'])) {
                                         }                                        
                                     }
                                 }
-//                                console.log(dm);
                             });
                             $.get('../services/info_Submodule.php?zone='+ ZONE, function (data, status) {
                                 var dsm = $.parseJSON(data);
@@ -85,15 +83,15 @@ if (isset($_GET['idZone'])) {
                                         MAKE.submoduleInfo(dsm[i].module, dsm[i].submodule, dsm[i].user, dsm[i].session, dsm[i].patients, dsm[i].average, dsm[i].maxtime, dsm[i].mintime);
                                     }                                    
                                 }
-//                                console.log(dsm);
                             });
                             $.get('../services/getPatients.php?zone='+ ZONE, function (data, status) {
-//                                console.log(data);
                                 var jsonData = JSON.parse(data);
                                 for(i=0; i<jsonData.length;i++){
                                     MAKE.patient(jsonData[i].rut, jsonData[i].name, jsonData[i].ticket, jsonData[i].datetime, jsonData[i].attention, jsonData[i].module, jsonData[i].sub_module);
                                 }
                             });
+//                            MAKE.patient('16.025.167-0', 'Sebastián Rodríguez', '15C', null, 'limb', 36, 53);
+                            
                             message('Objetos creados');
                             console.log(MODULES);
                         }

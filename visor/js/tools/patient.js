@@ -74,7 +74,7 @@ PATIENT.prototype.setElem = function (idModule) {
                 y = $(window).height() - ($(window).height() / 4);
             break;
     }
-    var p = 'M'+ x +','+ y +'m-12,0a12,12 0 1,0 24,0a12,12 0 1,0 -24,0z';
+    var p = 'M'+ x +','+ y +'m-15,0a15,15 0 1,0 30,0a15,15 0 1,0 -30,0z';
     this.el = PAPER.path(p).attr({
         'fill': '#01DF01',
         'fill-opacity': 1,
@@ -84,7 +84,7 @@ PATIENT.prototype.setElem = function (idModule) {
     
     this.text = PAPER.text(x, y, '').attr({
         'fill': '#000',
-        'font-size': '9px'
+        'font-size': '12px'
     });
     
     this.elTop = PAPER.path(p).attr({
@@ -133,7 +133,7 @@ PATIENT.prototype.goToWaitingRoom = function (idPatient, storage) {
         
         this.text = PAPER.text(x, y, this.ticket).attr({
             'fill': '#000',
-            'font-size': '9px'
+            'font-size': '12px'
         });
         
         this.elTop = PAPER.path(fp).attr({
@@ -399,7 +399,7 @@ PATIENT.prototype.goTo = function (idModule, idSubmodule, storage) {
 };
 PATIENT.prototype.shapePath = function () {
     if (this.shape === 'circulo') {
-        var s = 'm-12,0a12,12 0 1,0 24,0a12,12 0 1,0 -24,0z';
+        var s = 'm-15,0a15,15 0 1,0 30,0a15,15 0 1,0 -30,0z';
         return s;
     } else if (this.shape === 'cuadrado') {
         var s = 'm10,-10l0,20l-20,0l0,-20z';
