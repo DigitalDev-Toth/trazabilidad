@@ -111,15 +111,28 @@ if (isset($_GET['idZone'])) {
     <body>        
         <div id="workspace"></div>
         <div id="message">Mensaje de estados...</div>
-        <div id="bitacora" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div id="bitacoraPatient" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg modal-viewer">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                        <h4 class="modal-title" id="myModalLabel">Bitácora</h4>
+                        <h4 class="modal-title" id="myModalLabel">Bitácora paciente</h4>
                     </div>
                     <div class="modal-body">
-                        <div id="bitacoraContent" class="row"></div>
+                        <div id="bitacoraPatientContent" class="row"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="bitacoraSubmodule" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-viewer">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Bitácora funcionario</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div id="bitacoraSubmoduleContent" class="row"></div>
                     </div>
                 </div>
             </div>

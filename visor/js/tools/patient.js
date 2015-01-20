@@ -461,8 +461,8 @@ PATIENT.prototype.tooltipInfo = function () {
 };
 PATIENT.prototype.bitacora = function () {
     var t = this;
-    $('#bitacora').modal('show');
-    $('#bitacoraContent').html('<div id="loading" style="width: 290px; height: 290px" class="center-block"></div>');
+    $('#bitacoraPatient').modal('show');
+    $('#bitacoraPatientContent').html('<div id="loading" style="width: 290px; height: 290px" class="center-block"></div>');
     var l = this.loading ('loading', 50, 100, 10, 23, '#428BCA');
     $.post('../services/getBitacoraViewer.php', {rut: t.id}, function (dataPatient, status) {
         var d = $.parseJSON(dataPatient);
@@ -574,7 +574,7 @@ PATIENT.prototype.bitacora = function () {
             var content = contentPatient;
             content += contentLogs;
 
-            $('#bitacoraContent').html(content);
+            $('#bitacoraPatientContent').html(content);
             $('#dataLogs').addClass('table table-bordered table-hover');
             $('#dataLogs').dataTable({
                 "dom": 'T<"clear">lfrtip',

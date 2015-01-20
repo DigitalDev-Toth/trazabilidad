@@ -402,7 +402,11 @@ SUBMODULE.prototype.setElem = function () {
                 this.elTop.rotate(135, 20, 30);
             }    
             break;
-    }    
+    }
+    var t = this;
+    $(this.elTop.node).on('click', function () {
+        t.bitacora();            
+    });
 };
 SUBMODULE.prototype.info = function (executive, activeTime, patientsAttended, average, max, min) {
     this.elInfo = $('<div></div>');
@@ -518,4 +522,10 @@ SUBMODULE.prototype.setTimeOn = function (timeOn) {
     }
     
     this.average = (this.average * (this.patientsAttended - 1) + this.timeOn) / this.patientsAttended;
+};
+SUBMODULE.prototype.bitacora = function () {
+    if (this.state === 'activo') {
+        var t = this;
+        $('#bitacoraSubmodule').modal('show');
+    }    
 };
