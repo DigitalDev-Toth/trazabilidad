@@ -19,7 +19,9 @@ if(!isset($_SESSION['Username'])) { header("location: ../../login.php"); header(
 
     <link href="css/bootstrap.css" rel="stylesheet">
     <link href="css/2-col-portfolio.css" rel="stylesheet">
-  
+    <link href="css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+
+
 </head>
 <body>
     <div class="container">
@@ -75,6 +77,7 @@ if(!isset($_SESSION['Username'])) { header("location: ../../login.php"); header(
                                         <!--<div class="col-md-2">
                                             <button type="button" class="btn btn-default btn-lg" onclick="refreshTable()" id="refreshButton" title="Rechargar Tabla"><span class="glyphicon glyphicon-refresh"></span></button>
                                         </div>-->
+
                                     </div>
                                 </div>
                                 <div class="col-md-4">
@@ -193,6 +196,7 @@ var attentionInterval = '';
 
 /////////////////////EVENTOS//////////////////////////////////
 
+
 $(document).ready(function() {
     socketComet();
     $("#standBy").hide();
@@ -305,6 +309,7 @@ function getModule(idSubModule){//Obtiene el ID del submódulo actual
 function getActivesModules(){
     var result = null;
     //var scriptUrl = "phps/getActivesModules.php?module=" + moduleInCourse;
+
     var scriptUrl = "phps/getDerivationModules.php?module=" + moduleInCourse;
     $.ajax({
         url: scriptUrl,
@@ -366,6 +371,7 @@ function inactiveSubModule(typeButton,doLog){//Desactiva el submódulo y genera 
         refreshTable();
         $('#content').text('Esperando...');
         //attentionTime();
+
     }
 
     if(typeButton!='logout'){
@@ -593,13 +599,12 @@ function insertLog(description,action,cometType,attentionNew,ticketId,module){//
                 if(attentionNew =='on_serve'){
                     myState = true;
                     activeButtons('on_serve');
-                    
+                    $('#plusButton').html('<span class="glyphicon glyphicon-plus"></span>');
                     var dataComet = JSON.parse(data);
                     getPatientData(dataComet.idticket);
                 }
             }
             refreshTable();
-
         });
     }
 }
@@ -630,6 +635,9 @@ function sendComet(type){//Genera la acción de los distintos botones a través 
 
     if(type==='isHere' || type==='plus'){
         ticketAttention = firstTicketId;
+        $('#content').html('<i class="fa fa-spinner fa-spin"></i>');
+        $('#plusButton').attr('disabled', true);
+        $('#plusButton').html('<i class="fa fa-spinner fa-spin"></i>');
         insertLog('Ticket ha venido','in','module','on_serve',ticketAttention);
     }
     if(type==='notHere'){

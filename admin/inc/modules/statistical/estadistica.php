@@ -299,7 +299,7 @@ function zoneData(data){
 				if(json[i].attention == 'no_serve'){
 					notS++;
 				}	
-				console.log(json[i].attention);
+
 			};
 			cont += '<tr><td>Total de tickets emitidos</td><td>'+json.length+'</td></tr>';
 			cont += '<tr><td>N° total de pacientes atendidos</td><td>'+serv+'</td></tr>';
@@ -484,14 +484,13 @@ function subModuleData() {
 		console.log("error");
 	});
 
-	var TXT="",cols = 0,X=0,datas = ["Ejecutiva:","Pacientes atendidos","Promedio de atencion","Promedio Minimo de atencion","Promedio maximo de atencion","Tiempo de actividad"];
+	var TXT="",cols = 0,X=0,datas = ["Ejecutiva:","Pacientes atendidos","Promedio de atención","Tiempo Mínimo de atención","Promedio Máximo de atención","Tiempo de actividad"];
 	TXT += "<table class='table table-bordered table-striped table-condensed'>";
 	TXT +="<tr>";
 	for (var i = 0; i < datas.length; i++) {
 		TXT +="<th>"+ datas[i] +"</th>";
 	};
 	TXT +="</tr>";
-
 
 	for (var i = 0; i < json.length; i++) {
 		var userTime = '00:00:00';
@@ -605,7 +604,7 @@ function subModuleDataX(){
 	var chart1 = $('#graphic1').highcharts();
 	while(chart1.series.length > 0)
     chart1.series[0].remove(true);
-	console.log(modulesInfo);
+
 	for (var i = 0; i < modulesInfo.length; i++) {
 		if(currentModule==0){
 			$.ajax({

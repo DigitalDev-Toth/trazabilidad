@@ -29,11 +29,11 @@ if(isset($typeRequest) && isset($data) ){
     if($data2 == '0'){
       $sql = "SELECT logs.datetime
               FROM public.logs, public.tickets
-              WHERE tickets.logs = logs.id AND  (attention = 'waiting' or attention = 'derived')  and logs.zone=".$data." and logs.datetime between '$date1' AND '$date2'";
+              WHERE tickets.logs = logs.id AND  (attention = 'waiting' OR attention = 'derived')  AND logs.zone=".$data." AND logs.datetime between '$date1' AND '$date2'";
     }else{
       $sql = "SELECT logs.datetime
               FROM public.logs, public.tickets
-              WHERE tickets.logs = logs.id AND  (attention = 'waiting' or attention = 'derived')  and logs.zone=".$data." and logs.datetime between '$date1' AND '$date2' and logs.module=$data2 ";  
+              WHERE tickets.logs = logs.id AND  (attention = 'waiting' OR attention = 'derived')  AND logs.zone=".$data." AND logs.datetime between '$date1' AND '$date2' AND logs.module=$data2 ";  
     }
     
   }
@@ -41,7 +41,6 @@ if(isset($typeRequest) && isset($data) ){
   if($typeRequest == 'pd'){// productividad
     if($data2 == '0'){
         $sql = "SELECT datetime,description,users FROM logs WHERE logs.datetime BETWEEN '$date1' AND '$date2' AND description LIKE '%Usuario%' AND zone=$data ORDER BY users,datetime";
-        //echo $sql;
     }else{
         $sql = "SELECT datetime,description,users FROM logs WHERE logs.datetime BETWEEN '$date1' AND '$date2' AND description LIKE '%Usuario%' AND zone=$data AND logs.module=$data2 ORDER BY users,datetime";
     }
@@ -61,6 +60,7 @@ if(isset($typeRequest) && isset($data) ){
             FROM public.logs, public.module
             WHERE module.id = logs.module AND logs.datetime between '$date1' AND '$date2' AND logs.zone=".$data." AND logs.description LIKE '%Retiro%'  order by logs.datetime, logs.module ASC" ;
   }
+  
   if($typeRequest == 'att'){
     if($data2== '0'){
       $sql = "SELECT tickets.attention
