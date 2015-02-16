@@ -33,11 +33,21 @@ echo '
 echo '<div class="collapse navbar-collapse navbar-ex1-collapse">';
 //Menu Left Static
 echo '<ul class="nav navbar-nav">';
-echo '<li> ' . itemMenu("trace", "<span class='glyphicon glyphicon-time'></span> Situación Actual", 'enable', true) . '</li>';
-//echo '<li> ' . itemMenu("bitacora", " <span class='glyphicon glyphicon-list-alt'></span> Bitácora", 'enable', true) . '</li>';
-echo '<li id="bitacora_dropdown" class="dropdown">' . itemMenu("bitacora", "Bitácora", 'enable', false) . '</li>';
-echo '<li> ' . itemMenu("supervision", "<span class='glyphicon glyphicon-search'></span>  Supervisión", 'enable', true) . '</li>';
-echo '<li>  ' . itemMenu("statistical", "<span class='glyphicon glyphicon-calendar'></span> Estadísticas", 'enable', true) . '</li>';
+
+if(findRole("current_situation","show")){
+	echo '<li> ' . itemMenu("trace", "<span class='glyphicon glyphicon-time'></span> Situación Actual", 'enable', true) . '</li>';
+}
+if(findRole("logbook_executive","show") || findRole("logbook_patient","show")){
+	echo '<li id="bitacora_dropdown" class="dropdown">' . itemMenu("bitacora", "Bitácora", 'enable', false) . '</li>';	
+}
+if(findRole("surveillance","show")){
+	echo '<li> ' . itemMenu("supervision", "<span class='glyphicon glyphicon-search'></span>  Supervisión", 'enable', true) . '</li>';
+}
+if(findRole("statistics","show")){
+	echo '<li>  ' . itemMenu("statistical", "<span class='glyphicon glyphicon-calendar'></span> Estadísticas", 'enable', true) . '</li>';
+}
+
+
 echo '</ul>';
 
 //Menu Right
@@ -48,9 +58,16 @@ echo '<ul id="nav" class="nav navbar-nav navbar-right">';
 
 echo '<li><button type="button" id="planPop" class="btn btn-lg btn-primary" "><span class="glyphicon glyphicon-bell"  aria-hidden="true"></span> <span class="badge" id="NotificationsP"></span></button></li>';
 echo '<li><button type="button" id="alertPop" class="btn btn-lg btn-primary" "><span class="glyphicon glyphicon-user"  aria-hidden="true"></span> <span class="badge" id="NotificationsN"></span></button></li>';
-echo '<li class="dropdown">' . itemMenu("admin", "Configuración", 'enable', false) . '</li>';
-echo '<li>' . $_SESSION['Realname'] . '<a href="exit.php" >Salir <span class="glyphicon glyphicon-log-out"></span></a></li>';
+if(findRole("settings","show")){
+	echo '<li class="dropdown">' . itemMenu("admin", "Configuración", 'enable', false) . '</li>';	
+}
+
+
+echo '<li><a href="#" >'. $_SESSION['Username'] .'</a></li>';
+echo '<li><a href="exit.php" >Salir <span class="glyphicon glyphicon-log-out"></span></a></li>';
+
 /*
+
 if (findRole("users", "show")) {$state = 'enable';} else { $state = 'disable';}
 echo '<li>' . itemMenu("users", "Personas", $state, false) . '</li>';
 

@@ -35,8 +35,12 @@ function getSubMenu($content) {
 
 		case 'bitacora':
 			$subMenu .= '<ul class="dropdown-menu">';
-			$subMenu .= getItemMenu("bitacora", "<span class='glyphicon glyphicon-user'> Pacientes");
-			$subMenu .= getItemMenu("bitacora_user", "<span class='glyphicon glyphicon-book'> Ejecutivos");
+			if(findRole("logbook_patient","show")){
+				$subMenu .= getItemMenu("bitacora", "<span class='glyphicon glyphicon-user'> Pacientes");
+			}
+			if(findRole("logbook_executive","show")){
+				$subMenu .= getItemMenu("bitacora_user", "<span class='glyphicon glyphicon-book'> Ejecutivos");
+			}
 			$subMenu .= '</ul>';
 			break;
 

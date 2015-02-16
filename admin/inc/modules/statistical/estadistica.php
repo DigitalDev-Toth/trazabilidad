@@ -72,8 +72,8 @@ include 'libs/bootstrapStyle.php';
                   <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
                   <span></span> <b class="caret"></b>
                </div>
-				</div>
 			</div>
+		</div>
 
 
 		</div>

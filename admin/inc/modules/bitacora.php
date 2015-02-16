@@ -18,7 +18,9 @@ include("controls.php");
 <link rel="stylesheet" type="text/css" href="js/datatables2/css/jquery.dataTables.css">
 <link rel="stylesheet" type="text/css" href="js/datatables2/css/dataTables.tableTools.css">
 <link rel="stylesheet" type="text/css" href="js/bootstrap/css/bootstrap.css">
-<!--<link rel="stylesheet" type="text/css" href="js/bootstrap/css/dataTables.bootstrap.css">-->
+<link rel="stylesheet" type="text/css" href="js/datapickerB/css/daterangepicker-bs3.css" />
+
+
 
 <body>
 	<div class="container">
@@ -51,6 +53,7 @@ include("controls.php");
 					
 					</div>
 			</form>
+
 		</div>
 
 		<!--<div class="row col-lg-9">	-->
@@ -69,6 +72,7 @@ include("controls.php");
 			if($rut != ''){
 				
 				echo "<div class='well well-sm text-center' id='info'></div>";
+				echo "<div class='well well-sm text-center' id='options'></div>";
 				echo "<div class='well well-sm text-center' id='data'></div><br><br><br>";
 			}
 			
@@ -86,6 +90,8 @@ include("controls.php");
 <script src="js/datatables2/js/dataTables.tableTools.js"></script>
 <script src="js/datatables2/js/dataTables.bootstrap.js"></script>
 
+<script src="js/datapickerB/js/moment.js"></script>
+<script src="js/datapickerB/js/daterangepicker.js"></script>
 
 <script>
 
@@ -95,82 +101,89 @@ include("controls.php");
 		var name = '<?php echo $name; ?>';
 		//show only log of patient
 		if(rut != '' || rut.length){
-			$.ajax({
-			    type: 'POST',
-			    url: "services/getBitacora.php",
-			    data: { data:rut } ,
-			    beforeSend: function() {
-			    	$("#data").html('<h1><i class="fa fa-spinner fa-spin"></i></h1>');
-			    },
-			    success: function(data) {
-			    	fillInfo(data);
-			    },
-			    error: function(xhr) {
-			    	//do a barrel roll
-			    }
-			});
-			$.ajax({
-			    type: 'POST',
-			    url: "services/getLogData.php",
-			    data: { rut:rut } ,
-			    beforeSend: function() {
-			    	$("#data").html('<h1><i class="fa fa-spinner fa-spin"></i></h1>');
-			    },
-			    success: function(data) {
-			    	fillTable(data);
-			    },
-			    error: function(xhr) {
-			    	//do a barrel roll
-			    }
-			});
+			getPatientInfo(rut);
 		}else{
 			//show list of patients
 			if(name != ''){
-				$.ajax({
-				    type: 'POST',
-				    url: "services/getBitacora.php",
-				    data: { data:name } ,
-				    beforeSend: function() {
-				    	$("#data").html('<h1><i class="fa fa-spinner fa-spin"></i></h1>');
-				    },
-				    success: function(data) {
-				    	var json = JSON.parse(data);
-						$("#data").text('');
-						var content = '';
-						content = "<table id='patientResults' class='table table-striped table-bordered'> <thead> <tr><th>Nombre</th> <th>Rut</th><th>Usar</th></tr>  </thead><tbody>";
-						for (var i = 0; i < json.length; i++) {
-							content+="<tr><td>"+json[i].name+" "+json[i].lastname+"</td> <td>"+json[i].rut+"</td><td><button onclick=search('"+json[i].rut +"')>x</button> </td></tr>";
-						};
-						content+=" </tbody></table>";
-						$("#data").hide();
-						$("#data").append(content);
-						$("#data").fadeIn('slow');
-					  	$('#patientResults').dataTable( {
-				       		"dom": 'T<"clear">lfrtip',
-				        	"tableTools": {
-				            	"sSwfPath": "js/datatables2/swf/copy_csv_xls_pdf.swf"
-				        	},
-				        	"language": {
-				            	"url": "js/datatables2/languaje/languaje.lang"
-				        	}
-				    	} );
-
-						
-				    },
-				    error: function(xhr) { // if error occured
-				    	//do a barrel roll
-				    },
-				    complete: function() {
-
-				    }
-				});
+				getPatinetsList(name);
 			}
 		}
+		
 
 
 	
 
 	});
+
+	function getPatientInfo(rut) {
+		$.ajax({
+		    type: 'POST',
+		    url: "services/getBitacora.php",
+		    data: { data:rut } ,
+		    beforeSend: function() {
+		    	$("#data").html('<h1><i class="fa fa-spinner fa-spin"></i></h1>');
+		    },
+		    success: function(data) {
+		    	fillInfo(data);
+		    },
+		    error: function(xhr) {
+		    	//do a barrel roll
+		    }
+		});
+		$.ajax({
+		    type: 'POST',
+		    url: "services/getLogData.php",
+		    data: { rut:rut } ,
+		    beforeSend: function() {
+		    	$("#data").html('<h1><i class="fa fa-spinner fa-spin"></i></h1>');
+		    },
+		    success: function(data) {
+		    	fillTable(data);
+		    },
+		    error: function(xhr) {
+		    	//do a barrel roll
+		    }
+		});
+	}
+
+	function getPatinetsList (name) {
+		$.ajax({
+		    type: 'POST',
+		    url: "services/getBitacora.php",
+		    data: { data:name } ,
+		    beforeSend: function() {
+		    	$("#data").html('<h1><i class="fa fa-spinner fa-spin"></i></h1>');
+		    },
+		    success: function(data) {
+		    	var json = JSON.parse(data);
+				$("#data").text('');
+				var content = '';
+				content = "<table id='patientResults' class='table table-striped table-bordered'> <thead> <tr><th>Nombre</th> <th>Rut</th><th>Usar</th></tr>  </thead><tbody>";
+				for (var i = 0; i < json.length; i++) {
+					content+="<tr><td>"+json[i].name+" "+json[i].lastname+"</td> <td>"+json[i].rut+"</td><td><button onclick=search('"+json[i].rut +"')>x</button> </td></tr>";
+				};
+				content+=" </tbody></table>";
+				$("#data").hide();
+				$("#data").append(content);
+				$("#data").fadeIn('slow');
+			  	$('#patientResults').dataTable( {
+		       		"dom": 'T<"clear">lfrtip',
+
+		        	"tableTools": {
+		            	"sSwfPath": "js/datatables2/swf/copy_csv_xls_pdf.swf"
+		        	},
+		        	"language": {
+		            	"url": "js/datatables2/languaje/languaje.lang"
+		        	}
+		    	} );
+		    },
+		    error: function(xhr) { // if error occured
+		    						//do a barrel roll
+		    },
+		    complete: function() {
+		    }
+		});
+	}
 
 	function ifNull (data) {
 		return (data == null ? "-" : data);
@@ -186,18 +199,82 @@ include("controls.php");
 		if(json.length == 1){
 			$.post('services/getBitacora_plan.php', {rut: json[0]["rut"]}, function(data, textStatus, xhr) {
 				var infoPlans = JSON.parse(data);
-				var patientHtml = '<table class="table table-bordered">';
+				var patientHtml = '<table class="table table-bordered table-condensed">';
 				patientHtml += '<tr> <th colspan="6" class="text-center">Resultados </th></tr>';
 				patientHtml += '<tr><th>RUT/DNI: </th><td>'+json[0]["rut"]+'</td>  <th>N° Ficha:</td><td>1</td>    <th>Estado Actual</td><td>1</td>  </tr>';
 				patientHtml += '<tr><th>Nombre: </th><td>'+json[0]["name"]+' '+json[0]["lastname"]+' <th>N° Plan de Tratamiento:</td><td>'+infoPlans["planes"]+'</td>    <th>Maximo T. de espera:</td><td>1</td></tr>';
 				patientHtml += '<tr><th>Fecha de Nacimiento: </th><td>'+json[0]["birthdate"]+'</td> <th>N° Presupuesto:</td><td>'+infoPlans["pres"]+'</td>  <th>T. espera cumulado</td><td>1</td> </tr>';
 				patientHtml += '</table>';
-				patientHtml += '<button class="btn btn-primary" onclick="filterPlanPres(\''+json[0]["rut"]+'\');"><span class="glyphicon glyphicon-search"></span> Ver Planes de Tratamiento y Presupuesto</button>';
 				$("#info").html("");
 				$("#info").html(patientHtml);
+				patientHtml = '<div class="btn-group" role="group" aria-label="...">';
+  				patientHtml += '<button type="button" class="btn btn-default" onclick="getPatientInfo(\''+json[0]["rut"]+'\');">Bitacora</button>';
+  				patientHtml += '<button type="button" class="btn btn-default" onclick="filterPlanPres(\''+json[0]["rut"]+'\');">Planes de tratamiento</button>';
+  				patientHtml += '<button type="button" class="btn btn-default" onclick="filterPlanPres(\''+json[0]["rut"]+'\');">Presupuestos</button></div>';
+				
+				patientHtml += '<div id="reportrange" class="form-control" style="cursor: pointer;">';
+                patientHtml += '<i class="glyphicon glyphicon-calendar fa fa-calendar"></i>';
+				patientHtml +='<span></span> <b class="caret"></b>';
+				patientHtml +='</div>';
+				//patientHtml += '<button class="btn btn-primary" onclick="filterPlanPres(\''+json[0]["rut"]+'\');"><span class="glyphicon glyphicon-search"></span> Ver Planes de Tratamiento y Presupuesto</button>';
+				$("#options").html("");
+				$("#options").html(patientHtml);
+
+				createRangePicker();
 			});	
 		}
 	}
+	function createRangePicker() {
+			var cb = function(start, end, label) {
+        $('#reportrange span').html(start.format('DD-MM-YYYY') + ' - ' + end.format('DD-MM-YYYY'));
+   		 }
+
+	var optionSet1 = {
+		startDate: moment(),
+		endDate: moment().add(1,'days'),
+		minDate: '01/01/2014',
+		maxDate: moment().add(1,'days').format('DD/MM/YYYY'),
+		timePicker: true, timePickerIncrement: 5,
+		showDropdowns: true,
+		showWeekNumbers: true,
+		ranges: {
+		   'Hoy': [moment(), moment()],
+		   'Ayer': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+		   'Ultimos 7 días': [moment().subtract(6, 'days'), moment()],
+		   'Ultimos 30 días': [moment().subtract(29, 'days'), moment()],
+		   'Este mes': [moment().startOf('month'), moment().endOf('month')],
+		   'Ultimo Mes': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+		   'Este año': [moment().startOf('year'), moment().endOf('year')],
+		},
+		opens: 'center',
+		buttonClasses: ['btn btn-default'],
+		applyClass: 'btn-small btn-primary',
+		cancelClass: 'btn-small',
+		format: 'DD-MM-YYYY h:mm A',
+		separator: ' Hasta ',
+		locale: {
+		    applyLabel: 'Aceptar',
+		    cancelLabel: 'Limpiar',
+		    fromLabel: 'Desde',
+		    toLabel: 'Hasta',
+		    customRangeLabel: 'Rango',
+		    daysOfWeek: ['D', 'L', 'M', 'M', 'J', 'V','S'],
+		    monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+		    firstDay: 1
+		}
+	};
+	$('#reportrange span').html(moment().format('DD-MM-YYYY') + ' - ' + moment().add(1,'days').format('DD-MM-YYYY'));
+	$('#reportrange').daterangepicker(optionSet1, cb);
+	$('#reportrange').on('apply.daterangepicker', function(ev, picker) { 
+		
+
+		console.log(picker.startDate.format('YYYY-MM-DD h:mm A '));
+		console.log(picker.endDate.format('YYYY-MM-DD h:mm A'));
+
+
+	});
+	}
+
 	function fillTable (data) {
 		if(data != 0){
 			var json = JSON.parse(data);
@@ -235,15 +312,18 @@ include("controls.php");
 
 			T +='</tbody></table>';
 			$("#data").html(T);
+
 		  	$("#bitacora").dataTable( {
-		       		"dom": 'T<"clear">lfrtip',
-		        	"tableTools": {
-		            	"sSwfPath": "js/datatables2/swf/copy_csv_xls_pdf.swf"
-		        	},
-		        	"language": {
-		            	"url": "js/datatables2/languaje/languaje.lang"
-		        	}
-		    	} );
+		    	"dom": 'T<"clear">lfrtip',
+		    	"tableTools": {
+		    	"sSwfPath": "js/datatables2/swf/copy_csv_xls_pdf.swf"
+		    	},
+		    	"language": {
+		    		"url": "js/datatables2/languaje/languaje.lang"
+		       	}
+		    });
+
+
 
 		}else{
 			$("#data").html('<h2>Sin resultados</h2>');
@@ -255,6 +335,8 @@ include("controls.php");
 		$("#rutSearch").val(rut);
 		$("#toSearch").submit();
 	}
+
+
 
 	function filterPlanPres(rut){
 		$.ajax({
