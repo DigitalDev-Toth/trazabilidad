@@ -48,8 +48,10 @@ if(!isset($_SESSION['Username'])) { header("location: ../../login.php"); header(
                     <div class="panel-heading"><span class="glyphicon glyphicon-list"></span>  Panel De Control Pacientes en curso</div>
                     <div class="panel-body" align="center">
                         <div class="row" >
-                            <label>Numero</label><br>
-                            <label id="content" style="font-size:70px;"></label>
+                            <label>Numero</label><br/>
+                            <label id="content" style="font-size:70px;"></label><br/>
+                            <label id="timePatient" style="font-size:40px;"></label>
+
                             <div class="row">
                                 <div class="col-md-4">
                                     
@@ -62,6 +64,9 @@ if(!isset($_SESSION['Username'])) { header("location: ../../login.php"); header(
                                         </div>
                                         <div class="col-md-2">
                                             <button type="button" class="btn btn-default btn-lg" onclick="sendComet('plus')" id="plusButton" title="Llamar paciente"><span class="glyphicon glyphicon-plus"></span></button>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <button type="button" class="btn btn-default btn-lg" onclick="sendComet('recall')" id="recallButton" title="Re-Llamar paciente"><span class="glyphicon glyphicon-bullhorn"></span></button>
                                         </div>
                                         <div class="col-md-2">
                                             <button type="button" class="btn btn-default btn-lg" onclick="sendComet('notHere')" id="notHereButton" title="No llegó paciente" style="color: red;"><span class="glyphicon glyphicon-remove-circle"></span></button>
@@ -188,8 +193,9 @@ var socket = io.connect('http://falp.biopacs.com:8000');
 
 var waitingInterval = setInterval(function(){},5000);
 var attentionInterval = '';
+var patientInterval = '';
+var actualComet = '';//Utilizado para re-llamar al paciente
 //se extrae la modalidad , el ultimo numero y se rellena la tabla
-
 
 /////////////////////EVENTOS//////////////////////////////////
 
@@ -271,10 +277,10 @@ function getPatientData(ticketId){
             var dataJson = JSON.parse(data);
             namePatient = '<br><p>Nombre:'+dataJson[0]['name']+' '+dataJson[0]['lastname']+'</p>';
             namePatient +='<p>Fecha de Nacimiento:'+dataJson[0]['birthdate'] +'</p>';
-            namePatient +='<p>Genero:'+gender(dataJson[0]['gender'])+'</p>';
-            namePatient +='<p>Direccion:'+dataJson[0]['address']+'</p>';
+            //namePatient +='<p>Genero:'+gender(dataJson[0]['gender'])+'</p>';
+            //namePatient +='<p>Direccion:'+dataJson[0]['address']+'</p>';
             $('#patientData').html(namePatient);
-            $('#patientPicture').html('<img src="http://placehold.it/200x200">');
+            //$('#patientPicture').html('<img src="http://placehold.it/200x200">');
             //$("#patientPicture").html('<img src="http://1.bp.blogspot.com/_jSIwJJQzdUU/TOIWjGmPkCI/AAAAAAAAAEo/GkjnGk1v76s/s1600/kermit4_Kermit_the_Frog-s1000x600-93067.jpg" style="width: 200px; height:200px;">');
 
         
@@ -560,6 +566,8 @@ function setCurrentNumber(){//Muestra el número actual que se está atendiendo
             });
             activeButtons(jsonData[0].attention);
             ticketAttention = jsonData[0].ticketid;
+            timePatient();
+            getPatientData(ticketAttention);
         }else{
             //$('#content').text('Standby');
             $('#content').text('Esperando...');
@@ -589,7 +597,42 @@ function insertLog(description,action,cometType,attentionNew,ticketId,module){//
         var jsonData = JSON.parse(totalResult);
         $.post('services/insertLogs.php', {rut: jsonData[0].rut,description:description,action:action,subModule:submodule,cometType:cometType,attentionNew:attentionNew,ticketId:ticketId,module:module} , function(data, textStatus, xhr) {
             if(data!=0){
-                checkComet(data);
+
+            	//Caso de derivación a otra zona
+                if(module!=moduleInCourse && description=='Ticket Derivado'){
+                	var cometOrigin = JSON.parse(data);
+                	
+                	cometOrigin.description = "Ticket Finalizado";
+                	cometOrigin.action = "lb";
+                	socket.send(JSON.stringify(cometOrigin));
+
+					$.post('phps/getTothtem_derivation.php', {zone: cometOrigin.zone} , function(data2, textStatus, xhr) {
+						var dataNew = JSON.parse(data2);
+						
+	                	cometOrigin.description = "Ingreso a sala";
+	                	cometOrigin.action = "in";
+	                	var submoduleOrigin = cometOrigin.submodule;
+	                	cometOrigin.submodule = dataNew[0].submodule;
+	                	cometOrigin.module = dataNew[0].module;
+	                	cometOrigin.comet = "tothtem";
+	                	socket.send(JSON.stringify(cometOrigin));
+
+	                	cometOrigin.description = "Ingreso a espera";
+	                	cometOrigin.action = "to";
+	                	cometOrigin.submodule = submoduleOrigin;
+	                	cometOrigin.module = module.toString();	                	
+	                	cometOrigin.comet = "module";
+	                	setTimeout(function(){
+	                		socket.send(JSON.stringify(cometOrigin));
+	                	},1500);
+	                	setCurrentNumber();
+	                });
+                }else{
+                	checkComet(data);
+                	if(description=='Ticket ha venido'){
+                		actualComet=data;
+                	}
+                }
                 if(attentionNew =='on_serve'){
                     myState = true;
                     activeButtons('on_serve');
@@ -597,6 +640,8 @@ function insertLog(description,action,cometType,attentionNew,ticketId,module){//
                     var dataComet = JSON.parse(data);
                     getPatientData(dataComet.idticket);
                 }
+
+                
             }
             refreshTable();
 
@@ -631,6 +676,7 @@ function sendComet(type){//Genera la acción de los distintos botones a través 
     if(type==='isHere' || type==='plus'){
         ticketAttention = firstTicketId;
         insertLog('Ticket ha venido','in','module','on_serve',ticketAttention);
+        //timePatient();
     }
     if(type==='notHere'){
         myState = false;
@@ -638,6 +684,9 @@ function sendComet(type){//Genera la acción de los distintos botones a través 
         $('#content').css('color','black');
         $('#patientPicture').html('');
         $('#patientData').html('');
+        clearInterval(patientInterval);
+        $('#timePatient').html('');
+        
     }
     if(type==='finished'){
         myState = false;
@@ -645,6 +694,9 @@ function sendComet(type){//Genera la acción de los distintos botones a través 
         $('#content').css('color','black');
         $('#patientPicture').html('');
         $('#patientData').html('');
+        clearInterval(patientInterval);
+        $('#timePatient').html('');
+        
     }
     if(type==='redirect'){
         //getActivesModules();
@@ -652,6 +704,9 @@ function sendComet(type){//Genera la acción de los distintos botones a través 
     }
     if(type==='exception'){
         $('#modalException').modal('show');
+    }
+    if(type=='recall'){
+    	socket.send(actualComet);
     }
 
 }
@@ -665,6 +720,9 @@ function derive(moduleTo){//Deriva el ticket al módulo seleccionado
     //refreshTable();
     $('#patientPicture').html('');
     $('#patientData').html('');
+    clearInterval(patientInterval);
+    $('#timePatient').html('');
+	
 }
 
 
@@ -680,6 +738,7 @@ function activeButtons(type){//Activa o inactiva botones
     if(type=='next'){
         $('#plusButton').attr('disabled', false);
         $('#minusButton').attr('disabled', false);
+        $('#recallButton').attr('disabled', true);
         $('#notHereButton').attr('disabled', true);
         $('#finishedButton').attr('disabled', true);
         $('#redirectButton').attr('disabled', true);
@@ -693,6 +752,7 @@ function activeButtons(type){//Activa o inactiva botones
     if(type=='on_serve'){
         $('#plusButton').attr('disabled', true);
         $('#minusButton').attr('disabled', true);
+        $('#recallButton').attr('disabled', false);
         $('#notHereButton').attr('disabled', false);
         $('#finishedButton').attr('disabled', false);
         if(noRedirect==false) $('#redirectButton').attr('disabled', false);
@@ -706,6 +766,7 @@ function activeButtons(type){//Activa o inactiva botones
     if(type=='pause'){
         $('#plusButton').attr('disabled', true);
         $('#minusButton').attr('disabled', true);
+        $('#recallButton').attr('disabled', true);
         $('#notHereButton').attr('disabled', true);
         $('#finishedButton').attr('disabled', true);
         $('#redirectButton').attr('disabled', true);
@@ -741,7 +802,7 @@ function updateWaitingTime(){ //Actualiza tiempo de espera de cada paciente
     }
 }
 
-function attentionTime(){
+function attentionTime(){//Tiempo en que ha estado disponible el usuario
     var initTime;
     $.post('phps/getAttentionTime.php', {user: "<?php echo $_SESSION['UserId']; ?>"}, function(data, textStatus, xhr) {
         initTime = data;
@@ -766,11 +827,38 @@ function attentionTime(){
            time[0]++;
            if(time[0]<10) time[0]='0'+time[0];
         }
-        
-
-
 
         $('#timeAttention').html(time[0]+':'+time[1]+':'+time[2]);
+    },1000);
+}
+
+function timePatient(){//Tiempo de atención del paciente actual
+
+    var initTime;
+    $.post('phps/getAttentionTimePatient.php', {submodule: submodule}, function(data, textStatus, xhr) {
+        initTime = data;
+        $('#timePatient').html(initTime);
+    });
+     
+    clearInterval(attentionInterval);
+    attentionTime();
+    patientInterval = setInterval(function(){
+        var time = $('#timePatient').html().split(':');
+        time[2]++;
+        if(time[2]<10) time[2]='0'+time[2];
+        if(time[2]=='60'){
+           time[2]='00';
+           time[1]++;
+           if(time[1]<10) time[1]='0'+time[1];
+        }
+        
+        if(time[1]=='60'){
+           time[1]='00';
+           time[0]++;
+           if(time[0]<10) time[0]='0'+time[0];
+        }
+
+        $('#timePatient').html(time[0]+':'+time[1]+':'+time[2]);
     },1000);
 }
 
@@ -790,8 +878,10 @@ function attentionTime(){
 function gender(gen){
     if(gen=='M'){
         return 'MASCULINO';
-    }else{
+    }else if(gen=='F'){
         return 'FEMENINO';
+    }else{
+    	return ' -';
     }
 }
 

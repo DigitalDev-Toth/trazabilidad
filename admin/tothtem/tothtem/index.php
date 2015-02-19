@@ -876,9 +876,9 @@ function SearchOnLogin(datos){
         if(data!="0"){
             var dataJson = JSON.parse(data);
             namePatient = dataJson[0]['name']+' '+dataJson[0]['lastname'];
-            $('#WelcomeLabel').text(Welcome()+' '+namePatient);
+            $('#WelcomeLabel').html(Welcome()+' '+namePatient);
         }else{
-            $('#WelcomeLabel').text(Welcome());
+            $('#WelcomeLabel').html(Welcome());
         }
 
     });

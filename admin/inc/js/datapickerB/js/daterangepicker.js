@@ -46,8 +46,12 @@
 
         //create the picker HTML object
         var DRPTemplate = '<div class="daterangepicker dropdown-menu">' +
-                '<div class="calendar left"></div>' +
+                
+                '<div class="calendar left">'+
+                
+                '</div>' +
                 '<div class="calendar right"></div>' +
+
                 '<div class="ranges">' +
                   '<div class="range_inputs">' +
                     '<div class="daterangepicker_start_input">' +
@@ -58,6 +62,7 @@
                       '<label for="daterangepicker_end"></label>' +
                       '<input class="input-mini" type="text" name="daterangepicker_end" value="" />' +
                     '</div>' +
+                    '<div class="checkbox" ><label><input type="checkbox" id="checkHour"> Rango de hora</label></div>' +
                     '<button class="applyBtn" disabled="disabled"></button>&nbsp;' +
                     '<button class="cancelBtn"></button>' +
                   '</div>' +
@@ -964,7 +969,7 @@
             var maxYear = (maxDate && maxDate.year()) || (currentYear + 5);
             var minYear = (minDate && minDate.year()) || (currentYear - 50);
 
-            var monthHtml = '<select class="monthselect">';
+            var monthHtml = '<select class="monthselect ">';
             var inMinYear = currentYear == minYear;
             var inMaxYear = currentYear == maxYear;
 
@@ -1081,7 +1086,7 @@
                 // Disallow selections before the minDate or after the maxDate
                 var min_hour = 0;
                 var max_hour = 23;
-
+                /*
                 if (minDate && (side == 'left' || this.singleDatePicker) && selected.format('YYYY-MM-DD') == minDate.format('YYYY-MM-DD')) {
                     min_hour = minDate.hour();
                     if (selected.hour() < min_hour)
@@ -1099,7 +1104,7 @@
                     if (this.timePicker12Hour && max_hour >= 12 && selected.hour() >= 12)
                         max_hour -= 12;
                 }
-
+                */
                 var start = 0;
                 var end = 23;
                 var selected_hour = selected.hour();
@@ -1130,7 +1135,7 @@
                 // Disallow selections before the minDate or after the maxDate
                 var min_minute = 0;
                 var max_minute = 59;
-
+                /*
                 if (minDate && (side == 'left' || this.singleDatePicker) && selected.format('YYYY-MM-DD h A') == minDate.format('YYYY-MM-DD h A')) {
                     min_minute = minDate.minute();
                     if (selected.minute() < min_minute)
@@ -1142,7 +1147,7 @@
                     if (selected.minute() > max_minute)
                         selected.minute(max_minute);
                 }
-
+                */
                 for (i = 0; i < 60; i += this.timePickerIncrement) {
                     var num = i;
                     if (num < 10)
@@ -1164,7 +1169,7 @@
                     // Disallow selection before the minDate or after the maxDate
                     var am_html = '';
                     var pm_html = '';
-
+                    /*
                     if (minDate && (side == 'left' || this.singleDatePicker) && selected.format('YYYY-MM-DD') == minDate.format('YYYY-MM-DD') && minDate.hour() >= 12) {
                         am_html = ' disabled="disabled" class="disabled"';
                     }
@@ -1172,7 +1177,7 @@
                     if (maxDate && (side == 'right' || this.singleDatePicker) && selected.format('YYYY-MM-DD') == maxDate.format('YYYY-MM-DD') && maxDate.hour() < 12) {
                         pm_html = ' disabled="disabled" class="disabled"';
                     }
-
+                    */
                     if (selected.hour() >= 12) {
                         html += '<option value="AM"' + am_html + '>AM</option><option value="PM" selected="selected"' + pm_html + '>PM</option>';
                     } else {

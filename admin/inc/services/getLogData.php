@@ -8,8 +8,30 @@ include ('getTimeString.php');
 $rut = $_REQUEST['rut'];
 
 
+$dateI = $_REQUEST['dateI'];
+$dateF = $_REQUEST['dateF'];
+$hourI = $_REQUEST['hourI'];
+$hourF = $_REQUEST['hourF'];
+
+//if date range
+$where0 = "";
+$where1 = "";
+if( $dateI != "" && $dateF != "" ){
+	//if time range
+	if( $hourI != "" && $hourF != "" ){
+		$where0 = "and datetime >= '".$dateI." ".$hourI."' AND datetime < '".$dateF." ".$hourF."';";
+		//$where1 = "AND (EXTRACT(HOUR FROM datetime) >= ".$timeI[0]." AND EXTRACT(HOUR FROM datetime) <= ".$timeF[0].") AND (EXTRACT(MINUTE FROM datetime) >= ".$timeI[1]." AND EXTRACT(MINUTE FROM datetime) <= ".$timeF[1].")";
+	}else{
+		$dateF = date('Y-m-d', strtotime($dateF . ' + 1 day'));
+		$where0 = "AND datetime between '".$dateI."' AND '".$dateF."' ";
+	}
+}
+
+
+//AND (EXTRACT(HOUR FROM datetime) > 15 AND EXTRACT(HOUR FROM datetime) < 17) AND (EXTRACT(MINUTE FROM datetime) > 2 AND EXTRACT(MINUTE FROM datetime) < 30)
 $db1 = NEW DB();
-$sql = "SELECT id FROM logs WHERE rut ='$rut'";
+$sql = "SELECT id FROM logs WHERE rut ='$rut' ".$where0;
+
 
 $ids = $db1->doSql($sql);
 
@@ -33,7 +55,7 @@ if($ids){
 				LEFT JOIN module m ON m.id=l.module
 				LEFT JOIN submodule s ON s.id=l.sub_module
 				LEFT JOIN users u ON u.id=l.users
-				WHERE l.id=$id";
+				WHERE l.id=$id ";
 		$logs = $db->doSql($sql);
 
 		if($logs){
@@ -114,7 +136,6 @@ if($ids){
 	    
 	}
 	echo json_encode($logData); 
-
 
 }else{
 	echo 0;

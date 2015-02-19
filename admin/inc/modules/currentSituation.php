@@ -156,7 +156,7 @@ function changeZone (idZone,sw) {
 			});
 		});
 	}else{
-		idZone="modules/tablesView.php?idZone="+idZone;
+		idZone="modules/currentSituation/sumary.php?idZone="+idZone;
 		$( document ).width();
 		$('#actualIframe').height($( document ).height()*0.8);
 		$('#actualIframe').width($( document ).width());

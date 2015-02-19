@@ -44,7 +44,7 @@ function showBitacora(id,type) {
             if (dataLogs !== 0) {
                 var d = $.parseJSON(dataLogs);
                 var contentLogs = '<div class="col-md-12">';
-                contentLogs += '<table id="dataLogs" class="table table-striped table-bordered table-condensed">';
+                contentLogs += '<table id="dataLogs" class="table text-center table-striped table-bordered table-condensed">';
                 contentLogs += '    <thead>';
                 contentLogs += '        <tr>';
                 contentLogs += '            <th>Fecha</th>';
@@ -61,6 +61,22 @@ function showBitacora(id,type) {
                 contentLogs += '            <th>Total atención</th>';
                 contentLogs += '        </tr>';
                 contentLogs += '    </thead>';
+                contentLogs += '    <tfoot>';
+                contentLogs += '        <tr>';
+                contentLogs += '            <th>Fecha</th>';
+                contentLogs += '            <th>Hora</th>';
+                contentLogs += '            <th>Descripción</th>';
+                contentLogs += '            <th>Zona</th>';
+                contentLogs += '            <th>Módulo</th>';
+                contentLogs += '            <th>Submódulo</th>';
+                contentLogs += '            <th>Usuario</th>';
+                contentLogs += '            <th>Hora inicio de espera</th>';
+                contentLogs += '            <th>Hora inicio de atención</th>';
+                contentLogs += '            <th>Hora fin de atención</th>';
+                contentLogs += '            <th>Total espera</th>';
+                contentLogs += '            <th>Total atención</th>';
+                contentLogs += '        </tr>';
+                contentLogs += '    </tfoot>';
                 contentLogs += '    <tbody>';
                 for (var i = 0; i < d.length; i++) {
                     contentLogs += '        <tr>';
@@ -83,7 +99,7 @@ function showBitacora(id,type) {
                 contentLogs += '</div>';
             } else {
                 var contentLogs = '<div class="col-md-12">';
-                contentLogs += '<table id="dataLogs" class="table table-striped table-bordered table-condensed">';
+                contentLogs += '<table id="dataLogs" class="table text-center table-striped table-bordered table-condensed">';
                 contentLogs += '    <thead>';
                 contentLogs += '        <tr>';
                 contentLogs += '            <th>Fecha</th>';
@@ -131,7 +147,29 @@ function showBitacora(id,type) {
             $('#bitacoraContent').html(content);
             $('#dataLogs').addClass('table table-bordered table-hover table-condensed');
             
-            $('#dataLogs').dataTable({
+
+            $('#dataLogs tfoot th').each( function () {
+                var title = $('#dataLogs thead th').eq( $(this).index() ).text();
+                $(this).html( '<input type="text" style="width:100%"  placeholder="'+title+'" />' );
+            });
+            var table =  $('#dataLogs').DataTable( {
+                "sDom": 'TR<"clear">lfrtip',
+                //"sDom": 'R<"clear">lfrtip',
+                "tableTools": {
+                    "sSwfPath": "inc/js/datatablesN/vendor/copy_csv_xls_pdf.swf"
+                }
+                /*"language": {
+                    "url": "js/datatables2/languaje/languaje.lang"
+                }*/
+            });
+            table.columns().eq( 0 ).each( function ( colIdx ) {
+                $( 'input', table.column( colIdx ).footer() ).on( 'keyup change', function () {
+                    table.column( colIdx ).search( this.value ).draw();
+                });
+            });
+
+
+            /*$('#dataLogs').dataTable({
                 "tableTools": {
                     "sSwfPath": "inc/js/datatablesN/vendor/copy_csv_xls_pdf.swf"
                 },
@@ -139,7 +177,7 @@ function showBitacora(id,type) {
                     "url": "inc/js/datatablesN/vendor/languaje.lang"
                 }
 
-            });
+            });*/
 
             $('#showBitacora').modal('show');
         });    
