@@ -3,9 +3,9 @@
 $rut = $_REQUEST['rut'];
 
 if(substr($rut,-2,-1)=='-'){
-    $type==1;
+    $type=1;
 }else{
-    $type==3;
+    $type=3;
 }
 
 if($type==1){

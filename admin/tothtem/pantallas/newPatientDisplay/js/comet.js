@@ -5,7 +5,8 @@ function socketComet(){
             var data = $.parseJSON(message);
             if (data.comet === 'tothtem' || data.comet === 'module') {
                 if(data.zone==zone){
-                    initConfig(zone);
+                    //initConfig(zone);
+                    lastTickets(zone);
                 }
             }
         });

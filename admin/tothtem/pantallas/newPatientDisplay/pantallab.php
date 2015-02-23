@@ -56,21 +56,28 @@ if(isset($_REQUEST['zone'])){
 
   		<h2>
             <div class="row text-center">
-                <div class="col-md-6 well well-sm">
-                    M&oacute;dulo de Atención
+                <div class="col-md-3 well well-sm">
+                    M&oacute;dulo
+                </div>
+                <div class="col-md-3 well well-sm">
+                    &Uacute;ltimos llamados
                 </div>
                 <div class="col-md-6 well well-sm">
-                    Número
+                    <div id="MultimediaTypeTittle">-</div>
                 </div>
             </div>
-            <div class="row" id="content">
-	            <!--<div class="col-md-6">
-	            	<div id='contentModule' class="text-center"></div>
-	            </div>
-	            <div class="col-md-6">
-	            	<div id="contentTicket">
-	            	</div>
-           		</div>-->
+            <div class="row">
+            <div class="col-md-6">
+            	<div id='content' class="text-center"></div>
+            </div>
+            <div class="col-md-6">
+            	<div id="MultimediaType">
+            		
+            	</div>
+            	
+            </div>
+            	
+
             </div>
   		</h2>
 
@@ -78,7 +85,7 @@ if(isset($_REQUEST['zone'])){
 </div>
 
 
-<!--<div class="row" style="height: 300px;">
+<div class="row" style="height: 300px;">
                 <div class="col-lg-10 col-md-10" style="height: 40%;" >
                     <b>   <div class="alert alert-info" style="height: 100%;">
                           <div id="rss" style="height: 80%;"></div><hr>CNN noticias
@@ -88,7 +95,7 @@ if(isset($_REQUEST['zone'])){
                 <div class="col-lg-2 col-md-2" >
                     <div id="weather"></div>
                 </div>
-            </div>-->
+            </div>
 
  <footer>
     <div class="row">
@@ -130,12 +137,12 @@ $(document).ready(function() {
 	fillMultimedia();
 });
 //News & climate
-    /*$('#rss').rssfeed('http://www.cnnchile.com/rss/',{}, function(e) {
+    $('#rss').rssfeed('http://www.cnnchile.com/rss/',{}, function(e) {
         $(e).find('div.rssBody').vTicker({ showItems: 1});
         $(".rssBody").height('100%');
     });
     $('#weather').weatherfeed(['CIXX0031']);
-    */
+    
 //****************************************
 //Get zone name for header
 //****************************************
@@ -151,9 +158,8 @@ function getZoneName(zone){
 //****************************************
 function initConfig(zone){
 	if(zone != ''){
-		//getActivesModules(zone);
-		//getLastTickets(zone);
-		lastTickets(zone);
+		getActivesModules(zone);
+		getLastTickets(zone);
 		return true;
 	}else{
 		alert('falta id zone');
@@ -360,37 +366,6 @@ function getActivesModules(zone){
 }
 
 
-///////////////////////////////////////////////////////////////////////////////////////////////
-
-
-function lastTickets(zone){
-	$.post('phps/getLastTickets.php', {zone: zone}, function(data, textStatus, xhr) {
-		if(data!=0){
-			var allData = JSON.parse(data);
-			console.log(data);
-			$("#content").fadeOut('fast', function() {
-				$('#content').html('');
-				for(i=0;i<allData.length;i++){
-					addTicket(allData[i].module,allData[i].submodule,allData[i].ticket);
-				}
-				$("#content").fadeIn('fast');		
-			});
-			
-		}
-	});
-}
-
-function addTicket(module,submodule,ticket){
-	var content = '';
-	console.debug('hi');
-	content += "<div class='row text-center' style='font-size: 50px;'> " +
-					"<div class='col-md-2' style='padding-top: 35px;font-size: 50px;'>"+module+"</div>"+
-					"<div class='col-md-4' style='padding-top: 35px;font-size: 50px;'>"+submodule+"</div>"+
-					"<div class='col-md-6' style='font-size: 140px; font-weight: bold;'>"+ticket+"</div>"+
-			    "</div><hr>";
-
-	$('#content').append(content);
-}
 
 
 </script>

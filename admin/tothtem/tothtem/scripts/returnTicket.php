@@ -94,7 +94,7 @@ function ticketInfo(module,special,newTicket){
   $("#Date").text('Fecha: '+Tdate);
 
   $("#ticket").text(newTicket);
-  $("#barCode").barcode(rut, "code39"); 
+  //$("#barCode").barcode(rut, "code39"); 
   //code39 code93 code128 codabar Datamatrix->qr datamatrix
 
   //BACKEND PARA EL COMET, SE INTEGRA CON LOS MÓDULOS DE GESTIÓN, HABILITAR UNA VEZ ESTÉ EN GIT

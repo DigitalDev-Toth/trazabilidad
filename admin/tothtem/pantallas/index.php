@@ -275,8 +275,16 @@ function getPatientData(ticketId){
 
         if(data!='0'){
             var dataJson = JSON.parse(data);
-            namePatient = '<br><p>Nombre:'+dataJson[0]['name']+' '+dataJson[0]['lastname']+'</p>';
-            namePatient +='<p>Fecha de Nacimiento:'+dataJson[0]['birthdate'] +'</p>';
+            if(dataJson[0]['name']!=null){
+                namePatient = '<br><p>Nombre:'+dataJson[0]['name']+' '+dataJson[0]['lastname']+'</p>';
+            }else{
+                namePatient = '<br><p>Nombre: -</p>';
+            }
+            if(dataJson[0]['birthdate']!=null){
+                namePatient +='<p>Fecha de Nacimiento:'+dataJson[0]['birthdate'] +'</p>';
+            }else{
+                namePatient += '<br><p>Fecha de Nacimiento: -</p>';
+            }
             //namePatient +='<p>Genero:'+gender(dataJson[0]['gender'])+'</p>';
             //namePatient +='<p>Direccion:'+dataJson[0]['address']+'</p>';
             $('#patientData').html(namePatient);

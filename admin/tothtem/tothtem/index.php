@@ -57,7 +57,7 @@
             <span class="glyphicon glyphicon-hand-up"></span></a></h3>
            
             <div id="enableTothtem" >
-                <label id="labelStart" style="font-size:22pt;">  Seleccione una opcion para comenzar</label>    
+                <label id="labelStart" style="font-size:22pt;">  Seleccione una opción para comenzar</label>    
             </div>
             <div id="disableTothtem" >
                <label style="font-size:22pt;">  <span class="glyphicon glyphicon-ban-circle"></span>  FUERA DE SERVICIO</label>    
@@ -65,13 +65,13 @@
             <br>
 
                <a id="rutOption" href="#login-menu" type="button" style="padding:12px 25px;font-size: 25px;border-radius: 33px;width: 300px;" class="btn btn-primary"  onclick="initMenu(1);">
-            	<span class="glyphicon glyphicon-home"></span> Rut Normal
+            	<span class="glyphicon glyphicon-home"></span> RUT Paciente
             </a> 
 
             <br><br>
 
             <a id="dniOption" type="button" href="#login-menu" style="padding:12px 25px;font-size: 25px;border-radius: 33px;width: 300px;" class="btn btn-primary" onclick="initMenu(2);">
-            	<span class="glyphicon glyphicon-globe"></span> DNI Extranjeros
+            	<span class="glyphicon glyphicon-globe"></span> DNI Paciente
             </a> 
 
             
@@ -875,7 +875,9 @@ function SearchOnLogin(datos){
     $.post('scripts/getPatientName.php',{rut: $('#patientName').html()},function(data, textStatus, xhr){
         if(data!="0"){
             var dataJson = JSON.parse(data);
-            namePatient = dataJson[0]['name']+' '+dataJson[0]['lastname'];
+            if(dataJson[0]['name']!=null){
+                namePatient = dataJson[0]['name']+' '+dataJson[0]['lastname'];
+            }
             $('#WelcomeLabel').html(Welcome()+' '+namePatient);
         }else{
             $('#WelcomeLabel').html(Welcome());
