@@ -103,7 +103,7 @@
 			break;
 
 			default:
-			//include("modules/search.php");
+			include("modules/default.php");
 			break;
 			}
 ?>

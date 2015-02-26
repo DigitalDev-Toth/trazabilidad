@@ -9,17 +9,16 @@
 
 <script src="../../js/datatables2/js/jquery.js"></script>
 <script src="../../js/bootstrap/js/bootstrap.min.js"></script>
-
 <?php
-
-
 $idZone = $_REQUEST['idZone'];
-
 //echo '<p>Vista Tablas, Zona:'.$idZone.'</p>';
-	
 ?>
-
-
+<style type="text/css" media="screen">
+.scroll{
+	height: 200px;
+    overflow: auto;
+}
+</style>
 </head>
 <body>
 
@@ -35,21 +34,25 @@ $idZone = $_REQUEST['idZone'];
 			
 		</div>
 		<br>
-		<div class="row">
+		<div class="row" id = "tables">
 			<div class="col-md-6">
-
 				<div id="tableModule"></div>
 				<div id="totemTable"></div>
 				<div id="waitingTable"></div>
-
 			</div>
 			<div class="col-md-6">
-				<div id="patientList"></div>
-				<div id="patientOnServer"></div>
+				<div id="patientList" class="table-responsive  scroll"></div>
+				<div id="patientOnServer" class="table-responsive scroll"></div>
+				<div id="patientServed" class="table-responsive scroll"></div>
+				
 				
 			</div>
 		</div>
-
+		<!--
+		<div class="row" id="load" style="justify-content: center;align-items: center;">
+			Cargando
+		</div>
+		-->
 
 			
 	
@@ -97,6 +100,7 @@ function Start(){
 		ajax1(zoneId,"wtg",3,currentModule);
 		ajax1(zoneId,"patient",4,currentModule);
 		ajax1(zoneId,"os",5,currentModule);
+		ajax1(zoneId,"served",6,currentModule);
 	}
 }
 
@@ -134,8 +138,10 @@ function ajax1(zoneId,type,order,module){
 		url: 'infoModules.php',
 		type: 'GET',
 		data: {data: zoneId,type:type,module:module},
-	})
-	.done(function(e) {
+    beforeSend: function() {
+
+    },
+    success: function(e) {
 		switch(order) {
 	    	case 1:
 	        fillTable(e);
@@ -152,12 +158,21 @@ function ajax1(zoneId,type,order,module){
 	       	case 5:
 	        fillPatienOS(e);
 	        break;
+	       	case 6:
+	        fillPatienSer(e);
+	        break;
 		}
+		//$("#load").hide('fast', function() {
+    		//$("#tables").show();
+    	//});
 		return false;	
-	})
-	.fail(function() {
-		return true;
-	})
+    },
+    error: function(xhr) {
+
+      	return true;
+    }
+});
+
 	
 }
 
@@ -166,7 +181,7 @@ function ajax1(zoneId,type,order,module){
 function fillWaiting(data){
 	var json = JSON.parse(data);	
 	var cont = '';
-	cont  = '<table class="table table-bordered table-striped table-condensed"><tr><th colspan="2" class="text-center">Tiempos y pacientes en espera</th></tr>';
+	cont  = '<table class="table table-bordered table-striped table-condensed"><tr><th colspan="2" class="text-center info">Tiempos y pacientes en espera</th></tr>';
 	if(data != 0){
 		cont += '<tr><td>Cantidad de pacientes en espera: </td><td>'+ json.length +'</td></tr>';
 
@@ -197,19 +212,37 @@ function fillWaiting(data){
 	//console.log(json);
 }
 
-
-function fillPatienOS(data){
+function fillPatienSer(data) {
 	var json  = JSON.parse(data);
-	var cont  ='<table class="table table-bordered table-striped table-condensed">';
-		cont +='<tr><th colspan="6" class="text-center">Pacientes en Atencion</th></tr>';
-		cont +='<tr><th>N°</th><th>RUT</th><th>Hora llegada</th><th>Ticket</th><th>Bitacora</th></tr>';
+	var cont  ='<table class="table table-bordered table-striped table-condensed ">';
+		cont +='<tr><th colspan="6" class="text-center info">Pacientes atendidos</th></tr>';
+		cont +='<tr><th>N°</th><th>RUT</th><th>Hora finalizacion</th><th>Ticket</th><th>Bitacora</th></tr>';
 
 		if(json.length != undefined){
 			for (var i = 0; i < json.length; i++) {
 				cont += '<tr><td>'+ (i+1) +'</td><td>'+ json[i].rut +'</td><td>'+ json[i].datetime.split(" ")[1] +'</td> <td>'+ json[i].ticket +'</td><td> <button type="button" class="btn" onclick="parent.parent.parent.showBitacora(\''  +json[i].rut+'\')"><span class="glyphicon glyphicon-list-alt"></span></button>  </td></tr>'
 			};
 		}else{
-			cont +='<tr><th colspan="6" class="text-center">Sin pacientes en espera</th></tr>';
+			cont +='<tr><th colspan="6" class="text-center">Sin pacientes atendidos</th></tr>';
+		}
+		
+
+	cont +='</table>';
+	$("#patientServed").html(cont);
+}
+
+function fillPatienOS(data){
+	var json  = JSON.parse(data);
+	var cont  ='<table class="table table-bordered table-striped table-condensed ">';
+		cont +='<tr><th colspan="7" class="text-center info" >Pacientes en atencion</th></tr>';
+		cont +='<tr><th>N°</th><th>RUT</th><th>Hora Atencion</th><th>Tiempo de atencion</th><th>Ticket</th><th>Sub modulo</th><th>Bitacora</th></tr>';
+		console.log(data);
+		if(json.length != undefined){
+			for (var i = 0; i < json.length; i++) {
+				cont += '<tr><td>'+ (i+1) +'</td><td>'+ json[i].rut +'</td><td>'+ json[i].datetime.split(" ")[1] +'</td><td>'+ remainTime(json[i].datetime) +'</td> <td>'+ json[i].ticket +'</td><td>'+ json[i].name +'</td><td> <button type="button" class="btn" onclick="parent.parent.parent.showBitacora(\''  +json[i].rut+'\')"><span class="glyphicon glyphicon-list-alt"></span></button>  </td></tr>'
+			};
+		}else{
+			cont +='<tr><th colspan="7" class="text-center">Sin pacientes en atencion</th></tr>';
 		}
 		
 
@@ -244,8 +277,8 @@ function remainTime(time){
 
 function fillPatienW(data){
 	var json  = JSON.parse(data);
-	var cont  ='<table class="table table-bordered table-striped table-condensed">';
-		cont +='<tr><th colspan="6" class="text-center">Pacientes en espera</th></tr>';
+	var cont  ='<table class="table table-bordered table-striped table-condensed ">';
+		cont +='<tr><th colspan="6" class="text-center info" >Pacientes en espera</th></tr>';
 		cont +='<tr><th>N°</th><th>RUT</th><th>Hora llegada</th><th>Tiempo espera</th><th>Ticket</th><th>Bitacora</th></tr>';
 	
 		if(json.length != undefined){
@@ -285,7 +318,7 @@ function totemTable (data) {
     }
     onlyModules.sort();
 
-    cont  = '<table class="table table-bordered table-striped table-condensed"><tr><th colspan="2" class="text-center">Tothtem</th><tr>';
+    cont  = '<table class="table table-bordered table-striped table-condensed"><tr><th colspan="2" class="text-center info">Tothtem</th><tr>';
     if(data != 0){
     	cont += '<tr><th align="right">Total tickets retirados:</th><th>'+json.length+'</th> </tr>';
     	cont += '<tr><td>Hora del primer ticket retirado:</td><td>'+json[0].datetime+'</td><tr><td>Hora del ultimo ticket retirado</td><td>'+json[json.length-1].datetime+'</td> </tr></table>';
@@ -303,14 +336,14 @@ function fillTable (data) {
 	var tableText="",cols = 0,datas = ["Nombre ejecutiva:","Cantidad de Pacientes atendidos","Promedio de atencion","Minimo","Maximo"];
 	cols=json.length;
 	tableText += "<table class='table table-bordered table-striped table-condensed'>";
-	tableText += "<tr><td></td>"; 
+	tableText += "<tr class= 'info'><td></td>"; 
 	tableText += "<td colspan='"+(cols)+"' class='text-center'><b>"+ json[0].modulename +"</b></td></tr>";
 	tableText += "<tr><td></td>";
 	for (var j = 0; j < cols; j++) {
 		if(json[j].submodulestate == "activo"){
-			tableText += "<th class='text-center' bgcolor='green' style='color:white'>"+json[j].submodulename+"</th>";	
+			tableText += "<th class='text-center' bgcolor='#5cb85c' style='color:white'>"+json[j].submodulename+"</th>";	
 		}else{
-			tableText += "<th class='text-center' bgcolor='red' style='color:white'>"+json[j].submodulename+"</th>";	
+			tableText += "<th class='text-center' bgcolor='#d9534f' style='color:white'>"+json[j].submodulename+"</th>";	
 		}
 	};
 	
@@ -377,12 +410,12 @@ function fillTable (data) {
 
 		
 		//tableText += "<tr><td align='right'>Productividad del modulo: </td><td colspan='"+cols+"'> </td></tr>"
-		tableText += "<tr><td align='right'>Atendiendo a: </td>";
+		/*tableText += "<tr><td align='right'>Atendiendo a: </td>";
 		for (var i = 0; i < cols; i++) {
 			tableText += '<td class="text-center">-</td>';
 		};
 		tableText+='</tr>';
-
+*/
 
 
 		tableText+="</table><br>";
@@ -415,8 +448,12 @@ function getPd (module,type) {
 
 
 $("#selectorModule").change(function(event) {
-	currentModule=this.value;
-	Start();
+	//$("#tables").hide('fast', function() {
+    	//$("#load").show();
+    	currentModule=this.value;
+		Start();
+    //});
+
 });
 
 

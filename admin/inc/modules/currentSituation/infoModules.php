@@ -44,7 +44,16 @@ if(isset($typeRequest) && isset($data) ){
    // $sql="SELECT tickets.attention,logs.module,logs.datetime
      //     FROM logs, tickets
        //   WHERE tickets.logs = logs.id and tickets.attention = 'on_serve' and logs.datetime between '$date1' and '$date2'";
-    $sql= "SELECT logs.rut,logs.datetime,tickets.ticket FROM public.logs,public.tickets WHERE tickets.logs = logs.id and logs.datetime between '$date1' AND '$date2' AND logs.module = ".$module." and (tickets.attention = 'on_serve') order by logs.datetime DESC";
+    $sql= "SELECT logs.rut,logs.datetime,tickets.ticket,submodule.name FROM logs,tickets,submodule WHERE tickets.logs = logs.id and submodule.id = logs.sub_module and logs.datetime between '$date1' AND '$date2' AND logs.module = ".$module." and (tickets.attention = 'on_serve') order by logs.datetime DESC";
+  }
+
+  if($typeRequest == 'served'){// on served
+    $date1 = date("Y-m-d");
+    $date2 = date('Y-m-d', strtotime($date1 . ' + 1 day'));
+   // $sql="SELECT tickets.attention,logs.module,logs.datetime
+     //     FROM logs, tickets
+       //   WHERE tickets.logs = logs.id and tickets.attention = 'on_serve' and logs.datetime between '$date1' and '$date2'";
+    $sql= "SELECT logs.rut,logs.datetime,tickets.ticket, submodule.name FROM logs,tickets,submodule WHERE tickets.logs = logs.id and submodule.id = logs.sub_module and logs.datetime between '$date1' AND '$date2' AND logs.module = ".$module." and (tickets.attention = 'served') order by logs.datetime DESC";
   }
 
 

@@ -1,7 +1,7 @@
 function socketComet(){
     socket.on('connect', function() {
         socket.on('message', function(message) {
-            console.log(message);
+//            console.log(message);
             var data = $.parseJSON(message);
             if ((data.comet === 'tothtem' || data.comet === 'module') && SUBMODULES[data.submodule] !== undefined) {
                 MAKE.goTo(data.comet, data.rut, data.name, data.action, data.newticket, data.datetime, data.module, data.submodule);

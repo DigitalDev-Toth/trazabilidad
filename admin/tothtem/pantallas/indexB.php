@@ -12,7 +12,7 @@ if(!isset($_SESSION['Username'])) { header("location: ../../login.php"); header(
     <meta name="author" content="">
 
     <title>Pantalla</title>
-  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  	<script src="js/jquery-1.10.2.js"></script>
     <script src="http://falp.biopacs.com:8000/socket.io/socket.io.js"></script>
     <script src="js/bootstrap.js"></script>
     <script src="js/comet.js"></script>
@@ -53,25 +53,28 @@ if(!isset($_SESSION['Username'])) { header("location: ../../login.php"); header(
                             <label id="timePatient" style="font-size:40px;"></label>
 
                             <div class="row">
-                                <div class="col-md-offset-4 col-xs-offset-4 col-sm-offset-4 col-md-4 col-xs-4 col-sm-4 text-center">
+                                <div class="col-md-4">
+                                    
+                                </div>
+                                <div class="col-md-4">
                                     <div id="buttons" class="text-center">
                                 
-                                        <div class="col-md-2 col-xs-2 col-sm-2">
+                                        <div class="col-md-2">
                                             <button type="button" class="btn btn-default btn-lg" onclick="sendComet('minus')" id="minusButton" title="Volver a llamar número anterior"><span class="glyphicon glyphicon-minus"></span></button>
                                         </div>
-                                        <div class="col-md-2 col-xs-2 col-sm-2">
+                                        <div class="col-md-2">
                                             <button type="button" class="btn btn-default btn-lg" onclick="sendComet('plus')" id="plusButton" title="Llamar paciente"><span class="glyphicon glyphicon-plus"></span></button>
                                         </div>
-                                        <div class="col-md-2 col-xs-2 col-sm-2">
+                                        <div class="col-md-2">
                                             <button type="button" class="btn btn-default btn-lg" onclick="sendComet('recall')" id="recallButton" title="Re-Llamar paciente"><span class="glyphicon glyphicon-bullhorn"></span></button>
                                         </div>
-                                        <div class="col-md-2 col-xs-2 col-sm-2">
+                                        <div class="col-md-2">
                                             <button type="button" class="btn btn-default btn-lg" onclick="sendComet('notHere')" id="notHereButton" title="No llegó paciente" style="color: red;"><span class="glyphicon glyphicon-remove-circle"></span></button>
                                         </div>
-                                        <div class="col-md-2 col-xs-2 col-sm-2">
+                                        <div class="col-md-2">
                                             <button type="button" class="btn btn-default btn-lg" onclick="sendComet('finished')" id="finishedButton" title="Finalizar Atención" ><span class="glyphicon glyphicon-thumbs-up"></span></button>                                         
                                         </div>
-                                        <div class="col-md-2 col-xs-2 col-sm-2">
+                                        <div class="col-md-2">
                                             <button type="button" class="btn btn-default btn-lg" onclick="sendComet('redirect')" id="redirectButton" title="Derivar"><span class="glyphicon glyphicon-share"></span></button>                                        
                                         </div>
                                         <!--<div class="col-md-2">
@@ -274,10 +277,10 @@ function getPatientData(ticketId){
             var dataJson = JSON.parse(data);
             namePatient = '<br><p>Nombre:'+dataJson[0]['name']+' '+dataJson[0]['lastname']+'</p>';
             namePatient +='<p>Fecha de Nacimiento:'+dataJson[0]['birthdate'] +'</p>';
-            //namePatient +='<p>Genero:'+gender(dataJson[0]['gender'])+'</p>';
-            //namePatient +='<p>Direccion:'+dataJson[0]['address']+'</p>';
+            namePatient +='<p>Genero:'+gender(dataJson[0]['gender'])+'</p>';
+            namePatient +='<p>Direccion:'+dataJson[0]['address']+'</p>';
             $('#patientData').html(namePatient);
-            //$('#patientPicture').html('<img src="http://placehold.it/200x200">');
+            $('#patientPicture').html('<img src="http://placehold.it/200x200">');
             //$("#patientPicture").html('<img src="http://1.bp.blogspot.com/_jSIwJJQzdUU/TOIWjGmPkCI/AAAAAAAAAEo/GkjnGk1v76s/s1600/kermit4_Kermit_the_Frog-s1000x600-93067.jpg" style="width: 200px; height:200px;">');
 
         
@@ -564,7 +567,6 @@ function setCurrentNumber(){//Muestra el número actual que se está atendiendo
             activeButtons(jsonData[0].attention);
             ticketAttention = jsonData[0].ticketid;
             timePatient();
-            getPatientData(ticketAttention);
         }else{
             //$('#content').text('Standby');
             $('#content').text('Esperando...');
@@ -622,6 +624,11 @@ function insertLog(description,action,cometType,attentionNew,ticketId,module){//
 	                	setTimeout(function(){
 	                		socket.send(JSON.stringify(cometOrigin));
 	                	},1500);
+	                	//{"comet":"module","rut":"17.443.625-8","datetime":"2015-02-16 17:09:04","description":"Ticket Finalizado","zone":"1","action":"lb","submodule":"83","module":"34","newticket":"255B","idticket":"830","name":"JULIO ESPINOZA"}
+	                	//socket.send(data);
+	                	//{"comet":"tothtem","rut":"17.443.625-8","datetime":"2015-02-16 17:07:51","description":"Ingreso de RUT Totem","zone":"1","action":"in","submodule":"47","module":"33","name":"JULIO ESPINOZA"}
+						//a espera            
+						//{"comet":"module","rut":"17.172.852-5","datetime":"2015-02-16 17:01:55","description":"Retiro de ticket N\u00ba 254 , M\u00f3dulo 34","zone":"1","action":"to","submodule":"47","module":"34","newticket":"254B","name":"ENZO LATORRE BARRA"}
 	                	setCurrentNumber();
 	                });
                 }else{
@@ -763,7 +770,7 @@ function activeButtons(type){//Activa o inactiva botones
     if(type=='pause'){
         $('#plusButton').attr('disabled', true);
         $('#minusButton').attr('disabled', true);
-        $('#recallButton').attr('disabled', true);
+        $('#recallButton').attr('disabled', false);
         $('#notHereButton').attr('disabled', true);
         $('#finishedButton').attr('disabled', true);
         $('#redirectButton').attr('disabled', true);
@@ -875,10 +882,8 @@ function timePatient(){//Tiempo de atención del paciente actual
 function gender(gen){
     if(gen=='M'){
         return 'MASCULINO';
-    }else if(gen=='F'){
-        return 'FEMENINO';
     }else{
-    	return ' -';
+        return 'FEMENINO';
     }
 }
 

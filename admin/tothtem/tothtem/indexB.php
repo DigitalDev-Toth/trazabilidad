@@ -57,7 +57,7 @@
             <span class="glyphicon glyphicon-hand-up"></span></a></h3>
            
             <div id="enableTothtem" >
-                <label id="labelStart" style="font-size:22pt;">  Seleccione una opción para comenzar</label>    
+                <label id="labelStart" style="font-size:22pt;">  Seleccione una opcion para comenzar</label>    
             </div>
             <div id="disableTothtem" >
                <label style="font-size:22pt;">  <span class="glyphicon glyphicon-ban-circle"></span>  FUERA DE SERVICIO</label>    
@@ -65,13 +65,13 @@
             <br>
 
                <a id="rutOption" href="#login-menu" type="button" style="padding:12px 25px;font-size: 25px;border-radius: 33px;width: 300px;" class="btn btn-primary"  onclick="initMenu(1);">
-            	<span class="glyphicon glyphicon-home"></span> RUT Paciente
+            	<span class="glyphicon glyphicon-home"></span> Rut Normal
             </a> 
 
             <br><br>
 
             <a id="dniOption" type="button" href="#login-menu" style="padding:12px 25px;font-size: 25px;border-radius: 33px;width: 300px;" class="btn btn-primary" onclick="initMenu(2);">
-            	<span class="glyphicon glyphicon-globe"></span> DNI Paciente
+            	<span class="glyphicon glyphicon-globe"></span> DNI Extranjeros
             </a> 
 
             
@@ -86,7 +86,7 @@
 
 
     <div class="vert-text" id="OnlyRut">
-    <h1 id="bigText">Ingrese su RUT</h1>
+    <h1 id="bigText">Ingrese Su Rut</h1>
 		<div id="loadingLogo" class="loader">
 		    <span></span> <span></span> <span></span> <span></span>
 		</div>
@@ -104,7 +104,7 @@
         <div style="height: 4px;"></div>
 
 		<div id="buttonsGrid">
-            <div  style="width:350px;margin: 0 auto" align="center" id ="numericKeyboard">
+            <div  style="width:350px;margin: 0 auto" align="center">
 			<!--<div  style="width:155px;margin: 0 auto" align="center">-->
 			    <div id="row1">
 				    <input type="button" name="number" value="1" id="_1" class="btn btn-default btn-lg" style="width: 70px; height: 70px; font-size: 30px;" onclick="teclado('number')"/>
@@ -133,10 +133,7 @@
                     <div style="height: 4px;"></div>
                     <input type="button" id="Borrar" value="Borrar Todo"class="btn btn-default btn-lg" style="width: 130px; height: 70px;">
 			    </div>
-			</div>
-            <div  style="width:350px;margin: 0 auto" align="center" id ="alphaNumericKeyboard">
-            </div>
-            <br>
+			</div><br>
 	    <button class="btn btn-primary btn-lg" id="login" style="width: 130px; height: 70px;font-size: 30px;">Aceptar</button>
 		</div>
 	</div>
@@ -273,11 +270,11 @@ function initMenu(idType){
 	$("#menu-toggle").fadeIn(1000);
 	if(idType==1){
 		$('#ka').show();
-		$('#bigText').text('Ingrese su RUT');
+		$('#bigText').text('Ingrese Su Rut');
 		inputTypeT=1;
 	}else{
 		$('#ka').hide();
-		$('#bigText').text('Ingrese su DNI');
+		$('#bigText').text('Ingrese Su DNI');
 		$("#login").animate({fontSize: "26px"}, {queue: false,duration: 0}).prop( "disabled", false );
 		inputTypeT=2;
 
@@ -299,7 +296,7 @@ $(document).click(function(e) {
 var totemId="";
 $(document).ready(function() {
 	//establece id totem
-    createAlpha();
+
     //$("#btn_delete").val('<span class="glyphicon glyphicon-arrow-left"></span>');
     activesModules();
     resetInput(1);
@@ -378,10 +375,9 @@ function activesModules(){
         $("#enableTothtem").show();
         $("#disableTothtem").hide();
     }
-    console.log("here");
     window.setTimeout(function(){
         activesModules();
-    }, 5000);
+    }, 20000);
 }
 
 
@@ -879,12 +875,10 @@ function SearchOnLogin(datos){
     $.post('scripts/getPatientName.php',{rut: $('#patientName').html()},function(data, textStatus, xhr){
         if(data!="0"){
             var dataJson = JSON.parse(data);
-            if(dataJson[0]['name']!=null){
-                namePatient = dataJson[0]['name']+' '+dataJson[0]['lastname'];
-            }
-            $('#WelcomeLabel').html(Welcome()+' '+namePatient);
+            namePatient = dataJson[0]['name']+' '+dataJson[0]['lastname'];
+            $('#WelcomeLabel').text(Welcome()+' '+namePatient);
         }else{
-            $('#WelcomeLabel').html(Welcome());
+            $('#WelcomeLabel').text(Welcome());
         }
 
     });
@@ -931,9 +925,8 @@ function SearchOnLogin(datos){
 function changeLogin(){
     $('#buttonsGrid').fadeOut('slow');
     $('#inputText').fadeOut('slow');
-    /*$('#bigText').fadeOut('slow', function() {
-    
-    $('#loadingLogo').fadeIn('slow');
+    $('#bigText').fadeOut('slow', function() {
+        $('#loadingLogo').fadeIn('slow');
         if(inputTypeT==2){
 			$('#bigText').text('Verificando DNI...');
         }else{
@@ -942,14 +935,12 @@ function changeLogin(){
         
         $('#bigText').fadeIn('slow');
     });
-
     window.setTimeout(function(){
         $('#loadingLogo').fadeOut('slow');
         $('#bigText').fadeOut('slow'); 
         $('#rut').attr("disabled", true);
-        */
         loginPatient();
-    //}, 10);
+    }, 3000);
 }
 //normaliza las animaciones del login
 function normalLogin(){
@@ -958,7 +949,7 @@ function normalLogin(){
 	    $('#inputText').fadeIn('slow');
 	    $('#bigText').fadeIn('slow', function() {
 	        $('#loadingLogo').fadeOut('slow');
-	        $('#bigText').text('Ingrese su RUT');
+	        $('#bigText').text('Ingrese Su Rut');
 	        $('#bigText').fadeIn('slow');
 	    });
 
@@ -1202,31 +1193,6 @@ function goInactive() {
  //activo
 function goActive() {
     startTimer();
-}
-
-
-function createAlpha(){
-    var html = "";
-    //<input type="button" name="number" value="7" id="_7" class="btn btn-default btn-lg" style="width: 70px; height: 70px; font-size: 30px;" onclick="teclado('number')">
-    var range = [];
-    for(var i = 65; i < 91; i++){
-     range.push(String.fromCharCode(i));
-    }
-    
-    for (var i = 0; i < range.length; i++) {
-        if(i == 0 || i== 10 || i == 20 ){
-            html += '<div class="row">';
-            html += '<input type="button" name="number" value="'+range[i]+'" id="'+range[i]+'" class="btn btn-default btn-lg" style="width: 70px; height: 70px; font-size: 30px;" onclick="teclado("number")">';
-            html += '\\n';
-        }else{
-            html += '<input type="button" name="number" value="'+range[i]+'" id="'+range[i]+'" class="btn btn-default btn-lg" style="width: 70px; height: 70px; font-size: 30px;" onclick="teclado("number")">';
-        }
-        if(i == 9 || i== 19){
-            html += "</div>";
-        }
-        
-    };
-    console.log(html);
 }
 
 </script>

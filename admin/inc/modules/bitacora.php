@@ -147,7 +147,6 @@ function getPatientInfo(rut,dateI,dateF,hourI,hourF) {
 	    	$("#data").html('<h1><i class="fa fa-spinner fa-spin"></i></h1>');
 	    },
 	    success: function(data) {
-	    	//console.log(data);
 	    	fillTable(data);
 	    	
 	    },
@@ -168,6 +167,8 @@ function getPatinetsList (name) {
 	    	$("#data").html('<h1><i class="fa fa-spinner fa-spin"></i></h1>');
 	    },
 	    success: function(data) {
+	    	console.log("patients");
+	    	console.log(name);
 	    	var json = JSON.parse(data);
 			$("#data").text('');
 			var content = '';
@@ -397,7 +398,6 @@ function filterPlanPres(rut){
 	    },
 	    success: function(data) {
 	    	//fillTable(data);
-	    	//console.log(data);
 			if(data != 0){
 				var json = JSON.parse(data);
 				var T = '<table class="table table-striped table-bordered" id="bitacora"><thead><tr> ';

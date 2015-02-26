@@ -27,7 +27,7 @@ echo '
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        <h class="navbar-brand" href="#"> Trazabilidad</h>
+        <a class="navbar-brand" href="index.php"> Trazabilidad</a>
     </div>';
 
 echo '<div class="collapse navbar-collapse navbar-ex1-collapse">';
@@ -40,9 +40,14 @@ if(findRole("current_situation","show")){
 if(findRole("logbook_executive","show") || findRole("logbook_patient","show")){
 	echo '<li id="bitacora_dropdown" class="dropdown">' . itemMenu("bitacora", "Bitácora", 'enable', false) . '</li>';	
 }
+/*
+
+	***** Supervision RIP *****
 if(findRole("surveillance","show")){
 	echo '<li> ' . itemMenu("supervision", "<span class='glyphicon glyphicon-search'></span>  Supervisión", 'enable', true) . '</li>';
 }
+
+*/
 if(findRole("statistics","show")){
 	echo '<li>  ' . itemMenu("statistical", "<span class='glyphicon glyphicon-calendar'></span> Estadísticas", 'enable', true) . '</li>';
 }

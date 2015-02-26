@@ -1,8 +1,9 @@
-var PATIENT = function (id, name, ticket, datetime, idModule, storage) {
+var PATIENT = function (id, name, ticket, datetime, idModule, idSubmodule, storage) {
     this.id = id; // rut
     this.name = name;
     this.shape = 'circulo';
     this.idModule = idModule;
+    this.idSubmodule = idSubmodule;
     this.lastIdModule = null;
     this.lastIdSubmodule = null;
     this.nextIdModule = null;
@@ -584,9 +585,7 @@ PATIENT.prototype.bitacora = function () {
                 "language": {
                     "url": "vendor/datatables/languaje.lang"
                 }
-            });
-
-            
+            }); 
         });    
     });    
 };

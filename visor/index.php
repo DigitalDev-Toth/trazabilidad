@@ -16,6 +16,7 @@ if (isset($_GET['idZone'])) {
         <script src="js/libs/jquery-2.1.1.min.js"></script>
         <script src="http://falp.biopacs.com:8000/socket.io/socket.io.js"></script>
         <script src="js/libs/jquery.tothtip.js"></script>
+        <script src="js/libs/jquery.tothcontextmenu.js"></script>
         <script src="js/libs/bootstrap.min.js"></script>
         <script src="js/libs/raphael-min.js"></script>
         <script src="js/libs/comet.js"></script>
@@ -28,11 +29,16 @@ if (isset($_GET['idZone'])) {
         <script src="js/tools/maker.js"></script>
         <script type="text/javascript">
             var MODULES = {},
+                BACKUP_MODULES = {},
                 SUBMODULES = {},
+                BACKUP_SUBMODULES = {},
                 PATIENTS = {},
+                BACKUP_PATIENTS = {},
                 MAKE = null,
                 PAPER = null;
-                ZONE = '<?php echo $zone ?>'; 
+                ZONE = '<?php echo $zone ?>',
+                MENU = {},
+                MODE = 1000000; 
             var socket = io.connect('http://falp.biopacs.com:8000');
             $(function () {                 
                 socketComet();
@@ -85,7 +91,7 @@ if (isset($_GET['idZone'])) {
                             });
                             $.get('../services/getPatients.php?zone='+ ZONE, function (data, status) {
                                 var jsonData = JSON.parse(data);
-                                for(i=0; i<jsonData.length;i++){
+                                for (i = 0; i < jsonData.length; i++) {
                                     MAKE.patient(jsonData[i].rut, jsonData[i].name, jsonData[i].ticket, jsonData[i].datetime, jsonData[i].attention, jsonData[i].module, jsonData[i].sub_module);
                                 }
                             });
@@ -93,10 +99,133 @@ if (isset($_GET['idZone'])) {
                             
                             message('Objetos creados');
                             console.log(MODULES);
+                            for (var i in MODULES) {
+                                if (MODULES[i].type === 'module' && MODULES[i].dbType > 1) {
+                                    var object = {name: MODULES[i].name, id: MODULES[i].id};
+                                    MENU[i] = object;
+                                }                    
+                            }
+                            var object = {name: 'Todos', id: '1000000'};
+                            MENU[1000000] = object;
                         }
                     }
-                }); 
+                });                    
+                $(window).tothcontextmenu(MENU);
+                $(window).on('contextmenu', function (event) {
+                    event.preventDefault();
+                    return false;
+                });
             });
+            function repaintViewport () {
+                PAPER.clear();              
+                if (MODE === 1000000) {
+                    stopVariables ();
+                    MODULES = {};
+                    SUBMODULES = {};
+                    PATIENTS = {};
+                    MAKE = new MAKER();
+                    $.get('../services/zoneInfo.php?zone='+ ZONE, function (data, status) {                           
+                        var info = JSON.parse(data);
+
+                        MAKE.module(info.name, info.id, 'waiting-room', null, 'center', '#818878', null, null, null, info.seats);
+                        MAKE.module('Salida', info.id, 'limb', null, 'center', '#A24A4A', null, null, null, null);
+                        for (var i = 0; i < info.modules.length; i++) {   
+                            MAKE.module(info.modules[i].name, info.modules[i].id, 'module', info.modules[i].type, info.modules[i].position, '#'+ info.modules[i].color, info.modules[i].shape, info.modules[i].max_wait, info.modules[i].submodules);
+                        }  
+                        MAKE.wrInfo();
+                        $.get('../services/getPatients.php?zone='+ ZONE, function (data, status) {
+                            var jsonData = JSON.parse(data);
+                            for (i = 0; i < jsonData.length; i++) {
+                                MAKE.patient(jsonData[i].rut, jsonData[i].name, jsonData[i].ticket, jsonData[i].datetime, jsonData[i].attention, jsonData[i].module, jsonData[i].sub_module);
+                            }                            
+                        });
+                        $.get('../services/info_Module.php?zone='+ ZONE, function (data, status) {
+                            var dm = $.parseJSON(data);
+                            for (var i = 0; i < dm.length; i++) {
+                                if (parseInt(dm[i].dbtype) === 1) {
+                                    MAKE.tothtemInfo(dm[i].idModule, dm[i].total_tickets, dm[i].modules, dm[i].first_ticket, dm[i].last_ticket);
+                                } else {
+                                    if (MODULES[dm[i].idModule].totalSubmodulesInactive < MODULES[dm[i].idModule].totalSubmodules) {
+                                        MAKE.moduleInfo(dm[i].idModule, dm[i].served_tickets, dm[i].average, dm[i].maxtime, dm[i].mintime);
+                                    }                                        
+                                }
+                            }
+                        });
+                        $.get('../services/info_Submodule.php?zone='+ ZONE, function (data, status) {
+                            var dsm = $.parseJSON(data);
+                            for (var i = 0; i < dsm.length; i++) {
+                                if (dsm[i].session !== null && MODULES[dsm[i].module].submodules[dsm[i].submodule].state !== 'inactivo') {
+                                    MAKE.submoduleInfo(dsm[i].module, dsm[i].submodule, dsm[i].user, dsm[i].session, dsm[i].patients, dsm[i].average, dsm[i].maxtime, dsm[i].mintime);
+                                }                                    
+                            }
+                        });
+                    });                    
+                } else {                    
+                    stopVariables ();
+                    MODULES = {};
+                    SUBMODULES = {};
+                    PATIENTS = {};
+                    MAKE = new MAKER();
+                    $.get('../services/zoneInfo.php?zone='+ ZONE, function (data, status) {                           
+                        var info = JSON.parse(data);
+
+                        MAKE.module(info.name, info.id, 'waiting-room', null, 'center', '#818878', null, null, null, info.seats);
+                        MAKE.module('Salida', info.id, 'limb', null, 'center', '#A24A4A', null, null, null, null);
+                        for (var i = 0; i < info.modules.length; i++) {
+                            if (MODE === parseInt(info.modules[i].id)) {
+                                MAKE.module(info.modules[i].name, info.modules[i].id, 'module', info.modules[i].type, 'superior', '#'+ info.modules[i].color, info.modules[i].shape, info.modules[i].max_wait, info.modules[i].submodules);
+                            }                            
+                        }  
+                        MAKE.wrInfo();
+//                        $.get('../services/getPatients.php?zone='+ ZONE, function (data, status) {
+//                            var jsonData = JSON.parse(data);
+//                            for (i = 0; i < jsonData.length; i++) {
+//                                MAKE.patient(jsonData[i].rut, jsonData[i].name, jsonData[i].ticket, jsonData[i].datetime, jsonData[i].attention, jsonData[i].module, jsonData[i].sub_module);
+//                            }                            
+//                        });
+//                        $.get('../services/info_Module.php?zone='+ ZONE, function (data, status) {
+//                            var dm = $.parseJSON(data);
+//                            for (var i = 0; i < dm.length; i++) {
+//                                if (parseInt(dm[i].dbtype) === 1) {
+//                                    MAKE.tothtemInfo(dm[i].idModule, dm[i].total_tickets, dm[i].modules, dm[i].first_ticket, dm[i].last_ticket);
+//                                } else {
+//                                    if (MODULES[dm[i].idModule].totalSubmodulesInactive < MODULES[dm[i].idModule].totalSubmodules) {
+//                                        MAKE.moduleInfo(dm[i].idModule, dm[i].served_tickets, dm[i].average, dm[i].maxtime, dm[i].mintime);
+//                                    }                                        
+//                                }
+//                            }
+//                        });
+//                        $.get('../services/info_Submodule.php?zone='+ ZONE, function (data, status) {
+//                            var dsm = $.parseJSON(data);
+//                            for (var i = 0; i < dsm.length; i++) {
+//                                if (dsm[i].session !== null && MODULES[dsm[i].module].submodules[dsm[i].submodule].state !== 'inactivo') {
+//                                    MAKE.submoduleInfo(dsm[i].module, dsm[i].submodule, dsm[i].user, dsm[i].session, dsm[i].patients, dsm[i].average, dsm[i].maxtime, dsm[i].mintime);
+//                                }                                    
+//                            }
+//                        });
+                    }); 
+                }                
+            }
+            function stopVariables () {  
+                MAKE = null;                
+                for (var i in MODULES) {
+                    clearInterval(MODULES[i].interval);
+                    clearInterval(MODULES[i].ivTothtemInfo);
+                    clearInterval(MODULES[i].ivInfo);                    
+                    clearInterval(MODULES[i].ivwrInfo);
+                    if (MODULES[i].type === 'module' && MODULES[i].dbType > 1) {
+                        for (var j in MODULES[i]) {
+                            delete MODULES[i].submodules[j];
+//                            clearInterval(MODULES[i].submodules[j].interval);
+//                            clearInterval(MODULES[i].submodules[j].ivPauseTime);
+                        }
+                    }
+                }
+                for (var i in PATIENTS) {
+                    clearInterval(PATIENTS[i].interval);
+                }
+                
+            }
             message = function (message) {
                 $('#message').fadeOut(500, function () {
                     $('#message').html(message);

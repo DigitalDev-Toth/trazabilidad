@@ -1,7 +1,7 @@
 <?php
 
 $rut = $_REQUEST['rut'];
-
+//$type = $_GET['type'];
 if(substr($rut,-2,-1)=='-'){
     $type=1;
 }else{

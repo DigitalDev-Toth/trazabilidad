@@ -56,10 +56,13 @@ if(isset($_REQUEST['zone'])){
 
   		<h2>
             <div class="row text-center">
-                <div class="col-md-6 well well-sm">
+                <div class="col-md-4 well well-sm">
                     M&oacute;dulo de Atención
                 </div>
-                <div class="col-md-6 well well-sm">
+                  <div class="col-md-4 well well-sm">
+                    Sub m&oacute;dulo
+                </div>
+                <div class="col-md-4 well well-sm">
                     Número
                 </div>
             </div>
@@ -127,7 +130,7 @@ $(document).ready(function() {
 	zone = decodeURIComponent("<?php echo rawurlencode($_GET['zone']); ?>");
 	getZoneName(zone);
 	initConfig(zone);
-	fillMultimedia();
+	//fillMultimedia();
 });
 //News & climate
     /*$('#rss').rssfeed('http://www.cnnchile.com/rss/',{}, function(e) {
@@ -371,7 +374,7 @@ function lastTickets(zone){
 			$("#content").fadeOut('fast', function() {
 				$('#content').html('');
 				for(i=0;i<allData.length;i++){
-					addTicket(allData[i].module,allData[i].submodule,allData[i].ticket);
+					addTicket(allData[i].module,allData[i].submodule,allData[i].ticket,allData[i].type);
 				}
 				$("#content").fadeIn('fast');		
 			});
@@ -380,11 +383,17 @@ function lastTickets(zone){
 	});
 }
 
-function addTicket(module,submodule,ticket){
+function addTicket(module,submodule,ticket,type){
+
 	var content = '';
-	console.debug('hi');
-	content += "<div class='row text-center' style='font-size: 50px;'> " +
-					"<div class='col-md-2' style='padding-top: 35px;font-size: 50px;'>"+module+"</div>"+
+	if(type=='normal'){
+		content += "<div class='row text-center' style='font-size: 50px;'> "
+	}else if(type=='derivado'){
+		content += "<div class='row text-center' style='font-size: 50px; color: red; border: 1px solid black;'> "+
+					"<p>DERIVADOS</p>"
+	}
+
+	content +=	"<div class='col-md-2' style='padding-top: 35px;font-size: 50px;'>"+module+"</div>"+
 					"<div class='col-md-4' style='padding-top: 35px;font-size: 50px;'>"+submodule+"</div>"+
 					"<div class='col-md-6' style='font-size: 140px; font-weight: bold;'>"+ticket+"</div>"+
 			    "</div><hr>";

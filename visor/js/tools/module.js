@@ -45,6 +45,7 @@ var MODULE = function (name, id, type, dbType, pos, color, shape, waitingTime, s
 //        this.places = 24;
 //        this.placesPos = [];
     }
+    this.interval = null;
     this.color = color;
     this.pos = pos;
     this.el = null; // element in DOM for module
@@ -431,7 +432,7 @@ MODULE.prototype.setSeatsPos = function () {
 //    }
 //};
 MODULE.prototype.seatsCountAndTimeWaiting = function () {
-    setInterval((function (t) {
+    this.interval = setInterval((function (t) {
         return function () {
             var count = 0;
             var array = [];

@@ -48,7 +48,7 @@ MAKER.prototype.submoduleInfo = function (idModule, idSubmodule, executive, acti
     MODULES[idModule].submodules[idSubmodule].tooltipInfo();
 };
 MAKER.prototype.patient = function (rut, name, ticket, datetime, attention, idModule, idSubmodule) {
-    var p = new PATIENT(rut, name, ticket, datetime, idModule, true);
+    var p = new PATIENT(rut, name, ticket, datetime, idModule, idSubmodule, true);
     PATIENTS[rut] = p;
     
     if (attention === 'waiting' || attention === 'derived') {
@@ -74,7 +74,7 @@ MAKER.prototype.goTo = function (comet, rut, name, action, ticket, datetime, idM
                 if (PATIENTS[rut] !== undefined) {
                     PATIENTS[rut].ticket = ticket;
                 } else {
-                    var p = new PATIENT(rut, name, ticket, datetime, idModule, false);
+                    var p = new PATIENT(rut, name, ticket, datetime, idModule, idSubmodule, false);
                     PATIENTS[rut] = p;     
                 }
             } 

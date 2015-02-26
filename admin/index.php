@@ -50,10 +50,13 @@ if (!isset($_SESSION['Username'])) {header("location: login.php");
 
 </script>
 </head>
-<body>
+
+
+
+<body >
 <?include ("inc/menuTop.php");?>
 <iframe id= "contentMain" name="contentMain" src="inc/contentMain.php?module='supervision'" height= "100%" frameborder="0" transparency marginheight="0" marginwidth="0">
-				<p>Tu navegador no puede usar BioRis!</p>
+				<p>Tu navegador no puede el sistema</p>
 </iframe>
 </body>
 </html>
