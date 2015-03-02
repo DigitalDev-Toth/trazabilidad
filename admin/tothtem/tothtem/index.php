@@ -134,7 +134,7 @@
                     <input type="button" id="Borrar" value="Borrar Todo"class="btn btn-default btn-lg" style="width: 130px; height: 70px;">
 			    </div>
 			</div>
-            <div  style="width:350px;margin: 0 auto" align="center" id ="alphaNumericKeyboard">
+            <div  style="width:675px;margin: 0 auto" align="center" id ="alphaNumericKeyboard">
             </div>
             <br>
 	    <button class="btn btn-primary btn-lg" id="login" style="width: 130px; height: 70px;font-size: 30px;">Aceptar</button>
@@ -286,7 +286,14 @@ function initMenu(idType){
 }
 
 
-
+$("#rutOption").click(function(event) {
+    $("#alphaNumericKeyboard").hide();
+    $("#numericKeyboard").show();
+});
+$("#dniOption").click(function(event) {
+    $("#numericKeyboard").hide();
+    $("#alphaNumericKeyboard").show();
+});
 $(document).click(function(e) { 
     if (e.button == 0 && click==0) {
         $("#start").css({
@@ -378,10 +385,9 @@ function activesModules(){
         $("#enableTothtem").show();
         $("#disableTothtem").hide();
     }
-    console.log("here");
     window.setTimeout(function(){
         activesModules();
-    }, 5000);
+    }, 20000);
 }
 
 
@@ -929,8 +935,8 @@ function SearchOnLogin(datos){
 
 //cambia las animaciones del login
 function changeLogin(){
-    $('#buttonsGrid').fadeOut('slow');
-    $('#inputText').fadeOut('slow');
+    //$('#buttonsGrid').fadeOut('slow');
+    //$('#inputText').fadeOut('slow');
     /*$('#bigText').fadeOut('slow', function() {
     
     $('#loadingLogo').fadeIn('slow');
@@ -1209,24 +1215,31 @@ function createAlpha(){
     var html = "";
     //<input type="button" name="number" value="7" id="_7" class="btn btn-default btn-lg" style="width: 70px; height: 70px; font-size: 30px;" onclick="teclado('number')">
     var range = [];
+    for (var i = 0; i < 10; i++) {
+        range.push(i);
+    };
+    
     for(var i = 65; i < 91; i++){
      range.push(String.fromCharCode(i));
     }
-    
+
     for (var i = 0; i < range.length; i++) {
         if(i == 0 || i== 10 || i == 20 ){
             html += '<div class="row">';
             html += '<input type="button" name="number" value="'+range[i]+'" id="'+range[i]+'" class="btn btn-default btn-lg" style="width: 70px; height: 70px; font-size: 30px;" onclick="teclado("number")">';
-            html += '\\n';
+            
         }else{
             html += '<input type="button" name="number" value="'+range[i]+'" id="'+range[i]+'" class="btn btn-default btn-lg" style="width: 70px; height: 70px; font-size: 30px;" onclick="teclado("number")">';
         }
         if(i == 9 || i== 19){
             html += "</div>";
         }
-        
+
     };
-    console.log(html);
+    html += '<button class="btn btn-default btn-lg" id="btn_delete" onclick="deleteString()" style="width: 70px; height: 70px; font-size: 30px;"><span class="glyphicon glyphicon-arrow-left"></span></button>';
+    
+    html+="</div>";
+    $("#alphaNumericKeyboard").html(html);
 }
 
 </script>

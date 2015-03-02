@@ -33,8 +33,8 @@ if(!isset($_SESSION['Username'])) { header("location: ../../login.php"); header(
                     <p class="pull-right">&nbsp;</p>
                     <!--<button class="btn btn-primary getout pull-right" onclick="inactiveSubModule('change')"> <span class="glyphicon glyphicon-transfer"></span> CAMBIAR SUBMÓDULO</button>
                     <p class="pull-right">&nbsp;</p>-->
-
-                    <button class="btn btn-primary getout pull-right" id="pause" onclick="inactiveSubModule('pause')"> <span class="glyphicon glyphicon-pause"></span> PAUSAR ATENCIÓN</button>
+                    <button class="btn btn-primary getout pull-right" id="pause" onclick="showPauseDialog()"> <span class="glyphicon glyphicon-pause"></span> PAUSAR ATENCIÓN</button>
+                    <!--<button class="btn btn-primary getout pull-right" id="pause" onclick="inactiveSubModule('pause')"> <span class="glyphicon glyphicon-pause"></span> PAUSAR ATENCIÓN</button>-->
                     <span id="timeAttention" class="pull-right">-</span>
                 </h1>
 
@@ -100,6 +100,32 @@ if(!isset($_SESSION['Username'])) { header("location: ../../login.php"); header(
 								</div>
 							</div>
 						</div>
+
+
+                        <!-- Modal motivo pausa -->
+                        <div id="modalPause" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+                          <div class="modal-dialog modal-sm">
+                            <div class="modal-content">
+                            <div class="row">
+                                <div class="col-md-offset-1 col-md-10">
+                                <br>
+                                <p>Seleccione el motivo de su pausa:</p>
+                                <select class="form-control" id = "motives">
+                                  <option>Baño</option>
+                                  <option>Tomar un cafe</option>
+                                  <option>Incendio</option>
+                                  <option>Robo</option>
+                                  <option>Terremoto</option>
+                                </select>
+                                <br>
+                                <button  onclick="inactiveSubModule('pause')" type="button" class="btn btn-primary" >Aceptar</button>
+                                
+                                    </div>
+                            </div>
+                              
+                            </div>
+                          </div>
+                        </div>
 
 						<!-- MODAL Derivación-->
 						<div id="modalDerived" class="modal fade " tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
@@ -349,11 +375,18 @@ function getActivesModules(){
 
 }
 
+function showPauseDialog(){
+    console.log('open');
+    $('#modalPause').modal('show');
+}
 
 function inactiveSubModule(typeButton,doLog){//Desactiva el submódulo y genera log de cierre de sesión
-    var actionType = 'inactivo'
+    var actionType = 'inactivo';
+    var motive = $("#motives option:selected").text();
     if(typeButton=='pause'){ 
+        $('#modalPause').modal('hide');
         actionType='pausado';
+        
         $('.panel-primary').removeClass('panel-primary').addClass('panel-info');
         $('#pause').html('<span class="glyphicon glyphicon-play"></span> REANUDAR ATENCIÓN');
         $('#pause').attr('onclick', 'inactiveSubModule("replay")');
@@ -365,14 +398,14 @@ function inactiveSubModule(typeButton,doLog){//Desactiva el submódulo y genera 
         actionType='re-activo';
         $('.panel-info').removeClass('panel-info').addClass('panel-primary');
         $('#pause').html('<span class="glyphicon glyphicon-pause"></span> PAUSAR ATENCIÓN');
-        $('#pause').attr('onclick', 'inactiveSubModule("pause")');
+        $('#pause').attr('onclick', 'showPauseDialog()');
         refreshTable();
         $('#content').text('Esperando...');
         //attentionTime();
     }
 
     if(typeButton!='logout'){
-        $.post('phps/activeSubModule.php', {type: actionType, user: "<?php echo $_SESSION['UserId']; ?>", submodule: submodule}, function(data, textStatus, xhr) {
+        $.post('phps/activeSubModule.php', {type: actionType, user: "<?php echo $_SESSION['UserId']; ?>", submodule: submodule, motive:motive}, function(data, textStatus, xhr) {
             socket.send(data);
             if(typeButton=='replay'){
                 attentionTime();
@@ -803,6 +836,7 @@ function attentionTime(){//Tiempo en que ha estado disponible el usuario
     var initTime;
     $.post('phps/getAttentionTime.php', {user: "<?php echo $_SESSION['UserId']; ?>"}, function(data, textStatus, xhr) {
         initTime = data;
+        console.log(initTime);
         $('#timeAttention').html(initTime);
     });
 

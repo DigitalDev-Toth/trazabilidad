@@ -184,7 +184,16 @@ if($servedCount==0){
   $average=date('Y-m-d').' '.getTimeString($servedTimeTotal/$servedCount);
 }
 
-$returnData = array('served_tickets' => $servedCount, 'maxtime' => $maxtime,'mintime' => $mintime,'average' => $average);
+$sql = "SELECT id,description FROM logs WHERE sub_module=$submodule order by id desc limit 1";
+$logs = $db->doSql($sql);
+$ticket ='';
+if( $logs['description'] == 'Ticket ha venido'){
+  $id = $logs['id'];
+  $sql = "SELECT ticket FROM tickets WHERE logs = $id";
+  $ticket = $db->doSql($sql);  
+}
+
+$returnData = array('served_tickets' => $servedCount, 'maxtime' => $maxtime,'mintime' => $mintime,'average' => $average,'description'=> $logs['description'],'ticket'=>$ticket['ticket']);
 return ($returnData);
 
 

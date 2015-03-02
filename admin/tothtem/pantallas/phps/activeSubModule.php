@@ -32,7 +32,8 @@ if($type == 'activo'){
     $description ='Cierre de Sesión Usuario: '.$rut;
     $action = 'to';
 }else if($type == 'pausado'){
-    $description ='Pausa de Sesión Usuario: '.$rut;
+    $motive = $_REQUEST['motive'];
+    $description ='Pausa de Sesión Usuario: '.$rut.' Motivo: '.$motive;
     $action = 'to';
 }else if($type == 're-activo'){
     $description ='Re-inicio de Sesión Usuario: '.$rut;

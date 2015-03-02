@@ -68,7 +68,9 @@ include("controls.php");
                				</div>
 						</div>
 					</div>
-
+					<div class="row well well-sm text-center" id='data'>
+						
+					</div>
 			</form>
 		</div>
 
@@ -85,12 +87,12 @@ include("controls.php");
 
 
 			$userId = $_REQUEST['userSearch'];
-			if($userId != ''){	
+			if($userId != ''){
+				
 				echo "<div class='well well-sm text-center' id='info'></div>";
 				echo "<div class='well well-sm text-center' id='data'></div><br><br><br>";
-			}else{
-				echo '<div class="row well well-sm text-center" id="data"></div>';
 			}
+			
 		?>
 
 
@@ -114,8 +116,6 @@ include("controls.php");
 			$("#btnBack").css({'visibility': 'visible'})
 			datepickerConf();
 			getLogs(moment().format('DD-MM-YYYY'),moment().add(1,'days').format('DD-MM-YYYY'));
-			console.log(user);
-			getUserInfo(user);
 		}else{
 			loadUsers();
 		}
@@ -135,7 +135,6 @@ include("controls.php");
 	}
 	function fillInfo(data) {
 	  	var json = JSON.parse(data);
-	  	console.log(data);
 		if(json.length == 1){
 			var patientHtml = '<table class="table table-bordered">';
 				patientHtml += '<tr> <th colspan="6" class="text-center">Resultados </th></tr>';
@@ -147,39 +146,7 @@ include("controls.php");
 			$("#info").html(patientHtml);
 		}
 	}
-
-	function getUserInfo(id) {
-		$.ajax({
-		    type: 'POST',
-		    url: "modules/bitacora_user/getUserData.php",
-		    data: { id:id } ,
-		    beforeSend: function() {
-		    	$("#info").html('<h1><i class="fa fa-spinner fa-spin"></i></h1>');
-		    },
-		    success: function(data) {
-		    	fillInfoUser(data);
-		    },
-		    error: function(xhr) {
-		    	//do a barrel roll
-		    }
-		});
-	}
-	function fillInfoUser(data) {
-	  	var json = JSON.parse(data);
-		if(json.length == 1){
-			var userHtml = '<table class="table table-bordered">';
-				userHtml += '<tr> <th colspan="6" class="text-center">Resultados </th></tr>';
-				userHtml += '<tr><th>Usuario: </th><td>'+json[0]["username"]+'</td><th>RUT: </th><td>'+json[0]["rut"]+'</td><th>Nombre: </th><td>'+json[0]["name"]+' '+json[0]["lastname"]+'</td></tr>';
-				userHtml += '<tr><th>Tel&eacute;fono: </th><td>'+json[0]["phone"]+'</td><th>Direcci&oacute;n: </th><td>'+json[0]["address"]+'</td><th>E-mail: </th><td>'+json[0]["mail"]+'</td></tr>';
-				userHtml += '</table>';
-			$("#info").html("");
-			$("#info").html(userHtml);
-		}
-
-
-	}
 	function fillTable (data) {
-		console.log(data);
 		if(data != 0){
 			var json = JSON.parse(data);
 			var T = '<table class="table table-striped table-bordered" id="bitacora"><thead><tr> ';

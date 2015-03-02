@@ -101,14 +101,20 @@ $db4->doSql("INSERT INTO tickets(logs,ticket,attention) VALUES (".$idLog['id']."
 //$ticketData[0] = array('newticket' => $newticket, 'modality' => $module, 'date_t' => date("Y-m-d"), 'hour_start' => date("H:i:s"), 'hour_end' => 'NaN', 'rut' => $rut);
 
 //////////////////WEBSERVICE//////////////////////////////
-include('../../../../services/WebservicePatientName.php');
-$patientData = getPatientName($rut);
+		/*$con = pg_connect("host=biopacs.com port=5432 dbname=es14b_hrt2 user=postgres password=justgoon") or die('NO HAY CONEXION: ' . pg_last_error());
 
-		/*if(substr($rut,-2,-1)=='-'){
+		$sql="SELECT * FROM patient WHERE rut='$rut'";
+		$resultado = pg_query($con, $sql);
+		$row = pg_numrows($resultado);
+		if($row){
+		    $patientName = pg_result($resultado,0,2).' '.pg_result($resultado,0,3);
+		}else{
+			$patientName = 'Paciente Nuevo';
+		}*/
+		if(substr($rut,-2,-1)=='-'){
 		    $type=1;
 		}else{
 		    $type=3;
-		    $rutA=$rut;
 		}
 
 		if($type==1){
@@ -124,16 +130,12 @@ $patientData = getPatientName($rut);
 		28 - Apellido Paterno
 		29 - Apellido Materno
 		*/
-		/*if($out[25]=='<NewDataSet xmlns="">'){
+		if($out[25]=='<NewDataSet xmlns="">'){
 		    $patientName = $out[27].' '.$out[28].' '.$out[29];
 		}else{
 			$patientName = 'Paciente Nuevo';
-		}*/
-		if($patientData[0]['name']!=null){
-		    $patientName = $patientData[0]['name'].' '.$patientData[0]['lastname'];
-		}else{
-			$patientName = 'Paciente Nuevo';
 		}
+
 //////////////////////////////////////////////////////////
 
 

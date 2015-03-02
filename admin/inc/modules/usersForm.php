@@ -11,6 +11,8 @@ $users->exceptions(array("id"));
 //$users->relation("role", "role", "id", "name");
 
 $users->relation("role", "role", "id", "name");
+$users->restriction($users->relation("employee", "employee", "id", "rut", array("NULL"=>'Ninguno')),array(""=>" id!=0 ORDER BY rut"));
+
 $users->changeFormObject('users.color', 'color');
 $users->changeFormObject('users.state', 'menu', NULL, array('Activo'=>'activo','Inactivo'=>'inactivo'));
 

@@ -21,22 +21,26 @@ include("controls.php");
 		<div class="row">
 			<form class="form-horizontal" id="toSearch" role="form" name="between" method="POST">
 					<div class="row well well-sm ">
-						<div class="col-md-2">
+						<div class="col-md-2 col-xs-2 col-sm-2 col-lg-2">
 							<label style="margin-top: 8px;"><span class="glyphicon glyphicon-th-list"></span> Bitacora</label>
 						</div>
-						<div class="col-md-3 ">
-							<div class="input-group">
-									<div class="input-group-addon"><span class="glyphicon glyphicon-bookmark"></span> RUT/DNI</div>
-									<input type="text" class="form-control" id="rutSearch" name="rutSearch" onblur="Valida_Rut(this)"  onKeydown="Javascript: if (event.keyCode==13) Valida_Rut(this);" placeholder="Ingrese RUT/DNI">
+						<div class="col-md-1 col-xs-1 col-sm-1 col-lg-1">
+							<label class="radio-inline"><input id='radioRut' type="radio" name="optradio" onchange="changeID('rut');">RUT</label>
+							<label class="radio-inline"><input type="radio" name="optradio" onchange="changeID('dni');">DNI</label>
+						</div>
+						<div class="col-md-3 col-xs-3 col-sm-3 col-lg-3">
+							<div id="idView" class="input-group">
+									<div class="input-group-addon"><span class="glyphicon glyphicon-bookmark"></span> RUT</div>
+									<input id="idViewText" type="text" class="form-control" id="rutSearch" name="rutSearch" onblur="Valida_Rut(this)"  onKeydown="Javascript: if (event.keyCode==13) Valida_Rut(this);" placeholder="Ingrese RUT"/>
 							</div>
 						</div>
-						<div class="col-md-3">
+						<div class="col-md-3 col-xs-3 col-sm-3 col-lg-3">
 							<div class="input-group">
 								<div class="input-group-addon"><span class="glyphicon glyphicon-user"></span> Nombres</div>
 								<input type="text" class="form-control" id="nameSearch" name="nameSearch" placeholder="Ingrese nombre y/o apellido">
 							</div>
 						</div>
-						<div class="col-md-1">
+						<div class="col-md-1 col-xs-1 col-sm-1 col-lg-1">
 							<button id="button" name="beetween"  class="btn btn-primary" type="submit" onclick="submit();"><span class="glyphicon glyphicon-search"></span> Buscar</button>
 						</div>
 					
@@ -110,6 +114,7 @@ var rut='',state=0;
 $(document).ready(function() {
 	rut = "<?php echo $rut; ?>";
 	var name = '<?php echo $name; ?>';
+	$("#radioRut").attr('checked', true);
 	//show only log of patient
 	if(rut != '' || rut.length){
 		getPatientInfo(rut);
@@ -128,7 +133,7 @@ function getPatientInfo(rut,dateI,dateF,hourI,hourF) {
 	$.ajax({
 	    type: 'POST',
 	    url: "services/getBitacora.php",
-	    data: { data:rut } ,
+	    data: { data:rut, type:1 } ,
 	    beforeSend: function() {
 	    	$("#data").html('<h1><i class="fa fa-spinner fa-spin"></i></h1>');
 	    },
@@ -162,13 +167,11 @@ function getPatinetsList (name) {
 	$.ajax({
 	    type: 'POST',
 	    url: "services/getBitacora.php",
-	    data: { data:name } ,
+	    data: { data:name, type:2 } ,
 	    beforeSend: function() {
 	    	$("#data").html('<h1><i class="fa fa-spinner fa-spin"></i></h1>');
 	    },
 	    success: function(data) {
-	    	console.log("patients");
-	    	console.log(name);
 	    	var json = JSON.parse(data);
 			$("#data").text('');
 			var content = '';
@@ -274,7 +277,6 @@ function createRangePicker() {
 
 		var start = picker.startDate.format('YYYY-MM-DD HH:mm').split(" ");
 		var end = picker.endDate.format('YYYY-MM-DD HH:mm').split(" ");
-		console.log(rut,start[0],end[0],start[1],end[1],state);
 
 		if($('#checkHour').is(':checked')){
 			getPatientInfo(rut,start[0],end[0],start[1],end[1]);
@@ -442,6 +444,24 @@ function filterPlanPres(rut){
 	    	//do a barrel roll
 	    }
 	});
+}
+
+function changeID(type){//Búsqueda por RUT o DNI
+	if(type=='rut'){
+		$("#idView").children().html('<span class="glyphicon glyphicon-bookmark"></span> RUT');
+		$("#idViewText").attr({
+			onblur: 'Valida_Rut(this)',
+			onkeydown: 'Javascript: if (event.keyCode==13) Valida_Rut(this)',
+			placeholder: 'Ingrese RUT'
+		});
+	}else{
+		$("#idView").children().html('<span class="glyphicon glyphicon-bookmark"></span> DNI');
+		$("#idViewText").removeAttr('onblur');
+		$("#idViewText").attr({
+			onkeydown: 'Javascript: if (event.keyCode==13) submit()',
+			placeholder: 'Ingrese DNI'
+		});
+	}
 }
 
 </script>

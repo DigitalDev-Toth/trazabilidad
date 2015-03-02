@@ -18,6 +18,10 @@
 			include("modules/users.php");
 			break;
 
+			case 'employee':
+			include("modules/employee.php");
+			break;
+
 			case 'users_modules':
 			include("modules/users_modules.php");
 			break;			

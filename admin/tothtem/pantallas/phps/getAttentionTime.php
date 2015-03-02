@@ -10,14 +10,14 @@ $idUser = $_REQUEST['user'];
 
 //Tiempo inicial de atención
 $db = NEW DB();
-$sql = "SELECT * FROM logs WHERE users=$idUser AND description='Inicio de Sesión Usuario: $idUser' ORDER BY id DESC LIMIT 1";
+$sql = "SELECT * FROM logs WHERE users=$idUser AND description like 'Inicio de Sesión Usuario: $idUser' ORDER BY id DESC LIMIT 1";
 $logs = $db->doSql($sql);
 
 $timeInit = date($logs['datetime']);
 $timeNow = date("Y-m-d H:i:s");
 
 //Tiempo de pausas
-$sql = "SELECT * FROM logs WHERE users=$idUser AND description IN('Pausa de Sesión Usuario: $idUser','Re-inicio de Sesión Usuario: $idUser') AND datetime>'".$logs['datetime']."' ORDER BY id";
+$sql = "SELECT * FROM logs WHERE users=$idUser AND ( description like 'Pausa de Sesión Usuario: $idUser%' or description like'Re-inicio de Sesión Usuario: $idUser%' ) AND datetime>'".$logs['datetime']."' ORDER BY id";
 $logsPause = $db->doSql($sql);
 
 

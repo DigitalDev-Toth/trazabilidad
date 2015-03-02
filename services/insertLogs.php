@@ -131,7 +131,6 @@ if($goComet == true){
 	    $type=1;
 	}else{
 	    $type=3;
-	    $rutA=$rut;
 	}
 
 	if($type==1){

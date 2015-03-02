@@ -47,8 +47,6 @@ if(isset($_REQUEST['zone'])){
   <body>
 
 
-<div class="row">
-	
 
 <div class="panel panel-default">
   <div class="panel-heading">
@@ -58,21 +56,14 @@ if(isset($_REQUEST['zone'])){
 
   		<h2>
             <div class="row text-center">
-                <div class="col-md-4 well well-sm">
+                <div class="col-md-6 well well-sm">
                     M&oacute;dulo de Atención
                 </div>
-                  <div class="col-md-4 well well-sm">
-                    Sub m&oacute;dulo
-                </div>
-                <div class="col-md-4 well well-sm">
+                <div class="col-md-6 well well-sm">
                     Número
                 </div>
             </div>
-            <div class="row" id="content" >
-            <button type="button" id= "top"> X </button>
-           	<div class="row" id = "tickets" style='height: 500px; overflow-y: scroll'></div>
-           	<div class="row" id = "derives"></div>
-
+            <div class="row" id="content">
 	            <!--<div class="col-md-6">
 	            	<div id='contentModule' class="text-center"></div>
 	            </div>
@@ -81,13 +72,11 @@ if(isset($_REQUEST['zone'])){
 	            	</div>
            		</div>-->
             </div>
-        
-            
   		</h2>
 
   </div>
 </div>
-</div>
+
 
 <!--<div class="row" style="height: 300px;">
                 <div class="col-lg-10 col-md-10" style="height: 40%;" >
@@ -138,17 +127,8 @@ $(document).ready(function() {
 	zone = decodeURIComponent("<?php echo rawurlencode($_GET['zone']); ?>");
 	getZoneName(zone);
 	initConfig(zone);
-	//fillMultimedia();
-
-
-
-
-
-
-
+	fillMultimedia();
 });
-
-
 //News & climate
     /*$('#rss').rssfeed('http://www.cnnchile.com/rss/',{}, function(e) {
         $(e).find('div.rssBody').vTicker({ showItems: 1});
@@ -387,44 +367,30 @@ function lastTickets(zone){
 	$.post('phps/getLastTickets.php', {zone: zone}, function(data, textStatus, xhr) {
 		if(data!=0){
 			var allData = JSON.parse(data);
-			//console.log(data);
-				var divs = ["A","B","C"];
+			console.log(data);
+			$("#content").fadeOut('fast', function() {
+				$('#content').html('');
 				for(i=0;i<allData.length;i++){
-					addTicket(allData[i].module,allData[i].submodule,allData[i].ticket,allData[i].type,divs[i]);
+					addTicket(allData[i].module,allData[i].submodule,allData[i].ticket);
 				}
+				$("#content").fadeIn('fast');		
+			});
+			
 		}
 	});
 }
 
-function addTicket(module,submodule,ticket,type,div){
-
+function addTicket(module,submodule,ticket){
 	var content = '';
-	if(type=='normal'){
-		content += "<div class='row text-center' id= '"+div+"' style='font-size: 50px;'> ";
-		content +=	"<div class='col-md-2'  style='padding-top: 35px;font-size: 50px;'>"+module+"</div>"+
-					"<div class='col-md-4'  style='padding-top: 35px;font-size: 50px;'>"+submodule+"</div>"+
-					"<div class='col-md-6'  style='font-size: 140px; font-weight: bold;'>"+ticket+"</div>"+
-			   		"</div><br><br>";
-			   		console.log(content);
-			   		$('#tickets').append(content);
-	}
-	if(type=='derivado'){
-		content += "<div class='row text-center' style='font-size: 50px; color: red; border: 1px solid black;'> "+
-					"<p>DERIVADOS</p>";
-					content +=	"<div class='col-md-2' style='padding-top: 35px;font-size: 50px;'>"+module+"</div>"+
+	console.debug('hi');
+	content += "<div class='row text-center' style='font-size: 50px;'> " +
+					"<div class='col-md-2' style='padding-top: 35px;font-size: 50px;'>"+module+"</div>"+
 					"<div class='col-md-4' style='padding-top: 35px;font-size: 50px;'>"+submodule+"</div>"+
 					"<div class='col-md-6' style='font-size: 140px; font-weight: bold;'>"+ticket+"</div>"+
-			   		"</div><hr>";
-			   		$('#derives').append(content);
-	}
+			    "</div><hr>";
 
-		
+	$('#content').append(content);
 }
-
-
-
-
-
 
 
 </script>

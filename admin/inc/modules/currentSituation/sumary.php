@@ -334,6 +334,8 @@ function fillTable (data) {
 	var json = JSON.parse(data);
 	var totalPatient = 0;
 	var tableText="",cols = 0,datas = ["Nombre ejecutiva:","Cantidad de Pacientes atendidos","Promedio de atencion","Minimo","Maximo"];
+	//correcion data
+	datas = ["Nombre ejecutiva:","Cantidad de pacientes antendidos","Producctividad...","Estado","Numero atencion"];
 	cols=json.length;
 	tableText += "<table class='table table-bordered table-striped table-condensed'>";
 	tableText += "<tr class= 'info'><td></td>"; 
@@ -342,37 +344,52 @@ function fillTable (data) {
 	for (var j = 0; j < cols; j++) {
 		if(json[j].submodulestate == "activo"){
 			tableText += "<th class='text-center' bgcolor='#5cb85c' style='color:white'>"+json[j].submodulename+"</th>";	
-		}else{
+		}
+		if(json[j].submodulestate == "inactivo"){
 			tableText += "<th class='text-center' bgcolor='#d9534f' style='color:white'>"+json[j].submodulename+"</th>";	
 		}
+		if(json[j].submodulestate == "pausado"){
+			tableText += "<th class='text-center' bgcolor='#f0ad4e' style='color:white'>"+json[j].submodulename+"</th>";	
+		
+		}
 	};
-	
+	console.log(json);
 	for (var k = 0; k < datas.length ; k++) {
 		tableText +="<tr><td align='right'>"+datas[k]+"</td>";
 		for (var j = 0; j < cols; j++) {
-			switch(k) {
-		    	case 0:
-		        tableText += "<td class='text-center'>"+json[j].user+"</td>";
-		        break;
-		    	case 1:
-		    	tableText += "<td class='text-center'>"+json[j].others.served_tickets+"</td>";
-		    	totalPatient += json[j].others.served_tickets;
-		        break;
-		        case 2:
-		        var d = new Date(json[j].others.average);
+			if(json[j].submodulestate == "activo" || json[j].submodulestate=="pausado"){
+				switch(k) {
+			    	case 0:
+			        tableText += "<td class='text-center'>"+json[j].user+"</td>";
+			        break;
+			    	case 1:
+			    	tableText += "<td class='text-center'>"+json[j].others.served_tickets+"</td>";
+			    	totalPatient += json[j].others.served_tickets;
+			        break;
+			        case 2:
+			        //var d = new Date(json[j].others.average);
+			        //tableText += "<td class='text-center'>"+d.getSeconds()+" Segundos</td>";
+			        tableText += "<td class='text-center'> - </td>";
+			        break;
+			        case 3:
+			        /*var d = new Date(json[j].others.mintime);
+			        tableText += "<td class='text-center'>"+d.getSeconds()+" Segundos</td>";
+			        */
+			        tableText += "<td class='text-center'>"+ states(json[j].others.description) +" </td>";
+			        break;
+			        case 4:
+			        /*var d = new Date(json[j].others.maxtime);
+					tableText += "<td class='text-center'>"+d.getSeconds()+" Segundos</td>";			       
+					*/
+					tableText += "<td class='text-center'>"+ json[j].others.ticket +" </td>";
+			        break
+				}
 
-		        tableText += "<td class='text-center'>"+d.getSeconds()+" Segundos</td>";
-		        break;
-		        case 3:
-		        var d = new Date(json[j].others.mintime);
-		        tableText += "<td class='text-center'>"+d.getSeconds()+" Segundos</td>";
-		        break;
-		        case 4:
-		        var d = new Date(json[j].others.maxtime);
-				tableText += "<td class='text-center'>"+d.getSeconds()+" Segundos</td>";			       
-
-		        break
 			}
+			if(json[j].submodulestate == "inactivo"){
+				k == 3 ? tableText += "<td class='text-center'> Inactivo </td>" : tableText += "<td class='text-center'> - </td>";
+			}
+
 
 			//tableText += "<td class='text-center'>"+json[j].user+"</td>";
 		};
@@ -428,7 +445,21 @@ function fillTable (data) {
 
 }
 
-
+function states(state){
+	if (state.indexOf("Inicio de Ses") !=-1 || state.indexOf("Ticket Finalizado") !=-1 || state.indexOf("Ticket Ausente") !=-1 || state.indexOf("Ticket Derivado") !=-1 || state.indexOf("Re-inicio") !=-1) {
+	    return "En espera";
+	}
+	if (state.indexOf("Ticket ha venido") !=-1) {
+	    return "Atendiendo";
+	}
+	if (state.indexOf("Pausa de Ses") !=-1) {
+	    return "En pausa";
+	}
+	if (state.indexOf("Cierre de Ses") !=-1) {
+	    return "Inactivo";
+	}
+	return state;
+}
 function getPd (module,type) {
 	$.ajax({
 		sync:true, 

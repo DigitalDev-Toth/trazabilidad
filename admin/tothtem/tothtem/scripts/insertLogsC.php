@@ -64,39 +64,43 @@ $db->doSql($sql);
 
 
 //////////////////WEBSERVICE//////////////////////////////
-include('../../../../services/WebservicePatientName.php');
-$patientData = getPatientName($rut);
+	/*$con = pg_connect("host=biopacs.com port=5432 dbname=es14b_hrt2 user=postgres password=justgoon") or die('NO HAY CONEXION: ' . pg_last_error());
 
-		/*if(substr($rut,-2,-1)=='-'){
-		    $type=1;
-		}else{
-		    $type=3;
-		    $rutA=$rut;
-		}
+	$sql="SELECT * FROM patient WHERE rut='$rut'";
+	$resultado = pg_query($con, $sql);
+	$row = pg_numrows($resultado);
+	if($row){
+	    $patientName = pg_result($resultado,0,2).' '.pg_result($resultado,0,3);
+	}else{
+		$patientName = 'Paciente Nuevo';
+	}*/
 
-		if($type==1){
-		    $rutA = str_replace(".","", $rut);
-		    $rutA = str_replace("-","", $rutA);
-		    $rutA = substr_replace($rutA ,"",-1);
-		}
+	if(substr($rut,-2,-1)=='-'){
+	    $type=1;
+	}else{
+	    $type=3;
+	}
 
-		exec('curl --data "intTipoDoc='.$type.'&strNroDoc='.$rutA.'" http://201.238.201.37:84/Service.asmx/traeDatosPaciente', $out, $err);
+	if($type==1){
+	    $rutA = str_replace(".","", $rut);
+	    $rutA = str_replace("-","", $rutA);
+	    $rutA = substr_replace($rutA ,"",-1);
+	}
 
-		/*
-		27 - Nombres
-		28 - Apellido Paterno
-		29 - Apellido Materno
-		*/
-		/*if($out[25]=='<NewDataSet xmlns="">'){
-		    $patientName = $out[27].' '.$out[28].' '.$out[29];
-		}else{
-			$patientName = 'Paciente Nuevo';
-		}*/
-		if($patientData[0]['name']!=null){
-		    $patientName = $patientData[0]['name'].' '.$patientData[0]['lastname'];
-		}else{
-			$patientName = 'Paciente Nuevo';
-		}
+	exec('curl --data "intTipoDoc='.$type.'&strNroDoc='.$rutA.'" http://201.238.201.37:84/Service.asmx/traeDatosPaciente', $out, $err);
+
+	/*
+	27 - Nombres
+	28 - Apellido Paterno
+	29 - Apellido Materno
+	*/
+	
+	if($out[25]=='<NewDataSet xmlns="">'){
+	    $patientName = $out[27].' '.$out[28].' '.$out[29];
+	}else{
+		$patientName = 'Paciente Nuevo';
+	}
+
 //////////////////////////////////////////////////////////
 
 //Comet es el encabezado que corresponde al tipo de comet a entregar: ejemplo : comet tipo tothtem , comet tipo gestion
