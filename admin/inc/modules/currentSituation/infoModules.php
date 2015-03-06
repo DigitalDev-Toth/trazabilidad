@@ -62,9 +62,11 @@ if(isset($typeRequest) && isset($data) ){
     //$date1 = date("2014-10-09");
     $date2 = date("Y-m-d");
     $date2 = date('Y-m-d', strtotime($date1 . ' + 1 day'));// dejar en '+ 1 day'
-    $sql = "SELECT module.name,logs.module as id ,logs.datetime
+    /*$sql = "SELECT module.name,logs.module as id ,logs.datetime
             FROM public.logs, public.module
             WHERE module.id = logs.module AND logs.datetime between '$date1' AND '$date2' AND logs.zone=".$data." AND logs.description LIKE '%Retiro%' AND logs.module=".$module."  order by logs.datetime, logs.module ASC" ;
+    */
+    $sql = "SELECT logs.description,tickets.attention , logs.datetime from logs , tickets where tickets.logs= logs.id and datetime >= '$date1' AND logs.zone=".$data." and logs.module = ".$module." order by logs.datetime , logs.module ASC";
   }
   if($typeRequest == 'modules'){
     $sql = "SELECT id, name from module where zone = $data and type != 1";

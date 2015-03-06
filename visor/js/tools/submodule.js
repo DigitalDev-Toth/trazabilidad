@@ -502,12 +502,13 @@ SUBMODULE.prototype.tooltipInfo = function () {
             var max = maxHours +':'+ maxMinutes +':'+ maxSeconds;
             var min = minHours +':'+ minMinutes +':'+ minSeconds;
             
-            var content = '<u>Ejecutivo</u>: '+ t.executive +'<br />'
+            var content = '<div style="font-size: 16px;">'
+                            +'<u>Ejecutivo</u>: '+ t.executive +'<br />'
                             +'<u>Tiempo activo</u>: '+ activeTime +'<br />'
                             +'<u>Pacientes atendidos</u>: '+ t.patientsAttended +'<br />'
                             +'<u>Promedio</u>: '+ average +'<br />'                    
                             +'<u>Máximo</u>: '+ max +'<br />'
-                            +'<u>Mínimo</u>: '+ min;
+                            +'<u>Mínimo</u>: '+ min + '</div>';
             t.elInfo.html(content);
         };        
     })(this), 1000);

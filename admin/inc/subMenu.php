@@ -23,12 +23,13 @@ function getSubMenu($content) {
 			$subMenu .= getItemMenu("module", "Modulos");
 			$subMenu .= getItemMenu("submodule", "Sub Modulos");
 			$subMenu .= getItemMenu("module_special", "Modulos Especiales");
+			$subMenu .= getItemMenu("tothtems", "TothTems");
 			$subMenu .= getItemMenu("users", "Usuarios");
 			$subMenu .= getItemMenu("employee", "Empleados");
 			$subMenu .= getItemMenu("changePass", "Cambiar Contraseña");
 			$subMenu .= getItemMenu("role", "Roles de Usuario");
 			$subMenu .= getItemMenu("roles", "Permisos de Usuario");
-			$subMenu .= getItemMenu("multimedia", "Contenido Pantallas");
+			//$subMenu .= getItemMenu("multimedia", "Contenido Pantallas");
 			
 			$subMenu .= '</ul>';
 			break;

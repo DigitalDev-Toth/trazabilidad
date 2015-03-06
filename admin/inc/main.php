@@ -106,6 +106,10 @@
 			include("modules/multimedia/multimedia.php");
 			break;
 
+			case 'tothtems':
+			include("modules/tothtems/tothtems.php");
+			break;
+
 			default:
 			include("modules/default.php");
 			break;

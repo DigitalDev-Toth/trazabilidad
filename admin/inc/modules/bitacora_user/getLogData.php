@@ -10,8 +10,30 @@ $date1 = $_REQUEST['date1'];
 $date2 = $_REQUEST['date2'];
 
 
+
+
+$hourI = $_REQUEST['hourI'];
+$hourF = $_REQUEST['hourF'];
+
+//if date range
+$where0 = "";
+if( $date1 != "" && $date2 != "" ){
+	//if time range
+	if( $hourI != "" && $hourF != "" ){
+		$where0 = "and datetime >= '".$date1." ".$hourI."' AND datetime < '".$date2." ".$hourF."';";
+	}else{
+		$date2 = date('Y-m-d', strtotime($date2 . ' + 1 day'));
+		$where0 = "AND datetime between '".$date1."' AND '".$date2."' ";
+	}
+}
+
+
+
+
+
+
 $db1 = NEW DB();
-$sql = "SELECT id FROM logs WHERE users = $user AND rut = '$user' AND datetime BETWEEN '$date1' AND '$date2'";
+$sql = "SELECT id FROM logs WHERE users = $user AND rut = '$user' ".$where0;
 
 $ids = $db1->doSql($sql);
 
@@ -21,7 +43,7 @@ if($ids){
 	        "id" => $ids['id'],
 	    );
 	} while($ids=pg_fetch_assoc($db1->actualResults));
-
+	
 	for ($i=0; $i < count($data); $i++) { 
 
 		$id=$data[$i]['id'];

@@ -117,7 +117,7 @@ if($goComet == true){
 
 
 	//////////////////WEBSERVICE//////////////////////////////
-		$con = pg_connect("host=biopacs.com port=5432 dbname=es14b_hrt2 user=postgres password=justgoon") or die('NO HAY CONEXION: ' . pg_last_error());
+		/*$con = pg_connect("host=biopacs.com port=5432 dbname=es14b_hrt2 user=postgres password=justgoon") or die('NO HAY CONEXION: ' . pg_last_error());
 
 		$sql="SELECT * FROM patient WHERE rut='$rut'";
 		$resultado = pg_query($con, $sql);
@@ -126,7 +126,17 @@ if($goComet == true){
 		    $patientName = pg_result($resultado,0,2).' '.pg_result($resultado,0,3);
 		}else{
 			$patientName = 'Paciente Nuevo';
+		}*/
+
+		include('../../../../services/WebservicePatientName.php');
+		$patientData = getPatientName($rut);
+
+		if($patientData[0]['name']!=null){
+		    $patientName = $patientData[0]['name'].' '.$patientData[0]['lastname'];
+		}else{
+			$patientName = 'Paciente Nuevo';
 		}
+
 	//////////////////////////////////////////////////////////
 
 	//Comet es el encabezado que corresponde al tipo de comet a entregar: ejemplo : comet tipo tothtem , comet tipo gestion

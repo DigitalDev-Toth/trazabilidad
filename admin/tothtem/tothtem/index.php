@@ -58,21 +58,22 @@
            
             <div id="enableTothtem" >
                 <label id="labelStart" style="font-size:22pt;">  Seleccione una opción para comenzar</label>    
+                    <br>
+                    <a id="rutOption" href="#login-menu" type="button" style="padding:12px 25px;font-size: 25px;border-radius: 33px;width: 300px;" class="btn btn-primary"  onclick="initMenu(1);">
+                        <span class="glyphicon glyphicon-home"></span> RUT Paciente
+                    </a> 
+
+                    <br><br>
+
+                    <a id="dniOption" type="button" href="#login-menu" style="padding:12px 25px;font-size: 25px;border-radius: 33px;width: 300px;" class="btn btn-primary" onclick="initMenu(2);">
+                        <span class="glyphicon glyphicon-globe"></span> DNI Paciente
+                    </a> 
             </div>
             <div id="disableTothtem" >
                <label style="font-size:22pt;">  <span class="glyphicon glyphicon-ban-circle"></span>  FUERA DE SERVICIO</label>    
             </div>
-            <br>
+  
 
-               <a id="rutOption" href="#login-menu" type="button" style="padding:12px 25px;font-size: 25px;border-radius: 33px;width: 300px;" class="btn btn-primary"  onclick="initMenu(1);">
-            	<span class="glyphicon glyphicon-home"></span> RUT Paciente
-            </a> 
-
-            <br><br>
-
-            <a id="dniOption" type="button" href="#login-menu" style="padding:12px 25px;font-size: 25px;border-radius: 33px;width: 300px;" class="btn btn-primary" onclick="initMenu(2);">
-            	<span class="glyphicon glyphicon-globe"></span> DNI Paciente
-            </a> 
 
             
 
@@ -256,17 +257,35 @@ setup();
 var socket = io.connect('http://falp.biopacs.com:8000');
 
 //***********************************************************
+socket.on('message', function(message) {
+    var json = JSON.parse(message);
+    console.debug(json);
+
+    /*
+    if(results==0){
+        modulesOk=0;
+        $("#disableTothtem").show();
+        $("#enableTothtem").hide();
+    }else{
+        modulesOk=1;
+        
+    }
+
+    */
+        //$("#enableTothtem").show();
+        //$("#disableTothtem").hide();
+
+});
+
 
 
 $("#espera").click(function(event) {
-    if(modulesOk==1){
-        //$( "#startB" ).click();
-    }else{
+    if(modulesOk!=1){
         bootbox.alert("<span class='glyphicon glyphicon-warning-sign'></span> Tothtem Fuera De Servicio <br><br> Favor de consultar otro ToThtem", function() {
-        window.setTimeout(setNull, 5000);
+            window.setTimeout(setNull, 5000);
         });
     }
-    
+
 });
 
 function initMenu(idType){
@@ -308,7 +327,6 @@ $(document).ready(function() {
 	//establece id totem
     createAlpha();
     //$("#btn_delete").val('<span class="glyphicon glyphicon-arrow-left"></span>');
-    activesModules();
     resetInput(1);
     $("#login").prop( "disabled", true );
     $("#inputColor").addClass("form-group has-warning has-feedback");
@@ -369,28 +387,6 @@ $(function() {
         }
     });
 });
-
-//**************************************
-
-
-//loop , cambiar con comet 
-function activesModules(){
-    var results=tothtemConfig();
-    if(results==0){
-        modulesOk=0;
-        $("#disableTothtem").show();
-        $("#enableTothtem").hide();
-    }else{
-        modulesOk=1;
-        $("#enableTothtem").show();
-        $("#disableTothtem").hide();
-    }
-    window.setTimeout(function(){
-        activesModules();
-    }, 20000);
-}
-
-
 
 
 //imprime ticket de atencion (TicketOption indica el id del módulo correspondiente; en caso de ser módulo especial, se envía además el id de este)
@@ -674,7 +670,7 @@ function loginPatient(){
                     //BACKEND PARA EL COMET
                     /*$.post('../../../visor/comet/backend.php',{msg: data},function(data, textStatus, xhr){
                     });*/
-                    console.log(data);
+                    console.warn(data);
                     socket.send(data);
                 });
 

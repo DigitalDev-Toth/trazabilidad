@@ -54,7 +54,7 @@ if (isset($_GET['idZone'])) {
 
                 message('Conectando al servidor...');
                 $.get('../services/zoneInfo.php?zone='+ ZONE, function (data, status) {
-                    message('Servidor conectado!. Esperando los datos...');
+                    message('Servidor conectado. Esperando los datos...');
                     if (status === 'success') {
                         if (data === 'error') {
                             message('Error al obtener los datos!');
@@ -94,11 +94,12 @@ if (isset($_GET['idZone'])) {
                                 for (i = 0; i < jsonData.length; i++) {
                                     MAKE.patient(jsonData[i].rut, jsonData[i].name, jsonData[i].ticket, jsonData[i].datetime, jsonData[i].attention, jsonData[i].module, jsonData[i].sub_module);
                                 }
+                                console.log(PATIENTS);
                             });
 //                            MAKE.patient('16.025.167-0', 'Sebastián Rodríguez', '15C', null, 'limb', 36, 53);
                             
                             message('Objetos creados');
-                            console.log(MODULES);
+                            console.log(MODULES);                            
                             for (var i in MODULES) {
                                 if (MODULES[i].type === 'module' && MODULES[i].dbType > 1) {
                                     var object = {name: MODULES[i].name, id: MODULES[i].id};
@@ -114,6 +115,15 @@ if (isset($_GET['idZone'])) {
                 $(window).on('contextmenu', function (event) {
                     event.preventDefault();
                     return false;
+                });
+
+                // da fuck this shit?
+                $(window).keypress(function (event) {
+                    if (event.which === 49 && MODE === 1000000) {
+                        MAKE.goTo('tothtem', '16.025.167-0', 'Perrowwww', 'in', null, null, 33, 47);                        
+                    } else if (event.which === 50) {
+                        MAKE.goTo('module', '16.025.167-0', 'Perrowwww', 'to', '15C', null, 34, null);
+                    }
                 });
             });
             function repaintViewport () {
@@ -174,35 +184,35 @@ if (isset($_GET['idZone'])) {
                         for (var i = 0; i < info.modules.length; i++) {
                             if (MODE === parseInt(info.modules[i].id)) {
                                 MAKE.module(info.modules[i].name, info.modules[i].id, 'module', info.modules[i].type, 'superior', '#'+ info.modules[i].color, info.modules[i].shape, info.modules[i].max_wait, info.modules[i].submodules);
-                            }                            
-                        }  
+                            }                               
+                        }
                         MAKE.wrInfo();
-//                        $.get('../services/getPatients.php?zone='+ ZONE, function (data, status) {
-//                            var jsonData = JSON.parse(data);
-//                            for (i = 0; i < jsonData.length; i++) {
-//                                MAKE.patient(jsonData[i].rut, jsonData[i].name, jsonData[i].ticket, jsonData[i].datetime, jsonData[i].attention, jsonData[i].module, jsonData[i].sub_module);
-//                            }                            
-//                        });
-//                        $.get('../services/info_Module.php?zone='+ ZONE, function (data, status) {
-//                            var dm = $.parseJSON(data);
-//                            for (var i = 0; i < dm.length; i++) {
-//                                if (parseInt(dm[i].dbtype) === 1) {
-//                                    MAKE.tothtemInfo(dm[i].idModule, dm[i].total_tickets, dm[i].modules, dm[i].first_ticket, dm[i].last_ticket);
-//                                } else {
-//                                    if (MODULES[dm[i].idModule].totalSubmodulesInactive < MODULES[dm[i].idModule].totalSubmodules) {
-//                                        MAKE.moduleInfo(dm[i].idModule, dm[i].served_tickets, dm[i].average, dm[i].maxtime, dm[i].mintime);
-//                                    }                                        
-//                                }
-//                            }
-//                        });
-//                        $.get('../services/info_Submodule.php?zone='+ ZONE, function (data, status) {
-//                            var dsm = $.parseJSON(data);
-//                            for (var i = 0; i < dsm.length; i++) {
-//                                if (dsm[i].session !== null && MODULES[dsm[i].module].submodules[dsm[i].submodule].state !== 'inactivo') {
-//                                    MAKE.submoduleInfo(dsm[i].module, dsm[i].submodule, dsm[i].user, dsm[i].session, dsm[i].patients, dsm[i].average, dsm[i].maxtime, dsm[i].mintime);
-//                                }                                    
-//                            }
-//                        });
+                        $.get('../services/getPatients.php?zone='+ ZONE, function (data, status) {
+                            var jsonData = JSON.parse(data);
+                            for (i = 0; i < jsonData.length; i++) {
+                                if (MODE === parseInt(jsonData[i].module)) {
+                                    MAKE.patient(jsonData[i].rut, jsonData[i].name, jsonData[i].ticket, jsonData[i].datetime, jsonData[i].attention, jsonData[i].module, jsonData[i].sub_module);
+                                }                                
+                            }                            
+                        });
+                        $.get('../services/info_Module.php?zone='+ ZONE, function (data, status) {
+                            var dm = $.parseJSON(data);
+                            for (var i = 0; i < dm.length; i++) {
+                                if (MODE === parseInt(dm[i].idModule)) {
+                                    MAKE.moduleInfo(dm[i].idModule, dm[i].served_tickets, dm[i].average, dm[i].maxtime, dm[i].mintime);                                        
+                                }
+                            }
+                        });
+                        $.get('../services/info_Submodule.php?zone='+ ZONE, function (data, status) {
+                            var dsm = $.parseJSON(data);
+                            for (var i = 0; i < dsm.length; i++) {
+                                if (MODE === parseInt(dsm[i].module)) {                                    
+                                    if (dsm[i].session !== null && MODULES[dsm[i].module].submodules[dsm[i].submodule].state !== 'inactivo') {                                    
+                                        MAKE.submoduleInfo(dsm[i].module, dsm[i].submodule, dsm[i].user, dsm[i].session, dsm[i].patients, dsm[i].average, dsm[i].maxtime, dsm[i].mintime);                                                                       
+                                    }  
+                                }
+                            }
+                        });
                     }); 
                 }                
             }
@@ -223,8 +233,7 @@ if (isset($_GET['idZone'])) {
                 }
                 for (var i in PATIENTS) {
                     clearInterval(PATIENTS[i].interval);
-                }
-                
+                }               
             }
             message = function (message) {
                 $('#message').fadeOut(500, function () {
@@ -240,6 +249,7 @@ if (isset($_GET['idZone'])) {
     <body>        
         <div id="workspace"></div>
         <div id="message">Mensaje de estados...</div>
+
         <div id="bitacoraPatient" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg modal-viewer">
                 <div class="modal-content">
@@ -248,11 +258,12 @@ if (isset($_GET['idZone'])) {
                         <h4 class="modal-title" id="myModalLabel">Bitácora paciente</h4>
                     </div>
                     <div class="modal-body">
-                        <div id="bitacoraPatientContent" class="row"></div>
+                        <div id="bitacoraPatientContent" class="row well well-sm"></div>
                     </div>
                 </div>
             </div>
         </div>
+
         <div id="bitacoraSubmodule" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg modal-viewer">
                 <div class="modal-content">

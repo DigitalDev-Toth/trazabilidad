@@ -6,6 +6,7 @@ Tótem & Pantalla de Ejecutivo
 - admin/tothtem/tothtem/scripts/getPatientName
 - admin/tothtem/tothtem/scripts/getTicket
 - admin/tothtem/tothtem/scripts/insertLogs
+- admin/tothtem/pantallas/services/insertLogs
 
 Visor
 - services/getPatients.php
@@ -38,6 +39,7 @@ function getPatientName($rut){
         }else{
             $type=3;
         }
+        $rutA=$rut;
 
         if($type==1){
             $rutA = str_replace(".","", $rut);
@@ -57,17 +59,17 @@ function getPatientName($rut){
         33 - Tipo de Identificador
         34 - Identificador (DNI o RUT sin verificador)
         */
+        if(isset($out[27])){
+            $patientData[] = array(
+                'rut' =>  $rut,
+                'name' =>  $out[27],
+                'lastname' =>  $out[28].' '.$out[29],
+                'birthdate' =>  $out[30],
+                'gender' =>  $out[32],
+                'address' =>  ' -'
+            );
 
-        $patientData[] = array(
-            'rut' =>  $rut,
-            'name' =>  $out[27],
-            'lastname' =>  $out[28].' '.$out[29],
-            'birthdate' =>  $out[30],
-            'gender' =>  $out[32],
-            'address' =>  ' -'
-        );
-
-        if($out[27]){//Si existe un registro válido que devuelve el webservice, se almacenará en la BD de traza
+            //Si existe un registro válido que devuelve el webservice, se almacenará en la BD de traza
             $birthdate=str_replace(' ','',$out[30]);
             $birthdate=explode('/',$birthdate);
             $birthdate[2]=str_replace('<','',$birthdate[2]);
@@ -86,6 +88,16 @@ function getPatientName($rut){
 
 
             $dbPatient->doSql("INSERT INTO patients(rut,name,lastname,birthdate,gender,address) VALUES('$rut','$name','$lastname','$birthdate','$gender','-')");
+        }else{
+            $patientData[] = array(
+                'rut' =>  $rut,
+                'name' =>  '',
+                'lastname' =>  ' -',
+                'birthdate' =>  ' -',
+                'gender' =>  ' -',
+                'address' =>  ' -'
+            );
+
         }
         
         return $patientData;

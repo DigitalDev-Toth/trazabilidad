@@ -38,24 +38,28 @@ include 'libs/bootstrapStyle.php';
 
 				</div>
 			</div>
-
-
-			<div class="col-md-1">
-				<label style="margin-top: 8px;" class="pull-right">Zonas: </label>	
-			</div>
-
-			<div class="col-md-2">
-				<h4 id="loading"><i class="fa fa-spinner fa-spin"></i></h4>
-				<select class="form-control" id="selectorZone" style="display:none">
-				</select>
-			</div>
-
-			<div class="col-md-1 ">
-
-		
+			<div class="col-md-2 ">
 
 			    <button id="popoverData" class="btn" href="#" data-content="" rel="popover" data-placement="bottom" data-original-title="Leyenda" data-trigger="hover" data-html="true"  disable><span class="glyphicon glyphicon-info-sign"></span> Leyenda</button>
 			</div>
+
+			<div class="col-md-3 col-md-offset-1">
+
+				<div class="input-group">
+					<div class="input-group-addon" id="leyend">
+						<div id="loading"> <i class="fa fa-spinner fa-spin"></i></div>
+					</div>
+						<select class="form-control" id="selectorZone" style="display:none">
+					</select>
+				</div>
+
+
+
+				
+			
+			</div>
+
+
 
 			
 
@@ -100,7 +104,9 @@ $(document).ready(function() {
 	      sel.append('<option value="' + data[i].id + '">' + data[i].name + '</option>');
 	    }
 	    $("#loading").fadeOut('slow', function() {
+	    	$("#leyend").html("<span class='glyphicon glyphicon-map-marker'></span> Zonas:");
 	    	$("#selectorZone").fadeIn('slow', function() {
+
 	    	});
 	    });
 	    changeZone(currentZone,switchZone);

@@ -48,40 +48,42 @@ if(!isset($_SESSION['Username'])) { header("location: ../../login.php"); header(
                     <div class="panel-heading"><span class="glyphicon glyphicon-list"></span>  Panel De Control Pacientes en curso</div>
                     <div class="panel-body" align="center">
                         <div class="row" >
-                            <label>Numero</label><br/>
+                            <label>Número</label><br/>
                             <label id="content" style="font-size:70px;"></label><br/>
                             <label id="timePatient" style="font-size:40px;"></label>
 
                             <div class="row">
-                                <div class="col-md-offset-4 col-xs-offset-4 col-sm-offset-4 col-md-4 col-xs-4 col-sm-4 text-center">
+                                <div class="col-md-7 col-sm-7 col-xs-7 col-md-offset-4">
                                     <div id="buttons" class="text-center">
                                 
-                                        <div class="col-md-2 col-xs-2 col-sm-2">
+                                        <div class="col-md-1 col-xs-1 col-sm-1">
                                             <button type="button" class="btn btn-default btn-lg" onclick="sendComet('minus')" id="minusButton" title="Volver a llamar número anterior"><span class="glyphicon glyphicon-minus"></span></button>
                                         </div>
-                                        <div class="col-md-2 col-xs-2 col-sm-2">
+                                        <div class="col-md-1 col-xs-1 col-sm-1">
                                             <button type="button" class="btn btn-default btn-lg" onclick="sendComet('plus')" id="plusButton" title="Llamar paciente"><span class="glyphicon glyphicon-plus"></span></button>
                                         </div>
-                                        <div class="col-md-2 col-xs-2 col-sm-2">
+                                        <div class="col-md-1 col-xs-1 col-sm-1">
                                             <button type="button" class="btn btn-default btn-lg" onclick="sendComet('recall')" id="recallButton" title="Re-Llamar paciente"><span class="glyphicon glyphicon-bullhorn"></span></button>
                                         </div>
-                                        <div class="col-md-2 col-xs-2 col-sm-2">
+                                        <div class="col-md-1 col-xs-1 col-sm-1">
                                             <button type="button" class="btn btn-default btn-lg" onclick="sendComet('notHere')" id="notHereButton" title="No llegó paciente" style="color: red;"><span class="glyphicon glyphicon-remove-circle"></span></button>
                                         </div>
-                                        <div class="col-md-2 col-xs-2 col-sm-2">
+                                        <div class="col-md-1 col-xs-1 col-sm-1">
                                             <button type="button" class="btn btn-default btn-lg" onclick="sendComet('finished')" id="finishedButton" title="Finalizar Atención" ><span class="glyphicon glyphicon-thumbs-up"></span></button>                                         
                                         </div>
-                                        <div class="col-md-2 col-xs-2 col-sm-2">
+                                        <div class="col-md-1 col-xs-1 col-sm-1">
                                             <button type="button" class="btn btn-default btn-lg" onclick="sendComet('redirect')" id="redirectButton" title="Derivar"><span class="glyphicon glyphicon-share"></span></button>                                        
+                                        </div>
+                                        <div class="col-md-1 col-sm-1 col-xs-1">
+                                            <button type="button" class="btn btn-default btn-lg" onclick="getExceptions();" id="patientsButton" title="Pacientes..." style="display:none" ><span class="glyphicon glyphicon-user"></span></button>
                                         </div>
                                         <!--<div class="col-md-2">
                                             <button type="button" class="btn btn-default btn-lg" onclick="refreshTable()" id="refreshButton" title="Rechargar Tabla"><span class="glyphicon glyphicon-refresh"></span></button>
                                         </div>-->
+                                    
                                     </div>
                                 </div>
-                                <div class="col-md-4">
-                                    
-                                </div>
+
                             	
                             </div>
                         
@@ -100,7 +102,7 @@ if(!isset($_SESSION['Username'])) { header("location: ../../login.php"); header(
 								</div>
 							</div>
 						</div>
-
+ 
 
                         <!-- Modal motivo pausa -->
                         <div id="modalPause" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
@@ -111,11 +113,16 @@ if(!isset($_SESSION['Username'])) { header("location: ../../login.php"); header(
                                 <br>
                                 <p>Seleccione el motivo de su pausa:</p>
                                 <select class="form-control" id = "motives">
-                                  <option>Baño</option>
-                                  <option>Tomar un cafe</option>
-                                  <option>Incendio</option>
-                                  <option>Robo</option>
-                                  <option>Terremoto</option>
+                                    <option>Hora de colación</option>
+                                    <option>Arqueo</option>
+                                    <option>Reunión</option>
+                                    <option>Capacitación</option>
+                                    <option>Reemplazo sucursal</option>
+                                    <option>Break</option>
+                                    <option>Rendición</option>
+                                    <option>Preparación y revisión de documentos</option>
+                                    <option>Generación de documentos</option>
+                                    <option>Ingreso de documentos a sistema</option>
                                 </select>
                                 <br>
                                 <button  onclick="inactiveSubModule('pause')" type="button" class="btn btn-primary" >Aceptar</button>
@@ -182,7 +189,7 @@ if(!isset($_SESSION['Username'])) { header("location: ../../login.php"); header(
         <footer>
             <div class="row">
                 <div class="col-lg-12">
-                    <p>Toth 2014 &copy;</p>
+                    <p>Toth 2015 &copy;</p>
                 </div>
             </div>
         </footer>
@@ -201,6 +208,7 @@ if(!isset($_SESSION['Username'])) { header("location: ../../login.php"); header(
 
 var submodule="";
 var moduleInCourse='';
+var zoneInCourse='';
 var currentModule=0;
 var currentNumber='';
 var initNumber; //Primer número de Ticket por orden numérico
@@ -234,21 +242,26 @@ $(document).ready(function() {
                 $("#contentTicket").html('<th class="text-center">Numero de atencion</th><th class="text-center">RUT</th><th class="text-center">Hora Retiro de Ticket</th><th class="text-center">Tiempo de espera</th>')
             }else{
                 $("#contentTicket").html('<th class="text-center">Numero de atencion</th><th class="text-center">RUT</th><th class="text-center">Motivo</th><th class="text-center">Hora Retiro de Ticket</th><th class="text-center">Tiempo de espera</th>')    
-            ////////////CARGA DE PACIENTES////////////
+                ////////////CARGA DE PACIENTES////////////
 
-            $("#buttons").append('<div class="col-md-2"><button type="button" class="btn btn-default btn-lg" onclick="getExceptions();" id="patientsButton" title="Pacientes..."><span class="glyphicon glyphicon-user"></span></button></div>');
+                $("#patientsButton").show();
 
 
-            //////////////////////////////////////
+                //////////////////////////////////////
             }
 
             var dataModality = JSON.parse(getModule(submodule));
             moduleInCourse=dataModality.modalityId;
+            zoneInCourse=dataModality.zoneId;
             $("#modalityTitle").text(dataModality['modalityName']);
             $("#ModuleHeader").text(dataModality['subModuleName']);
             initNumber = dataModality['modalityTicket'];
             refreshTable();
-            setCurrentNumber();
+            setTimeout(function(){
+                setCurrentNumber();
+            },2000);
+            //Se aplica un tiempo de 2 segundos, para dar tiempo a calcular el número en atención actual. 
+            //No es tan invasivo, ya que es durante la carga de la página
             getActivesModules();
         });
         
@@ -350,24 +363,45 @@ function getActivesModules(){
     if(result!=0){
         var jsonModules=JSON.parse(result);
         $("#menuButtons").html('');
+        var tableButtons = '<table id="tableMenuButtons" class="table table-striped text-center">';
+        tableButtons += '<tr><th class="text-center">Módulo</th><th>Pacientes en Espera</th></tr></table>';
+        $("#menuButtons").html(tableButtons);
+        
         for (var i = 0; i < jsonModules.length; i++) {
-            if(jsonModules[i]['moduleType']!='Especial'){
-                $("#menuButtons").append('<div class="modal-body"><button type="button" style="padding:12px 25px;font-size: 25px;border-radius: 33px;width: 300px;"" class="btn btn-primary" onclick="derive('+jsonModules[i]['id']+');"><span class="glyphicon glyphicon-time"></span> '+jsonModules[i]['moduleName'] +'</button>   </div>' );
+            tableButtons += '';
+            //if(jsonModules[i]['moduleType']!='Especial'){
+            if(jsonModules[i]['moduleType']!='12'){
+                //$("#menuButtons").append('<div class="modal-body"><button type="button" style="padding:12px 25px;font-size: 25px;border-radius: 33px;width: 300px;"" class="btn btn-primary" onclick="derive('+jsonModules[i]['id']+');"><span class="glyphicon glyphicon-time"></span> '+jsonModules[i]['moduleName'] +'</button>   </div>' );
+                tableButtons = '<tr><td><div class="modal-body"><button type="button" style="padding:12px 25px;font-size: 25px;border-radius: 33px;width: 300px;"" class="btn btn-primary" onclick="derive('+jsonModules[i]['id']+');"><span class="glyphicon glyphicon-time"></span> '+jsonModules[i]['moduleName'] +'</button></div></td>';
+                tableButtons += '<td class="text-center" style="padding:20px 25px; font-size: 50px;">'+jsonModules[i]['count']+'</td></tr>';
+                $("#tableMenuButtons").append(tableButtons);
             }else{
                 var moduleId = jsonModules[i]['id'];
                 $.post('phps/getActivesModulesSpecial.php', {module: moduleId}, function(data, textStatus, xhr) {
+                    
                     if(data!='nan'){
                         var jsonData = JSON.parse(data);
+
                         for(j=0; j < jsonData.length;j++){
                             var widthButton = '';
                             if(jsonData[j]['name'].length<17) widthButton='width: 300px;';
                             else widthButton='';
-                            $("#menuButtons").append('<div class="modal-body"><button type="button" style="padding:12px 25px;font-size: 25px;border-radius: 33px;'+widthButton+'" class="btn btn-primary" onclick="derive('+moduleId+');"><span class="glyphicon glyphicon-time"></span> '+jsonData[j]['name'] +'</button>   </div>' );
+                            //$("#menuButtons").append('<div class="modal-body"><button type="button" style="padding:12px 25px;font-size: 25px;border-radius: 33px;'+widthButton+'" class="btn btn-primary" onclick="derive('+moduleId+');"><span class="glyphicon glyphicon-time"></span> '+jsonData[j]['name'] +'</button>   </div>' );
+                            tableButtons = '<tr><td><div class="modal-body"><button type="button" style="padding:12px 25px;font-size: 25px;border-radius: 33px;'+widthButton+'" class="btn btn-primary" onclick="derive('+moduleId+');"><span class="glyphicon glyphicon-time"></span> '+jsonData[j]['name'] +'</button></div></td></tr>';
+                            //tableButtons += '<td class="text-center">'+jsonModules[i]['count']+'</td>';
+                            $("#tableMenuButtons").append(tableButtons);
+
                         }
                     }
                 });
             }
+            
         };
+        //setTimeout(function(){
+            //tableButtons += '</table>';
+            //$("#menuButtons").html(tableButtons);  
+        //},1000);
+
     }else{
         noRedirect=true;
         $('#redirectButton').attr('disabled', true);
@@ -376,7 +410,6 @@ function getActivesModules(){
 }
 
 function showPauseDialog(){
-    console.log('open');
     $('#modalPause').modal('show');
 }
 
@@ -547,7 +580,7 @@ function refreshTable(){ //Actualiza la tabla de pacientes en espera
         var ticketsTable = JSON.parse(totalResult);
         firstTicketId = ticketsTable[0]['ticketid'];
         var cant=Object.keys(ticketsTable).length;
-        $('#contentTicket').fadeOut('slow', function() {
+        $('#contentTicket').fadeOut('fast', function() {
             $('#contentTicket tr').has('td').remove();
 
             for (var i=0;i<cant;i++) {
@@ -568,7 +601,7 @@ function refreshTable(){ //Actualiza la tabla de pacientes en espera
      
             }
 
-            $('#contentTicket').fadeIn('slow');
+            $('#contentTicket').fadeIn('fast');
             if(myState==false){
                 activeButtons('next');
             }
@@ -590,7 +623,7 @@ function setCurrentNumber(){//Muestra el número actual que se está atendiendo
             if(number.length==3){
                 number='0'+number;
             }
-            $('#content').fadeOut("slow",function(){
+            $('#content').fadeOut("fast",function(){
                 $('#content').fadeIn("fast");
                 $('#content').text(number);
             });
@@ -629,9 +662,10 @@ function insertLog(description,action,cometType,attentionNew,ticketId,module){//
             if(data!=0){
 
             	//Caso de derivación a otra zona
-                if(module!=moduleInCourse && description=='Ticket Derivado'){
-                	var cometOrigin = JSON.parse(data);
-                	
+
+                var cometOrigin = JSON.parse(data);
+                if(cometOrigin.zone!=zoneInCourse && description=='Ticket Derivado'){
+
                 	cometOrigin.description = "Ticket Finalizado";
                 	cometOrigin.action = "lb";
                 	socket.send(JSON.stringify(cometOrigin));
@@ -704,11 +738,13 @@ function sendComet(type){//Genera la acción de los distintos botones a través 
     }
 
     if(type==='isHere' || type==='plus'){
+        $("#buttons :button").attr("disabled", true);
         ticketAttention = firstTicketId;
         insertLog('Ticket ha venido','in','module','on_serve',ticketAttention);
         //timePatient();
     }
     if(type==='notHere'){
+        $("#buttons :button").attr("disabled", true);
         myState = false;
         insertLog('Ticket Ausente','lb','module','no_serve',ticketAttention);
         $('#content').css('color','black');
@@ -719,6 +755,7 @@ function sendComet(type){//Genera la acción de los distintos botones a través 
         
     }
     if(type==='finished'){
+        $("#buttons :button").attr("disabled", true);
         myState = false;
         insertLog('Ticket Finalizado','lb','module','served',ticketAttention);
         $('#content').css('color','black');
@@ -729,7 +766,7 @@ function sendComet(type){//Genera la acción de los distintos botones a través 
         
     }
     if(type==='redirect'){
-        //getActivesModules();
+        getActivesModules();
         $('#modalDerived').modal('show');
     }
     if(type==='exception'){
@@ -836,7 +873,6 @@ function attentionTime(){//Tiempo en que ha estado disponible el usuario
     var initTime;
     $.post('phps/getAttentionTime.php', {user: "<?php echo $_SESSION['UserId']; ?>"}, function(data, textStatus, xhr) {
         initTime = data;
-        console.log(initTime);
         $('#timeAttention').html(initTime);
     });
 

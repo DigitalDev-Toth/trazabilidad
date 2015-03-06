@@ -103,7 +103,7 @@ MODULE.prototype.setElem = function () { // element in DOM for module
         this.text = PAPER.text(x + (500 / 2), y + (200 - 12), this.name).attr(this.textAttrs(this.color));        
     } else if (this.type === 'limb') {
         var x = ($(window).width() / 2),
-            y = (($(window).height() + 200) / 2) + 3;
+            y = (($(window).height() + 300) / 2) + 3;
         this.el = PAPER.circle(x, y, 30).attr(this.attrs(this.color));
         this.text = PAPER.text(x, y, this.name).attr(this.textAttrs(this.color));     
     } else {
@@ -522,13 +522,15 @@ MODULE.prototype.tooltipTothtemInfo = function () {
             var timeFirstTicket = timeFirstTicketHours +':'+ timeFirstTicketMinutes +':'+ timeFirstTicketSeconds;
             var timeLastTicket = timeLastTicketHours +':'+ timeLastTicketMinutes +':'+ timeLastTicketSeconds;
             
-            var content = '<u>Total tickets atendidos</u>: '+ t.totalTicketsIssued +'<br />';
+            var content = '<div style="font-size:16px;">';
+            content += '<u>Total tickets atendidos</u>: '+ t.totalTicketsIssued +'<br />';
             var ticketsTo = t.ticketsTo;
             $.each(ticketsTo, function(index, value) {
                 content += '<u>Tickets a '+ MODULES[parseInt(index)].name +'</u>: '+ value +'<br />';
             });            
             content += '<u>Hora primer ticket</u>: '+ timeFirstTicket +'<br />';
             content += '<u>Hora último ticket</u>: '+ timeLastTicket +'<br />';                    
+            content += '</div>';
             t.elTothtemInfo.html(content);
         };
     })(this), 1000);
@@ -599,11 +601,13 @@ MODULE.prototype.tooltipInfo = function () {
             var average = averageHours +':'+ averageMinutes +':'+ averageSeconds;
             var max = maxHours +':'+ maxMinutes +':'+ maxSeconds;
             var min = minHours +':'+ minMinutes +':'+ minSeconds;
-
-            var content = '<u>Pacientes atendidos</u>: '+ t.attended +'<br />'
+            
+            var content = '<div style="font-size:16px;">'
+                            +'<u>Pacientes atendidos</u>: '+ t.attended +'<br />'
                             +'<u>Promedio</u>: '+ average +'<br />'                    
                             +'<u>Máximo</u>: '+ max +'<br />'
-                            +'<u>Mínimo</u>: '+ min;
+                            +'<u>Mínimo</u>: '+ min
+                            +'</div>';
             t.elInfo.html(content);           
         };
     })(this), 1000);
@@ -620,9 +624,11 @@ MODULE.prototype.setTimeOn = function (timeOn) {
     this.average = ((this.average * (this.attended - 1)) + this.timeOn) / this.attended;
 };
 MODULE.prototype.wrInfo = function () {
-    var total = PAPER.text(this.el.attrs.x + 20, this.el.attrs.y - 15, 'Total').attr({
+    var addXA = -40, addXB =  -40;
+    var yAxisA = 220, yAxisB=220;
+    var total = PAPER.text((this.el.attrs.x + addXA), this.el.attrs.y +yAxisA, 'Total').attr({
         'fill': '#333',
-        'font-size': '12px'
+        'font-size': '20px'
     });
     var totalBBox = total.getBBox();
     PAPER.path('M'+ totalBBox.x +' '+ (totalBBox.y + totalBBox.height) +'L'+ (totalBBox.x + totalBBox.width) +' '+ (totalBBox.y + totalBBox.height)).attr({
@@ -631,21 +637,21 @@ MODULE.prototype.wrInfo = function () {
         'stroke-width': 1,
         'stroke-linejoin': 'round'
     });
-    PAPER.text(this.el.attrs.x + 20 + 16, this.el.attrs.y - 15, ':').attr({
+    PAPER.text(this.el.attrs.x + 20 + (8 + addXA), this.el.attrs.y +yAxisA, ':').attr({
         'fill': '#333',
-        'font-size': '12px'
+        'font-size': '20px'
     });
-    this.totalData = PAPER.text(this.el.attrs.x + 20 + 25, this.el.attrs.y - 15, this.seatsCount).attr({
+    this.totalData = PAPER.text(this.el.attrs.x + 20 + (25 + addXA), this.el.attrs.y +yAxisA, this.seatsCount).attr({
         'fill': '#333',
-        'font-size': '12px'
+        'font-size': '20px'
     });
-    PAPER.text(this.el.attrs.x + 20 + 35, this.el.attrs.y - 15, ' - ').attr({
+    PAPER.text(this.el.attrs.x + 20 + (45 + addXA), this.el.attrs.y +yAxisA, ' - ').attr({
         'fill': '#333',
-        'font-size': '12px'
+        'font-size': '20px'
     });
-    var average = PAPER.text(this.el.attrs.x + 20 + 68, this.el.attrs.y - 15, 'Promedio').attr({
+    var average = PAPER.text(this.el.attrs.x + 20 + (100 + addXA), this.el.attrs.y +yAxisA, 'Promedio').attr({
         'fill': '#333',
-        'font-size': '12px'
+        'font-size': '20px'
     });
     var averageBBox = average.getBBox();
     PAPER.path('M'+ averageBBox.x +' '+ (averageBBox.y + averageBBox.height) +'L'+ (averageBBox.x + averageBBox.width) +' '+ (averageBBox.y + averageBBox.height)).attr({
@@ -654,21 +660,24 @@ MODULE.prototype.wrInfo = function () {
         'stroke-width': 1,
         'stroke-linejoin': 'round'
     });
-    PAPER.text(this.el.attrs.x + 20 + 96, this.el.attrs.y - 15, ':').attr({
+    PAPER.text(this.el.attrs.x + 20 + (147 + addXA), this.el.attrs.y +yAxisA, ':').attr({
         'fill': '#333',
-        'font-size': '12px'
+        'font-size': '20px'
     });
-    this.averageData = PAPER.text(this.el.attrs.x + 20 + 125, this.el.attrs.y - 15, '00:00:00').attr({
+    this.averageData = PAPER.text(this.el.attrs.x + 20 + (195 + addXA), this.el.attrs.y + yAxisA, '00:00:00').attr({
         'fill': '#333',
-        'font-size': '12px'
+        'font-size': '20px'
     });
-    PAPER.text(this.el.attrs.x + 20 + 155, this.el.attrs.y - 15, ' - ').attr({
+    
+    PAPER.text(this.el.attrs.x + 20 + (240 + addXA), this.el.attrs.y + 220, ' - ').attr({
         'fill': '#333',
-        'font-size': '12px'
+        'font-size': '20px'
     });
-    var max = PAPER.text(this.el.attrs.x + 20 + 183, this.el.attrs.y - 15, 'Máximo').attr({
+
+    // second line
+    var max = PAPER.text(this.el.attrs.x + 20 + (285 + addXB), this.el.attrs.y + yAxisB, 'Máximo').attr({
         'fill': '#333',
-        'font-size': '12px'
+        'font-size': '20px'
     });
     var maxBBox = max.getBBox();
     PAPER.path('M'+ maxBBox.x +' '+ (maxBBox.y + maxBBox.height) +'L'+ (maxBBox.x + maxBBox.width) +' '+ (maxBBox.y + maxBBox.height)).attr({
@@ -677,21 +686,21 @@ MODULE.prototype.wrInfo = function () {
         'stroke-width': 1,
         'stroke-linejoin': 'round'
     });
-    PAPER.text(this.el.attrs.x + 20 + 205, this.el.attrs.y - 15, ':').attr({
+    PAPER.text(this.el.attrs.x + 20 + (325 + addXB), this.el.attrs.y + yAxisB, ':').attr({
         'fill': '#333',
-        'font-size': '12px'
+        'font-size': '20px'
     });
-    this.maxData = PAPER.text(this.el.attrs.x + 20 + 232, this.el.attrs.y - 15, '00:00:00').attr({
+    this.maxData = PAPER.text(this.el.attrs.x + 20 + (375 + addXB), this.el.attrs.y + yAxisB, '00:00:00').attr({
         'fill': '#333',
-        'font-size': '12px'
+        'font-size': '20px'
     });
-    PAPER.text(this.el.attrs.x + 20 + 260, this.el.attrs.y - 15, ' - ').attr({
+    PAPER.text(this.el.attrs.x + 20 + (425 + addXB), this.el.attrs.y + yAxisB, ' - ').attr({
         'fill': '#333',
-        'font-size': '12px'
+        'font-size': '20px'
     });
-    var min = PAPER.text(this.el.attrs.x + 20 + 285, this.el.attrs.y - 15, 'Mínimo').attr({
+    var min = PAPER.text(this.el.attrs.x + 20 + (470 + addXB), this.el.attrs.y + yAxisB, 'Mínimo').attr({
         'fill': '#333',
-        'font-size': '12px'
+        'font-size': '20px'
     });
     var minBBox = min.getBBox();
     PAPER.path('M'+ minBBox.x +' '+ (minBBox.y + minBBox.height) +'L'+ (minBBox.x + minBBox.width) +' '+ (minBBox.y + minBBox.height)).attr({
@@ -700,13 +709,13 @@ MODULE.prototype.wrInfo = function () {
         'stroke-width': 1,
         'stroke-linejoin': 'round'
     });
-    PAPER.text(this.el.attrs.x + 20 + 307, this.el.attrs.y - 15, ':').attr({
+    PAPER.text(this.el.attrs.x + 20 + (510 + addXB), this.el.attrs.y + yAxisB, ':').attr({
         'fill': '#333',
-        'font-size': '12px'
+        'font-size': '20px'
     });
-    this.minData = PAPER.text(this.el.attrs.x + 20 + 335, this.el.attrs.y - 15, '00:00:00').attr({
+    this.minData = PAPER.text(this.el.attrs.x + 20 + (555 + addXB), this.el.attrs.y + yAxisB, '00:00:00').attr({
         'fill': '#333',
-        'font-size': '12px'
+        'font-size': '20px'
     });
 };
 MODULE.prototype.wrElem = function () {

@@ -96,7 +96,7 @@ echo '<div id="showBitacora" class="modal fade" tabindex="-1" role="dialog" aria
                     <h4 class="modal-title" id="myModalLabel">Bitácora</h4>
                 </div>
                 <div class="modal-body">
-                    <div id="bitacoraContent" class="row"></div>
+                    <div id="bitacoraContent" class="row well well-sm text-center"></div>
                 </div>
             </div>
         </div>

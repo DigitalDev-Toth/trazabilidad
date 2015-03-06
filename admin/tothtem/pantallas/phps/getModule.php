@@ -6,7 +6,7 @@ $idSubModule = $_REQUEST['idSubModule'];
 
 //get modality name
 $db = NEW DB();
-$sql = "SELECT m.id AS module, m.name AS name, s.name AS sname
+$sql = "SELECT m.id AS module, m.name AS name, s.name AS sname, m.zone AS zone
     FROM module m
     LEFT JOIN submodule s ON s.module=m.id
     WHERE s.id=$idSubModule";
@@ -23,7 +23,7 @@ $sql2 = "SELECT t.ticket AS ticket
 
 $moduleTicket = $db2->doSql($sql2);
 
-$data = array('modalityId'=> $module['module'] ,'modalityName' => $module['name'], 'modalityTicket' => $moduleTicket['ticket'], 'subModuleName' => $module['sname']);
+$data = array('modalityId'=> $module['module'] ,'modalityName' => $module['name'], 'modalityTicket' => $moduleTicket['ticket'], 'subModuleName' => $module['sname'], 'zoneId' => $module['zone']);
 echo json_encode($data);
 
 ?>

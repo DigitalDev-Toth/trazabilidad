@@ -66,29 +66,29 @@ include("controls.php");
 						<li><a data-toggle="tab" href="#sectionB">Sec 2</a></li>
 					</ul>
 					<div class="tab-content">
-					<br>
-					<div id="sectionA" class="tab-pane fade in active">
-					<div class="well well-sm text-center" id="info">
-					</div>
-					<div class="well well-sm text-center" id="options">
-					<div class="row">
-						<div class="col-md-6">
-							<div class="btn-group" role="group" aria-label="..." id = "buttonsGroups">
+						<br>
+						<div id="sectionA" class="tab-pane fade in active">
+							<div class="well well-sm text-center" id="info">
+							</div>
+							<div class="well well-sm text-center" id="options">
+								<div class="row">
+									<div class="col-md-3 col-sm-3 col-xs-3">
+										<div class="btn-group" role="group" aria-label="..." id = "buttonsGroups">
+									</div>
+								</div>
+								<div class="col-md-offset-5 col-md-2 col-xs-offset-5 col-xs-2 col-sm-offset-5 col-sm-2">
+									<div id="reportrange" class="form-control" style="cursor: pointer;">
+										<i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+										<span></span> <b class="caret"></b>
+									</div>
+								</div> 
+							</div>
+
 						</div>
+						<div class="well well-sm text-center" id="data">
+						</div><br>
 					</div>
-					<div class="col-md-4"><div id="reportrange" class="form-control" style="cursor: pointer;">
-					<i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
-					<span></span> <b class="caret"></b>
-					</div>
-			</div> 
-			</div>
-
-			</div>
-			<div class="well well-sm text-center" id="data"></div><br>
-			</div>
 			<div id="sectionB" class="tab-pane fade">
-
-
 			</div>
 			</div>
 			</div>
@@ -208,10 +208,16 @@ function fillInfo(data) {
 		$.post('services/getBitacora_plan.php', {rut: json[0]["rut"]}, function(data, textStatus, xhr) {
 			var infoPlans = JSON.parse(data);
 			var patientHtml = '<table class="table table-bordered table-condensed">';
-			//patientHtml += '<tr> <th colspan="6" class="text-center">Resultados </th></tr>';
-			patientHtml += '<tr><th>RUT/DNI: </th><td>'+json[0]["rut"]+'</td>  <th>N° Ficha:</td><td>1</td>    <th>Estado Actual</td><td>1</td>  </tr>';
-			patientHtml += '<tr><th>Nombre: </th><td>'+json[0]["name"]+' '+json[0]["lastname"]+' <th>N° Plan de Tratamiento:</td><td>'+infoPlans["planes"]+'</td>    <th>Maximo T. de espera:</td><td>1</td></tr>';
-			//patientHtml += '<tr><th>Fecha de Nacimiento: </th><td>'+json[0]["birthdate"]+'</td> <th>N° Presupuesto:</td><td>'+infoPlans["pres"]+'</td>  <th>T. espera cumulado</td><td>1</td> </tr>';
+			//patientHtml += '<tr><th>RUT/DNI: </th><td>'+json[0]["rut"]+'</td>  <th>N° Ficha:</td><td>1</td>    <th>Estado Actual</td><td>1</td>  </tr>';
+			//patientHtml += '<tr><th>Nombre: </th><td>'+ifNull(json[0]["name"])+' '+ifNull(json[0]["lastname"])+' <th>N° Plan de Tratamiento:</td><td>'+infoPlans["planes"]+'</td>    <th>Maximo T. de espera:</td><td>1</td></tr>';
+			if(json[0]["gender"]=="M" && json[0]["gender"]!=null){
+				json[0]["gender"]="Masculino";
+			}else{
+				json[0]["gender"]="Femenino";
+			}
+			patientHtml += '<tr><th>RUT/DNI: </th><td>'+json[0]["rut"]+'</td><th>Nombre: </th><td>'+ifNull(json[0]["name"])+' '+ifNull(json[0]["lastname"])+'</td><th>Género: </th><td>'+ifNull(json[0]["gender"])+'</td></tr>';
+			patientHtml += '<tr><th>Dirección: </th><td>'+ifNull(json[0]["address"])+'</td><th>Fecha de Nacimiento:</th><td>'+ifNull(json[0]["birthdate"])+'</td><th></th><td></td></tr>';
+
 			patientHtml += '</table>';
 			$("#info").html("");
 			$("#info").html(patientHtml);

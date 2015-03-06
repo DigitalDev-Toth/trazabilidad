@@ -67,7 +67,7 @@ MAKER.prototype.patient = function (rut, name, ticket, datetime, attention, idMo
         PATIENTS[rut].goTo(idModule, idSubmodule, true);
     }
 };
-MAKER.prototype.goTo = function (comet, rut, name, action, ticket, datetime, idModule, idSubmodule) {   
+MAKER.prototype.goTo = function (comet, rut, name, action, ticket, datetime, idModule, idSubmodule) { 
     switch (action) {
         case 'in':
             if (comet === 'tothtem') {
@@ -81,6 +81,13 @@ MAKER.prototype.goTo = function (comet, rut, name, action, ticket, datetime, idM
             PATIENTS[rut].goTo(idModule, idSubmodule, false);
             break;
         case 'to':
+            if (MODE === parseInt(idModule)) {
+                console.log(PATIENTS[rut]);
+                if (PATIENTS[rut] === undefined) {
+                    var p = new PATIENT(rut, name, ticket, datetime, idModule, idSubmodule, false);
+                    PATIENTS[rut] = p;    
+                }
+            }
             PATIENTS[rut].ticket = ticket;
             PATIENTS[rut].shape = MODULES[idModule].shape;
             PATIENTS[rut].seat = this.findSeat();

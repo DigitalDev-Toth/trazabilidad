@@ -7,15 +7,20 @@ session_start();
     include("../admin/inc/libs/db.class.php");
 
     $zoneId = $_GET['zone'];
+    if(isset($_GET['module'])){
+        $moduleWhere = "AND m.id=".$_GET['module'];
+    }else{
+        $moduleWhere = "";
+    }
 
     if ($zoneId) {
         $zone = new DB();
         $module = new DB();
         $submodule = new DB();
 
-        $sql = "SELECT id, name, seats "
-                . "FROM zone "
-                . "WHERE id=$zoneId";
+        $sql = "SELECT id, name, seats
+                FROM zone
+                WHERE id=$zoneId";
 
         $rowZone = $zone->doSql($sql);
 
@@ -27,11 +32,11 @@ session_start();
 
         $j = 0;
 
-        $sql = "SELECT m.id, m.name, m.max_wait, m.position, t.color, t.shape, t.id AS type "
-                . "FROM module AS m "
-                . "LEFT JOIN module_type AS t ON t.id = m.type "
-                . "WHERE m.zone = $zoneId "
-                . "ORDER BY m.id";
+        $sql = "SELECT m.id, m.name, m.max_wait, m.position, t.color, t.shape, t.id AS type
+                FROM module AS m
+                LEFT JOIN module_type AS t ON t.id = m.type
+                WHERE m.zone = $zoneId $moduleWhere
+                ORDER BY m.id";
 
         $mRows = $module->doSql($sql);
 
@@ -48,11 +53,11 @@ session_start();
                     "type" => $mRows['type']
                 );
 
-                $sql = "SELECT s.id, s.name, s.state AS submodule_state, u.username, u.state AS user_state "
-                        . "FROM submodule AS s "
-                        . "LEFT JOIN users AS u ON u.id=s.users "
-                        . "WHERE s.module=".$mRows['id']." "
-                        . "ORDER BY s.id";
+                $sql = "SELECT s.id, s.name, s.state AS submodule_state, u.username, u.state AS user_state
+                        FROM submodule AS s
+                        LEFT JOIN users AS u ON u.id=s.users
+                        WHERE s.module=".$mRows['id']."
+                        ORDER BY s.id";
 
                 $sRows = $submodule->doSql($sql);
 

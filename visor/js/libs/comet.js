@@ -1,10 +1,15 @@
 function socketComet(){
     socket.on('connect', function() {
         socket.on('message', function(message) {
-//            console.log(message);
-            var data = $.parseJSON(message);
-            if ((data.comet === 'tothtem' || data.comet === 'module') && SUBMODULES[data.submodule] !== undefined) {
-                MAKE.goTo(data.comet, data.rut, data.name, data.action, data.newticket, data.datetime, data.module, data.submodule);
+            var data = $.parseJSON(message); 
+            if ((data.comet === 'tothtem' || data.comet === 'module')) {  
+                if (MODE === 1000000) {
+                    MAKE.goTo(data.comet, data.rut, data.name, data.action, data.newticket, data.datetime, data.module, data.submodule);
+                } else if (MODE === parseInt(data.module) && data.comet === 'module' && MODE !== 1000000) {
+                    MAKE.goTo(data.comet, data.rut, data.name, data.action, data.newticket, data.datetime, data.module, data.submodule);
+                } else if (MODE !== parseInt(data.module) && data.action === 'lb' && MODE !== 1000000) {
+                    MAKE.goTo(data.comet, data.rut, data.name, data.action, data.newticket, data.datetime, data.module, data.submodule);
+                }                             
             } else if (data.comet === 'submodule') {
                 if (SUBMODULES[data.id] !== undefined) {
                     if (data.state === 'activo') {

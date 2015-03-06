@@ -26,7 +26,7 @@ include("controls.php");
 <script src="../inc/js/datapickerB/js/bootstrap-datepicker.js"></script>
 <script src="../inc/js/datapickerB/js/locales/bootstrap-datepicker.es.js"></script>
 <script type="text/javascript" src="../inc/modules/statistical/moment.js"></script>
-<script type="text/javascript" src="../inc/modules/statistical/daterangepicker.js"></script>
+<script type="text/javascript" src="../inc/js/datapickerB/js/daterangepicker.js"></script>
 <link rel="stylesheet" type="text/css" href="../inc/modules/statistical/daterangepicker-bs3.css" />
 
 <body>
@@ -37,12 +37,16 @@ include("controls.php");
 			<form class="form-horizontal" id="toSearch" role="form" name="between" method="POST">
 
 					<div class="row well well-sm ">
-						<div class="col-md-1 text-center">
+						<div class="col-md-1 col-xs-1 col-sm-1 text-center">
 							<button id="btnBack" type="button" class="btn btn-primary" title="Volver" style="cursor: pointer; visibility:hidden;" onclick="search()"><i class="glyphicon glyphicon-arrow-left"></i></button>
 						</div>
-						<div class="col-md-2">
+						<div class="col-md-2 col-xs-2 col-sm-2">
 							<label style="margin-top: 8px;"><span class="glyphicon glyphicon-th-list"></span> Bit&aacute;cora Usuarios</label>
+							
+						</div>
+						<div class="col-md-5 col-xs-5 col-sm-5">
 							<input type="text" class="form-control" id="userSearch" name="userSearch" style="visibility: hidden;">
+
 						</div>
 
 						<!--<div class="col-md-3 ">
@@ -61,7 +65,7 @@ include("controls.php");
 						<div class="col-md-1">
 							<button id="button" name="beetween"  class="btn btn-default" type="submit" onclick="submit();"><span class="glyphicon glyphicon-search"></span> Buscar</button>
 						</div>-->
-						<div class="col-md-3 text-center">
+						<div class="col-md-2 col-xs-2 col-sm-2 text-center">
 					   		<div id="reportrange" class="form-control" style="cursor: pointer; visibility:hidden;">
 		                  		<i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
 		                  		<span></span> <b class="caret"></b>
@@ -182,7 +186,9 @@ include("controls.php");
 		console.log(data);
 		if(data != 0){
 			var json = JSON.parse(data);
-			var T = '<table class="table table-striped table-bordered" id="bitacora"><thead><tr> ';
+			var T = '<table class="table table-striped table-bordered" id="bitacora">';
+
+				T +="<thead><tr>";
 				T +="<th>Fecha</th>";
 				T +="<th>Hora</th>";
 				T +="<th>Descripcion</th>";
@@ -191,12 +197,28 @@ include("controls.php");
 				T +="<th>Submodulo</th>";
 				T +="<th>Hora inicio de atenci&oacute;n</th>";
 				T +="<th>Hora fin de atenci&oacute;n</th>";
-				T +="<th>Pausas</th>";
+				//T +="<th>Pausas</th>";
 				T +="<th>Tiempo en pausa</th>";
 				T +="<th>Tiempo de atenci&oacute;n</th>";
 				//T +="<th>Otros</th>";
-				T +="</tr></thead><tbody>";
+				T +="</tr></thead>";
 
+				T +="<tfoot><tr>";
+				T +="<th>Fecha</th>";
+				T +="<th>Hora</th>";
+				T +="<th>Descripcion</th>";
+				T +="<th>Zona</th>";
+				T +="<th>Modulo</th>";
+				T +="<th>Submodulo</th>";
+				T +="<th>Hora inicio de atenci&oacute;n</th>";
+				T +="<th>Hora fin de atenci&oacute;n</th>";
+				//T +="<th>Pausas</th>";
+				T +="<th>Tiempo en pausa</th>";
+				T +="<th>Tiempo de atenci&oacute;n</th>";
+				//T +="<th>Otros</th>";
+				T +="</tr></tfoot>";
+
+				T +="<tbody>";
 			for (var i = 0; i < json.length; i++) {
 				T += '<tr><td>'+ ifNull(json[i].datetime.split(' ')[0]) +'</td>';
 				T += '<td>'+ ifNull(json[i].datetime.split(' ')[1]) +'</td>';
@@ -206,7 +228,7 @@ include("controls.php");
 				T += '<td>'+ ifNull(json[i].submodule) +'</td>';
 				T += '<td>'+ fixTime(json[i].attentionStart) +'</td>';
 				T += '<td>'+ fixTime(json[i].attentionEnd) +'</td>';
-				T += '<td>'+ ifNull(json[i].attentionPauses) +'</td>';
+				//T += '<td>'+ ifNull(json[i].attentionPauses) +'</td>';
 				T += '<td>'+ ifNull(json[i].timePauses) +'</td>';
 				T += '<td>'+ ifNull(json[i].timeAttention) +'</td>';
 				//T += '<td>'+ ifNull(json[i].secondDescription) +'</td></tr>';
@@ -214,15 +236,7 @@ include("controls.php");
 
 			T +='</tbody></table>';
 			$("#data").html(T);
-		  	$("#bitacora").dataTable( {
-		       		"dom": 'T<"clear">lfrtip',
-		        	"tableTools": {
-		            	"sSwfPath": "js/datatables2/swf/copy_csv_xls_pdf.swf"
-		        	},
-		        	"language": {
-		            	"url": "js/datatables2/languaje/languaje.lang"
-		        	}
-		    	} );
+		  	tableConfig('bitacora');
 
 		}else{
 			$("#data").html('<h2>Sin resultados</h2>');
@@ -230,6 +244,32 @@ include("controls.php");
 		
 
 	}
+
+	function tableConfig(table) {
+	
+		$('#'+table+' tfoot th').each( function () {
+			var title = $('#'+table+' thead th').eq( $(this).index() ).text();
+			$(this).html( '<input type="text" style="width:100%"  placeholder="'+title+'" />' );
+		});
+	  	var table =  $('#'+table).DataTable( {
+	    	"sDom": 'TR<"clear">lfrtip',
+	    	//"sDom": 'R<"clear">lfrtip',
+	    	"tableTools": {
+				"sSwfPath": "js/datatables2/swf/copy_csv_xls_pdf.swf"
+			}
+			/*"language": {
+				"url": "js/datatables2/languaje/languaje.lang"
+		  	}*/
+	    });
+		table.columns().eq( 0 ).each( function ( colIdx ) {
+			$( 'input', table.column( colIdx ).footer() ).on( 'keyup change', function () {
+				table.column( colIdx ).search( this.value ).draw();
+		    });
+		});
+	}
+
+
+
 
 	function search(user){
 		$("#userSearch").val(user);
@@ -250,7 +290,7 @@ include("controls.php");
 				var content = '';
 				content = "<table id='userList' class='table table-striped table-bordered'> <thead> <tr><th>ID<th>Nombre</th><th>Usuario</th><th>Estado</th><th>Ver Historial</th></tr>  </thead><tbody>";
 				for (var i = 0; i < json.length; i++) {
-					content+="<tr><td>"+json[i].id+"</td><td>"+json[i].name+"</td><td>"+json[i].username+"</td><td>"+json[i].state+"</td><td><img onclick=search('"+json[i].id +"') src='../images/informe.png' style='cursor: pointer;' title='Ver lista'/></td></tr>";
+					content+="<tr><td>"+json[i].id+"</td><td>"+json[i].name+"</td><td>"+json[i].username+"</td><td>"+json[i].state+"</td><td class='text-center'><button type='button' onclick=search('"+json[i].id +"') style='cursor: pointer;' title='Ver lista'><span class='glyphicon glyphicon-search' aria-hidden='true'></span></button></td></tr>";
 				};
 				content+=" </tbody></table>";
 				$("#data").hide();
@@ -283,13 +323,14 @@ include("controls.php");
 	        $('#reportrange span').html(start.format('DD-MM-YYYY') + ' - ' + end.format('DD-MM-YYYY'));
 	    }
 
-		var optionSet1 = {
+	var optionSet1 = {
 			startDate: moment(),
 			endDate: moment().add(1,'days'),
 			minDate: '01/01/2014',
-			//maxDate: moment().format('DD/MM/YYYY'),
 			maxDate: moment().add(1,'days').format('DD/MM/YYYY'),
-			
+			timePicker: true,
+			timePickerIncrement: 5,
+			timePicker12Hour:false,
 			showDropdowns: true,
 			showWeekNumbers: true,
 			ranges: {
@@ -305,7 +346,7 @@ include("controls.php");
 			buttonClasses: ['btn btn-default'],
 			applyClass: 'btn-small btn-primary',
 			cancelClass: 'btn-small',
-			format: 'DD-MM-YYYY',
+			format: 'DD-MM-YYYY HH:mm',
 			separator: ' Hasta ',
 			locale: {
 			    applyLabel: 'Aceptar',
@@ -320,19 +361,33 @@ include("controls.php");
 		};
 		$('#reportrange span').html(moment().format('DD-MM-YYYY') + ' - ' + moment().format('DD-MM-YYYY'));
 		$('#reportrange').daterangepicker(optionSet1, cb);
+
 		$('#reportrange').on('apply.daterangepicker', function(ev, picker) { 
 			
-			initialDate = picker.startDate.format('YYYY-MM-DD');         
-			finishDate = picker.endDate.add(1,'days').format('YYYY-MM-DD');
-			getLogs(initialDate,finishDate);
+			//initialDate = picker.startDate.format('YYYY-MM-DD');         
+			//finishDate = picker.endDate.add(1,'days').format('YYYY-MM-DD');
+			//getLogs(initialDate,finishDate);
+
+			var start = picker.startDate.format('YYYY-MM-DD HH:mm').split(" ");
+			var end = picker.endDate.format('YYYY-MM-DD HH:mm').split(" ");
+
+			if($('#checkHour').is(':checked')){
+				getLogs(start[0],end[0],start[1],end[1]);
+			}else{
+				getLogs(start[0],end[0],null,null);
+			}
+
+
+
+
 		});
 	}
-
-	function getLogs(date1,date2){
+	//dateI,dateF,hourI,hourF
+	function getLogs(date1,date2,hourI,hourF){
 		$.ajax({
 		    type: 'POST',
 		    url: "modules/bitacora_user/getLogData.php",
-		    data: { user:user, date1:date1, date2:date2 } ,
+		    data: { user:user, date1:date1, date2:date2 ,hourI:hourI,hourF:hourF} ,
 		    beforeSend: function() {
 		    	$("#data").html('<h1><i class="fa fa-spinner fa-spin"></i></h1>');
 		    },

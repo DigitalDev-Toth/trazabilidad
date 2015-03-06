@@ -41,7 +41,12 @@ PATIENT.prototype.blink = function (i) {
 
 };
 PATIENT.prototype.setElem = function (idModule) {
-    switch (MODULES[idModule].pos) {
+    if (MODE === 1000000) {
+        var position = MODULES[idModule].pos;
+    } else {
+        var position = 'inferior-derecha';
+    }
+    switch (position) {
         case 'superior':
             var x = $(window).width() / 2,
                 y = $(window).height() / 4;
@@ -449,13 +454,16 @@ PATIENT.prototype.tooltipInfo = function () {
 
             var waitingTime = wtHours +':'+ wtMinutes +':'+ wtSeconds;
 
-            var content = '<u>Nombre</u>: '+ t.name +'<br />';
+            var content = '<div style="font-size: 16px;">';
+            content += '<u>Nombre</u>: '+ t.name +'<br />';
             content += '<u>Rut</u>: '+ t.id +'<br />';
             content += '<u>Motivo visita</u>: '+ MODULES[t.idModule].name +'<br />';
             if (t.wt) {
                 content += '<u>Tiempo de espera</u>: '+ waitingTime +'<br />';
                 content += '<u>Ticket</u>: '+ t.ticket;
             }
+            content += '</div>';
+            
             t.elInfo.html(content);
         };
     })(this), 1000);
@@ -500,13 +508,25 @@ PATIENT.prototype.bitacora = function () {
             contentPatient += '</table>';
             contentPatient += '</div>';
         } else {
-            var contentPatient = '<div class="col-md-12 text-center">Sin resultados</div>';
+            var contentPatient = '<div class="col-md-12">';
+                contentPatient += '<table class="table table-bordered table-condensed">';
+                contentPatient += '    <tr>';
+                contentPatient += '        <th colspan="6" class=" bg-primary">Resultados</th>';
+                contentPatient += '    </tr>';
+                contentPatient += '    <tr>';
+                contentPatient += '        <th>RUT/DNI: </th>';
+                contentPatient += '        <td>'+ t.id +'</td>';
+                contentPatient += '        <th>Estado Actual:</th>';
+                contentPatient += '        <td>No registrado</td>';
+                contentPatient += '    </tr>';
+                contentPatient += '</table>';
+                contentPatient += '</div>';
         }
         
         $.post('../services/getLogDataViewer.php', {rut: t.id}, function (dataLogs, status) {
             if (dataLogs !== 0) {
                 var d = $.parseJSON(dataLogs);
-                var contentLogs = '<div class="col-md-12 text-center">';
+                var contentLogs = '<div class="col-md-12 text-center ">';
                 contentLogs += '<table id="dataLogs" class="table table-striped table-bordered">';
                 contentLogs += '    <thead>';
                 contentLogs += '        <tr>';
@@ -524,6 +544,22 @@ PATIENT.prototype.bitacora = function () {
                 contentLogs += '            <th>Total atención</th>';
                 contentLogs += '        </tr>';
                 contentLogs += '    </thead>';
+                                contentLogs += '    <tfoot>';
+                contentLogs += '        <tr>';
+                contentLogs += '            <th>Fecha</th>';
+                contentLogs += '            <th>Hora</th>';
+                contentLogs += '            <th>Descripción</th>';
+                contentLogs += '            <th>Zona</th>';
+                contentLogs += '            <th>Módulo</th>';
+                contentLogs += '            <th>Submódulo</th>';
+                contentLogs += '            <th>Usuario</th>';
+                contentLogs += '            <th>Hora inicio de espera</th>';
+                contentLogs += '            <th>Hora inicio de atención</th>';
+                contentLogs += '            <th>Hora fin de atención</th>';
+                contentLogs += '            <th>Total espera</th>';
+                contentLogs += '            <th>Total atención</th>';
+                contentLogs += '        </tr>';
+                contentLogs += '    </tfoot>';
                 contentLogs += '    <tbody>';
                 for (var i = 0; i < d.length; i++) {
                     contentLogs += '        <tr>';
@@ -574,7 +610,7 @@ PATIENT.prototype.bitacora = function () {
             
             var content = contentPatient;
             content += contentLogs;
-
+            /*
             $('#bitacoraPatientContent').html(content);
             $('#dataLogs').addClass('table table-bordered table-hover');
             $('#dataLogs').dataTable({
@@ -586,6 +622,38 @@ PATIENT.prototype.bitacora = function () {
                     "url": "vendor/datatables/languaje.lang"
                 }
             }); 
+            */
+
+            $('#bitacoraPatientContent').html(content);
+            $('#dataLogs').addClass('table table-bordered table-hover table-condensed');
+            
+
+            $('#dataLogs tfoot th').each( function () {
+                var title = $('#dataLogs thead th').eq( $(this).index() ).text();
+                $(this).html( '<input type="text" style="width:100%"  placeholder="'+title+'" />' );
+            });
+            var table =  $('#dataLogs').DataTable( {
+                "sDom": 'TR<"clear">lfrtip',
+                //"sDom": 'R<"clear">lfrtip',
+                "tableTools": {
+                    "sSwfPath": "vendor/datatables/copy_csv_xls_pdf.swf"
+                }
+                /*"language": {
+                    "url": "js/datatables2/languaje/languaje.lang"
+                }*/
+            });
+            table.columns().eq( 0 ).each( function ( colIdx ) {
+                $( 'input', table.column( colIdx ).footer() ).on( 'keyup change', function () {
+                    table.column( colIdx ).search( this.value ).draw();
+                });
+            });
+
+
+
+            
+
+
+
         });    
     });    
 };
